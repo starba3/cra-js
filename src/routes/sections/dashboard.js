@@ -26,8 +26,8 @@ const OrderListPage = lazy(() => import('src/pages/dashboard/order/list'));
 const OrderDetailsPage = lazy(() => import('src/pages/dashboard/order/details'));
 // INVOICE
 // const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoice/list'));
-const InvoiceDetailsPage = lazy(() => import('src/pages/dashboard/invoice/details'));
-const InvoiceCreatePage = lazy(() => import('src/pages/dashboard/invoice/new'));
+const InvoiceDetailsPage = lazy(() => import('src/screens/invoice/InvoiceDetailsPage'));
+const InvoiceCreatePage = lazy(() => import('src/screens/invoice/InvoiceCreatePage'));
 const InvoiceEditPage = lazy(() => import('src/pages/dashboard/invoice/edit'));
 // USER
 const UserProfilePage = lazy(() => import('src/pages/dashboard/user/profile'));
