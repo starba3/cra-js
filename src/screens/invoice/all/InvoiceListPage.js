@@ -1,10 +1,10 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import  InvoiceListView  from '../components/invoice/InvoiceListView';
+import  InvoiceListView  from 'src/screens/components/invoice/all/InvoiceListView';
 
 // ----------------------------------------------------------------------
 
-export default function InvoiceListPage() {
+export default function InvoiceListViewAll() {
   return (
     <>
       <Helmet>

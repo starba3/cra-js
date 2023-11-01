@@ -68,6 +68,7 @@
   "dashboard": "Dashboard",
   "confirm_invoices": "Confirm Invoices",
   "assign_collector": "Assign Collector",
-  "assign_engineer": "Assign Engineer"
+  "assign_engineer": "Assign Engineer",
+  "tender_and_contract": "Tender And Contract"
   
 }

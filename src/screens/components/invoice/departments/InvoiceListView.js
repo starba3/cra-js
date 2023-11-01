@@ -1,5 +1,5 @@
 import sumBy from 'lodash/sumBy';
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 // @mui
 import { useTheme, alpha } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
@@ -23,6 +23,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 // utils
 import { fTimestamp } from 'src/utils/format-time';
 // _mock
+import PropTypes from 'prop-types';
 // components
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
@@ -40,41 +41,40 @@ import {
   TableSelectedAction,
   TablePaginationCustom,
 } from 'src/components/table';
-import { _departments } from '../../../lists/departments'
-import { _statusList } from '../../../lists/paidStatus'
+import { _departments } from 'src/lists/departments'
+import { _statusList } from 'src/lists/paidStatus'
 //
-import InvoiceAnalytic from '../../../sections/invoice/invoice-analytic';
+import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
+import InvoiceTableFiltersResult from 'src/screens/components/invoice/departments/InvoiceTableFiltersResult';
+import { getInvoicesByDepartment, getInvoicesBySalesConfirmation  } from 'src/data-access/invoice'
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
-import InvoiceTableFiltersResult from '../../../sections/invoice/invoice-table-filters-result';
 // DATA ACCESS
-import { getAllInvoices } from '../../../data-access/invoice'
 
 // ----------------------------------------------------------------------
+
 
 const TABLE_HEAD = [
   { id: 'invoiceNumber', label: 'Invoice Number' },
   { id: 'issueInvoiceDate', label: 'Issue Date' },
-  { id: 'daysToCollected', label: 'Days To Collect' },
   { id: 'invoiceAmount', label: 'Amount' },
-  { id: 'paidStatus', label: 'Paid Status', align: 'center' },
-  { id: 'department', label: 'Department' , align: 'center' },
+  { id: 'region', label: 'Region', align: 'center' },
+  { id: 'customerNameAr', label: 'Name Arabic' , align: 'center' },
   { id: '' },
 ];
 
 const defaultFilters = {
   name: '',
-  service: [],
-  paidStatus: [],
-  status: 'all',
   startDate: null,
   endDate: null,
 };
 
-const dataGridData = await getAllInvoices()
+
+
+
 // ----------------------------------------------------------------------
 
-export default function InvoiceListView() {
+export default function InvoiceListView({department, salesStatus}) {
   const theme = useTheme();
 
   const settings = useSettingsContext();
@@ -84,10 +84,33 @@ export default function InvoiceListView() {
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 
   const confirm = useBoolean();
+  
 
-  const [tableData, setTableData] = useState(dataGridData);
+  const [tableData, setTableData] = useState([]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (department) {
+          const result = await getInvoicesByDepartment(department);
+          setTableData(result);
+        } else {
+          const result = await getInvoicesBySalesConfirmation(Boolean(salesStatus));
+          setTableData(result);
+        }
+        
+      } catch (error) {
+        console.error('Error fetching invoices:', error);
+      }
+    };
+
+    fetchData();
+  }, [department, salesStatus]);
 
   const [filters, setFilters] = useState(defaultFilters);
+
+  
 
   const dateError =
     filters.startDate && filters.endDate
@@ -110,8 +133,6 @@ export default function InvoiceListView() {
 
   const canReset =
     !!filters.name ||
-    !!filters.service.length ||
-    filters.status !== 'all' ||
     (!!filters.startDate && !!filters.endDate);
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
@@ -165,6 +186,10 @@ export default function InvoiceListView() {
     [table]
   );
 
+  // Fetch data
+  
+
+  
   const handleDeleteRow = useCallback(
     (id) => {
       const deleteRow = tableData.filter((row) => row.id !== id);
@@ -211,12 +236,55 @@ export default function InvoiceListView() {
     setFilters(defaultFilters);
   }, []);
   
+  const getHeading = (id, salesConfirmStatus) => {
+    let text = '';
+    if (id) {
+      switch(id) {
+        case 0:
+          text = 'Operation';
+          break;
+        case 1:
+          text = 'Installation'
+          break;
+        case 2:
+          text = 'Sales'
+          break;
+        case 3:
+          text = 'collection';
+          break;
+        case 4:
+          text = 'Tender And Contract';
+          break;
+        default:
+          break;
+      }
+    } else {
+      switch(salesConfirmStatus) {
+        case 0:
+          text = 'Confirm Invoices';
+          break;
+        case 1:
+          text = 'Assign Engineer'
+          break;
+        case 2:
+          text = 'Assign Collector'
+          break;
+        default:
+          break;
+      }
+    }
+
+    return text;
+  }
+  
+  const heading = getHeading(department, salesStatus)
+
 
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="List"
+          heading={heading}
           links={[
             {
               name: 'Dashboard',
@@ -230,16 +298,16 @@ export default function InvoiceListView() {
               name: 'List',
             },
           ]}
-          action={
-            <Button
-              component={RouterLink}
-              href={paths.dashboard.invoice.new}
-              variant="contained"
-              startIcon={<Iconify icon="mingcute:add-line" />}
-            >
-              New Invoice
-            </Button>
-          }
+          // action={
+          //   <Button
+          //     component={RouterLink}
+          //     href={paths.dashboard.invoice.new}
+          //     variant="contained"
+          //     startIcon={<Iconify icon="mingcute:add-line" />}
+          //   >
+          //     New Invoice
+          //   </Button>
+          // }
           sx={{
             mb: { xs: 3, md: 5 },
           }}
@@ -265,7 +333,7 @@ export default function InvoiceListView() {
                 color={theme.palette.info.main}
               />
 
-               <InvoiceAnalytic
+               {/* <InvoiceAnalytic
                 title="Paid"
                 total={getInvoiceLength('paid')}
                 percent={getPercentByStatus('paid')}
@@ -281,7 +349,7 @@ export default function InvoiceListView() {
                 price={getTotalAmount('unpaid')}
                 icon="solar:sort-by-time-bold-duotone"
                 color={theme.palette.warning.main}
-              />
+              /> */}
 
               {/* <InvoiceAnalytic
                 title="Overdue"
@@ -495,29 +563,11 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
       inputData = inputData.filter(
         (invoice) =>
           invoice.customerNameEn.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-          invoice.invoiceNo.toLowerCase().indexOf(name.toLowerCase()) !== -1
-          
-          // invoice.invoiceTo.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
+          invoice.invoiceNo.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
+          invoice.customerNameAr.indexOf(name) !== -1
       );
     }
   
-    if (status !== 'all') {
-      inputData = inputData.filter((invoice) => invoice.status === status);
-    }
-  
-    if (service.length) {
-      inputData = inputData.filter((invoice) =>
-        // service.map((serviceName) => serviceName.toLowerCase()).includes(invoice.department)
-        service.includes('All') || service.includes(invoice.department)
-      );
-    }
-    
-    if (paidStatus.length) {
-      inputData = inputData.filter((invoice) =>
-        paidStatus.includes('All') || paidStatus.map((option) => option.toLowerCase()).includes(invoice.paidStatus)
-      );
-    }
-
     if (!dateError) {
       if (startDate && endDate) {
         inputData = inputData.filter(
@@ -529,4 +579,9 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
     }
   
     return inputData;
+  }
+
+  InvoiceListView.propTypes = {
+    department: PropTypes.number,
+    salesStatus: PropTypes.number,
   }

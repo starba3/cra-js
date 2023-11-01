@@ -64,7 +64,7 @@ const PermissionDeniedPage = lazy(() => import('src/pages/dashboard/permission')
 const BlankPage = lazy(() => import('src/pages/dashboard/blank'));
 
 // MY PAGES
-const InvoiceListPage = lazy(() => import("../../screens/invoice/InvoiceListPage"))
+const InvoiceListViewAll = lazy(() => import("src/screens/invoice/all/InvoiceListPage"))
 
 
 // ----------------------------------------------------------------------
@@ -121,8 +121,8 @@ export const dashboardRoutes = [
       {
         path: 'invoice',
         children: [
-          { element: <InvoiceListPage />, index: true },
-          { path: 'list', element: <InvoiceListPage /> },
+          { element: <InvoiceListViewAll />, index: true },
+          { path: 'list', element: <InvoiceListViewAll /> },
           { path: ':id', element: <InvoiceDetailsPage /> },
           { path: ':id/edit', element: <InvoiceEditPage /> },
           { path: 'new', element: <InvoiceCreatePage /> },

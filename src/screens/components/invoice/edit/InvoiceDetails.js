@@ -39,11 +39,98 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function InvoiceDetails({ invoice }) {
-  const [currentStatus, setCurrentStatus] = useState(invoice.status);
+  const [currentStatus, setCurrentStatus] = useState('Paid');
+  const [currentInvoice, setCurrentInvoice] = useState(invoice);
 
   const handleChangeStatus = useCallback((event) => {
     setCurrentStatus(event.target.value);
   }, []);
+
+
+
+  const renderNotes = (
+    <>
+      <Typography variant="h6" gutterBottom>
+        Notes
+      </Typography>
+      <TableContainer sx={{ overflow: 'unset', mt: 5 }}>
+        <Scrollbar>
+          <Table sx={{ minWidth: 960 }}>
+            <TableHead>
+              <TableRow>
+
+                <TableCell width={40}>#</TableCell>
+
+                <TableCell sx={{ typography: 'subtitle2' }}>Note</TableCell>
+
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {currentInvoice.notes.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell>{index + 1}</TableCell>
+
+                  <TableCell>
+                    {/* <Box sx={{ maxWidth: 560 }}> */}
+                      <Typography variant="subtitle2">{row.noteText}</Typography>
+                    {/* </Box> */}
+                  </TableCell>
+
+                  {/* <TableCell>{row.quantity}</TableCell> */}
+
+                  
+                </TableRow>
+              ))} 
+
+            </TableBody> 
+          </Table>
+        </Scrollbar>
+      </TableContainer>
+    </>  
+  );
+  
+  const renderAttachments = (
+    <>
+      <Typography variant="h6" gutterBottom>
+      Attachments
+      </Typography>
+      <TableContainer sx={{ overflow: 'unset', mt: 5 }}>
+        <Scrollbar>
+          <Table sx={{ minWidth: 960 }}>
+            <TableHead>
+              <TableRow>
+
+                <TableCell width={40}>#</TableCell>
+
+                <TableCell sx={{ typography: 'subtitle2' }}>Name</TableCell>
+
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {currentInvoice.attachments.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell>{index + 1}</TableCell>
+
+                  <TableCell>
+                    {/* <Box sx={{ maxWidth: 560 }}> */}
+                      <Typography variant="subtitle2"> <a target='_blank' rel="noreferrer" href={row.attachmentPath}>{row.fileName}</a> </Typography>
+                    {/* </Box> */}
+                  </TableCell>
+
+                  {/* <TableCell>{row.quantity}</TableCell> */}
+
+                  
+                </TableRow>
+              ))} 
+
+            </TableBody> 
+          </Table>
+        </Scrollbar>
+      </TableContainer>
+    </>
+  );
 
   const renderTotal = (
     <>
@@ -128,7 +215,7 @@ export default function InvoiceDetails({ invoice }) {
           </TableHead>
 
           <TableBody>
-            {invoice.items.map((row, index) => (
+            {/* {invoice.items.map((row, index) => (
               <TableRow key={index}>
                 <TableCell>{index + 1}</TableCell>
 
@@ -148,7 +235,7 @@ export default function InvoiceDetails({ invoice }) {
 
                 <TableCell align="right">{fCurrency(row.price * row.quantity)}</TableCell>
               </TableRow>
-            ))}
+            ))} */}
 
             {renderTotal}
           </TableBody> 
@@ -158,14 +245,7 @@ export default function InvoiceDetails({ invoice }) {
   );
 
   return (
-    <>
-      <InvoiceToolbar
-        invoice={invoice}
-        currentStatus={currentStatus || ''}
-        onChangeStatus={handleChangeStatus}
-        statusOptions={INVOICE_STATUS_OPTIONS}
-      />
-
+    
       <Card sx={{ pt: 5, px: 5 }}>
         <Box
           rowGap={5}
@@ -183,12 +263,12 @@ export default function InvoiceDetails({ invoice }) {
             sx={{ width: 48, height: 48 }}
           />
 
-          <Stack spacing={1} alignItems={{ xs: 'flex-start', md: 'flex-end' }}>
+          {/* <Stack spacing={1} alignItems={{ xs: 'flex-start', md: 'flex-end' }}>
             <Label
               variant="soft"
               color={
-                (currentStatus === 'paid' && 'success') ||
-                (currentStatus === 'pending' && 'warning') ||
+                (currentStatus === 'Paid' && 'success') ||
+                (currentStatus === 'Unpaid' && 'warning') ||
                 (currentStatus === 'overdue' && 'error') ||
                 'default'
               }
@@ -196,55 +276,188 @@ export default function InvoiceDetails({ invoice }) {
               {currentStatus}
             </Label>
 
-            <Typography variant="h6">{invoice.invoiceNumber}</Typography>
+            <Typography variant="h6"> invoice.invoiceNo  </Typography>
+          </Stack> */}
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+              Issue Date: 
+            </Typography>
+              {currentInvoice.issueInvoiceDate }
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-              Invoice From
+            Amount
             </Typography>
-            {invoice.invoiceFrom.name}
-            <br />
-            {invoice.invoiceFrom.fullAddress}
-            <br />
-            Phone: {invoice.invoiceFrom.phoneNumber}
-            <br />
+            {currentInvoice.invoiceAmount}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-              Invoice To
+            Currency
             </Typography>
-            {invoice.invoiceTo.name}
-            <br />
-            {invoice.invoiceTo.fullAddress}
-            <br />
-            Phone: {invoice.invoiceTo.phoneNumber}
-            <br />
+            {currentInvoice.currency}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-              Date Create
+            Customer Code
             </Typography>
-            {fDate(invoice.createDate)}
+            {currentInvoice.customerCode}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-              Due Date
+            Name English
             </Typography>
-            {fDate(invoice.dueDate)}
+            {currentInvoice.customerNameEn}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Name Arabic
+            </Typography>
+            {currentInvoice.customerNameEn}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+              Po Number
+            </Typography>
+            {currentInvoice.customerPO}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            PO Value
+            </Typography>
+            {currentInvoice.poValue}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Region
+            </Typography>
+            {currentInvoice.region}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Contract Number
+            </Typography>
+            {currentInvoice.contractNo}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Delivery Date
+            </Typography>
+            {currentInvoice.deliveryDate}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Installation Date
+            </Typography>
+            {currentInvoice.installationDate}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Department
+            </Typography>
+            {currentInvoice.department}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Installation Status
+            </Typography>
+            {currentInvoice.installationStatus}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Days To Collected
+            </Typography>
+            {currentInvoice.daysToCollected}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Acknowledge Status
+            </Typography>
+            {currentInvoice.acknowledgeStatus}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Collection Source
+            </Typography>
+            {currentInvoice.collectionSource}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Claim Status
+            </Typography>
+            {currentInvoice.claimStatus}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Claims Detail Status
+            </Typography>
+            {currentInvoice.claimsDetailStatus}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Sales Confirm
+            </Typography>
+            {currentInvoice.salesConfirm}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Created By
+            </Typography>
+            {currentInvoice.createdBy}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Sales Taker
+            </Typography>
+            {currentInvoice.salesTakerName}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Collector Name
+            </Typography>
+            {currentInvoice.collectorName}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2', mb: 3}}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Responsible Engineer Name
+            </Typography>
+            {currentInvoice.responsibleEngineerName}
           </Stack>
         </Box>
 
-        {renderList}
+        {renderNotes}
+
+        <Divider sx={{ mt: 5, borderStyle: 'dashed', mb: 3}} />
+        {renderAttachments}
 
         <Divider sx={{ mt: 5, borderStyle: 'dashed' }} />
 
         {renderFooter}
       </Card>
-    </>
+    
   );
 }
 

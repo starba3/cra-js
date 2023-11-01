@@ -423,16 +423,17 @@ export function useNavData() {
                   { title: t('list'), path: paths.departments.collection.list }, 
                 ]
               },
+              { 
+                title: t('tender_and_contract'), 
+                path: paths.departments.tenderAndConract.root,
+                children: [
+                  { title: t('list'), path: paths.departments.tenderAndConract.list }, 
+                ]
+              },
             ],
           },
-
-          
-
-          
         ],
       },
-
-
     ],
     [t]
   );

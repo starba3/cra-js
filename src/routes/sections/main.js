@@ -8,6 +8,8 @@ import CompactLayout from 'src/layouts/compact';
 import { SplashScreen } from 'src/components/loading-screen';
 import DashboardLayout from 'src/layouts/dashboard/layout';
 import SystemsSelection from 'src/screens/components/SystemsSelection/SystemsSelection';
+// route
+import { paths } from '../paths';
 
 // ----------------------------------------------------------------------
 
@@ -33,6 +35,8 @@ const Test = lazy(() => import ("../../screens/Test"))
 const Complete = lazy(() => import ("../../screens/Complete"))
 const Paid = lazy(() => import ("../../screens/Paid"))
 const Installation = lazy(() => import ("../../screens/Installation"))
+
+const InvoiceListViewByDepartment = lazy(() => import ("src/screens/invoice/departments/InvoiceListViewByDepartment"))
 // ----------------------------------------------------------------------
 
 export const mainRoutes = [
@@ -114,6 +118,50 @@ export const mainRoutes = [
           { path: 'installation', element: <Installation /> }
         ]
       },
+    ]
+  },
+  {
+    element: (
+      <DashboardLayout>
+        <Suspense fallback={<SplashScreen />}>
+          <Outlet />
+        </Suspense>
+      </DashboardLayout>
+    ),
+    children: [
+      { 
+        path: paths.departments.operation.list, 
+        element: <InvoiceListViewByDepartment id={0} /> 
+      },
+      { 
+        path: paths.departments.sales.list,
+        element: <InvoiceListViewByDepartment id={2} />  
+      },
+      { 
+        path: paths.departments.installation.list,
+        element: <InvoiceListViewByDepartment id={1} />  
+      },
+      { 
+        path: paths.departments.collection.list,
+        element: <InvoiceListViewByDepartment id={3} />  
+      },
+      { 
+        path: paths.departments.tenderAndConract.list,
+        element: <InvoiceListViewByDepartment id={4} />  
+      },
+      { 
+        path: paths.departments.sales.confirm_invoices,
+        element: <InvoiceListViewByDepartment salesStatus={0} />  
+      },
+      { 
+        path: paths.departments.installation.assign_engineer,
+        element: <InvoiceListViewByDepartment salesStatus={1} />  
+      },
+      { 
+        path: paths.departments.collection.assign_collector,
+        element: <InvoiceListViewByDepartment salesStatus={2} />  
+      },
+      
     ]
   },
   {

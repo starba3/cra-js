@@ -15,10 +15,11 @@ const ROOTS = {
   STATUS: '/status',
   DEPARTMENT: {
     main: '/department',
-    operation: '/operation',
-    sales: '/sales',
-    installation: '/installation',
-    collection: '/collection',
+    operation: 'operation',
+    sales: 'sales',
+    installation: 'installation',
+    collection: 'collection',
+    tenderAndConract: 'tenderAndConract',
   },
   INVOICES: '/invoices',
 };
@@ -219,7 +220,10 @@ export const paths = {
       list: `${ROOTS.DEPARTMENT.main}/${ROOTS.DEPARTMENT.collection}/list`,
       assign_collector: `${ROOTS.DEPARTMENT.main}/${ROOTS.DEPARTMENT.collection}/assign_collector`,
     } ,
-
+    tenderAndConract: {
+      root: ROOTS.DEPARTMENT.tenderAndConract,
+      list: `${ROOTS.DEPARTMENT.main}/${ROOTS.DEPARTMENT.tenderAndConract}/list`,
+    },
   },
   // INVOICES
   invoices: {

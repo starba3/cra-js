@@ -10,7 +10,7 @@ export default function InvoiceDetailsPage() {
   const params = useParams();
 
   const { id } = params;
-
+  
   return (
     <>
       <Helmet>
