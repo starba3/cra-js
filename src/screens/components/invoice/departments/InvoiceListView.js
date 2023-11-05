@@ -213,7 +213,7 @@ export default function InvoiceListView({department, salesStatus}) {
 
   const handleEditRow = useCallback(
     (id) => {
-      router.push(paths.dashboard.invoice.edit(id));
+      router.push(paths.dashboard.invoice.editOperation(id));
     },
     [router]
   );

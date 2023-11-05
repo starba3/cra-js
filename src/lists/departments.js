@@ -7,12 +7,18 @@ const Translate = (text) => {
 }
 
 export const _departments = () => [
-    Translate('All'),
-    Translate('Operation'),
-    Translate('Sales'),
-    Translate('Installation'),
-    Translate('Collection'),
-  ]
+  Translate('All'),
+  Translate('Operation'),
+  Translate('Sales'),
+  Translate('Installation'),
+  Translate('Collection'),
+  Translate('TenderAndContracts')
+]
 
-
-
+export const _departments_withoutAll = () => [
+  Translate('Operation'),
+  Translate('Sales'),
+  Translate('Installation'),
+  Translate('Collection'),
+  Translate('TenderAndContracts')
+]

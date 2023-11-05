@@ -28,7 +28,7 @@ const OrderDetailsPage = lazy(() => import('src/pages/dashboard/order/details'))
 // const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoice/list'));
 const InvoiceDetailsPage = lazy(() => import('src/screens/invoice/InvoiceDetailsPage'));
 const InvoiceCreatePage = lazy(() => import('src/screens/invoice/InvoiceCreatePage'));
-const InvoiceEditPage = lazy(() => import('src/pages/dashboard/invoice/edit'));
+const InvoiceEditPage = lazy(() => import('src/screens/invoice/edit/InvoiceEditPage'));
 // USER
 const UserProfilePage = lazy(() => import('src/pages/dashboard/user/profile'));
 const UserCardsPage = lazy(() => import('src/pages/dashboard/user/cards'));
@@ -124,7 +124,8 @@ export const dashboardRoutes = [
           { element: <InvoiceListViewAll />, index: true },
           { path: 'list', element: <InvoiceListViewAll /> },
           { path: ':id', element: <InvoiceDetailsPage /> },
-          { path: ':id/edit', element: <InvoiceEditPage /> },
+          // { path: ':id/edit', element: <InvoiceEditPage /> },
+          { path: ':id/edit/operation', element: <InvoiceEditPage /> },
           { path: 'new', element: <InvoiceCreatePage /> },
         ],
       },

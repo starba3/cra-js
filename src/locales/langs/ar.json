@@ -69,5 +69,11 @@
   "confirm_invoices": "تأكيد الفواتير",
   "assign_collector": "تعيين مسؤل الإستلام",
   "assign_engineer": "تعيين المهندس",
-  "tender_and_contract": "المناقصة والعقد"
+  "tender_and_contract": "المناقصة والعقد",
+  "None": "None",
+  "Acknowledged": "موافق عليه",
+  "NotAcknowledged": "غير موافق عليه",
+  "TempAcknowledged": "موافق عليه بشكل مؤقت",
+  "Reject": "مرفوض",
+  "TenderAndContracts": "المناقصات والعقود"
 }

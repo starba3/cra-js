@@ -82,30 +82,30 @@ export default function InvoiceTableToolbar({
           pr: { xs: 2.5, md: 1 },
         }}
       >
-        <FormControl
-          sx={{
-            flexShrink: 0,
-            width: { xs: 1, md: 180 },
-          }}
-        >
-          <InputLabel>Department</InputLabel>
+      <FormControl
+        sx={{
+          flexShrink: 0,
+          width: { xs: 1, md: 180 },
+        }}
+      >
+        <InputLabel>Department</InputLabel>
 
-          <Select
-            multiple
-            value={filters.service}
-            onChange={handleFilterService}
-            input={<OutlinedInput label="Department" />}
-            renderValue={(selected) => selected.map((value) => value).join(', ')}
-            sx={{ textTransform: 'capitalize' }}
-          >
-            {serviceOptions.map((option) => (
-              <MenuItem key={option} value={option}>
-                <Checkbox disableRipple size="small" checked={filters.service.includes(option)} />
-                {option}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Select
+          multiple
+          value={filters.service}
+          onChange={handleFilterService}
+          input={<OutlinedInput label="Department" />}
+          renderValue={(selected) => selected.map((value) => value).join(', ')}
+          sx={{ textTransform: 'capitalize' }}
+        >
+          {serviceOptions.map((option) => (
+            <MenuItem key={option} value={option}>
+              <Checkbox disableRipple size="small" checked={filters.service.includes(option)} />
+              {option}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
         <FormControl
           sx={{

@@ -144,6 +144,11 @@ export const paths = {
       new: `${ROOTS.DASHBOARD}/invoice/new`,
       details: (id) => `${ROOTS.DASHBOARD}/invoice/${id}`,
       edit: (id) => `${ROOTS.DASHBOARD}/invoice/${id}/edit`,
+      editOperation: (id) => `${ROOTS.DASHBOARD}/invoice/${id}/edit/operation`,
+      editSales: (id) => `${ROOTS.DASHBOARD}/invoice/${id}/edit/operation`,
+      editInstallation: (id) => `${ROOTS.DASHBOARD}/invoice/${id}/edit/operation`,
+      editCollection: (id) => `${ROOTS.DASHBOARD}/invoice/${id}/edit/operation`,
+      editTD: (id) => `${ROOTS.DASHBOARD}/invoice/${id}/edit/operation`,
       demo: {
         details: `${ROOTS.DASHBOARD}/invoice/${MOCK_ID}`,
         edit: `${ROOTS.DASHBOARD}/invoice/${MOCK_ID}/edit`,

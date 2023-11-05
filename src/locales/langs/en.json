@@ -69,6 +69,12 @@
   "confirm_invoices": "Confirm Invoices",
   "assign_collector": "Assign Collector",
   "assign_engineer": "Assign Engineer",
-  "tender_and_contract": "Tender And Contract"
+  "tender_and_contract": "Tender And Contract",
+  "None": "None",
+  "Acknowledged": "Acknowledged",
+  "NotAcknowledged": "NotAcknowledged",
+  "TempAcknowledged": "TempAcknowledged",
+  "Reject": "Reject",
+  "TenderAndContracts": "TenderAnd Contracts"
   
 }

@@ -11,7 +11,7 @@ import { getInvoicesById } from 'src/data-access/invoice'
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
-import InvoiceDetails from 'src/screens/components/invoice/edit/InvoiceDetails';
+import InvoiceDetails from 'src/screens/components/invoice/details/InvoiceDetails';
 
 // ----------------------------------------------------------------------
 
@@ -36,13 +36,7 @@ export default function InvoiceDetailsView({ id }) {
     fetchData();
   }, [id]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!currentInvoice) {
-    return <div>Invoice not found or an error occurred.</div>;
-  }
+  
 
   // Access the value of currentInvoice here
   console.log('currentInvoice', currentInvoice);

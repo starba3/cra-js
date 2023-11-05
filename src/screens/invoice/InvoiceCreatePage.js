@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import  InvoiceCreateView  from '../components/invoice/edit/InvoiceCreateView';
+import  InvoiceCreateView  from 'src/screens/components/invoice/create/InvoiceCreateView';
 
 // ----------------------------------------------------------------------
 
