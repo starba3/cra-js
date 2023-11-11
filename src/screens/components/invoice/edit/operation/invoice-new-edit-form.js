@@ -1,5 +1,5 @@
+import React, { useMemo, useState, useCallback } from 'react'
 import PropTypes from 'prop-types';
-import { useMemo, useState, useCallback } from 'react';
 import * as Yup from 'yup';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -7,13 +7,23 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
+import Button from "@mui/material/Button";
+
+// @mui Dialog
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { red } from "@mui/material/colors";
+import Fade from "@mui/material/Fade";
+
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 // _mock
-import { _addressBooks } from 'src/_mock';
+import { getInvoiceEditUrl, getInvoiceRedirectUrl } from 'src/data-access/invoice';
 import { _departments_withoutAll } from 'src/lists/departments';
-import {_acknowledgeStatuses } from 'src/lists/acknowledgeStatus';
 
 
 
@@ -25,10 +35,22 @@ import FormProvider from 'src/components/hook-form';
 // lists
 import { getAllCustomers, getSalesPersonList } from 'src/data-access/customers';
 //
+import { json } from 'react-router';
 import InvoiceNewEditAddress from './invoice-new-edit-address';
 import InvoiceNewEditStatusDate from './invoice-new-edit-status-date';
 
 // ----------------------------------------------------------------------
+
+const formatDate = (date) => {
+  const year = date.toLocaleString('default', {year: 'numeric'});
+  const month = date.toLocaleString('default', {
+    month: '2-digit',
+  });
+  const day = date.toLocaleString('default', {day: '2-digit'});
+
+  return [year, month, day].join('-');
+}
+
 
 export default function InvoiceNewEditForm({ currentInvoice }) {
   const router = useRouter();
@@ -36,14 +58,48 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
   const loadingSave = useBoolean();
 
   const loadingSend = useBoolean();
-
   
+
+  const[didUpdate, setDidUpdate] = useState(false);
+  const[isError, setIsError] = useState(false);
+  const[errorMessage, setErrorMessage] = useState('');
+
+  console.log(currentInvoice.department)
+
+  const departmentId = _departments_withoutAll()
+                          .map(item => item.toLocaleLowerCase())
+                          .indexOf(currentInvoice?.department.toLowerCase())
+
+  const handleClickOpen = () => {
+    setIsError(true);
+  };
+
+  const handleClose = () => {
+    setIsError(false);
+  };
+  
+  const arrays = {
+    deliveryDate: ['operation'],
+    department: ['operation', 'sales', 'tenderandcontracts'],
+    acknowledgeStatuses: ['operation', 'sales'],
+    installationStatus: ['installation'],
+    installationDate: ['installation'],
+    collectionSource: ['collection'],
+    claimStatus: ['collection'],
+    claimsDetailStatus: ['collection'],
+  }
+
 
   const NewInvoiceSchema = Yup.object().shape({
     CreateNote: Yup.string(),
     department: Yup.string(),
     acknowledgeStatus: Yup.string(),
     DeliveryDate: Yup.mixed().nullable(),
+    installationStatus: Yup.string(),
+    installationDate: Yup.mixed().nullable(),
+    collectionSource: Yup.string(),
+    claimStatus: Yup.string(),
+    claimsDetailStatus: Yup.string(),
 
   });
 
@@ -53,6 +109,11 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       department: currentInvoice?.department || '',
       acknowledgeStatus: currentInvoice?.acknowledgeStatus || '',
       DeliveryDate: currentInvoice?.DeliveryDate || new Date(),
+      installationStatus: currentInvoice?.installationStatus || '',
+      installationDate: currentInvoice?.installationDate || new Date(),
+      collectionSource: currentInvoice?.CollectionSource || '',
+      claimStatus: currentInvoice?.ClaimStatus || '',
+      claimsDetailStatus: currentInvoice?.ClaimsDetailStatus || '',
     }),
     [currentInvoice]
   );
@@ -83,26 +144,6 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     []
   );
 
-  // const onSubmit: SubmitHandler<defaultValues> = (data) => console.log(data);
-
-  const handleSaveAsDraft = handleSubmit(async (data) => {
-    console.info('Draft DATA', JSON.stringify(data));
-    loadingSave.onTrue();
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      reset();
-      loadingSave.onFalse();
-
-
-
-      router.push(paths.dashboard.invoice.root);
-      console.info('DATA', JSON.stringify(data, null, 2));
-    } catch (error) {
-      console.error(error);
-      loadingSave.onFalse();
-    }
-  });
 
   const handleCreateAndSend = handleSubmit(async (data) => {
     console.log('Data:', data)
@@ -111,75 +152,134 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       
-      const {CreateNote,department,acknowledgeStatus,DeliveryDate} = watch()
+      const {CreateNote,department,acknowledgeStatus,DeliveryDate, installationDate, installationStatus, collectionSource, claimStatus, claimsDetailStatus} = watch()
 
       const body = [
 
       ]
 
-      if(department) {
+      if(department && arrays.department.includes(currentInvoice.department.toLowerCase())) {
         body.push({
           op : "replace",
           path : "/department",
-          value : {department}
+          value : `${department}`
         })
       }
 
-      if(acknowledgeStatus) {
+      if(acknowledgeStatus && arrays.acknowledgeStatuses.includes(currentInvoice.department.toLowerCase())) {
         body.push({
           op : "replace",
           path : "/acknowledgeStatus",
-          value : {acknowledgeStatus}
+          value : `${acknowledgeStatus}`
         })
       }
 
-      if(DeliveryDate) {
+      if(DeliveryDate&& arrays.deliveryDate.includes(currentInvoice.department.toLowerCase())) {
         body.push({
           op : "replace",
           path : "/DeliveryDate",
-          value : {DeliveryDate}
+          value : `${formatDate(DeliveryDate)}`
         })
       }
 
-      if(CreateNote) {
+      if(installationDate && arrays.installationDate.includes(currentInvoice.department.toLowerCase())) {
         body.push({
-          op : "add",
-          path : "/CreateNote",
-          value : {
-            NoteText : {CreateNote}
-        }})
+          op : "replace",
+          path : "/DeliveryDate",
+          value : `${formatDate(installationDate)}`
+        })
       }
 
+      if(installationStatus && arrays.installationStatus.includes(currentInvoice.department.toLowerCase())) {
+        body.push({
+          op : "replace",
+          path : "/InstallationDate",
+          value : `${installationStatus}`
+        })
+      }
 
-      reset();
-      loadingSend.onFalse();
+      if(collectionSource && arrays.collectionSource.includes(currentInvoice.department.toLowerCase())) {
+        body.push({
+          op : "replace",
+          path : "/CollectionSource",
+          value : `${collectionSource}`
+        })
+      }
 
-      let redirectUrl = paths.dashboard.invoice.root
+      if(claimStatus && arrays.claimStatus.includes(currentInvoice.department.toLowerCase())) {
+        body.push({
+          op : "replace",
+          path : "/ClaimStatus",
+          value : `${claimStatus}`
+        })
+      }
+
+      if(claimsDetailStatus && arrays.claimsDetailStatus.includes(currentInvoice.department.toLowerCase())) {
+        body.push({
+          op : "replace",
+          path : "/ClaimsDetailStatus",
+          value : `${claimsDetailStatus}`
+        })
+      }
+
+      body.push({
+        op : "add",
+        path : "/CreateNote",
+        value : {
+          NoteText : `${CreateNote}`
+        }
+      })
+      
+       reset();
+      // loadingSend.onFalse();
+
+      const redirectUrl = getInvoiceRedirectUrl(departmentId)
       // Send create invoice request
       
-      console.log(body)
-      fetch(`https://invoicecollectionsystemapi.azurewebsites.net/api/Invoices/${currentInvoice.id}/Edit/Operation`, {
+      console.log('Body', JSON.stringify(body) )
+      const url = getInvoiceEditUrl(departmentId, currentInvoice.id)
+      console.log('Url', url )
+      fetch(url, {
         method: 'PATCH',
         headers: {
-          'Accept': 'application.json',
+          'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(body),
-        Cache: 'default'
+        Cache: 'default'  
       })
-      .then(res => res.json())
-      .then(res => {
-        console.log(res)
+      .then(response => {
+        if (!response.ok) {
+          if (response.status === 400) {
+            // If status code is 400, log the error message
+            return response.text().then(error => {
+              setErrorMessage(error);
+              setIsError(true);
+              throw new Error(`Bad Request: ${error}`);
+            });
+          } 
+          // For other error status codes, throw a generic error
+          throw new Error('Network response was not ok');
+          
+        }
+        return response.text(); // Use text() instead of json()
         
       })
-      .catch(error => {
-        console.log(error)
-        redirectUrl = ''
-      })
-
-      if(redirectUrl) {
+      .then(res => {
+        setDidUpdate(true)  
+        loadingSend.onFalse();
         router.replace(redirectUrl);
-      }
+        // Handle the non-JSON error message
+        console.log('res:', res);
+      })
+      .catch(error => {
+        console.error('Fetch Error:', error);
+      });
+      // .then(res => {
+      //   console.log(res)
+      //   setDidUpdate(true)   
+      // })
+      // .catch(error => console.log(error.message))
 
       
       // console.info('DATA', JSON.stringify(data, null, 2));
@@ -191,41 +291,62 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
   return (
     <FormProvider methods={methods} onSubmit={handleCreateAndSend} >
-      <Card>
-        <InvoiceNewEditAddress currentInvoice={currentInvoice}/>
+        <Card>
+          <InvoiceNewEditAddress currentInvoice={currentInvoice}/>
 
-        <InvoiceNewEditStatusDate 
-          filters={filters}
-          onFilters={handleFilters}
-          departmentOptions={_departments_withoutAll().map((option) => option)}
-          acknowledgeOptions={_acknowledgeStatuses().map((option) => option)}
-          />
+          <InvoiceNewEditStatusDate 
+            filters={filters}
+            onFilters={handleFilters}
+            departmentOptions={_departments_withoutAll().map((option) => option)}
+            department={currentInvoice.department}
+            />
 
-        {/* <InvoiceNewEditDetails /> */}
-      </Card>
+          {/* <InvoiceNewEditDetails /> */}
+        </Card>
 
-      <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
-        {/* <LoadingButton
-          color="inherit"
-          size="large"
-          variant="outlined"
-          loading={loadingSave.value && isSubmitting}
-          onClick={handleSaveAsDraft}
+        <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
+          {/* <LoadingButton
+            color="inherit"
+            size="large"
+            variant="outlined"
+            loading={loadingSave.value && isSubmitting}
+            onClick={handleSaveAsDraft}
+          >
+            Save as Draft
+          </LoadingButton> */}
+
+          <LoadingButton
+            size="large"
+            variant="contained"
+            loading={loadingSend.value && isSubmitting}
+            type='submit'
+            // onClick={ handleSubmit(handleCreateAndSend)} 
+          >
+            {currentInvoice ? 'Update' : 'Create'} & Send
+          </LoadingButton>
+        </Stack>
+        <Dialog
+          open={isError}
+          color="#ef5350"
+          // TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-describedby="alert-dialog-slide-description"
+          className="dialog-error"
         >
-          Save as Draft
-        </LoadingButton> */}
-
-        <LoadingButton
-          size="large"
-          variant="contained"
-          loading={loadingSend.value && isSubmitting}
-          type='submit'
-          // onClick={ handleSubmit(handleCreateAndSend)} 
-        >
-          {currentInvoice ? 'Update' : 'Create'} & Send
-        </LoadingButton>
-      </Stack>
-    </FormProvider>
+          <DialogTitle>Error</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              { String(errorMessage)} 
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Ok</Button>
+            {/* <Button onClick={handleClose}>Agree</Button> */}
+          </DialogActions>
+        </Dialog>
+      </FormProvider>
+    
   );
 }
 

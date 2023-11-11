@@ -131,7 +131,7 @@ export const mainRoutes = [
     children: [
       { 
         path: paths.departments.operation.list, 
-        element: <InvoiceListViewByDepartment id={0} /> 
+        element: <InvoiceListViewByDepartment id={-1} /> 
       },
       { 
         path: paths.departments.sales.list,

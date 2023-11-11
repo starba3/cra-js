@@ -75,6 +75,9 @@
   "NotAcknowledged": "NotAcknowledged",
   "TempAcknowledged": "TempAcknowledged",
   "Reject": "Reject",
-  "TenderAndContracts": "TenderAnd Contracts"
-  
+  "TenderAndContracts": "TenderAndContracts",
+  "NotStarted": "NotStarted",
+  "InProgress": "InProgress",
+  "Installed": "Installed",
+  "Delayed": "Delayed"
 }

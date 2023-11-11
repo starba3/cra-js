@@ -98,8 +98,8 @@ export default function InvoiceNewEditAddress({currentInvoice}) {
 
           <List>
             {currentInvoice.notes.map((note, index) => 
-              <ListItem disablePadding>
-                  <ListItemText key={index} primary={note.noteText} />
+              <ListItem key={index} disablePadding>
+                  <ListItemText  primary={note.noteText} />
               </ListItem>
             )}
           </List>

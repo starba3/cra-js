@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // @mui
 import Container from '@mui/material/Container';
+import CircularProgress from '@mui/material/CircularProgress';  
 // routes
 import { paths } from 'src/routes/paths';
 // _mock
@@ -17,7 +18,7 @@ import InvoiceDetails from 'src/screens/components/invoice/details/InvoiceDetail
 
 export default function InvoiceDetailsView({ id }) {
   const settings = useSettingsContext();
-
+  
   const [currentInvoice, setCurrentInvoice] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -36,7 +37,11 @@ export default function InvoiceDetailsView({ id }) {
     fetchData();
   }, [id]);
 
-  
+  if(loading || !currentInvoice) {
+    return (
+      <CircularProgress />
+    )
+  }
 
   // Access the value of currentInvoice here
   console.log('currentInvoice', currentInvoice);

@@ -17,8 +17,8 @@ export const _departments = () => [
 
 export const _departments_withoutAll = () => [
   Translate('Operation'),
-  Translate('Sales'),
   Translate('Installation'),
+  Translate('Sales'),
   Translate('Collection'),
   Translate('TenderAndContracts')
 ]

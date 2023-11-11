@@ -7,17 +7,17 @@ import  InvoiceEditView  from 'src/screens/components/invoice/edit/operation/Inv
 // ----------------------------------------------------------------------
 
 export default function InvoiceEditPage() {
-    const params = useParams();
+  const params = useParams();
 
-    const { id } = params;
-
+  const { id } = params;
+  console.log(params);
   return (
     <>
       <Helmet>
         <title> Edit invoice</title>
       </Helmet>
 
-      <InvoiceEditView id={Number(id)}/>
+      <InvoiceEditView id={id}/>
     </>
   );
 }

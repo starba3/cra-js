@@ -39,12 +39,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function InvoiceDetails({ invoice }) {
-  const [currentStatus, setCurrentStatus] = useState('Paid');
   const [currentInvoice, setCurrentInvoice] = useState(invoice);
 
-  const handleChangeStatus = useCallback((event) => {
-    setCurrentStatus(event.target.value);
-  }, []);
+  
 
 
 
@@ -67,7 +64,7 @@ export default function InvoiceDetails({ invoice }) {
             </TableHead>
 
             <TableBody>
-              {currentInvoice.notes.map((row, index) => (
+              {currentInvoice?.notes.map((row, index) => (
                 <TableRow key={index}>
                   <TableCell>{index + 1}</TableCell>
 
@@ -109,7 +106,7 @@ export default function InvoiceDetails({ invoice }) {
             </TableHead>
 
             <TableBody>
-              {currentInvoice.attachments.map((row, index) => (
+              {currentInvoice?.attachments.map((row, index) => (
                 <TableRow key={index}>
                   <TableCell>{index + 1}</TableCell>
 
@@ -263,188 +260,188 @@ export default function InvoiceDetails({ invoice }) {
             sx={{ width: 48, height: 48 }}
           />
 
-          {/* <Stack spacing={1} alignItems={{ xs: 'flex-start', md: 'flex-end' }}>
+           <Stack spacing={1} alignItems={{ xs: 'flex-start', md: 'flex-end' }}>
             <Label
               variant="soft"
-              color={
-                (currentStatus === 'Paid' && 'success') ||
-                (currentStatus === 'Unpaid' && 'warning') ||
-                (currentStatus === 'overdue' && 'error') ||
-                'default'
-              }
+              color= 'default'
+              // {
+              //   (currentInvoice.department === 'Paid' && 'success') ||
+              //   (currentStatus === 'Unpaid' && 'warning') ||
+              //   (currentStatus === 'overdue' && 'error') ||
+              //   'default'
+              // }
             >
-              {currentStatus}
+              {currentInvoice.department}
             </Label>
 
-            <Typography variant="h6"> invoice.invoiceNo  </Typography>
-          </Stack> */}
+          </Stack> 
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               Issue Date: 
             </Typography>
-              {currentInvoice.issueInvoiceDate }
+              {currentInvoice?.issueInvoiceDate }
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Amount
             </Typography>
-            {currentInvoice.invoiceAmount}
+            {currentInvoice?.invoiceAmount}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Currency
             </Typography>
-            {currentInvoice.currency}
+            {currentInvoice?.currency}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Customer Code
             </Typography>
-            {currentInvoice.customerCode}
+            {currentInvoice?.customerCode}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Name English
             </Typography>
-            {currentInvoice.customerNameEn}
+            {currentInvoice?.customerNameEn}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Name Arabic
             </Typography>
-            {currentInvoice.customerNameEn}
+            {currentInvoice?.customerNameEn}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               Po Number
             </Typography>
-            {currentInvoice.customerPO}
+            {currentInvoice?.customerPO}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             PO Value
             </Typography>
-            {currentInvoice.poValue}
+            {currentInvoice?.poValue}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Region
             </Typography>
-            {currentInvoice.region}
+            {currentInvoice?.region}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Contract Number
             </Typography>
-            {currentInvoice.contractNo}
+            {currentInvoice?.contractNo}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Delivery Date
             </Typography>
-            {currentInvoice.deliveryDate}
+            {currentInvoice?.deliveryDate}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Installation Date
             </Typography>
-            {currentInvoice.installationDate}
+            {currentInvoice?.installationDate}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Department
             </Typography>
-            {currentInvoice.department}
+            {currentInvoice?.department}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Installation Status
             </Typography>
-            {currentInvoice.installationStatus}
+            {currentInvoice?.installationStatus}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Days To Collected
             </Typography>
-            {currentInvoice.daysToCollected}
+            {currentInvoice?.daysToCollected}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Acknowledge Status
             </Typography>
-            {currentInvoice.acknowledgeStatus}
+            {currentInvoice?.acknowledgeStatus}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Collection Source
             </Typography>
-            {currentInvoice.collectionSource}
+            {currentInvoice?.collectionSource}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Claim Status
             </Typography>
-            {currentInvoice.claimStatus}
+            {currentInvoice?.claimStatus}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Claims Detail Status
             </Typography>
-            {currentInvoice.claimsDetailStatus}
+            {currentInvoice?.claimsDetailStatus}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Sales Confirm
             </Typography>
-            {currentInvoice.salesConfirm}
+            {currentInvoice?.salesConfirm}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Created By
             </Typography>
-            {currentInvoice.createdBy}
+            {currentInvoice?.createdBy}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Sales Taker
             </Typography>
-            {currentInvoice.salesTakerName}
+            {currentInvoice?.salesTakerName}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Collector Name
             </Typography>
-            {currentInvoice.collectorName}
+            {currentInvoice?.collectorName}
           </Stack>
 
           <Stack sx={{ typography: 'body2', mb: 3}}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Responsible Engineer Name
             </Typography>
-            {currentInvoice.responsibleEngineerName}
+            {currentInvoice?.responsibleEngineerName}
           </Stack>
         </Box>
 

@@ -370,6 +370,12 @@ export function useNavData() {
       {
         subheader: t('dashboard'),
         items: [
+          // DASHBOARD
+          {
+            title: t('app'),
+            path: paths.dashboard.root,
+            icon: ICONS.dashboard,
+          },
           // INVOICE
           {
             title: t('invoices'),

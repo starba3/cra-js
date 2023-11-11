@@ -1,3 +1,4 @@
+import * as React from 'react';
 import sumBy from 'lodash/sumBy';
 import { useState, useCallback } from 'react';
 // @mui
@@ -14,6 +15,25 @@ import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
 import TableContainer from '@mui/material/TableContainer';
+
+// @mui Dialog
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
+import Alert from '@mui/material/Alert';
+import { Icon } from '@iconify/react';
+import Collapse from '@mui/material/Collapse';
+
+import CircularProgress from '@mui/material/CircularProgress';
+
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -40,15 +60,22 @@ import {
   TableSelectedAction,
   TablePaginationCustom,
 } from 'src/components/table';
-import { _departments } from '../../../../lists/departments'
-import { _statusList } from '../../../../lists/paidStatus'
+
+// DATA ACCESS
+import { getAllInvoices, getInvoiceImportUrl } from 'src/data-access/invoice'
+
+import { _departments } from 'src/lists/departments'
+import { _statusList } from 'src/lists/paidStatus'
+import Fileupload from 'src/screens/components/dialogs/fileupload';
 //
-import InvoiceAnalytic from '../../../../sections/invoice/invoice-analytic';
+import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
+import InvoiceTableFiltersResult from 'src/sections/invoice/invoice-table-filters-result';
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
-import InvoiceTableFiltersResult from '../../../../sections/invoice/invoice-table-filters-result';
-// DATA ACCESS
-import { getAllInvoices } from '../../../../data-access/invoice'
+
+
+
+
 
 // ----------------------------------------------------------------------
 
@@ -89,6 +116,14 @@ export default function InvoiceListView() {
 
   const [filters, setFilters] = useState(defaultFilters);
 
+  const [open, setOpen] = React.useState(false);
+  const [openErrorList, setOpenErrorList] = useState(false);
+  const [errorList, setErrorList] = useState(['']);
+  const [isEmportError, setIsEmportError] = useState(false);
+  const [isUploadComplete, setIsUploadComplete] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const dateError =
     filters.startDate && filters.endDate
       ? filters.startDate.getTime() > filters.endDate.getTime()
@@ -125,34 +160,6 @@ export default function InvoiceListView() {
     );
 
   const getPercentByStatus = (status) => (getInvoiceLength(status) / tableData.length) * 100;
-
-  const TABS = [
-    { value: 'all', label: 'All', color: 'default', count: tableData.length },
-    {
-      value: 'paid',
-      label: 'Paid',
-      color: 'success',
-      count: getInvoiceLength('paid'),
-    },
-    {
-      value: 'unpaid',
-      label: 'unpaid',
-      color: 'warning',
-      count: getInvoiceLength('unpaid'),
-    },
-    // {
-    //   value: 'overdue',
-    //   label: 'Overdue',
-    //   color: 'error',
-    //   count: getInvoiceLength('overdue'),
-    // },
-    // {
-    //   value: 'draft',
-    //   label: 'Draft',
-    //   color: 'default',
-    //   count: getInvoiceLength('draft'),
-    // },
-  ];
 
   const handleFilters = useCallback(
     (name, value) => {
@@ -210,7 +217,101 @@ export default function InvoiceListView() {
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setIsUploadComplete(false);
+  };
+
+  const handleClickOpenErrorList = () => {
+    setOpenErrorList(true);
+  };
+
+  const handleCloseErrorList = () => {
+    setOpenErrorList(false);
+  };
   
+  const handleFileUpload = () => {
+
+    
+    console.log('Loading:', loading);
+
+    const formData = new FormData();
+    
+    const fileInput = document.querySelector("#file").files[0];      
+    
+    if(fileInput) {
+      setLoading(true);
+      formData.append('file', fileInput); 
+      
+      try {
+        
+        
+        // Send create invoice request
+        
+        console.log('Loading', loading)
+
+        const url = getInvoiceImportUrl()
+        console.log('Url', url )
+        fetch(url, {
+          mode: 'cors',
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+          },
+          body: formData,
+          Cache: 'default'  
+        })
+        .then(async response => {
+          await new Promise(resolve => setTimeout(resolve, 3000));
+          
+          if (!response.ok) {
+            if (response.status === 400 || response.status === 415) {
+
+              const error = await response.text();
+
+              throw new Error(`Bad Request: ${error}`);
+            } 
+            // For other error status codes, throw a generic error
+            throw new Error('Network response was not ok');
+            
+          }
+          return response.text(); // Use text() instead of json()
+          
+        })
+        .then(res => {
+          setIsEmportError(false)
+          setAlertMessage(res)
+        })
+        .catch(error => {
+          console.error('Fetch Error:', error);
+          // setErrorList(error)
+          setAlertMessage("Invalid Data, check the file and try again")
+          // setOpenErrorList(true)
+          // setOpen(false)
+
+          setIsEmportError(true)
+        })
+         
+      } catch (error) {
+        // setAlertMessage(error)
+        // setIsEmportError(true)
+      } finally {
+        setLoading(false)
+      }
+    }
+    else {
+      setIsEmportError(true)
+      setAlertMessage('No file selecetd.')
+    }
+    setIsUploadComplete(true)
+  }
+
+
 
   return (
     <>
@@ -230,15 +331,31 @@ export default function InvoiceListView() {
               name: 'List',
             },
           ]}
-          action={
-            <Button
-              component={RouterLink}
-              href={paths.dashboard.invoice.new}
-              variant="contained"
-              startIcon={<Iconify icon="mingcute:add-line" />}
+          action= {
+            <Stack
+              direction="row"
+              divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+              sx={{ py: 2 }}
             >
-              New Invoice
+              <Button
+                component={RouterLink}
+                href={paths.dashboard.invoice.new}
+                variant="contained"
+                startIcon={<Iconify icon="mingcute:add-line" />}
+              >
+                New Invoice
+              </Button>
+              <Button
+              component={RouterLink}
+              variant="contained"
+              color='primary'
+              onClick={handleClickOpen}
+              startIcon={<Iconify icon="solar:import-bold" />}
+            >
+              Import
             </Button>
+          </Stack>
+            
           }
           sx={{
             mb: { xs: 3, md: 5 },
@@ -282,57 +399,11 @@ export default function InvoiceListView() {
                 icon="solar:sort-by-time-bold-duotone"
                 color={theme.palette.warning.main}
               />
-
-              {/* <InvoiceAnalytic
-                title="Overdue"
-                total={getInvoiceLength('overdue')}
-                percent={getPercentByStatus('overdue')}
-                price={getTotalAmount('overdue')}
-                icon="solar:bell-bing-bold-duotone"
-                color={theme.palette.error.main}
-              />
-
-              <InvoiceAnalytic
-                title="Draft"
-                total={getInvoiceLength('draft')}
-                percent={getPercentByStatus('draft')}
-                price={getTotalAmount('draft')}
-                icon="solar:file-corrupted-bold-duotone"
-                color={theme.palette.text.secondary}
-              /> */}
             </Stack>
           </Scrollbar>
         </Card>
 
         <Card>
-           {/* <Tabs
-            value={filters.paidStatus}
-            onChange={handleFilterStatus}
-            sx={{
-              px: 2.5,
-              boxShadow: `inset 0 -2px 0 0 ${alpha(theme.palette.grey[500], 0.08)}`,
-            }}
-          >
-            {TABS.map((tab) => (
-              <Tab
-                key={tab.value}
-                value={tab.value}
-                label={tab.label}
-                iconPosition="end"
-                icon={
-                  <Label
-                    variant={
-                      ((tab.value === 'all' || tab.value === filters.status) && 'filled') || 'soft'
-                    }
-                    color={tab.color}
-                  >
-                    {tab.count}
-                  </Label>
-                }
-              />
-            ))}
-          </Tabs>  */}
-
           <InvoiceTableToolbar
             filters={filters}
             onFilters={handleFilters}
@@ -445,7 +516,6 @@ export default function InvoiceListView() {
             rowsPerPage={table.rowsPerPage}
             onPageChange={table.onChangePage}
             onRowsPerPageChange={table.onChangeRowsPerPage}
-            //
             dense={table.dense}
             onChangeDense={table.onChangeDense}
           />
@@ -474,7 +544,78 @@ export default function InvoiceListView() {
           </Button>
         }
       />
+
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>File upload</DialogTitle>
+        <DialogContent >
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="file"
+            label="Import file"
+            type="file"
+            fullWidth
+            variant="standard"
+            inputProps={{ accept: '.xls, .xlsx' }}
+          />
+            <Collapse in={isUploadComplete}>
+              <Alert
+                severity={isEmportError ? "error" : "success"}
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      setIsUploadComplete(false);
+                    }}
+                    
+                  >
+                    <Icon icon="ic:baseline-close" />
+
+                  </IconButton>
+                }
+                sx={{ mb: 2 }}
+              >
+                {alertMessage}
+              </Alert>
+              
+            </Collapse>
+          
+            {loading && <CircularProgress />}
+          
+        </DialogContent>
+        
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleFileUpload} >Import</Button>
+        </DialogActions>
+      </Dialog> 
+
+      {/* <Dialog open={openErrorList} onClose={handleCloseErrorList}>
+        <DialogTitle>Error List</DialogTitle>
+        <DialogContent >
+        <List sx={{ pt: 0 }}>
+          {errorList.map((error, index) => (
+            <ListItem disableGutters key={index}>
+
+                <ListItemText primary={`Row${error.rowIndex} Issue: ${error.errorMessage}` } />
+            </ListItem>
+          ))}
+        
+        </List>
+          
+        </DialogContent>
+        
+        <DialogActions>
+          <Button onClick={handleCloseErrorList}>Close</Button>
+        </DialogActions>
+      </Dialog>  */}
+
     </>
+
+    
   );
 }
 

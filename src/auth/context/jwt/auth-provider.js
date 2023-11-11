@@ -104,21 +104,39 @@ export function AuthProvider({ children }) {
       password,
     };
 
-    const response = await axios.post(endpoints.auth.login, data);
+    console.log(data);
+    const response = await axios.post("https://invoicecollectionsystemapi.azurewebsites.net/api/Account/authenticate", data);
+    // {
+    //   "id": "bb2bfe5d-b0a8-491d-b7c3-1f359ca303c4",
+    //   "userName": "omarjkf",
+    //   "email": "user@example.com",
+    //   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvbWFyamtmIiwianRpIjoiNmUwZTMzODYtZjZhMS00ODZlLTljZmItYjFiZmRlMGNhYzE2IiwiZW1haWwiOiJ1c2VyQGV4YW1wbGUuY29tIiwidWlkIjoiYmIyYmZlNWQtYjBhOC00OTFkLWI3YzMtMWYzNTljYTMwM2M0Iiwicm9sZXMiOiJBZG1pbiIsImV4cCI6MTY5MjA4MzQwOCwiaXNzIjoiSU9DSWRlbnRpdHkiLCJhdWQiOiJJT0NJZGVudGl0eVVzZXIifQ.z1PUgRMQK9BMgedHtOucLyEGoEZpwV8PZ3C-I-sjorE"
+    // }
+    
+    // const { accessToken, user } = response.data;
 
-    const { accessToken, user } = response.data;
+    // setSession(accessToken);
 
-    setSession(accessToken);
+    // dispatch({
+    //   type: 'LOGIN',
+    //   payload: {
+    //     user,
+    //   },
+    // });
 
-    dispatch({
-      type: 'LOGIN',
-      payload: {
-        user: {
-          ...user,
-          accessToken,
+      const { token, id, userName } = response.data;
+      sessionStorage.setItem(STORAGE_KEY, token);
+      sessionStorage.setItem("id", id);
+      sessionStorage.setItem("userName", userName);
+      sessionStorage.setItem("email", email);
+      dispatch({
+        type: 'LOGIN',
+        payload: {
+          user: response.data.userName,
         },
-      },
-    });
+      });
+
+
   }, []);
 
   // REGISTER

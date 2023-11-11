@@ -92,8 +92,11 @@ export default function InvoiceListView({department, salesStatus}) {
   useEffect(() => {
     const fetchData = async () => {
       try {
+
+        console.log('Department:', department)
         if (department) {
-          const result = await getInvoicesByDepartment(department);
+          const departmentId = department === -1 ? 0 : department
+          const result = await getInvoicesByDepartment(departmentId);
           setTableData(result);
         } else {
           const result = await getInvoicesBySalesConfirmation(Boolean(salesStatus));
@@ -240,7 +243,7 @@ export default function InvoiceListView({department, salesStatus}) {
     let text = '';
     if (id) {
       switch(id) {
-        case 0:
+        case -1:
           text = 'Operation';
           break;
         case 1:

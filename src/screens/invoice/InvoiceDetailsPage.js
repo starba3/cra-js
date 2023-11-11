@@ -10,14 +10,14 @@ export default function InvoiceDetailsPage() {
   const params = useParams();
 
   const { id } = params;
-  
+  console.log('Id: ', id)
   return (
     <>
       <Helmet>
         <title> Dashboard: Invoice Details</title>
       </Helmet>
 
-      <InvoiceDetailsView id={`${id}`} />
+      <InvoiceDetailsView id={id} />
     </>
   );
 }
