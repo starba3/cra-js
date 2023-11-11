@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_minimal_kit_cra_js=self.webpackChunk_minimal_kit_cra_js||[]).push([[8605],{84603:function(i,n,r){r.r(n),r.d(n,{default:function(){return e}});var a=r(6907),t=r(19208),s=r(96685),c=r(80184);function e(){var i=(0,t.UO)().id;return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a.ql,{children:(0,c.jsx)("title",{children:" Dashboard: Dashboard: Job Edit"})}),(0,c.jsx)(s.S2,{id:"".concat(i)})]})}}}]);
+//# sourceMappingURL=8605.d2526373.chunk.js.map

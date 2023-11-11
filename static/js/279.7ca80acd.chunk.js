@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_minimal_kit_cra_js=self.webpackChunk_minimal_kit_cra_js||[]).push([[279],{94428:function(n,r,e){e.r(r),e.d(r,{default:function(){return a}});var i=e(6907),s=e(54599),t=e(80184);function a(){return(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)(i.ql,{children:(0,t.jsx)("title",{children:" Dashboard: User Profile"})}),(0,t.jsx)(s.Nj,{})]})}}}]);
+//# sourceMappingURL=279.7ca80acd.chunk.js.map

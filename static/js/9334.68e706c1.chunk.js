@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_minimal_kit_cra_js=self.webpackChunk_minimal_kit_cra_js||[]).push([[9334],{9334:function(n,i,s){s.r(i),s.d(i,{default:function(){return a}});var t=s(6907),e=s(74007),r=s(80184);function a(){return(0,r.jsxs)(r.Fragment,{children:[(0,r.jsx)(t.ql,{children:(0,r.jsx)("title",{children:" Foundations: Shadows"})}),(0,r.jsx)(e.K0,{})]})}}}]);
+//# sourceMappingURL=9334.68e706c1.chunk.js.map

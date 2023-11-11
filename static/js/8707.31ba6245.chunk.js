@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_minimal_kit_cra_js=self.webpackChunk_minimal_kit_cra_js||[]).push([[8707],{28707:function(n,i,a){a.r(i);var e=a(80184);i.default=function(){return(0,e.jsx)("h1",{children:"Installation Screen"})}}}]);
+//# sourceMappingURL=8707.31ba6245.chunk.js.map

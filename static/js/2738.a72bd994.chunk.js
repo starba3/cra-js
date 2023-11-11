@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_minimal_kit_cra_js=self.webpackChunk_minimal_kit_cra_js||[]).push([[2738],{81557:function(n,e,i){i.r(e),i.d(e,{default:function(){return c}});var t=i(6907),r=i(26254),s=i(80184);function c(){return(0,s.jsxs)(s.Fragment,{children:[(0,s.jsx)(t.ql,{children:(0,s.jsx)("title",{children:" Jwt: Register"})}),(0,s.jsx)(r.$,{})]})}}}]);
+//# sourceMappingURL=2738.a72bd994.chunk.js.map

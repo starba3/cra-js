@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_minimal_kit_cra_js=self.webpackChunk_minimal_kit_cra_js||[]).push([[8285],{28285:function(e,i,n){n.r(i);var c=n(6907),r=n(80184);i.default=function(){return(0,r.jsxs)(r.Fragment,{children:[(0,r.jsx)(c.ql,{children:(0,r.jsx)("title",{children:" Pricing"})}),(0,r.jsx)("h1",{children:"Welcome Screen"})]})}}}]);
+//# sourceMappingURL=8285.1f2dcf7f.chunk.js.map

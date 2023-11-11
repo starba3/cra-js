@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/6898.db74d66a.chunk.js","mappings":"uJAEA,UAFa,WAAH,OAASA,EAAAA,EAAAA,KAAA,MAAAC,SAAI,eAAgB,C","sources":["screens/Paid.js"],"sourcesContent":["const Paid = () => <h1>Paid Screen</h1>\r\n\r\nexport default Paid"],"names":["_jsx","children"],"sourceRoot":""}

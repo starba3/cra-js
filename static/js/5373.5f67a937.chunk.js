@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_minimal_kit_cra_js=self.webpackChunk_minimal_kit_cra_js||[]).push([[5373],{39575:function(t,i,n){n.r(i),n.d(i,{default:function(){return c}});var e=n(6907),r=n(19208),s=n(4087),a=n(80184);function c(){var t=(0,r.UO)().title;return(0,a.jsxs)(a.Fragment,{children:[(0,a.jsx)(e.ql,{children:(0,a.jsx)("title",{children:" Dashboard: Post Edit"})}),(0,a.jsx)(s.mv,{title:"".concat(t)})]})}}}]);
+//# sourceMappingURL=5373.5f67a937.chunk.js.map

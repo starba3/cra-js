@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/8707.31ba6245.chunk.js","mappings":"uJAEA,UAFqB,WAAH,OAASA,EAAAA,EAAAA,KAAA,MAAAC,SAAI,uBAAwB,C","sources":["screens/Installation.js"],"sourcesContent":["const Installation = () => <h1>Installation Screen</h1>\r\n\r\nexport default Installation"],"names":["_jsx","children"],"sourceRoot":""}

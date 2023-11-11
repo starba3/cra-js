@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_minimal_kit_cra_js=self.webpackChunk_minimal_kit_cra_js||[]).push([[5515],{5903:function(i,n,e){e.r(n),e.d(n,{default:function(){return c}});var r=e(6907),t=e(55916),s=e(80184);function c(){return(0,s.jsxs)(s.Fragment,{children:[(0,s.jsx)(r.ql,{children:(0,s.jsx)("title",{children:" Amplify: Register"})}),(0,s.jsx)(t.UC,{})]})}}}]);
+//# sourceMappingURL=5515.4098ccf3.chunk.js.map

@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_minimal_kit_cra_js=self.webpackChunk_minimal_kit_cra_js||[]).push([[5692],{33569:function(n,i,r){r.r(i),r.d(i,{default:function(){return c}});var s=r(6907),t=r(55916),e=r(80184);function c(){return(0,e.jsxs)(e.Fragment,{children:[(0,e.jsx)(s.ql,{children:(0,e.jsx)("title",{children:" Amplify: Forgot Password"})}),(0,e.jsx)(t.d0,{})]})}}}]);
+//# sourceMappingURL=5692.8bf70101.chunk.js.map

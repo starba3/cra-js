@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_minimal_kit_cra_js=self.webpackChunk_minimal_kit_cra_js||[]).push([[2230],{73334:function(n,i,s){s.r(i),s.d(i,{default:function(){return c}});var t=s(6907),e=s(55645),r=s(80184);function c(){return(0,r.jsxs)(r.Fragment,{children:[(0,r.jsx)(t.ql,{children:(0,r.jsx)("title",{children:" Auth Classic: Login"})}),(0,r.jsx)(e.pf,{})]})}}}]);
+//# sourceMappingURL=2230.6d22ea52.chunk.js.map
