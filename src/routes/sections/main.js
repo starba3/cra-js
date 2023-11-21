@@ -151,15 +151,15 @@ export const mainRoutes = [
       },
       { 
         path: paths.departments.sales.confirm_invoices,
-        element: <InvoiceListViewByDepartment salesStatus={0} />  
+        element: <InvoiceListViewByDepartment salesStatus={0}  />  
       },
       { 
         path: paths.departments.installation.assign_engineer,
-        element: <InvoiceListViewByDepartment salesStatus={1} />  
+        element: <InvoiceListViewByDepartment salesStatus={1}  />  
       },
       { 
         path: paths.departments.collection.assign_collector,
-        element: <InvoiceListViewByDepartment salesStatus={2} />  
+        element: <InvoiceListViewByDepartment salesStatus={3}  />  
       },
       
     ]

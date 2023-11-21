@@ -72,9 +72,9 @@ export default function InvoiceNewEditAddress({currentInvoice}) {
 
 
 
-  const from = useBoolean();
+  // const from = useBoolean();
 
-  const to = useBoolean();
+  // const to = useBoolean();
 
   return (
       <Stack
@@ -90,19 +90,19 @@ export default function InvoiceNewEditAddress({currentInvoice}) {
         sx={{ p: 3 }}
       >
         <Stack sx={{ width: 1 }}>
-          <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
+          <Stack direction="row" alignItems="center" sx={{ mb: 1}}>
             <Typography variant="h6" sx={{ color: 'text.disabled', flexGrow: 1 }}>
-              Notes:
+              Attachment:
             </Typography>
           </Stack>
 
-          <List>
-            {currentInvoice.notes.map((note, index) => 
-              <ListItem key={index} disablePadding>
-                  <ListItemText  primary={note.noteText} />
-              </ListItem>
-            )}
-          </List>
+          <TextField
+            type="file"
+            id='file'
+            label="Upload File"
+            variant="outlined"
+            // onChange={handleFileChange}
+          />
 
         </Stack>
 

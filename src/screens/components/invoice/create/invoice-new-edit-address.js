@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress'; 
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useResponsive } from 'src/hooks/use-responsive';
@@ -18,7 +19,8 @@ import { getAllCustomers, getSalesPersonList } from 'src/data-access/customers';
 import  AddressListDialog  from '../../AddressListDialog';
 import  AddressListDialogSales  from '../../AddressListDialogSales';
 
-
+const customers = await getAllCustomers();
+const salesPeople = await getSalesPersonList();
 
 // ----------------------------------------------------------------------
 
@@ -30,8 +32,8 @@ export default function InvoiceNewEditAddress() {
     formState: { errors },
   } = useFormContext();
 
-  const customers = getAllCustomers();
-  const salesPeople = getSalesPersonList();
+  console.log('customers: ', customers);
+  console.log('salesPeople: ', salesPeople);
 
   const selectedCustomer = {};
   const selectedSalesPerson = {};

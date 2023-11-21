@@ -1,5 +1,6 @@
 import sumBy from 'lodash/sumBy';
 import React, { useState, useCallback, useEffect } from 'react';
+import { useNavigate  } from 'react-router-dom';
 // @mui
 import { useTheme, alpha } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
@@ -14,6 +15,17 @@ import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
 import TableContainer from '@mui/material/TableContainer';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+
+// @mui Dialog
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -41,41 +53,30 @@ import {
   TableSelectedAction,
   TablePaginationCustom,
 } from 'src/components/table';
+// DATA ACCESS
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
-//
+import { getUsersByRole } from 'src/data-access/users';
+// COMPONENTS
 import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
 import InvoiceTableFiltersResult from 'src/screens/components/invoice/departments/InvoiceTableFiltersResult';
 import { getInvoicesByDepartment, getInvoicesBySalesConfirmation  } from 'src/data-access/invoice'
+import { reject } from 'lodash';
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
-// DATA ACCESS
 
 // ----------------------------------------------------------------------
-
-
-const TABLE_HEAD = [
-  { id: 'invoiceNumber', label: 'Invoice Number' },
-  { id: 'issueInvoiceDate', label: 'Issue Date' },
-  { id: 'invoiceAmount', label: 'Amount' },
-  { id: 'region', label: 'Region', align: 'center' },
-  { id: 'customerNameAr', label: 'Name Arabic' , align: 'center' },
-  { id: '' },
-];
-
 const defaultFilters = {
   name: '',
   startDate: null,
   endDate: null,
 };
-
-
-
-
 // ----------------------------------------------------------------------
 
 export default function InvoiceListView({department, salesStatus}) {
   const theme = useTheme();
+
+  const navigate = useNavigate();
 
   const settings = useSettingsContext();
 
@@ -85,16 +86,22 @@ export default function InvoiceListView({department, salesStatus}) {
 
   const confirm = useBoolean();
   
-
+  const [assignedUsers, setAssignedUsers] = useState([]);
   const [tableData, setTableData] = useState([]);
 
-
   useEffect(() => {
+    let role = '';
+    if (salesStatus === 1) {
+      role = 'installation';
+    } else if (salesStatus === 3) {
+      role = 'collection';
+    } 
     const fetchData = async () => {
       try {
 
         console.log('Department:', department)
-        if (department) {
+        console.log('salesStatus:', salesStatus)
+        if (department !== undefined) {
           const departmentId = department === -1 ? 0 : department
           const result = await getInvoicesByDepartment(departmentId);
           setTableData(result);
@@ -108,12 +115,27 @@ export default function InvoiceListView({department, salesStatus}) {
       }
     };
 
+    const fetchUsers = async () => {
+      try {
+
+        console.log('Role:', role)
+        if (role) {
+          const result = await getUsersByRole(role);
+          setAssignedUsers(result);
+        } 
+        
+      } catch (error) {
+        console.error('Error fetching users list:', error);
+      }
+    };
+
     fetchData();
-  }, [department, salesStatus]);
+    fetchUsers();
+  }, [ department, salesStatus]);
 
   const [filters, setFilters] = useState(defaultFilters);
-
-  
+  const [isConfirmReport, setIsConfirmReport] = useState(department === undefined);
+  const [openAssignUser, setOpenAssignUser] = useState(false);
 
   const dateError =
     filters.startDate && filters.endDate
@@ -132,6 +154,14 @@ export default function InvoiceListView({department, salesStatus}) {
     table.page * table.rowsPerPage + table.rowsPerPage
   );
 
+  const handleClose = () => {
+    setOpenAssignUser(false)
+  }
+
+  const handleOpen = () => {
+    setOpenAssignUser(true)
+  }
+
   const denseHeight = table.dense ? 56 : 76;
 
   const canReset =
@@ -140,42 +170,13 @@ export default function InvoiceListView({department, salesStatus}) {
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
-  const getInvoiceLength = (status) => tableData.filter((item) => item.paidStatus === status).length;
-
-  const getTotalAmount = (status) =>
-    sumBy(
-      tableData.filter((item) => item.paidStatus === status),
-      'invoiceAmount'
-    );
-
-  const getPercentByStatus = (status) => (getInvoiceLength(status) / tableData.length) * 100;
-
-  const TABS = [
-    { value: 'all', label: 'All', color: 'default', count: tableData.length },
-    {
-      value: 'paid',
-      label: 'Paid',
-      color: 'success',
-      count: getInvoiceLength('paid'),
-    },
-    {
-      value: 'unpaid',
-      label: 'unpaid',
-      color: 'warning',
-      count: getInvoiceLength('unpaid'),
-    },
-    // {
-    //   value: 'overdue',
-    //   label: 'Overdue',
-    //   color: 'error',
-    //   count: getInvoiceLength('overdue'),
-    // },
-    // {
-    //   value: 'draft',
-    //   label: 'Draft',
-    //   color: 'default',
-    //   count: getInvoiceLength('draft'),
-    // },
+  const TABLE_HEAD = [
+    { id: '1', label: 'Invoice Number' },
+    { id: '2', label: 'Issue Date' },
+    { id: '3', label: 'Amount' },
+    { id: '4', label: 'Region', align: 'center' },
+    { id: '5', label: 'Name Arabic' , align: 'center' },
+    { id: '6', label: '' },
   ];
 
   const handleFilters = useCallback(
@@ -238,6 +239,11 @@ export default function InvoiceListView({department, salesStatus}) {
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
+
+  const handleConfirmInvoice = useCallback(() => {
+    setFilters(defaultFilters);
+  }, []);
+
   
   const getHeading = (id, salesConfirmStatus) => {
     let text = '';
@@ -282,6 +288,64 @@ export default function InvoiceListView({department, salesStatus}) {
   
   const heading = getHeading(department, salesStatus)
 
+  // Add Empty headers for Accept and reject
+  if(isConfirmReport && salesStatus === 0){
+    TABLE_HEAD.push({ id: '7', label: '' })
+    TABLE_HEAD.push({ id: '8', label: '' })
+  }
+
+  // Add Empty headers for Assign collecter/engineer
+  if(isConfirmReport && salesStatus > 0){
+    TABLE_HEAD.push({ id: '7', label: '' })
+  }
+
+  const handleConfirmAndReject = async (id, state) => {    
+    try {
+      console.log(`https://invoicecollectionsystemapi.azurewebsites.net/api/Invoices/${id}/${state}BySales`)
+      const redirectUrl = paths.departments.sales.confirm_invoices;
+      // Send create invoice request
+      
+      fetch(`https://invoicecollectionsystemapi.azurewebsites.net/api/Invoices/${id}/${state}BySales`, {
+        method: 'PATCH',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        // body: JSON.stringify(body),
+        Cache: 'default'
+      })
+      .then(res => {
+        // Check if the status code is 200 or 204
+        if (res.ok) {
+          // Check if the status code is 200 or 204
+          if (res.status === 204) {
+            return null; // Handle 204 No Content
+          }  if (res.status === 200) {
+            return res.json(); // Parse JSON for other successful responses
+          } 
+            throw new Error(`Unexpected status code: ${res.status}`);
+          
+        } 
+
+          throw new Error('Network response was not ok');
+      })
+      .then(res => {
+      })
+      .catch(error => {
+        console.log(error)
+        // redirectUrl = ''
+      })
+
+      // if(redirectUrl) {
+        router.replace(redirectUrl);
+      // }
+
+      
+      // console.info('DATA', JSON.stringify(data, null, 2));
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
     <>
@@ -301,16 +365,7 @@ export default function InvoiceListView({department, salesStatus}) {
               name: 'List',
             },
           ]}
-          // action={
-          //   <Button
-          //     component={RouterLink}
-          //     href={paths.dashboard.invoice.new}
-          //     variant="contained"
-          //     startIcon={<Iconify icon="mingcute:add-line" />}
-          //   >
-          //     New Invoice
-          //   </Button>
-          // }
+          
           sx={{
             mb: { xs: 3, md: 5 },
           }}
@@ -336,73 +391,13 @@ export default function InvoiceListView({department, salesStatus}) {
                 color={theme.palette.info.main}
               />
 
-               {/* <InvoiceAnalytic
-                title="Paid"
-                total={getInvoiceLength('paid')}
-                percent={getPercentByStatus('paid')}
-                price={getTotalAmount('paid')}
-                icon="solar:file-check-bold-duotone"
-                color={theme.palette.success.main}
-              />
-
-              <InvoiceAnalytic
-                title="UnPaid"
-                total={getInvoiceLength('unpaid')}
-                percent={getPercentByStatus('unpaid')}
-                price={getTotalAmount('unpaid')}
-                icon="solar:sort-by-time-bold-duotone"
-                color={theme.palette.warning.main}
-              /> */}
-
-              {/* <InvoiceAnalytic
-                title="Overdue"
-                total={getInvoiceLength('overdue')}
-                percent={getPercentByStatus('overdue')}
-                price={getTotalAmount('overdue')}
-                icon="solar:bell-bing-bold-duotone"
-                color={theme.palette.error.main}
-              />
-
-              <InvoiceAnalytic
-                title="Draft"
-                total={getInvoiceLength('draft')}
-                percent={getPercentByStatus('draft')}
-                price={getTotalAmount('draft')}
-                icon="solar:file-corrupted-bold-duotone"
-                color={theme.palette.text.secondary}
-              /> */}
+              
             </Stack>
           </Scrollbar>
         </Card>
 
         <Card>
-           {/* <Tabs
-            value={filters.paidStatus}
-            onChange={handleFilterStatus}
-            sx={{
-              px: 2.5,
-              boxShadow: `inset 0 -2px 0 0 ${alpha(theme.palette.grey[500], 0.08)}`,
-            }}
-          >
-            {TABS.map((tab) => (
-              <Tab
-                key={tab.value}
-                value={tab.value}
-                label={tab.label}
-                iconPosition="end"
-                icon={
-                  <Label
-                    variant={
-                      ((tab.value === 'all' || tab.value === filters.status) && 'filled') || 'soft'
-                    }
-                    color={tab.color}
-                  >
-                    {tab.count}
-                  </Label>
-                }
-              />
-            ))}
-          </Tabs>  */}
+           
 
           <InvoiceTableToolbar
             filters={filters}
@@ -491,11 +486,14 @@ export default function InvoiceListView({department, salesStatus}) {
                       <InvoiceTableRow
                         key={row.id}
                         row={row}
+                        salesStatus={salesStatus}
                         selected={table.selected.includes(row.id)}
                         onSelectRow={() => table.onSelectRow(row.id)}
                         onViewRow={() => handleViewRow(row.id)}
                         onEditRow={() => handleEditRow(row.id)}
                         onDeleteRow={() => handleDeleteRow(row.id)}
+                        handleOpen={() => handleOpen()}
+                        handleConfirmAndReject={(id, state) => handleConfirmAndReject(id, state)}
                       />
                     ))}
 
@@ -545,6 +543,39 @@ export default function InvoiceListView({department, salesStatus}) {
           </Button>
         }
       />
+
+      <Dialog
+        open={openAssignUser}
+        color="#ef5350"
+        // TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+
+      >
+        <DialogTitle>Assign User</DialogTitle>
+        <DialogContent>
+          <Select
+            value={assignedUsers.length ? assignedUsers[0].username : ''}
+            onChange={(newValue) => {
+              console.log(newValue.target.value);
+            }}
+            input={<OutlinedInput label="" />}
+            renderValue={(selected) => selected}
+            sx={{ textTransform: 'capitalize', fullWidth: true }}
+          >
+            {assignedUsers.map((option) => (
+              <MenuItem key={option.id} value={option.username}>
+                {option.username}
+              </MenuItem>
+            ))}
+          </Select>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleClose}>Save</Button>
+        </DialogActions>
+      </Dialog>
+
     </>
   );
 }

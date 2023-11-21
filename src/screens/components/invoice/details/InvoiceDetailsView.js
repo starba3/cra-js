@@ -43,9 +43,6 @@ export default function InvoiceDetailsView({ id }) {
     )
   }
 
-  // Access the value of currentInvoice here
-  console.log('currentInvoice', currentInvoice);
-
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs

@@ -14,7 +14,9 @@
     "clear-all": "rm -rf node_modules .next out dist build",
     "re-start": "rm -rf node_modules .next out dist build && yarn install && yarn start",
     "re-build": "rm -rf node_modules .next out dist build && yarn install && yarn build",
-    "re-build-test": "rm -rf node_modules .next out dist build && npm install && npm run build"
+    "re-build-test": "rm -rf node_modules .next out dist build && npm install && npm run build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -62,6 +64,7 @@
     "date-fns": "^2.30.0",
     "firebase": "^10.3.0",
     "framer-motion": "^10.16.2",
+    "gh-pages": "^6.0.0",
     "highlight.js": "^11.8.0",
     "history": "^5.3.0",
     "i18next": "^23.4.6",
@@ -101,6 +104,7 @@
     "yet-another-react-lightbox": "^3.12.1",
     "yup": "^1.2.0"
   },
+  "homepage": "https://starba3.github.io/cra-js",
   "devDependencies": {
     "@babel/core": "^7.22.11",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",

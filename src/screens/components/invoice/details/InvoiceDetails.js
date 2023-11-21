@@ -17,8 +17,7 @@ import TableContainer from '@mui/material/TableContainer';
 // utils
 import { fDate } from 'src/utils/format-time';
 import { fCurrency } from 'src/utils/format-number';
-// _mock
-import { INVOICE_STATUS_OPTIONS } from 'src/_mock';
+
 // components
 import Label from 'src/components/label';
 import Scrollbar from 'src/components/scrollbar';
@@ -129,52 +128,6 @@ export default function InvoiceDetails({ invoice }) {
     </>
   );
 
-  const renderTotal = (
-    <>
-      <StyledTableRow>
-        <TableCell colSpan={3} />
-        <TableCell sx={{ color: 'text.secondary' }}>
-          <Box sx={{ mt: 2 }} />
-          Subtotal
-        </TableCell>
-        <TableCell width={120} sx={{ typography: 'subtitle2' }}>
-          <Box sx={{ mt: 2 }} />
-          {/* {fCurrency(invoice.subTotal)} */}
-        </TableCell>
-      </StyledTableRow>
-
-      <StyledTableRow>
-        <TableCell colSpan={3} />
-        <TableCell sx={{ color: 'text.secondary' }}>Shipping</TableCell>
-        <TableCell width={120} sx={{ color: 'error.main', typography: 'body2' }}>
-          {/* {fCurrency(-invoice.shipping)} */}
-        </TableCell>
-      </StyledTableRow>
-
-      <StyledTableRow>
-        <TableCell colSpan={3} />
-        <TableCell sx={{ color: 'text.secondary' }}>Discount</TableCell>
-        <TableCell width={120} sx={{ color: 'error.main', typography: 'body2' }}>
-          {/* {fCurrency(-invoice.discount)} */}
-        </TableCell>
-      </StyledTableRow>
-
-      <StyledTableRow>
-        <TableCell colSpan={3} />
-        <TableCell sx={{ color: 'text.secondary' }}>Taxes</TableCell>
-        {/* <TableCell width={120}>{fCurrency(invoice.taxes)}</TableCell> */}
-      </StyledTableRow>
-
-      <StyledTableRow>
-        <TableCell colSpan={3} />
-        <TableCell sx={{ typography: 'subtitle1' }}>Total</TableCell>
-        <TableCell width={140} sx={{ typography: 'subtitle1' }}>
-          {/* {fCurrency(invoice.totalAmount)} */}
-        </TableCell>
-      </StyledTableRow>
-    </>
-  );
-
   const renderFooter = (
     <Grid container>
       <Grid xs={12} md={9} sx={{ py: 3 }}>
@@ -193,53 +146,6 @@ export default function InvoiceDetails({ invoice }) {
     </Grid>
   );
 
-  const renderList = (
-    <TableContainer sx={{ overflow: 'unset', mt: 5 }}>
-      <Scrollbar>
-        <Table sx={{ minWidth: 960 }}>
-          <TableHead>
-            <TableRow>
-              <TableCell width={40}>#</TableCell>
-
-              <TableCell sx={{ typography: 'subtitle2' }}>Description</TableCell>
-
-              <TableCell>Qty</TableCell>
-
-              <TableCell align="right">Unit price</TableCell>
-
-              <TableCell align="right">Total</TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {/* {invoice.items.map((row, index) => (
-              <TableRow key={index}>
-                <TableCell>{index + 1}</TableCell>
-
-                <TableCell>
-                  <Box sx={{ maxWidth: 560 }}>
-                    <Typography variant="subtitle2">{row.title}</Typography>
-
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-                      {row.description}
-                    </Typography>
-                  </Box>
-                </TableCell>
-
-                <TableCell>{row.quantity}</TableCell>
-
-                <TableCell align="right">{fCurrency(row.price)}</TableCell>
-
-                <TableCell align="right">{fCurrency(row.price * row.quantity)}</TableCell>
-              </TableRow>
-            ))} */}
-
-            {renderTotal}
-          </TableBody> 
-        </Table>
-      </Scrollbar>
-    </TableContainer>
-  );
 
   return (
     
@@ -264,12 +170,6 @@ export default function InvoiceDetails({ invoice }) {
             <Label
               variant="soft"
               color= 'default'
-              // {
-              //   (currentInvoice.department === 'Paid' && 'success') ||
-              //   (currentStatus === 'Unpaid' && 'warning') ||
-              //   (currentStatus === 'overdue' && 'error') ||
-              //   'default'
-              // }
             >
               {currentInvoice.department}
             </Label>

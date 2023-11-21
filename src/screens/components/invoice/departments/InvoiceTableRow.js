@@ -27,16 +27,67 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 export default function InvoiceTableRow({
   row,
   selected,
+  salesStatus,
   onSelectRow,
   onViewRow,
   onEditRow,
   onDeleteRow,
+  handleOpen,
+  handleConfirmAndReject,
 }) {
-  const { invoiceNo, issueInvoiceDate, invoiceAmount, region, customerNameEn, customerNameAr } = row;
+  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, region, customerNameEn, customerNameAr, sales } = row;
 
   const confirm = useBoolean();
 
   const popover = usePopover();
+
+  const editMenuItem = salesStatus === undefined ?
+       <MenuItem
+          onClick={() => {
+            onEditRow();
+            popover.onClose();
+          }}
+        >
+          <Iconify icon="solar:pen-bold" />
+          Edit
+        </MenuItem>
+    :  null;
+
+  const acceptButton = salesStatus === 0 ?
+    <TableCell>
+      <Button 
+        variant='contained' 
+        color='success'
+        onClick={() => handleConfirmAndReject(id, 'Confirm')}
+      >
+        Accept
+      </Button>
+    </TableCell>
+  :  null;
+
+  const rejectButton = salesStatus === 0 ?
+    <TableCell>
+      <Button 
+        variant='contained' 
+        color='error'
+        onClick={() => handleConfirmAndReject(id, 'Reject')}
+      >
+        Reject
+      </Button>
+    </TableCell>
+  :  null;
+
+  const assignUser = salesStatus > 0 ?
+    <TableCell>
+      <Button 
+        variant='contained' 
+        color='success'
+        onClick={handleOpen}
+      >
+        Assign {salesStatus === 1 ? 'Engineer' : 'Collector'}
+      </Button>
+    </TableCell>
+  :  null;
 
   return (
     <>
@@ -118,11 +169,19 @@ export default function InvoiceTableRow({
           </Label>
         </TableCell> */}
 
+        {acceptButton}
+
+        {rejectButton}
+
+        {assignUser}
+
          <TableCell align="right" sx={{ px: 1 }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>
         </TableCell> 
+
+        
       </TableRow>
 
       <CustomPopover
@@ -141,15 +200,8 @@ export default function InvoiceTableRow({
           View
         </MenuItem>
 
-        <MenuItem
-          onClick={() => {
-            onEditRow();
-            popover.onClose();
-          }}
-        >
-          <Iconify icon="solar:pen-bold" />
-          Edit
-        </MenuItem>
+        
+        {editMenuItem}
 
         {/* <Divider sx={{ borderStyle: 'dashed' }} />
 
@@ -185,6 +237,9 @@ InvoiceTableRow.propTypes = {
   onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,
   onViewRow: PropTypes.func,
+  handleOpen: PropTypes.func,
+  handleConfirmAndReject: PropTypes.func,
   row: PropTypes.object,
+  salesStatus: PropTypes.number,
   selected: PropTypes.bool,
 };

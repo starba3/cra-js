@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 // @mui
 import Container from '@mui/material/Container';
 import CircularProgress from '@mui/material/CircularProgress';
+//
+import InvoiceToolbar from 'src/sections/invoice/invoice-toolbar';
 // routes
 import { paths } from 'src/routes/paths';
 // Invoice
@@ -13,6 +15,8 @@ import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
 import InvoiceNewEditForm from 'src/screens/components/invoice/edit/operation/invoice-new-edit-form';
+
+import InvoiceDetails from 'src/screens/components/invoice/details/InvoiceDetails';
 
 // ----------------------------------------------------------------------
 
@@ -41,35 +45,11 @@ export default function InvoiceEditView({ id }) {
   }, [id]);
 
  
-
-  if (loading || !currentInvoice) {
-    return (<Container maxWidth={settings.themeStretch ? false : 'lg'}>
-    <CustomBreadcrumbs
-      heading="Edit invoice"
-      links={[
-        {
-          name: 'Dashboard',
-          href: paths.dashboard.root,
-        },
-        {
-          name: 'Invoice',
-          href: paths.dashboard.invoice.root,
-        },
-        {
-          name: 'New Invoice',
-        },
-      ]}
-      sx={{
-        mb: { xs: 3, md: 5 },
-      }}
-    />
-  </Container>);
+  if(loading || !currentInvoice) {
+    return (
+      <CircularProgress />
+    )
   }
-
-  // if ( !currentInvoice ) {
-  //   return (<CircularProgress />);
-  // }
-  // 
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -93,6 +73,7 @@ export default function InvoiceEditView({ id }) {
         }}
       />
       <InvoiceNewEditForm currentInvoice={currentInvoice} />
+      {/* <InvoiceDetails  currentInvoice = {currentInvoice} /> */}
     </Container>
   );
 }

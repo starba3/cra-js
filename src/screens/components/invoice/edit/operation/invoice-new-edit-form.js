@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useCallback } from 'react'
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -15,17 +15,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { red } from "@mui/material/colors";
-import Fade from "@mui/material/Fade";
 
 // routes
-import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 // _mock
 import { getInvoiceEditUrl, getInvoiceRedirectUrl } from 'src/data-access/invoice';
 import { _departments_withoutAll } from 'src/lists/departments';
-
-
 
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -33,9 +28,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import FormProvider from 'src/components/hook-form';
 
 // lists
-import { getAllCustomers, getSalesPersonList } from 'src/data-access/customers';
 //
-import { json } from 'react-router';
 import InvoiceNewEditAddress from './invoice-new-edit-address';
 import InvoiceNewEditStatusDate from './invoice-new-edit-status-date';
 
@@ -88,7 +81,6 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     claimStatus: ['collection'],
     claimsDetailStatus: ['collection'],
   }
-
 
   const NewInvoiceSchema = Yup.object().shape({
     CreateNote: Yup.string(),
@@ -289,12 +281,16 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     }
   });
 
+  // Components
+
+
   return (
     <FormProvider methods={methods} onSubmit={handleCreateAndSend} >
         <Card>
           <InvoiceNewEditAddress currentInvoice={currentInvoice}/>
 
           <InvoiceNewEditStatusDate 
+            currentInvoice={currentInvoice}
             filters={filters}
             onFilters={handleFilters}
             departmentOptions={_departments_withoutAll().map((option) => option)}
@@ -348,6 +344,11 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       </FormProvider>
     
   );
+
+
+
+
+
 }
 
 InvoiceNewEditForm.propTypes = {
