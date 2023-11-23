@@ -19,7 +19,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 // routes
 import { useRouter } from 'src/routes/hooks';
 // _mock
-import { getInvoiceEditUrl, getInvoiceRedirectUrl } from 'src/data-access/invoice';
+import { getInvoiceEditUrl, getInvoiceRedirectUrl, getAddAttachmentUrl } from 'src/data-access/invoice';
 import { _departments_withoutAll } from 'src/lists/departments';
 
 // hooks
@@ -138,7 +138,11 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
 
   const handleCreateAndSend = handleSubmit(async (data) => {
-    console.log('Data:', data)
+
+
+    handleFileUpload();
+    console.log('File uploaded');
+    console.log('Data:', data);
     loadingSend.onTrue(); 
     
     try {
@@ -280,6 +284,66 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       loadingSend.onFalse();
     }
   });
+
+  const handleFileUpload = () => {
+
+    
+    const formData = new FormData();
+    
+    const fileInput = document.querySelector("#file").files[0];      
+    
+    if(fileInput) {
+      formData.append('file', fileInput);
+
+      try {
+        // Send Add Attachment request
+        
+        const url = getAddAttachmentUrl(currentInvoice.id)
+        console.log('Url', url )
+        fetch(url, {
+          mode: 'cors',
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+          },
+          body: formData,
+          Cache: 'default'  
+        })
+        .then(async response => {
+          await new Promise(resolve => setTimeout(resolve, 3000));
+          
+          if (!response.ok) {
+            if (response.status === 400 || response.status === 415) {
+
+              const error = await response.text();
+
+              throw new Error(`Bad Request: ${error}`);
+            } 
+            // For other error status codes, throw a generic error
+            throw new Error('Network response was not ok');
+            
+          }
+          return response.text(); // Use text() instead of json()
+          
+        })
+        .then(res => {
+
+        })
+        .catch(error => {
+          console.error('Fetch Error:', error);
+          
+        })
+         
+      } catch (error) {
+        console.log(error)
+      } 
+    }
+    else {
+      // setIsEmportError(true)
+      // setAlertMessage('No file selecetd.')
+    }
+  }
+
 
   // Components
 

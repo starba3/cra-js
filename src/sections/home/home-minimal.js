@@ -18,7 +18,7 @@ const CARDS = [
     description: 'Consistent design makes it easy to brand your own.',
   },
   {
-    icon: ' /assets/icons/home/ic_design.svg',
+    icon: 'assets/icons/home/ic_design.svg',
     title: 'UI & UX Design',
     description:
       'The kit is built on the principles of the atomic design system. It helps you to create projects fastest and easily customized packages for your projects.',

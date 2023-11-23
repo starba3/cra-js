@@ -88,6 +88,7 @@ export default function InvoiceListView({department, salesStatus}) {
   
   const [assignedUsers, setAssignedUsers] = useState([]);
   const [tableData, setTableData] = useState([]);
+  const [dataUpdated, setDataUpdated] = useState(false);
 
   useEffect(() => {
     let role = '';
@@ -131,7 +132,7 @@ export default function InvoiceListView({department, salesStatus}) {
 
     fetchData();
     fetchUsers();
-  }, [ department, salesStatus]);
+  }, [ department, salesStatus, dataUpdated]);
 
   const [filters, setFilters] = useState(defaultFilters);
   const [isConfirmReport, setIsConfirmReport] = useState(department === undefined);
@@ -319,8 +320,10 @@ export default function InvoiceListView({department, salesStatus}) {
         if (res.ok) {
           // Check if the status code is 200 or 204
           if (res.status === 204) {
+            setDataUpdated(!dataUpdated);
             return null; // Handle 204 No Content
           }  if (res.status === 200) {
+            setDataUpdated(!dataUpdated);
             return res.json(); // Parse JSON for other successful responses
           } 
             throw new Error(`Unexpected status code: ${res.status}`);

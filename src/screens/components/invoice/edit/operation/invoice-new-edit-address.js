@@ -9,6 +9,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import TextField from '@mui/material/TextField';
+import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -101,6 +102,7 @@ export default function InvoiceNewEditAddress({currentInvoice}) {
             id='file'
             label="Upload File"
             variant="outlined"
+            inputProps={{ accept: '.xls, .xlsx' }}
             // onChange={handleFileChange}
           />
 

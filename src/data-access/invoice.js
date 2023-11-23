@@ -130,6 +130,13 @@ export function getInvoiceImportUrl() {
     
 }
 
+export function getAddAttachmentUrl(id) {
+
+    const url = `${baseUrl}/api/Attachments/${id}`
+    return url; 
+    
+}
+
 export async function getCollectionData() {
     let list = []
     await fetch(`${baseUrl}/api/CollectionData`, {
