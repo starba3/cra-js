@@ -28,6 +28,8 @@ const MaintenancePage = lazy(() => import('src/pages/maintenance'));
 const ProductListPage = lazy(() => import('src/pages/product/list'));
 const ProductDetailsPage = lazy(() => import('src/pages/product/details'));
 const ProductCheckoutPage = lazy(() => import('src/pages/product/checkout'));
+// Reports
+const AgingViewMain = lazy(() => import('src/screens/reports/aging'));
 // BLOG
 const PostListPage = lazy(() => import('src/pages/post/list'));
 const PostDetailsPage = lazy(() => import('src/pages/post/details'));
@@ -35,6 +37,8 @@ const Test = lazy(() => import ("../../screens/Test"))
 const Complete = lazy(() => import ("../../screens/Complete"))
 const Paid = lazy(() => import ("../../screens/Paid"))
 const Installation = lazy(() => import ("../../screens/Installation"))
+
+
 
 const InvoiceListViewByDepartment = lazy(() => import ("src/screens/invoice/departments/InvoiceListViewByDepartment"))
 // ----------------------------------------------------------------------
@@ -160,6 +164,10 @@ export const mainRoutes = [
       { 
         path: paths.departments.collection.assign_collector,
         element: <InvoiceListViewByDepartment salesStatus={3}  />  
+      },
+      { 
+        path: paths.reports.aging,
+        element: <AgingViewMain />  
       },
       
     ]

@@ -4,13 +4,13 @@ import { useNavigate  } from 'react-router-dom';
 // @mui
 import { useTheme, alpha } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import Tooltip from '@mui/material/Tooltip';
+import Alert from '@mui/material/Alert';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
@@ -18,6 +18,8 @@ import TableContainer from '@mui/material/TableContainer';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import { Icon } from '@iconify/react';
+import Collapse from '@mui/material/Collapse';
 
 // @mui Dialog
 import Dialog from "@mui/material/Dialog";
@@ -64,6 +66,7 @@ import { getInvoicesByDepartment, getInvoicesBySalesConfirmation  } from 'src/da
 import { reject } from 'lodash';
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
+
 
 // ----------------------------------------------------------------------
 const defaultFilters = {
@@ -122,6 +125,8 @@ export default function InvoiceListView({department, salesStatus}) {
         console.log('Role:', role)
         if (role) {
           const result = await getUsersByRole(role);
+          console.log(result);
+          setAssignUser(result.length ? result[0].username : '') ;
           setAssignedUsers(result);
         } 
         
@@ -137,6 +142,10 @@ export default function InvoiceListView({department, salesStatus}) {
   const [filters, setFilters] = useState(defaultFilters);
   const [isConfirmReport, setIsConfirmReport] = useState(department === undefined);
   const [openAssignUser, setOpenAssignUser] = useState(false);
+  const [assignUser, setAssignUser] = useState('');
+  const [invoiceId, setInvoiceId] = useState(0);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('Success');
 
   const dateError =
     filters.startDate && filters.endDate
@@ -156,11 +165,13 @@ export default function InvoiceListView({department, salesStatus}) {
   );
 
   const handleClose = () => {
-    setOpenAssignUser(false)
+    setOpenAssignUser(false);
   }
 
-  const handleOpen = () => {
-    setOpenAssignUser(true)
+  const handleOpen = (id) => {
+
+    setInvoiceId(id);
+    setOpenAssignUser(true);
   }
 
   const denseHeight = table.dense ? 56 : 76;
@@ -172,13 +183,18 @@ export default function InvoiceListView({department, salesStatus}) {
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
   const TABLE_HEAD = [
-    { id: '1', label: 'Invoice Number' },
-    { id: '2', label: 'Issue Date' },
-    { id: '3', label: 'Amount' },
-    { id: '4', label: 'Region', align: 'center' },
-    { id: '5', label: 'Name Arabic' , align: 'center' },
+    { id: 'invoiceNumber', label: 'Invoice Number' },
+    { id: 'issueInvoiceDate', label: 'Issue Date' },
+    { id: 'invoiceAmount', label: 'Amount' },
+    { id: 'region', label: 'Region', align: 'center' },
+    { id: 'customerNameAr', label: 'Name Arabic' , align: 'center' },
     { id: '6', label: '' },
   ];
+
+
+
+
+
 
   const handleFilters = useCallback(
     (name, value) => {
@@ -291,13 +307,14 @@ export default function InvoiceListView({department, salesStatus}) {
 
   // Add Empty headers for Accept and reject
   if(isConfirmReport && salesStatus === 0){
-    TABLE_HEAD.push({ id: '7', label: '' })
-    TABLE_HEAD.push({ id: '8', label: '' })
+    TABLE_HEAD.push({ id: '7', label: '' });
+    TABLE_HEAD.push({ id: '8', label: '' });
   }
 
   // Add Empty headers for Assign collecter/engineer
   if(isConfirmReport && salesStatus > 0){
-    TABLE_HEAD.push({ id: '7', label: '' })
+    TABLE_HEAD.push({ id: '7', label: '' });
+    
   }
 
   const handleConfirmAndReject = async (id, state) => {    
@@ -318,35 +335,90 @@ export default function InvoiceListView({department, salesStatus}) {
       .then(res => {
         // Check if the status code is 200 or 204
         if (res.ok) {
+          setDataUpdated(!dataUpdated);
           // Check if the status code is 200 or 204
           if (res.status === 204) {
-            setDataUpdated(!dataUpdated);
             return null; // Handle 204 No Content
           }  if (res.status === 200) {
-            setDataUpdated(!dataUpdated);
             return res.json(); // Parse JSON for other successful responses
           } 
-            throw new Error(`Unexpected status code: ${res.status}`);
+          throw new Error(`Unexpected status code: ${res.status}`);
           
         } 
-
-          throw new Error('Network response was not ok');
+        throw new Error('Network response was not ok');
       })
       .then(res => {
+        setAlertMessage('Success');
       })
       .catch(error => {
-        console.log(error)
-        // redirectUrl = ''
+        console.log(error);
+        setAlertMessage(error)
       })
 
-      // if(redirectUrl) {
-        router.replace(redirectUrl);
-      // }
 
       
       // console.info('DATA', JSON.stringify(data, null, 2));
     } catch (error) {
       console.error('Error:', error);
+    } finally {
+      setOpenAlert(true);
+    }
+  };
+
+  const handleAssignUser = async () => {    
+    try {
+      const endpoint = salesStatus === 1 ? 'setResponsibleEngineerByUsername' : 'setCollectorByUsername';
+      const url = `https://invoicecollectionsystemapi.azurewebsites.net/api/Invoices/${invoiceId}/${endpoint}`;
+      console.log(url);
+
+      const body= {
+        userName: assignUser
+      };
+
+      console.log(body);
+
+      // Send create invoice request
+      setOpenAssignUser(false);
+      
+
+      fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body),
+        Cache: 'default'
+      })
+      .then(res => {
+        // Check if the status code is 200 or 204
+        if (res.ok) {
+          // Check if the status code is 200 or 204
+          if (res.status === 204) {
+            return null; // Handle 204 No Content
+          }  if (res.status === 200) {
+            return res.json(); // Parse JSON for other successful responses
+          } 
+
+          throw new Error(`Unexpected status code: ${res.status}`);
+          
+        } 
+
+        throw new Error('Network response was not ok');
+      })
+      .then(res => {
+        setAlertMessage('Success');
+      })
+      .catch(error => {
+        console.log(error)
+        setAlertMessage(error);
+      });
+
+
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setOpenAlert(true);
     }
   };
 
@@ -423,7 +495,7 @@ export default function InvoiceListView({department, salesStatus}) {
           )}
 
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
-            <TableSelectedAction
+            {/* <TableSelectedAction
               dense={table.dense}
               numSelected={table.selected.length}
               rowCount={tableData.length}
@@ -460,7 +532,7 @@ export default function InvoiceListView({department, salesStatus}) {
                   </Tooltip>
                 </Stack>
               }
-            />
+            /> */}
 
             <Scrollbar>
               <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 800 }}>
@@ -495,7 +567,7 @@ export default function InvoiceListView({department, salesStatus}) {
                         onViewRow={() => handleViewRow(row.id)}
                         onEditRow={() => handleEditRow(row.id)}
                         onDeleteRow={() => handleDeleteRow(row.id)}
-                        handleOpen={() => handleOpen()}
+                        handleOpen={(id) => handleOpen(id)}
                         handleConfirmAndReject={(id, state) => handleConfirmAndReject(id, state)}
                       />
                     ))}
@@ -522,6 +594,29 @@ export default function InvoiceListView({department, salesStatus}) {
             onChangeDense={table.onChangeDense}
           />
         </Card>
+
+        <Box sx={{ width: '50%', flex: 1, marginLeft:'auto', marginTop:'10px' }}>
+          <Collapse in={openAlert}>
+            <Alert
+              severity={alertMessage === 'Success' ? 'success' : 'error'}
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setOpenAlert(false);
+                  }}
+                >
+                  <Icon icon="ic:round-close" />
+                </IconButton>
+              }
+              sx={{ mb: 2 }}
+            >
+              {alertMessage}
+            </Alert>
+          </Collapse>
+        </Box>
       </Container>
 
       <ConfirmDialog
@@ -561,6 +656,7 @@ export default function InvoiceListView({department, salesStatus}) {
             value={assignedUsers.length ? assignedUsers[0].username : ''}
             onChange={(newValue) => {
               console.log(newValue.target.value);
+              setAssignUser(newValue.target.value);
             }}
             input={<OutlinedInput label="" />}
             renderValue={(selected) => selected}
@@ -575,9 +671,11 @@ export default function InvoiceListView({department, salesStatus}) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button onClick={handleClose}>Save</Button>
+          <Button onClick={handleAssignUser}>Save</Button>
         </DialogActions>
       </Dialog>
+
+      
 
     </>
   );

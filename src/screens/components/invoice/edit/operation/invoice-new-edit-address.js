@@ -100,7 +100,6 @@ export default function InvoiceNewEditAddress({currentInvoice}) {
           <TextField
             type="file"
             id='file'
-            label="Upload File"
             variant="outlined"
             inputProps={{ accept: '.xls, .xlsx' }}
             // onChange={handleFileChange}

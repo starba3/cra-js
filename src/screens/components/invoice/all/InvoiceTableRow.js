@@ -31,8 +31,9 @@ export default function InvoiceTableRow({
   onViewRow,
   onEditRow,
   onDeleteRow,
+  handleOpenInquiry,
 }) {
-  const { invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameEn, paidStatus, department } = row;
+  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameEn, paidStatus, department } = row;
 
   const confirm = useBoolean();
 
@@ -87,38 +88,12 @@ export default function InvoiceTableRow({
         
         <TableCell >${invoiceAmount}</TableCell>
 
-        {/* <TableCell>
-          <ListItemText
-            primary={format(new Date(dueDate), 'dd MMM yyyy')}
-            secondary={format(new Date(dueDate), 'p')}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-            secondaryTypographyProps={{
-              mt: 0.5,
-              component: 'span',
-              typography: 'caption',
-            }}
-          />
-        </TableCell> */}
-
         <TableCell align="center" >{paidStatus}</TableCell>
 
         <TableCell align="center" >{department}</TableCell>
         {/* <TableCell>{fCurrency(department)}</TableCell> */}
 
 
-        {/* <TableCell>
-          <Label
-            variant="soft"
-            color={
-              (status === 'paid' && 'success') ||
-              (status === 'pending' && 'warning') ||
-              (status === 'overdue' && 'error') ||
-              'default'
-            }
-          >
-            {status}
-          </Label>
-        </TableCell> */}
 
         <TableCell align="right" sx={{ px: 1 }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
@@ -143,27 +118,17 @@ export default function InvoiceTableRow({
           View
         </MenuItem>
 
-        <MenuItem
-          onClick={() => {
-            onEditRow();
-            popover.onClose();
-          }}
-        >
-          <Iconify icon="solar:pen-bold" />
-          Edit
-        </MenuItem>
-
-        <Divider sx={{ borderStyle: 'dashed' }} />
+        <Divider sx={{ borderStyle: 'solid' }} />
 
         <MenuItem
           onClick={() => {
-            confirm.onTrue();
+            handleOpenInquiry();
+            // confirm.onTrue();
             popover.onClose();
           }}
-          sx={{ color: 'error.main' }}
         >
-          <Iconify icon="solar:trash-bin-trash-bold" />
-          Delete
+          <Iconify icon="bx:file" />
+          Inquiry
         </MenuItem>
       </CustomPopover>
 
@@ -187,6 +152,7 @@ InvoiceTableRow.propTypes = {
   onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,
   onViewRow: PropTypes.func,
+  handleOpenInquiry: PropTypes.func,
   row: PropTypes.object,
   selected: PropTypes.bool,
 };

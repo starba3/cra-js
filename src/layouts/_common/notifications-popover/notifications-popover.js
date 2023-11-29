@@ -1,5 +1,5 @@
 import { m } from 'framer-motion';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 // @mui
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
@@ -18,6 +18,8 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { useResponsive } from 'src/hooks/use-responsive';
 // _mock
 import { _notifications } from 'src/_mock';
+// Notifications
+import { getAllNotifications } from 'src/data-access/notifications'
 // components
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
@@ -59,9 +61,34 @@ export default function NotificationsPopover() {
     setCurrentTab(newValue);
   }, []);
 
-  const [notifications, setNotifications] = useState(_notifications);
+ 
 
-  const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
+  const [notifications, setNotifications] = useState([]);
+ 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const allNotification = await getAllNotifications();  
+        setNotifications(allNotification);
+        console.log(allNotification);
+        
+      } catch (error) {
+        console.error('Error fetching Notifications:', error);
+      }
+    };
+
+    
+    fetchData();
+  }, []);
+
+  
+  
+
+
+
+  
+
+  const totalUnRead = notifications.filter((item) => item.isRead === false).length;
 
   const handleMarkAllAsRead = () => {
     setNotifications(
@@ -164,7 +191,7 @@ export default function NotificationsPopover() {
 
         <Divider />
 
-        <Stack
+        {/* <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
@@ -176,15 +203,15 @@ export default function NotificationsPopover() {
           </IconButton>
         </Stack>
 
-        <Divider />
+        <Divider /> */}
 
         {renderList}
 
-        <Box sx={{ p: 1 }}>
+        {/* <Box sx={{ p: 1 }}>
           <Button fullWidth size="large">
             View All
           </Button>
-        </Box>
+        </Box> */}
       </Drawer>
     </>
   );

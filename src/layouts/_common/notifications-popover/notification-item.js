@@ -8,8 +8,11 @@ import Typography from '@mui/material/Typography';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
+import { useRouter } from 'src/routes/hooks';
+import { Icon } from '@iconify/react';
 // utils
 import { fToNow } from 'src/utils/format-time';
+import { paths } from 'src/routes/paths';
 // components
 import Label from 'src/components/label';
 import FileThumbnail from 'src/components/file-thumbnail';
@@ -17,6 +20,7 @@ import FileThumbnail from 'src/components/file-thumbnail';
 // ----------------------------------------------------------------------
 
 export default function NotificationItem({ notification }) {
+  const router = useRouter();
   const renderAvatar = (
     <ListItemAvatar>
       {notification.avatarUrl ? (
@@ -32,7 +36,8 @@ export default function NotificationItem({ notification }) {
             bgcolor: 'background.neutral',
           }}
         >
-          <Box
+           {/* <Box
+          
             component="img"
             src={`/assets/icons/notification/${
               (notification.type === 'order' && 'ic_order') ||
@@ -40,8 +45,10 @@ export default function NotificationItem({ notification }) {
               (notification.type === 'mail' && 'ic_mail') ||
               (notification.type === 'delivery' && 'ic_delivery')
             }.svg`}
-            sx={{ width: 24, height: 24 }}
-          />
+            sx={{ width: 24, height: 24 }} 
+            
+          />  */}
+          <Icon icon='basil:notification-outline' width="1.5em" />
         </Stack>
       )}
     </ListItemAvatar>
@@ -50,7 +57,8 @@ export default function NotificationItem({ notification }) {
   const renderText = (
     <ListItemText
       disableTypography
-      primary={reader(notification.title)}
+      onClick={() => router.replace(paths.dashboard.invoice.edit(notification.id))}
+      primary={reader(notification.message)}
       secondary={
         <Stack
           direction="row"
@@ -68,8 +76,8 @@ export default function NotificationItem({ notification }) {
             />
           }
         >
-          {fToNow(notification.createdAt)}
-          {notification.category}
+          {fToNow(notification.createdDate)}
+          {/* {notification.category} */}
         </Stack>
       }
     />
@@ -215,11 +223,11 @@ export default function NotificationItem({ notification }) {
 
       <Stack sx={{ flexGrow: 1 }}>
         {renderText}
-        {notification.type === 'friend' && friendAction}
+        {/* {notification.type === 'friend' && friendAction}
         {notification.type === 'project' && projectAction}
         {notification.type === 'file' && fileAction}
         {notification.type === 'tags' && tagsAction}
-        {notification.type === 'payment' && paymentAction}
+        {notification.type === 'payment' && paymentAction} */}
       </Stack>
     </ListItemButton>
   );

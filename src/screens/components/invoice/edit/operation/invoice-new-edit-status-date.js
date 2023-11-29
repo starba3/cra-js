@@ -3,20 +3,17 @@ import { useCallback, useState, useEffect } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import PropTypes from 'prop-types';
 // @mui
-import { styled } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Stack from '@mui/material/Stack';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import Checkbox from '@mui/material/Checkbox';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { getCollectionData } from 'src/data-access/invoice';
 import { _acknowledgeStatuses as acknowledgeOptions} from 'src/lists/acknowledgeStatus';
 import { _installationStatus } from 'src/lists/installation';
 import Card from '@mui/material/Card';
-import Button from "@mui/material/Button";
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import Divider from '@mui/material/Divider';
@@ -27,13 +24,13 @@ import TableBody from '@mui/material/TableBody';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
+import TextField from '@mui/material/TextField';
+import { RHFSelect, RHFTextField } from 'src/components/hook-form';
 // components
 import Label from 'src/components/label';
 import Scrollbar from 'src/components/scrollbar';
 
 
-// components
-import { RHFSelect, RHFTextField } from 'src/components/hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -44,6 +41,7 @@ export default function InvoiceNewEditStatusDate({
   departmentOptions,
   currentInvoice,
   }) {
+  const disabledTextColor = 'Crimson';
 
   const [loading, setLoading] = useState(true)
   const [collectionData, setCollectionData] = useState([])
@@ -106,9 +104,12 @@ export default function InvoiceNewEditStatusDate({
     
     const collectionSourceId = collectionSource.filter(option => option.value === newValue.target.value)[0].id;
     
-    setClaimsStatus(collectionData.filter(data => data.parentId === collectionSourceId))    
-    setValue('claimStatus', claimsStatus[0].value)
-    updateClaimsDetailStatus(claimsStatus[0].value)
+    setClaimsStatus(collectionData.filter(data => data.parentId === collectionSourceId))
+    if(claimsStatus.length) {
+      setValue('claimStatus', claimsStatus[0].value)
+      updateClaimsDetailStatus(claimsStatus[0].value)
+    }    
+    
     // setValue('claimsDetailStatus', claimsDetailStatus[0].value)
   }
 
@@ -134,85 +135,118 @@ export default function InvoiceNewEditStatusDate({
     
   }
 
-  
+  // Style 
+  const outlinedStyle = {
+    // border: '1px solid crimson', // Set border width and style
+    // borderRadius: '10px', // Optional: Set border radius for rounded corners
+  };
+
+  const grayBgStyle = {
+    width: '95%',
+    margin: '10px', // Add vertical padding
+    // border:`1px solid ${disabledTextColor}`, // Set border width and style ,
+    borderRadius: '10px', // Optional: Set border radius for rounded corners
+
+  };
+
+  const width80 = {
+    width: '95%',
+    margin: '10px'
+  };
+
   // Components
   const deliveryDate = arrays.deliveryDate.includes(department.toLowerCase()) ? 
   <Controller
     name="DeliveryDate"
     control={control}
+    
     render={({ field, fieldState: { error } }) => (
-      <Box sx={{ width: '80%' }}>
         <DatePicker
-          label=""
+          
+          label="Delivery Date"
           value={field.value}
           onChange={(newValue) => {
             field.onChange(newValue);
           }}
-          slotProps={{
-            flex: 1,
-            textField: {
-              fullWidth: true,
-              error: !!error,
-              helperText: error?.message,
-            },
-          }}
+          sx={grayBgStyle}
         />
-      </Box>
     )}
-  /> : currentInvoice.deliveryDate
+  /> : 
+  <TextField
+    label="Delivery Date"
+    value={currentInvoice.deliveryDate && currentInvoice.deliveryDate.substring(0, currentInvoice?.deliveryDate.indexOf('T'))  }
+    disabled
+    style={width80}      
+  />
 
   const departmentSelect = arrays.department.includes(department.toLowerCase()) ? 
     <FormControl
       sx={{
         flex: 1,
         flexShrink: 0,
-        width: { xs: 3, md: '80%' },
-        
+        width: { xs: 3 },
       }}
+      style={width80}
     >
-    <InputLabel />
+    <InputLabel  > Department </InputLabel>
     <Controller
+      
       name="department"
       control={control}
       render={({ field }) => (
-        <Select
-          value={field.value}
-          onChange={(newValue) => {
-            field.onChange(newValue);
-          }}
-          input={<OutlinedInput label="" />}
-          renderValue={(selected) => selected}
-          sx={{ textTransform: 'capitalize', fullWidth: true }}
-        >
-          {departmentOptions.map((option, index) => (
-            <MenuItem key={index} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-        </Select>
+            <Select
+            style={outlinedStyle}
+            value={field.value}
+            onChange={(newValue) => {
+              field.onChange(newValue);
+            }}
+            input={<OutlinedInput label="Department" />}
+            renderValue={(selected) => selected}
+            sx={{
+                flex: 1,
+                textField: {
+                textTransform: 'capitalize',
+                fullWidth: true,
+              }
+            }}
+          >
+            {departmentOptions.map((option, index) => (
+              <MenuItem key={index} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
       )}
     />
-    </FormControl> : currentInvoice.department
+    </FormControl> : 
+    <TextField
+      label="Department"
+      value={currentInvoice?.department }
+      style={width80}
+      disabled
+    />
 
   const acknowledgeStatus = arrays.acknowledgeStatuses.includes(department.toLowerCase()) ? 
     <FormControl
       sx={{
         flex: 1,
         flexShrink: 0,
-        width: { xs: 3, md: '80%' },
+        width: { xs: 3 },
       }}
+      style={width80}
     >
-      <InputLabel />
+      <InputLabel> Acknowledge Status </InputLabel>
       <Controller
         name="acknowledgeStatus"
         control={control}
         render={({ field }) => (
           <Select
+            style={outlinedStyle}
             value={field.value}
             onChange={(newValue) => {
               field.onChange(newValue);
             }}
-            input={<OutlinedInput label="" />}
+            input={<OutlinedInput label="Acknowledge Status" />}
             renderValue={(selected) => selected}
             sx={{ textTransform: 'capitalize', fullWidth: true }}
           >
@@ -224,16 +258,23 @@ export default function InvoiceNewEditStatusDate({
           </Select>
         )}
       />
-    </FormControl> : currentInvoice.acknowledgeStatus
+    </FormControl> :
+    <TextField
+      label="Department"
+      value={currentInvoice?.acknowledgeStatus }
+      style={width80}
+      disabled
+    /> 
 
   const installationDate = arrays.installationDate.includes(department.toLowerCase()) ? 
     <Controller
-      name="installationDate"
+      name="InstallationDate"
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <Box sx={{ width: '80%' }}>
+        <Box sx={grayBgStyle} >
           <DatePicker
-            label=""
+            
+            label="Installation Date"
             value={field.value}
             onChange={(newValue) => {
               field.onChange(newValue);
@@ -241,7 +282,7 @@ export default function InvoiceNewEditStatusDate({
             slotProps={{
               flex: 1,
               textField: {
-                fullWidth: false,
+                fullWidth: true,
                 error: !!error,
                 helperText: error?.message,
               },
@@ -250,7 +291,13 @@ export default function InvoiceNewEditStatusDate({
         </Box>
         
       )}
-    /> : currentInvoice.installationDate
+    /> : 
+    <TextField
+      label="Installation Date"
+      value={currentInvoice.installationDate}
+      style={width80}
+      disabled
+    /> 
   
     const installationStatus = arrays.installationStatus.includes(department.toLowerCase()) ? 
     <FormControl
@@ -266,6 +313,7 @@ export default function InvoiceNewEditStatusDate({
         control={control}
         render={({ field }) => (
           <Select
+            style={outlinedStyle}
             value={field.value}
             onChange={(newValue) => {
               field.onChange(newValue);
@@ -282,28 +330,37 @@ export default function InvoiceNewEditStatusDate({
           </Select>
         )}
       />
-    </FormControl> : currentInvoice.installationStatus
+    </FormControl> :
+    <TextField
+      label="Installation Status"
+      value={currentInvoice.installationStatus}
+      style={width80}
+      disabled
+    /> 
 
   const collectionSourceSelect = arrays.collectionSource.includes(department.toLowerCase()) ? 
     <FormControl
       sx={{
         flex: 1,
         flexShrink: 0,
-        width: { xs: 3, md: '80%' },
+        width: { xs: 3,  },
+        
       }}
+      style={width80}
     >
-      <InputLabel />
+      <InputLabel> Collection Source </InputLabel>
       <Controller
         name="collectionSource"
         control={control}
         render={({ field }) => (
           <Select
+            style={outlinedStyle}
             value={field.value}
             onChange={(newValue) => {
               field.onChange(newValue);
               handleCollectionSourceChange(newValue);
             }}
-            input={<OutlinedInput label="" />}
+            input={<OutlinedInput label="Collection Source" />}
             renderValue={(selected) => selected}
             sx={{ textTransform: 'capitalize', fullWidth: true }}
           >
@@ -315,28 +372,36 @@ export default function InvoiceNewEditStatusDate({
           </Select>
         )}
       />
-    </FormControl> : currentInvoice.collectionSource
+    </FormControl> : 
+    <TextField
+        label="Collection Source"
+        value={currentInvoice.collectionSource}
+        style={width80}
+        disabled
+    /> 
   
   const ClaimStatusSelect = arrays.claimStatus.includes(department.toLowerCase()) ? 
     <FormControl
       sx={{
         flex: 1,
         flexShrink: 0,
-        width: { xs: 3, md: '80%' },
+        width: { xs: 3 },
       }}
+      style={width80}
     >
-      <InputLabel />
+      <InputLabel> Claim Status </InputLabel>
       <Controller
         name="claimStatus"
         control={control}
         render={({ field }) => (
           <Select
+            style={outlinedStyle}
             value={field.value}
             onChange={(newValue) => {
               field.onChange(newValue);
               handleClaimStatusChange(newValue);
             }}
-            input={<OutlinedInput label="" />}
+            input={<OutlinedInput label="Claim Status" />}
             renderValue={(selected) => selected}
             sx={{ textTransform: 'capitalize', fullWidth: true }}
           >
@@ -348,7 +413,13 @@ export default function InvoiceNewEditStatusDate({
           </Select>
         )}
       />
-    </FormControl> : currentInvoice.claimStatus
+    </FormControl> : 
+    <TextField
+          label="Claim Status"
+          value={currentInvoice.claimStatus}
+          style={width80}
+          disabled
+      /> 
 
   const ClaimsDetailStatusSelect = arrays.claimsDetailStatus.includes(department.toLowerCase()) ? 
     <FormControl
@@ -357,20 +428,22 @@ export default function InvoiceNewEditStatusDate({
         flexShrink: 0,
         width: { xs: 3, md: '80%' },
       }}
+      style={width80}
     >
-      <InputLabel />
+      <InputLabel> Claims Detail Status </InputLabel>
       <Controller
         name="claimsDetailStatus"
         control={control}
         render={({ field }) => (
           <Select
+            style={outlinedStyle}
             value={field.value}
             onChange={(newValue) => {
               field.onChange(newValue);
               handleClaimsDetailStatusChange(newValue)
             }}
             
-            input={<OutlinedInput label="" />}
+            input={<OutlinedInput label="Claims Detail Status" />}
             renderValue={(selected) => selected}
             sx={{ textTransform: 'capitalize', fullWidth: true }}
           >
@@ -382,7 +455,12 @@ export default function InvoiceNewEditStatusDate({
           </Select>
         )}
       />
-    </FormControl> : currentInvoice.claimsDetailStatus
+    </FormControl> : <TextField
+          label="Claims Detail Status"
+          value={currentInvoice.claimsDetailStatus}
+          style={width80}
+          disabled
+        /> 
           
   const renderNotes = (
     <>
@@ -399,6 +477,10 @@ export default function InvoiceNewEditStatusDate({
 
                 <TableCell sx={{ typography: 'subtitle2' }}>Note</TableCell>
 
+                <TableCell sx={{ typography: 'subtitle2' }}>User</TableCell>
+
+                <TableCell sx={{ typography: 'subtitle2' }}>Create Date</TableCell>
+
               </TableRow>
             </TableHead>
 
@@ -413,8 +495,9 @@ export default function InvoiceNewEditStatusDate({
                     {/* </Box> */}
                   </TableCell>
 
-                  {/* <TableCell>{row.quantity}</TableCell> */}
+                  <TableCell>{row.createdBy}</TableCell>
 
+                  <TableCell>{row.createdDate.substring(0, row.createdDate.indexOf('T'))}</TableCell>
                   
                 </TableRow>
               ))} 
@@ -431,7 +514,7 @@ export default function InvoiceNewEditStatusDate({
       <Typography variant="h6" gutterBottom>
       Attachments
       </Typography>
-      <TableContainer sx={{ overflow: 'unset', mt: 5 }}>
+      <TableContainer sx={{ overflow: 'unset', mt: 5, mb: 7 }}>
         <Scrollbar>
           <Table sx={{ minWidth: 960 }}>
             <TableHead>
@@ -440,6 +523,10 @@ export default function InvoiceNewEditStatusDate({
                 <TableCell width={40}>#</TableCell>
 
                 <TableCell sx={{ typography: 'subtitle2' }}>Name</TableCell>
+
+                <TableCell sx={{ typography: 'subtitle2' }}>User</TableCell>
+
+                <TableCell sx={{ typography: 'subtitle2' }}>Create Date</TableCell>
 
               </TableRow>
             </TableHead>
@@ -455,7 +542,9 @@ export default function InvoiceNewEditStatusDate({
                     {/* </Box> */}
                   </TableCell>
 
-                  {/* <TableCell>{row.quantity}</TableCell> */}
+                  <TableCell>{row.createdBy}</TableCell>
+
+                  <TableCell>{row.createdDate.substring(0, row.createdDate.indexOf('T'))}</TableCell>
 
                   
                 </TableRow>
@@ -486,15 +575,6 @@ export default function InvoiceNewEditStatusDate({
     </Grid>
   );
 
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '& td': {
-      textAlign: 'right',
-      borderBottom: 'none',
-      paddingTop: theme.spacing(1),
-      paddingBottom: theme.spacing(1),
-    },
-  }));
-
   return (
     
     // <Stack
@@ -521,9 +601,9 @@ export default function InvoiceNewEditStatusDate({
 
     // </Stack>
 
-    <Card sx={{ pt: 5, px: 5 }}>
+    <Card sx={{ pt: 5, px: 5 }} >
       <Box
-        rowGap={5}
+        rowGap={1}
         display="grid"
         alignItems="center"
         gridTemplateColumns={{
@@ -531,13 +611,14 @@ export default function InvoiceNewEditStatusDate({
           sm: 'repeat(2, 1fr)',
         }}
       >
-        <Box
+        {/* <Box
           component="img"
           alt="logo"
           src="/logo/logo_single.svg"
           sx={{ width: 48, height: 48 }}
         />
 
+        
          <Stack spacing={1} alignItems={{ xs: 'flex-start', md: 'flex-end' }}>
           <Label
             variant="soft"
@@ -546,178 +627,135 @@ export default function InvoiceNewEditStatusDate({
             {currentInvoice?.department}
           </Label>
 
-        </Stack> 
+        </Stack>  */}
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Issue Date: 
-          </Typography>
-            {currentInvoice?.issueInvoiceDate }
-        </Stack>
+        <TextField
+          label="Issue Date"
+          value={currentInvoice ? currentInvoice?.issueInvoiceDate.substring(0, currentInvoice?.issueInvoiceDate.indexOf('T')) : '' }
+          style={width80}
+          disabled
+        />
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Amount
-          </Typography>
-          {currentInvoice?.invoiceAmount}
-        </Stack>
+        <TextField
+          label="Amount"
+          value={currentInvoice?.invoiceAmount}
+          style={width80}
+          disabled
+        />
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Currency
-          </Typography>
-          {currentInvoice?.currency}
-        </Stack>
+        <TextField
+          label="Currency"
+          value={currentInvoice?.currency}
+          style={width80}
+          disabled
+        />
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Customer Code
-          </Typography>
-          {currentInvoice?.customerCode}
-        </Stack>
+        <TextField
+          label="Customer Code"
+          value={currentInvoice?.customerCode}
+          style={width80}
+          disabled
+        />
+        
+        <TextField
+          label="Name English"
+          value={currentInvoice?.customerNameEn}
+          style={width80}
+          disabled
+        />
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Name English
-          </Typography>
-          {currentInvoice?.customerNameEn}
-        </Stack>
+        <TextField
+          label="Name Arabic"
+          value={currentInvoice?.customerNameAr}
+          style={width80}
+          disabled
+        />
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Name Arabic
-          </Typography>
-          {currentInvoice?.customerNameEn}
-        </Stack>
+        <TextField
+          label="Po Number"
+          value={currentInvoice?.customerPO}
+          style={width80}
+          disabled
+        />
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Po Number
-          </Typography>
-          {currentInvoice?.customerPO}
-        </Stack>
+        <TextField
+          label="Po Value"
+          value={currentInvoice?.poValue}
+          style={width80}
+          disabled
+        />    
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          PO Value
-          </Typography>
-          {currentInvoice?.poValue}
-        </Stack>
+        <TextField
+          label="Region"
+          value={currentInvoice?.region}
+          style={width80}
+          disabled
+        />        
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Region
-          </Typography>
-          {currentInvoice?.region}
-        </Stack>
+        <TextField
+          label="Contract Number"
+          value={currentInvoice?.contractNo}
+          style={width80}
+          disabled
+        />
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Contract Number
-          </Typography>
-          {currentInvoice?.contractNo}
-        </Stack>
+        {deliveryDate}
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Delivery Date
-          </Typography>
-          {deliveryDate}
-        </Stack>
+        {installationDate}
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Installation Date
-          </Typography>
-          {installationDate}
-        </Stack>
+        {departmentSelect}
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Department
-          </Typography>
+        {installationStatus}
 
-          {departmentSelect}
+        <TextField
+          label="Days To Collected"
+          value={currentInvoice?.daysToCollected}
+          style={width80}
+          disabled
+        />
 
-          
-        </Stack>
+        {acknowledgeStatus}
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Installation Status
-          </Typography>
-          {installationStatus}
-        </Stack>
+        {collectionSourceSelect}
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Days To Collected
-          </Typography>
-          {currentInvoice?.daysToCollected}
-        </Stack>
+        {ClaimStatusSelect}
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Acknowledge Status
-          </Typography>
-          {acknowledgeStatus}
-        </Stack>
+        {ClaimsDetailStatusSelect}
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Collection Source
-          </Typography>
-          {collectionSourceSelect}
-        </Stack>
+        <TextField
+          label="Sales Confirm"
+          value={currentInvoice?.salesConfirm}
+          style={width80}
+          disabled
+        />
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Claim Status
-          </Typography>
-          {ClaimStatusSelect}
-        </Stack>
+        <TextField
+          label="Created By"
+          value={currentInvoice?.createdBy}
+          style={width80}
+          disabled
+        />
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Claims Detail Status
-          </Typography>
-          {ClaimsDetailStatusSelect}
-        </Stack>
+        <TextField
+          label="Sales Taker"
+          value={currentInvoice?.salesTakerName}
+          style={width80}
+          disabled
+        />
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Sales Confirm
-          </Typography>
-          {currentInvoice?.salesConfirm}
-        </Stack>
+        <TextField
+          label="Collector Name"
+          value={currentInvoice?.collectorName}
+          style={width80}
+          disabled
+        />
 
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Created By
-          </Typography>
-          {currentInvoice?.createdBy}
-        </Stack>
-
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Sales Taker
-          </Typography>
-          {currentInvoice?.salesTakerName}
-        </Stack>
-
-        <Stack sx={{ typography: 'body2' }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Collector Name
-          </Typography>
-          {currentInvoice?.collectorName}
-        </Stack>
-
-        <Stack sx={{ typography: 'body2', mb: 3}}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Responsible Engineer Name
-          </Typography>
-          {currentInvoice?.responsibleEngineerName}
-        </Stack>
+        <TextField
+          label="Responsible Engineer Name"
+          value={currentInvoice?.responsibleEngineerName}
+          style={width80}
+          disabled
+        />
       </Box>
 
       {renderNotes}
@@ -725,9 +763,9 @@ export default function InvoiceNewEditStatusDate({
       <Divider sx={{ mt: 5, borderStyle: 'dashed', mb: 3}} />
       {renderAttachments}
 
-      <Divider sx={{ mt: 5, borderStyle: 'dashed' }} />
+      {/* <Divider sx={{ mt: 5, borderStyle: 'dashed' }} /> */}
 
-      {renderFooter}
+      {/* {renderFooter} */}
     </Card>
   );
 }

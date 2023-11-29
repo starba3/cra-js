@@ -1,10 +1,10 @@
 import * as React from 'react';
 import sumBy from 'lodash/sumBy';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 // @mui
 import { useTheme, alpha } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
+import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import Stack from '@mui/material/Stack';
@@ -15,6 +15,9 @@ import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
 import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 
 // @mui Dialog
 import TextField from '@mui/material/TextField';
@@ -62,7 +65,7 @@ import {
 } from 'src/components/table';
 
 // DATA ACCESS
-import { getAllInvoices, getInvoiceImportUrl } from 'src/data-access/invoice'
+import { getAllInvoices, getInvoiceImportUrl, getInvoiceInquiryData } from 'src/data-access/invoice'
 
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
@@ -123,6 +126,29 @@ export default function InvoiceListView() {
   const [isUploadComplete, setIsUploadComplete] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [openInquiry, setOpenInquiry] = useState(false);
+  const [inquiryId, setInquiryId] = useState(0);
+  const [inquiryData, setInquiryData] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+
+        if (inquiryId) {
+          const result = await getInvoiceInquiryData(inquiryId);
+          setInquiryData(result);
+        } else {
+          setInquiryData({});
+        }
+        
+      } catch (error) {
+        console.error('Error fetching invoices:', error);
+      }
+    };
+
+    
+    fetchData();
+  }, [inquiryId]);
 
   const dateError =
     filters.startDate && filters.endDate
@@ -222,6 +248,16 @@ export default function InvoiceListView() {
     setOpen(true);
   };
 
+  const handleOpenInquiry = (id) => {
+    setInquiryId(id);
+    setOpenInquiry(true);
+  }
+
+  const handleCloseInquiry = () => {
+    setInquiryId(0);
+    setOpenInquiry(false);
+  }
+
   const handleClose = () => {
     setOpen(false);
     setIsUploadComplete(false);
@@ -311,7 +347,16 @@ export default function InvoiceListView() {
     setIsUploadComplete(true)
   }
 
-
+  
+  
+  const rows = [
+    {name: 'Frozen yoghurt', calories: 200, fat: 8.0, carbs: 24, protein: 4.0},
+    {name: 'Ice cream sandwich', calories: 200, fat: 8.0, carbs: 37, protein: 4.3},
+    {name: 'Eclair', calories: 200, fat: 8.0, carbs: 24, protein: 6.0},
+    {name: 'Cupcake', calories: 200, fat: 8.0, carbs: 67, protein: 4.3},
+    {name: 'Gingerbread', calories: 200, fat: 8.0, carbs: 49, protein: 3.9}
+  ];
+  
 
   return (
     <>
@@ -425,7 +470,7 @@ export default function InvoiceListView() {
           )}
 
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
-            <TableSelectedAction
+            {/* <TableSelectedAction
               dense={table.dense}
               numSelected={table.selected.length}
               rowCount={tableData.length}
@@ -462,7 +507,7 @@ export default function InvoiceListView() {
                   </Tooltip>
                 </Stack>
               }
-            />
+            /> */}
 
             <Scrollbar>
               <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 800 }}>
@@ -496,6 +541,7 @@ export default function InvoiceListView() {
                         onViewRow={() => handleViewRow(row.id)}
                         onEditRow={() => handleEditRow(row.id)}
                         onDeleteRow={() => handleDeleteRow(row.id)}
+                        handleOpenInquiry={() => handleOpenInquiry(row.id)}
                       />
                     ))}
 
@@ -612,6 +658,65 @@ export default function InvoiceListView() {
           <Button onClick={handleCloseErrorList}>Close</Button>
         </DialogActions>
       </Dialog>  */}
+      <Dialog
+        open={openInquiry}
+        maxWidth={false}
+        color="#ef5350"
+        // TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+
+      >
+        <DialogTitle>Invoice Inquiry</DialogTitle>
+        <DialogContent>
+          <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Typography>Invoice Number</Typography>
+            <Typography>Created By</Typography>
+            <Typography>Creation Date</Typography>
+          </Stack>
+          {Object.prototype.hasOwnProperty.call(inquiryData, 'invoiceData') && 
+              <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
+                <Typography>{inquiryData.invoiceData.invoiceNO}</Typography>
+                <Typography>{inquiryData.invoiceData.createdBy}</Typography>
+                <Typography>
+                  {
+                    inquiryData.invoiceData.createdDate.substring(0, inquiryData.invoiceData.createdDate.indexOf('T'))
+                  }
+                </Typography>
+              </Stack>
+          }
+          <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
+            <TableHead>
+              <TableRow>
+                <TableCell>Property</TableCell>
+                <TableCell align="right">Old Value</TableCell>
+                <TableCell align="right">New Value</TableCell>
+                <TableCell align="right">Last Updated</TableCell>
+                <TableCell align="right">Updated By</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+            {Object.prototype.hasOwnProperty.call(inquiryData, 'logs') && inquiryData.logs.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                {row.propertyName}
+                </TableCell>
+                <TableCell align="right">{row.oldValue}</TableCell>
+                <TableCell align="right">{row.newValue}</TableCell>
+                <TableCell align="right">{row.dateModified.substring(0, row.dateModified.indexOf('T'))}</TableCell>
+                <TableCell align="right">{row.modifiedBy}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          </TableContainer>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenInquiry(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
 
     </>
 

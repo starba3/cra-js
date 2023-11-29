@@ -13,6 +13,7 @@ const ROOTS = {
   AUTH_DEMO: '/auth-demo',
   DASHBOARD: '/dashboard',
   STATUS: '/status',
+  REPORTS: '/reports',
   DEPARTMENT: {
     main: '/department',
     operation: 'operation',
@@ -233,6 +234,12 @@ export const paths = {
   // INVOICES
   invoices: {
     list: `${ROOTS.INVOICES}/list`,
+  },
+  // DEPARTMENTS
+  reports: {
+    root: ROOTS.REPORTS,
+    aging: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/aging`,
+    
   },
 
 };

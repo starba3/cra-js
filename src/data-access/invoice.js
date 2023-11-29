@@ -34,7 +34,15 @@ export async function getInvoicesByDepartment(id) {
 
 export async function getInvoicesBySalesConfirmation(confirmStatus) {
     let list = []
-    await fetch(`${baseUrl}/api/Invoices/GetInvoicesBySalesConfirmation?salesConfirm=${confirmStatus}`, {
+    let url = '';
+    if(confirmStatus) {
+        url = `${baseUrl}/api/Invoices/GetInvoicesBySalesConfirmation?salesConfirm=${confirmStatus}`;
+    }
+    else {
+        url = `${baseUrl}/api/Invoices/NotConfirmedBySales`;
+    }
+    
+    await fetch(url, {
         mode:'cors'
     })
     .then(result => result.json())
@@ -138,7 +146,7 @@ export function getAddAttachmentUrl(id) {
 }
 
 export async function getCollectionData() {
-    let list = []
+    let list = [];
     await fetch(`${baseUrl}/api/CollectionData`, {
         mode:'cors'
     })
@@ -148,5 +156,20 @@ export async function getCollectionData() {
     })
     .catch(error => console.log())
 
-    return list
+    return list;
+}
+
+export async function getInvoiceInquiryData(id) {
+    let data = {};
+    console.log(`${baseUrl}/api/Invoices/${id}/Inquiry`);
+    await fetch(`${baseUrl}/api/Invoices/${id}/Inquiry`, {
+        mode:'cors'
+    })
+    .then(result => result.json())
+    .then(invoices => {
+        data = invoices
+    })
+    .catch(error => console.log())
+
+    return data;
 }

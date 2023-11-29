@@ -91,7 +91,7 @@ export default function InvoiceDetails({ invoice }) {
       <Typography variant="h6" gutterBottom>
       Attachments
       </Typography>
-      <TableContainer sx={{ overflow: 'unset', mt: 5 }}>
+      <TableContainer sx={{ overflow: 'unset', mt: 5, mb: 7 }}>
         <Scrollbar>
           <Table sx={{ minWidth: 960 }}>
             <TableHead>
@@ -350,9 +350,6 @@ export default function InvoiceDetails({ invoice }) {
         <Divider sx={{ mt: 5, borderStyle: 'dashed', mb: 3}} />
         {renderAttachments}
 
-        <Divider sx={{ mt: 5, borderStyle: 'dashed' }} />
-
-        {renderFooter}
       </Card>
     
   );

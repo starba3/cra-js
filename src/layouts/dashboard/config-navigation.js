@@ -438,6 +438,20 @@ export function useNavData() {
               },
             ],
           },
+          // USER
+          {
+            title: 'Reports',
+            path: paths.reports.root,
+            icon: ICONS.user,
+            children: [
+              { 
+                title: 'Aging',
+                path: paths.reports.aging,
+
+              },
+              
+            ],
+          },
         ],
       },
     ],

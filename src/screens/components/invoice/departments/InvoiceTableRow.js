@@ -82,7 +82,7 @@ export default function InvoiceTableRow({
       <Button 
         variant='contained' 
         color='success'
-        onClick={handleOpen}
+        onClick={() => handleOpen(id)}
       >
         Assign {salesStatus === 1 ? 'Engineer' : 'Collector'}
       </Button>
@@ -136,38 +136,10 @@ export default function InvoiceTableRow({
         
         <TableCell >${invoiceAmount}</TableCell>
 
-        {/* <TableCell>
-          <ListItemText
-            primary={format(new Date(dueDate), 'dd MMM yyyy')}
-            secondary={format(new Date(dueDate), 'p')}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-            secondaryTypographyProps={{
-              mt: 0.5,
-              component: 'span',
-              typography: 'caption',
-            }}
-          />
-        </TableCell> */}
-
         <TableCell align="center" >{region}</TableCell>
 
         <TableCell align="center" >{customerNameAr}</TableCell>
         {/* <TableCell>{fCurrency(department)}</TableCell> */}
-
-
-        {/* <TableCell>
-          <Label
-            variant="soft"
-            color={
-              (status === 'paid' && 'success') ||
-              (status === 'pending' && 'warning') ||
-              (status === 'overdue' && 'error') ||
-              'default'
-            }
-          >
-            {status}
-          </Label>
-        </TableCell> */}
 
         {acceptButton}
 
@@ -203,18 +175,8 @@ export default function InvoiceTableRow({
         
         {editMenuItem}
 
-        {/* <Divider sx={{ borderStyle: 'dashed' }} />
+        {/* <Divider sx={{ borderStyle: 'dashed' }} /> */}
 
-        <MenuItem
-          onClick={() => {
-            confirm.onTrue();
-            popover.onClose();
-          }}
-          sx={{ color: 'error.main' }}
-        >
-          <Iconify icon="solar:trash-bin-trash-bold" />
-          Delete
-        </MenuItem> */}
       </CustomPopover>
 
       <ConfirmDialog
