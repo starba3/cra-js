@@ -438,15 +438,25 @@ export function useNavData() {
               },
             ],
           },
-          // USER
+          // Reports
           {
             title: 'Reports',
             path: paths.reports.root,
             icon: ICONS.user,
             children: [
               { 
-                title: 'Aging',
-                path: paths.reports.aging,
+                title: 'UnderCollection',
+                path: paths.reports.underCollection,
+
+              },
+              { 
+                title: 'UnvoiceForCustomers',
+                path: paths.reports.invoiceForCustomers,
+
+              },
+              { 
+                title: 'SoonToCollect',
+                path: paths.reports.soonToCollect,
 
               },
               

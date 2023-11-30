@@ -235,10 +235,13 @@ export const paths = {
   invoices: {
     list: `${ROOTS.INVOICES}/list`,
   },
-  // DEPARTMENTS
+  // Reports
   reports: {
     root: ROOTS.REPORTS,
     aging: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/aging`,
+    underCollection: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/UnderCollection`,
+    invoiceForCustomers: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/invoiceForCustomers`,
+    soonToCollect: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/soonToCollect`,
     
   },
 

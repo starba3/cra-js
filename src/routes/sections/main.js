@@ -30,6 +30,9 @@ const ProductDetailsPage = lazy(() => import('src/pages/product/details'));
 const ProductCheckoutPage = lazy(() => import('src/pages/product/checkout'));
 // Reports
 const AgingViewMain = lazy(() => import('src/screens/reports/aging'));
+const InvoiceForCustomersViewMain = lazy(() => import('src/screens/reports/invoiceForCustomers'));
+const SoonToCollectViewMain = lazy(() => import('src/screens/reports/soonToCollect'));
+const UnderCollectionViewMain = lazy(() => import('src/screens/reports/underCollection'));
 // BLOG
 const PostListPage = lazy(() => import('src/pages/post/list'));
 const PostDetailsPage = lazy(() => import('src/pages/post/details'));
@@ -168,6 +171,18 @@ export const mainRoutes = [
       { 
         path: paths.reports.aging,
         element: <AgingViewMain />  
+      },
+      { 
+        path: paths.reports.invoiceForCustomers,
+        element: <InvoiceForCustomersViewMain />  
+      },
+      { 
+        path: paths.reports.soonToCollect,
+        element: <SoonToCollectViewMain />  
+      },
+      { 
+        path: paths.reports.underCollection,
+        element: <UnderCollectionViewMain />  
       },
       
     ]

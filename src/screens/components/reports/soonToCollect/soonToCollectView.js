@@ -42,7 +42,7 @@ const defaultFilters = {
 };
 // ----------------------------------------------------------------------
 
-export default function AgingView() {
+export default function SoonToCollectView() {
   const theme = useTheme();
 
   const settings = useSettingsContext();
@@ -111,43 +111,11 @@ export default function AgingView() {
     { id: 'oneTwentyOnePlus', label: 'Over 120' },
   ];
   
-  const calculateOverallTotal = () => 
-        calculate0to30Total() +
-        calculate31to60Total() +
-        calculate61to90Total() +
-        calculate91to120Total() +
-        calculateAbove120Total(); 
-
-  const calculate0to30Total = () => tableData.reduce((acc, item) => acc + item.zeroToThirty, 0);
-  const calculate31to60Total = () => tableData.reduce((acc, item) => acc + item.thirtyOneToSixty, 0);
-  const calculate61to90Total = () => tableData.reduce((acc, item) => acc + item.sixtyOneToNinety, 0);
-  const calculate91to120Total = () => tableData.reduce((acc, item) => acc + item.ninetyOneToOneTwenty, 0);
-  const calculateAbove120Total = () => tableData.reduce((acc, item) => acc + item.oneTwentyOnePlus, 0);
-
-
-  const totalsRow = {
-    customerNameEn: 'Total',
-    customerNameAr: '',
-    zeroToThirty: calculate0to30Total(),
-    thirtyOneToSixty: calculate31to60Total(),
-    sixtyOneToNinety: calculate61to90Total(),
-    ninetyOneToOneTwenty: calculate91to120Total(),
-    oneTwentyOnePlus: calculateAbove120Total()
-  }
-  const PercentageRow = {
-    customerNameEn: 'Percentage',
-    customerNameAr: '',
-    zeroToThirty: calculate0to30Total(),
-    thirtyOneToSixty: calculate31to60Total(),
-    sixtyOneToNinety: calculate61to90Total(),
-    ninetyOneToOneTwenty: calculate91to120Total(),
-    oneTwentyOnePlus: calculateAbove120Total()
-  }
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading='Aging'
+          heading='Soon To Collect'
           links={[
             {
               name: 'Dashboard',
@@ -157,7 +125,7 @@ export default function AgingView() {
               name: 'Reports',
             },
             {
-              name: 'Aging',
+              name: 'Soon To Collect',
             },
           ]}
           
@@ -198,18 +166,6 @@ export default function AgingView() {
                         selected={table.selected.includes(row.id)}
                       />
                     ))}
-                    <TableRow
-                      key={999}
-                      row={totalsRow}
-                      selected={table.selected.includes(999)}
-                    />
-
-                    <TableRow
-                      key={999}
-                      row={PercentageRow}
-                      selected={table.selected.includes(999)}
-                      isPercentage
-                    />
 
                   <TableEmptyRows
                     height={denseHeight}
