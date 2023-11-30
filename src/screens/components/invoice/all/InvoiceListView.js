@@ -323,6 +323,7 @@ export default function InvoiceListView() {
         })
          
       } catch (error) {
+        // Empty
       } finally {
         setLoading(false)
       }
@@ -333,17 +334,6 @@ export default function InvoiceListView() {
     }
     setIsUploadComplete(true)
   }
-
-  
-  
-  const rows = [
-    {name: 'Frozen yoghurt', calories: 200, fat: 8.0, carbs: 24, protein: 4.0},
-    {name: 'Ice cream sandwich', calories: 200, fat: 8.0, carbs: 37, protein: 4.3},
-    {name: 'Eclair', calories: 200, fat: 8.0, carbs: 24, protein: 6.0},
-    {name: 'Cupcake', calories: 200, fat: 8.0, carbs: 67, protein: 4.3},
-    {name: 'Gingerbread', calories: 200, fat: 8.0, carbs: 49, protein: 3.9}
-  ];
-  
 
   return (
     <>

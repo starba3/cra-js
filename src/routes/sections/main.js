@@ -36,10 +36,7 @@ const UnderCollectionViewMain = lazy(() => import('src/screens/reports/underColl
 // BLOG
 const PostListPage = lazy(() => import('src/pages/post/list'));
 const PostDetailsPage = lazy(() => import('src/pages/post/details'));
-const Test = lazy(() => import ("../../screens/Test"))
-const Complete = lazy(() => import ("../../screens/Complete"))
-const Paid = lazy(() => import ("../../screens/Paid"))
-const Installation = lazy(() => import ("../../screens/Installation"))
+
 
 
 
@@ -107,26 +104,7 @@ export const mainRoutes = [
       { path: '403', element: <Page403 /> },
     ],
   },
-  {
-    element: (
-      <DashboardLayout>
-        <Suspense fallback={<SplashScreen />}>
-          <Outlet />
-        </Suspense>
-      </DashboardLayout>
-    ),
-    children: [
-      { path: 'test', element: <Test /> },
-      { 
-        path: 'status',
-        children: [
-          { path: 'paid', element: <Paid /> },
-          { path: 'complete', element: <Complete /> },
-          { path: 'installation', element: <Installation /> }
-        ]
-      },
-    ]
-  },
+  
   {
     element: (
       <DashboardLayout>

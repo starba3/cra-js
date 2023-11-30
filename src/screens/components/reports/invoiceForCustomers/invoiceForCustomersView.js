@@ -17,7 +17,11 @@ import { useRouter } from 'src/routes/hooks';
 import Scrollbar from 'src/components/scrollbar';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-import DonutChart from 'src/screens/components/reports/aging/Chart'
+import DonutChart from 'src/screens/components/reports/aging/Chart';
+import CustomersListDialog from 'src/screens/components/reports/invoiceForCustomers/customersListDialog';
+// Data Access
+import { getAllCustomers } from 'src/data-access/customers';
+import { getInvoiceForCustomers } from 'src/data-access/invoice';
 
 import {
   useTable,
@@ -30,8 +34,9 @@ import {
 } from 'src/components/table';
 // DATA ACCESS
 import { getAgingReport } from 'src/data-access/reports';
+import InvoiceTableToolbar from './InvoiceTableToolbar';
 // COMPONENTS
-import TableRow from './tableRow';
+import TableRowNew from './tableRow';
 
 
 // ----------------------------------------------------------------------
@@ -52,15 +57,27 @@ export default function InvoiceForCustomersView() {
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 
   const [tableData, setTableData] = useState([]);
+  const [customersList, setCustomersList] = useState([]);
+  const [selectedCustomer, setSelectedCustomer] = useState('');
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const result = await getAllCustomers();
+        setCustomersList(result);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchCustomers();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let result = await getAgingReport();
-        result = result.map((item, index) => {
-          item.id = index;
-          return item;
-      });
+        const result = await getInvoiceForCustomers(selectedCustomer);
         setTableData(result);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -68,7 +85,7 @@ export default function InvoiceForCustomersView() {
     };
 
     fetchData();
-  }, []);
+  }, [selectedCustomer]);
 
   const [filters, setFilters] = useState(defaultFilters);
 
@@ -85,10 +102,11 @@ export default function InvoiceForCustomersView() {
     dateError,
   });
 
-  const dataInPage = dataFiltered.slice(
-    table.page * table.rowsPerPage,
-    table.page * table.rowsPerPage + table.rowsPerPage
-  );
+  
+  // const dataInPage = dataFiltered.slice(
+  //   table.page * table.rowsPerPage,
+  //   table.page * table.rowsPerPage + table.rowsPerPage
+  // );
 
 
 
@@ -101,14 +119,13 @@ export default function InvoiceForCustomersView() {
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
   const TABLE_HEAD = [
-    { id: 'customerNameEn', label: 'Name English' },
-    { id: 'customerNameAr', label: 'Name Arabic' },
-    { id: 'balance', label: 'Balance' },
-    { id: 'zeroToThirty', label: '0-30 ' },
-    { id: 'thirtyOneToSixty', label: '31-60' },
-    { id: 'sixtyOneToNinety', label: '61-90' },
-    { id: 'ninetyOneToOneTwenty', label: '91-120' },
-    { id: 'oneTwentyOnePlus', label: 'Over 120' },
+    { id: 'invoiceNumber', label: 'Invoice Number' },
+    { id: 'issueInvoiceDate', label: 'Issue Date' },
+    { id: 'daysToCollected', label: 'Days To Collect' },
+    { id: 'invoiceAmount', label: 'Amount' },
+    // { id: 'customerNameAr', label: 'Name Arabic' },
+    { id: 'paidStatus', label: 'Paid Status', align: 'center' },
+    { id: 'department', label: 'Department' , align: 'center' },
   ];
 
   return (
@@ -134,6 +151,10 @@ export default function InvoiceForCustomersView() {
         />
 
         <Card sx={{ mb: 3 }}>
+          <InvoiceTableToolbar 
+            handleOpen={() => setOpen(true)}
+
+          />
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
             <Scrollbar>
               <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 800 }}>
@@ -153,14 +174,14 @@ export default function InvoiceForCustomersView() {
                 />
 
                 <TableBody>
-                  {dataFiltered
+                  {dataFiltered.length > 0 && dataFiltered
                     .slice(
                       table.page * table.rowsPerPage,
                       table.page * table.rowsPerPage + table.rowsPerPage
                     )
                     .map((row, index) => (
-                      <InvoiceTableRow
-                        key={index.id}
+                      <TableRowNew
+                        key={index}
                         row={row}
                         selected={table.selected.includes(row.id)}
                       />
@@ -191,13 +212,25 @@ export default function InvoiceForCustomersView() {
 
            
         </Card>
-        <Card  sx={{ display:'flex', justifyContent: 'center', mb: 3 }}>
+        {/* <Card  sx={{ display:'flex', justifyContent: 'center', mb: 3 }}>
           <DonutChart data={dataFiltered}/>  
-        </Card>    
+        </Card>     */}
+
+        <CustomersListDialog 
+          title='Customers'
+          list={customersList}  
+          // selectedList={selectedCustomers}
+          open={open}
+          onClose={() => setOpen(false)}  
+          selected={(id) => selectedCustomer === id}        
+          onSelect={(value) => setSelectedCustomer(value.id)}
+        />
       </Container>
+      
   );
 }
 
 function applyFilter({ inputData, comparator, filters, dateError }) {
+  console.log(inputData)
   return inputData;
 }

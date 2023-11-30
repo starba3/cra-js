@@ -1,41 +1,86 @@
 import PropTypes from 'prop-types';
+import { format } from 'date-fns';
 // @mui
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
+import IconButton from '@mui/material/IconButton';
+import Avatar from '@mui/material/Avatar';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+
+
+
 // hooks
 // utils
 // components
 
 // ----------------------------------------------------------------------
 
-export default function InvoiceTableRow({
+export default function TableRowNew({
   row,
   selected,
   isPercentage,
 }) {
-  const { customerNameEn,customerNameAr,zeroToThirty,thirtyOneToSixty,sixtyOneToNinety,ninetyOneToOneTwenty,oneTwentyOnePlus } = row;
-  const total = zeroToThirty + thirtyOneToSixty + sixtyOneToNinety + ninetyOneToOneTwenty + oneTwentyOnePlus;
+  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameEn, paidStatus, department } = row;
 
 
 
   return (
     <TableRow hover selected={selected}>
+
+        <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
+          <Avatar alt={customerNameEn} sx={{ mr: 2 }}>
+            {customerNameEn.charAt(0).toUpperCase()}
+          </Avatar>
+
+          <ListItemText
+            disableTypography
+            primary={
+              <Typography variant="body2" noWrap>
+                {customerNameEn}
+              </Typography>
+            }
+            // secondary={
+            //   <Link
+            //     noWrap
+            //     variant="body2"
+            //     onClick={onViewRow}
+            //     sx={{ color: 'text.disabled', cursor: 'pointer' }}
+            //   >
+            //     {invoiceNo}
+            //   </Link>
+            // }
+          />
+        </TableCell>
+
+        <TableCell>
+          <ListItemText
+            primary={format(new Date(issueInvoiceDate), 'dd MMM yyyy')}
+            secondary={format(new Date(issueInvoiceDate), 'p')}
+            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+            secondaryTypographyProps={{
+              mt: 0.5,
+              component: 'span',
+              typography: 'caption',
+            }}
+          />
+        </TableCell>
+
+        <TableCell >{daysToCollected}</TableCell>
         
-        <TableCell >{customerNameEn}</TableCell>
-        <TableCell >{customerNameAr}</TableCell>
-        <TableCell >{isPercentage ? '100%' : total}</TableCell>
-        <TableCell >{isPercentage ? ((zeroToThirty / total) * 100).toFixed(2) : zeroToThirty} </TableCell>
-        <TableCell >{isPercentage ? ((thirtyOneToSixty / total) * 100).toFixed(2) : thirtyOneToSixty} </TableCell>
-        <TableCell >{isPercentage ? ((sixtyOneToNinety / total) * 100).toFixed(2) : sixtyOneToNinety} </TableCell>
-        <TableCell >{isPercentage ? ((ninetyOneToOneTwenty / total) * 100).toFixed(2) : ninetyOneToOneTwenty} </TableCell>
-        <TableCell >{isPercentage ? ((oneTwentyOnePlus / total) * 100).toFixed(2) : oneTwentyOnePlus} </TableCell>
+        <TableCell >${invoiceAmount}</TableCell>
+
+        <TableCell align="center" >{paidStatus}</TableCell>
+
+        <TableCell align="center" >{department}</TableCell>
+        {/* <TableCell>{fCurrency(department)}</TableCell> */}
 
         
       </TableRow>
   );
 }
 
-InvoiceTableRow.propTypes = {
+TableRowNew.propTypes = {
   row: PropTypes.object,
   selected: PropTypes.bool,
   isPercentage: PropTypes.bool,

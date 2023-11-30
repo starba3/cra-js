@@ -173,3 +173,22 @@ export async function getInvoiceInquiryData(id) {
 
     return data;
 }
+
+export async function getInvoiceForCustomers(customers) {
+    let list = [];
+
+    if(!customers)
+        return list;
+
+    await fetch(`${baseUrl}/api/Invoices/GetInvoicesForCustomers?customerIds=${customers}`, {
+        mode:'cors'
+    })
+    .then(result => result.json())
+    .then(invoices => {
+        list = invoices;
+    })
+    .catch(error => console.log())
+
+
+    return list;
+}

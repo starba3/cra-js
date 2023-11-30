@@ -445,13 +445,18 @@ export function useNavData() {
             icon: ICONS.user,
             children: [
               { 
-                title: 'UnderCollection',
-                path: paths.reports.underCollection,
+                title: 'Aging',
+                path: paths.reports.aging,
 
               },
               { 
-                title: 'UnvoiceForCustomers',
+                title: 'Invoices for Customer',
                 path: paths.reports.invoiceForCustomers,
+
+              },
+              { 
+                title: 'UnderCollection',
+                path: paths.reports.underCollection,
 
               },
               { 

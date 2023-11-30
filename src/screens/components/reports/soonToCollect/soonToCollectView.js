@@ -31,7 +31,7 @@ import {
 // DATA ACCESS
 import { getAgingReport } from 'src/data-access/reports';
 // COMPONENTS
-import TableRow from './tableRow';
+import TableRowNew from './tableRow';
 
 
 // ----------------------------------------------------------------------
@@ -160,7 +160,7 @@ export default function SoonToCollectView() {
                       table.page * table.rowsPerPage + table.rowsPerPage
                     )
                     .map((row, index) => (
-                      <TableRow
+                      <TableRowNew
                         key={index.id}
                         row={row}
                         selected={table.selected.includes(row.id)}
