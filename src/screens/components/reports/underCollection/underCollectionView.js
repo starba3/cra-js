@@ -126,7 +126,7 @@ export default function UnderCollectionView() {
             {
               name: 'Soon To Collect',
             },
-          ]}
+          ]} 
           
           sx={{
             mb: { xs: 3, md: 5 },
