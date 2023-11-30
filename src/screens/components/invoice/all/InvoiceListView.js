@@ -2,15 +2,13 @@ import * as React from 'react';
 import sumBy from 'lodash/sumBy';
 import { useState, useCallback, useEffect } from 'react';
 // @mui
-import { useTheme, alpha } from '@mui/material/styles';
-import Tab from '@mui/material/Tab';
+import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import Tooltip from '@mui/material/Tooltip';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
@@ -22,13 +20,9 @@ import TableCell from '@mui/material/TableCell';
 // @mui Dialog
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import Alert from '@mui/material/Alert';
@@ -47,7 +41,6 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { fTimestamp } from 'src/utils/format-time';
 // _mock
 // components
-import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
@@ -60,7 +53,6 @@ import {
   TableNoData,
   TableEmptyRows,
   TableHeadCustom,
-  TableSelectedAction,
   TablePaginationCustom,
 } from 'src/components/table';
 
@@ -69,7 +61,6 @@ import { getAllInvoices, getInvoiceImportUrl, getInvoiceInquiryData } from 'src/
 
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
-import Fileupload from 'src/screens/components/dialogs/fileupload';
 //
 import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
 import InvoiceTableFiltersResult from 'src/sections/invoice/invoice-table-filters-result';
@@ -325,17 +316,13 @@ export default function InvoiceListView() {
         })
         .catch(error => {
           console.error('Fetch Error:', error);
-          // setErrorList(error)
+          
           setAlertMessage("Invalid Data, check the file and try again")
-          // setOpenErrorList(true)
-          // setOpen(false)
 
           setIsEmportError(true)
         })
          
       } catch (error) {
-        // setAlertMessage(error)
-        // setIsEmportError(true)
       } finally {
         setLoading(false)
       }
@@ -470,45 +457,6 @@ export default function InvoiceListView() {
           )}
 
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
-            {/* <TableSelectedAction
-              dense={table.dense}
-              numSelected={table.selected.length}
-              rowCount={tableData.length}
-              onSelectAllRows={(checked) =>
-                table.onSelectAllRows(
-                  checked,
-                  tableData.map((row) => row.id)
-                )
-              }
-              action={
-                <Stack direction="row">
-                  <Tooltip title="Sent">
-                    <IconButton color="primary">
-                      <Iconify icon="iconamoon:send-fill" />
-                    </IconButton>
-                  </Tooltip>
-
-                  <Tooltip title="Download">
-                    <IconButton color="primary">
-                      <Iconify icon="eva:download-outline" />
-                    </IconButton>
-                  </Tooltip>
-
-                  <Tooltip title="Print">
-                    <IconButton color="primary">
-                      <Iconify icon="solar:printer-minimalistic-bold" />
-                    </IconButton>
-                  </Tooltip>
-
-                  <Tooltip title="Delete">
-                    <IconButton color="primary" onClick={confirm.onTrue}>
-                      <Iconify icon="solar:trash-bin-trash-bold" />
-                    </IconButton>
-                  </Tooltip>
-                </Stack>
-              }
-            /> */}
-
             <Scrollbar>
               <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 800 }}>
                 <TableHeadCustom
@@ -639,25 +587,7 @@ export default function InvoiceListView() {
         </DialogActions>
       </Dialog> 
 
-      {/* <Dialog open={openErrorList} onClose={handleCloseErrorList}>
-        <DialogTitle>Error List</DialogTitle>
-        <DialogContent >
-        <List sx={{ pt: 0 }}>
-          {errorList.map((error, index) => (
-            <ListItem disableGutters key={index}>
 
-                <ListItemText primary={`Row${error.rowIndex} Issue: ${error.errorMessage}` } />
-            </ListItem>
-          ))}
-        
-        </List>
-          
-        </DialogContent>
-        
-        <DialogActions>
-          <Button onClick={handleCloseErrorList}>Close</Button>
-        </DialogActions>
-      </Dialog>  */}
       <Dialog
         open={openInquiry}
         maxWidth={false}

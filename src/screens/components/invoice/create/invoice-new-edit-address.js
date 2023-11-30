@@ -16,8 +16,8 @@ import Iconify from 'src/components/iconify';
 // lists
 import { getAllCustomers, getSalesPersonList } from 'src/data-access/customers';
 //
-import  AddressListDialog  from '../../AddressListDialog';
-import  AddressListDialogSales  from '../../AddressListDialogSales';
+import  AddressListDialog  from '../../dialogs/AddressListDialog';
+import  AddressListDialogSales  from '../../dialogs/AddressListDialogSales';
 
 const customers = await getAllCustomers();
 const salesPeople = await getSalesPersonList();
@@ -57,11 +57,6 @@ export default function InvoiceNewEditAddress() {
 
   const { customerId, customerCode, salesPerson, customerObj, salesPersonObj } = values;
 
-  // setValue('salesPerson', selectedSalesPerson.username)
-  // setValue('customerId', selectedCustomer.id)
-  // setValue('customerCode', selectedCustomer.customerCode)
-
-  
   console.log('values', values)
 
 

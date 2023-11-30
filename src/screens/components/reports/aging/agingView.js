@@ -1,6 +1,5 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 // @mui
-import { useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import Container from '@mui/material/Container';
@@ -9,7 +8,6 @@ import TableContainer from '@mui/material/TableContainer';
 
 // routes
 import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
 // hooks
 // utils
 // _mock
@@ -43,11 +41,8 @@ const defaultFilters = {
 // ----------------------------------------------------------------------
 
 export default function AgingView() {
-  const theme = useTheme();
 
   const settings = useSettingsContext();
-
-  const router = useRouter();
 
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 

@@ -2,7 +2,6 @@ import { useFormContext, Controller } from 'react-hook-form';
 // @mui
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Stack from '@mui/material/Stack';
-import MenuItem from '@mui/material/MenuItem';
 // components
 import { RHFSelect, RHFTextField } from 'src/components/hook-form';
 
@@ -119,17 +118,6 @@ export default function InvoiceNewEditStatusDate() {
       </Stack>
 
     </>
-
-    // invoiceNumber: currentInvoice?.invoiceNumber,
-    // createDate: currentInvoice?.createDate || new Date(),
-    // invoiceAmount: currentInvoice?.invoiceAmount,
-    // currency: currentInvoice?.currency,
-    // customer: currentInvoice?.customer || customers[0],
-    // region: currentInvoice?.region,
-    // customerPO: currentInvoice?.customerPO ,
-    // poValue: currentInvoice?.poValue,
-    // contractNo: currentInvoice?.contractNo,
-    // salesPerson: currentInvoice?.salesPerson || salesPeople[0],
 
     
   );

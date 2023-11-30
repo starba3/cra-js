@@ -20,10 +20,6 @@ import { useBoolean } from 'src/hooks/use-boolean';
 // components
 import FormProvider from 'src/components/hook-form';
 
-// lists
-import { getAllCustomers, getSalesPersonList } from 'src/data-access/customers';
-//
-import InvoiceNewEditDetails from './invoice-new-edit-details';
 import InvoiceNewEditAddress from './invoice-new-edit-address';
 import InvoiceNewEditStatusDate from './invoice-new-edit-status-date';
 
@@ -179,22 +175,13 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       </Card>
 
       <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
-        {/* <LoadingButton
-          color="inherit"
-          size="large"
-          variant="outlined"
-          loading={loadingSave.value && isSubmitting}
-          onClick={handleSaveAsDraft}
-        >
-          Save as Draft
-        </LoadingButton> */}
+        
 
         <LoadingButton
           size="large"
           variant="contained"
           loading={loadingSend.value && isSubmitting}
           type='submit'
-          // onClick={ handleSubmit(handleCreateAndSend)} 
         >
           {currentInvoice ? 'Update' : 'Create'} & Send
         </LoadingButton>

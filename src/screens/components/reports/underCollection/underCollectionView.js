@@ -43,11 +43,8 @@ const defaultFilters = {
 // ----------------------------------------------------------------------
 
 export default function UnderCollectionView() {
-  const theme = useTheme();
 
   const settings = useSettingsContext();
-
-  const router = useRouter();
 
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 
