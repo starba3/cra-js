@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 // @mui
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -15,32 +15,20 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 // utils
+import { fDate } from 'src/utils/format-time';
+import { fCurrency } from 'src/utils/format-number';
 
 // components
 import Label from 'src/components/label';
 import Scrollbar from 'src/components/scrollbar';
 //
-
-// ----------------------------------------------------------------------
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '& td': {
-    textAlign: 'right',
-    borderBottom: 'none',
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
-}));
+import InvoiceToolbar from 'src/sections/invoice/invoice-toolbar';
 
 // ----------------------------------------------------------------------
 
 export default function InvoiceDetails({ invoice }) {
   const [currentInvoice, setCurrentInvoice] = useState(invoice);
-
   
-
-
-
   const renderNotes = (
     <>
       <Typography variant="h6" gutterBottom>
@@ -65,8 +53,12 @@ export default function InvoiceDetails({ invoice }) {
                   <TableCell>{index + 1}</TableCell>
 
                   <TableCell>
+                    {/* <Box sx={{ maxWidth: 560 }}> */}
                       <Typography variant="subtitle2">{row.noteText}</Typography>
+                    {/* </Box> */}
                   </TableCell>
+
+                  {/* <TableCell>{row.quantity}</TableCell> */}
 
                   
                 </TableRow>
@@ -103,9 +95,12 @@ export default function InvoiceDetails({ invoice }) {
                   <TableCell>{index + 1}</TableCell>
 
                   <TableCell>
+                    {/* <Box sx={{ maxWidth: 560 }}> */}
                       <Typography variant="subtitle2"> <a target='_blank' rel="noreferrer" href={row.attachmentPath}>{row.fileName}</a> </Typography>
+                    {/* </Box> */}
                   </TableCell>
 
+                  {/* <TableCell>{row.quantity}</TableCell> */}
 
                   
                 </TableRow>
