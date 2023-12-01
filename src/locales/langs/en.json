@@ -1,6 +1,6 @@
 {
   "all": "All",
-  "app": "app",
+  "app": "Dashboard",
   "job": "job",
   "user": "user",
   "list": "list",
@@ -65,7 +65,7 @@
   "sales": "Sales",
   "installation" : "Installation",
   "collection": "Collection",
-  "dashboard": "Dashboard",
+  "dashboard": "Sections",
   "confirm_invoices": "Confirm Invoices",
   "assign_collector": "Assign Collector",
   "assign_engineer": "Assign Engineer",
@@ -117,6 +117,23 @@
 
   "reason": "Reason",
   "totalAmount": "Total Amount",
+
+  "reports" : "Reports",
+  "agingReport": "Aging",
+  "invoicesForCustomer": "Invoices By Customer",
+  "gmReport": "GM ",
+  "gmReasonReport": "GM Reason",
+
+  "paidInvoicesTotal": "paid Invoices Total",
+  "unpaidInvoicesTotal": "unpaid Invoices Total",
+  "paidInvoicesCount": "paid Invoices Count",
+  "unpaidInvoicesCount": "unpaid Invoices Count",
+  "unpaidToPaidInvoices": "unpaid To Paid Invoices",
+  "departmentInvoicesCount": "department Invoices Count",
+  "paid": "paid",
+  "unPaid": "unPaid",
+  "Invoices": "Invoices",
+  "viewAll": "View All",
 
   "nupco": "Nupco",
   "etimad": "Etimad",

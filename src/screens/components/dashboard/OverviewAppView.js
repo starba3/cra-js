@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'; // Import the prop-types package
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+ import { useLocales } from 'src/locales';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
@@ -23,18 +24,23 @@ import ChartRadialBar from 'src/screens/components/dashboard/chart-radial-bar';
 import AppNewInvoice from 'src/screens/components/dashboard/AppNewInvoice';
 // 
 
+
 // ----------------------------------------------------------------------
 
 export default function OverviewAppView() {
   const { user } = useMockedUser();
 
-
+  
   const [unpaidInvoicesCount, setUnpaidInvoicesCount] = useState(0);
   const [paidInvoicesCount, setPaidInvoicesCount] = useState(0);
   const [unpaidInvoicesTotalAmmount, setUnpaidInvoicesTotalAmmount] = useState(0);
   const [paidInvoicesTotalAmmount, setPaidInvoicesTotalAmmount] = useState(0);
   const [departmentInvoicesCount, setDepartmentInvoicesCount] = useState({});
   const [lastestCreatedInvoices, setLastestCreatedInvoices] = useState([]);
+
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text);
 
   const theme = useTheme();
 
@@ -204,7 +210,7 @@ export default function OverviewAppView() {
 
         <Grid item="true" xs={12} md={6} lg={3}>
           <AppWidgetSummary
-            title="unpaid Invoices Count"
+            title= {Translate("unpaidInvoicesCount")}
             percent={unpaidInvoicesCountPrecentage}
             total={unpaidInvoicesCount}
             chart={{
@@ -215,7 +221,7 @@ export default function OverviewAppView() {
 
         <Grid item="true" xs={12} md={6} lg={3}>
           <AppWidgetSummary
-            title="paid Invoices Count"
+            title={Translate("paidInvoicesCount")}
             percent={paidInvoicesCountPrecentage}
             total={paidInvoicesCount}
             chart={{
@@ -227,7 +233,7 @@ export default function OverviewAppView() {
 
         <Grid item="true" xs={12} md={6} lg={3}>
           <AppWidgetSummary
-            title="unpaid Invoices Total "
+            title={Translate("unpaidInvoicesTotal")}
             percent={paidToUnpaidInvoicesCountPrecentage}
             total={unpaidInvoicesTotalAmmount}
             chart={{
@@ -239,7 +245,7 @@ export default function OverviewAppView() {
 
         <Grid item="true" xs={12} md={6} lg={3}>
           <AppWidgetSummary
-            title="paid Invoices Total "
+            title={Translate("paidInvoicesTotal")}
             percent={unpaidToPaidInvoicesCountPrecentage}
             total={paidInvoicesTotalAmmount}
             chart={{
@@ -253,20 +259,20 @@ export default function OverviewAppView() {
           <FlexBox>
             <Grid item="true" xs={12} md={6} lg={4}>
               <AppCurrentDownload
-                title="department Invoices Count"
+                title={Translate("departmentInvoicesCount")}
                 chart={{
                   series: Object.keys(departmentInvoicesCount).map((key) => {
                     let label = '';
                     if (key === '0') {
-                      label = 'operation';
+                      label = Translate("operation");
                     } else if (key === '1') {
-                      label = ' installation';
+                      label = Translate("installation");
                     } else if (key === '2') {
-                      label = ' Sales';
+                      label = Translate("sales");
                     } else if (key === '3') {
-                      label = ' collection';
+                      label = Translate("collection");
                     } else {
-                      label = 'Tender and Contract';
+                      label = Translate("tender_and_contract");
                     }
 
                     return {
@@ -283,7 +289,7 @@ export default function OverviewAppView() {
 
             <Grid item="true" xs={12} md={6} lg={4}>
               <Card>
-                <CardHeader title="unpaid To Paid Invoices" sx={{ mb: 5 }} />
+                <CardHeader title={Translate("unpaidToPaidInvoices")} sx={{ mb: 5 }} />
                 <ChartRadialBar series={[paidInvoicesTotalAmmountPrecentage, unpaidInvoicesTotalAmmountPrecentage]} outsideNumber={sum} />
               </Card>
             </Grid>
@@ -347,12 +353,12 @@ export default function OverviewAppView() {
           <Grid xs={12} lg={8}>
 
             <AppNewInvoice
-              title="Invoices"
+              title={Translate("invoices")}
               tableData={lastestCreatedInvoices}
               tableLabels={[
-                { id: 'invoiceNo', label: 'Invoice Number' },
-                { id: 'invoiceAmount', label: 'invoice amount' },
-                { id: 'createdBy', label: 'Created By' }
+                { id: 'invoiceNo', label:Translate("invoiceNumber") },
+                { id: 'invoiceAmount', label: Translate("invoiceAmount") },
+                { id: 'createdBy', label: Translate("createdBy") }
               ]}
             />
           </Grid>

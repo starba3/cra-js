@@ -440,30 +440,34 @@ export function useNavData() {
           },
           // Reports
           {
-            title: 'Reports',
+            title: t('reports'),
             path: paths.reports.root,
             icon: ICONS.user,
             children: [
               { 
-                title: 'Aging',
+                title: t('agingReport'),
                 path: paths.reports.aging,
 
               },
               { 
-                title: 'Invoices for Customer',
+                title: t('invoicesForCustomer'),
                 path: paths.reports.invoiceForCustomers,
 
               },
               { 
-                title: 'GM Reason Report',
-                path: paths.reports.gmReasoneReport,
-
-              },
-              { 
-                title: 'GM Report',
+                title: t('gmReport'),
                 path: paths.reports.gmReport,
 
               },
+              { 
+                title: t('gmReasonReport'),
+                path: paths.reports.gmReasoneReport,
+
+              },
+
+              
+
+              
               
             ],
           },

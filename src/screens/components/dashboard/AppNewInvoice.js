@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useLocales } from 'src/locales';
 // @mui
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -24,6 +25,7 @@ import { TableHeadCustom } from 'src/components/table';
 
 export default function AppNewInvoice({ title, subheader, tableData, tableLabels, ...other }) {
     const router = useRouter()
+    const {t} = useLocales();
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} sx={{ mb: 3 }} />
@@ -51,7 +53,7 @@ export default function AppNewInvoice({ title, subheader, tableData, tableLabels
           onClick={() => router.replace(paths.dashboard.invoice.root)}
           endIcon={<Iconify icon="eva:arrow-ios-forward-fill" width={18} sx={{ ml: -0.5 }} />}
         >
-          View All
+          {t("viewAll")}
         </Button>
       </Box>
     </Card>

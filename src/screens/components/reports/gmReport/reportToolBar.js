@@ -27,8 +27,8 @@ export default function ReportToolBar({
   return (
     <Stack
         spacing={2}
-        alignItems={{ xs: 'flex-end', md: 'center' }}
-        justifyContent="flex-end"
+        alignItems={{ xs: 'flex-start', md: 'center' }}
+        justifyContent="flex-start"
         direction={{
           xs: 'column',
           md: 'row',
