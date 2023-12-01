@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/cra-js/static/css/main.79a55289.css",
-    "main.js": "/cra-js/static/js/main.a7e8fc76.js",
+    "main.js": "/cra-js/static/js/main.550b82da.js",
     "static/js/5652.285a6c8d.chunk.js": "/cra-js/static/js/5652.285a6c8d.chunk.js",
     "static/js/6872.b8c27f3c.chunk.js": "/cra-js/static/js/6872.b8c27f3c.chunk.js",
     "static/js/8335.8c37672c.chunk.js": "/cra-js/static/js/8335.8c37672c.chunk.js",
@@ -21,8 +21,8 @@
     "static/js/3410.8ff7dc88.chunk.js": "/cra-js/static/js/3410.8ff7dc88.chunk.js",
     "static/js/1956.17cb8ba3.chunk.js": "/cra-js/static/js/1956.17cb8ba3.chunk.js",
     "static/js/880.f75f8881.chunk.js": "/cra-js/static/js/880.f75f8881.chunk.js",
-    "static/js/1335.17df53e0.chunk.js": "/cra-js/static/js/1335.17df53e0.chunk.js",
-    "static/js/8768.eedfa254.chunk.js": "/cra-js/static/js/8768.eedfa254.chunk.js",
+    "static/js/1335.cfe3af98.chunk.js": "/cra-js/static/js/1335.cfe3af98.chunk.js",
+    "static/js/8768.772a9b10.chunk.js": "/cra-js/static/js/8768.772a9b10.chunk.js",
     "static/css/6474.ddd94af2.chunk.css": "/cra-js/static/css/6474.ddd94af2.chunk.css",
     "static/js/6474.e8a6f5f7.chunk.js": "/cra-js/static/js/6474.e8a6f5f7.chunk.js",
     "static/css/5628.ddd94af2.chunk.css": "/cra-js/static/css/5628.ddd94af2.chunk.css",
@@ -72,7 +72,7 @@
     "static/js/3765.41fdabc6.chunk.js": "/cra-js/static/js/3765.41fdabc6.chunk.js",
     "static/css/575.ddd94af2.chunk.css": "/cra-js/static/css/575.ddd94af2.chunk.css",
     "static/js/575.2f033b8c.chunk.js": "/cra-js/static/js/575.2f033b8c.chunk.js",
-    "static/js/1809.c6d517c5.chunk.js": "/cra-js/static/js/1809.c6d517c5.chunk.js",
+    "static/js/1809.868bb112.chunk.js": "/cra-js/static/js/1809.868bb112.chunk.js",
     "static/js/9681.676bb540.chunk.js": "/cra-js/static/js/9681.676bb540.chunk.js",
     "static/js/5193.a58d74f2.chunk.js": "/cra-js/static/js/5193.a58d74f2.chunk.js",
     "static/js/746.42cbd2f7.chunk.js": "/cra-js/static/js/746.42cbd2f7.chunk.js",
@@ -295,7 +295,7 @@
     "index.html": "/cra-js/index.html",
     "static/media/slick.woff": "/cra-js/static/media/slick.295183786cd8a1389865.woff",
     "main.79a55289.css.map": "/cra-js/static/css/main.79a55289.css.map",
-    "main.a7e8fc76.js.map": "/cra-js/static/js/main.a7e8fc76.js.map",
+    "main.550b82da.js.map": "/cra-js/static/js/main.550b82da.js.map",
     "5652.285a6c8d.chunk.js.map": "/cra-js/static/js/5652.285a6c8d.chunk.js.map",
     "6872.b8c27f3c.chunk.js.map": "/cra-js/static/js/6872.b8c27f3c.chunk.js.map",
     "8335.8c37672c.chunk.js.map": "/cra-js/static/js/8335.8c37672c.chunk.js.map",
@@ -315,8 +315,8 @@
     "3410.8ff7dc88.chunk.js.map": "/cra-js/static/js/3410.8ff7dc88.chunk.js.map",
     "1956.17cb8ba3.chunk.js.map": "/cra-js/static/js/1956.17cb8ba3.chunk.js.map",
     "880.f75f8881.chunk.js.map": "/cra-js/static/js/880.f75f8881.chunk.js.map",
-    "1335.17df53e0.chunk.js.map": "/cra-js/static/js/1335.17df53e0.chunk.js.map",
-    "8768.eedfa254.chunk.js.map": "/cra-js/static/js/8768.eedfa254.chunk.js.map",
+    "1335.cfe3af98.chunk.js.map": "/cra-js/static/js/1335.cfe3af98.chunk.js.map",
+    "8768.772a9b10.chunk.js.map": "/cra-js/static/js/8768.772a9b10.chunk.js.map",
     "6474.ddd94af2.chunk.css.map": "/cra-js/static/css/6474.ddd94af2.chunk.css.map",
     "6474.e8a6f5f7.chunk.js.map": "/cra-js/static/js/6474.e8a6f5f7.chunk.js.map",
     "5628.ddd94af2.chunk.css.map": "/cra-js/static/css/5628.ddd94af2.chunk.css.map",
@@ -366,7 +366,7 @@
     "3765.41fdabc6.chunk.js.map": "/cra-js/static/js/3765.41fdabc6.chunk.js.map",
     "575.ddd94af2.chunk.css.map": "/cra-js/static/css/575.ddd94af2.chunk.css.map",
     "575.2f033b8c.chunk.js.map": "/cra-js/static/js/575.2f033b8c.chunk.js.map",
-    "1809.c6d517c5.chunk.js.map": "/cra-js/static/js/1809.c6d517c5.chunk.js.map",
+    "1809.868bb112.chunk.js.map": "/cra-js/static/js/1809.868bb112.chunk.js.map",
     "9681.676bb540.chunk.js.map": "/cra-js/static/js/9681.676bb540.chunk.js.map",
     "5193.a58d74f2.chunk.js.map": "/cra-js/static/js/5193.a58d74f2.chunk.js.map",
     "746.42cbd2f7.chunk.js.map": "/cra-js/static/js/746.42cbd2f7.chunk.js.map",
@@ -585,6 +585,6 @@
   },
   "entrypoints": [
     "static/css/main.79a55289.css",
-    "static/js/main.a7e8fc76.js"
+    "static/js/main.550b82da.js"
   ]
 }
