@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk_minimal_kit_cra_js=self.webpackChunk_minimal_kit_cra_js||[]).push([[6898],{96898:function(i,n,e){e.r(n);var a=e(80184);n.default=function(){return(0,a.jsx)("h1",{children:"Paid Screen"})}}}]);
-//# sourceMappingURL=6898.db74d66a.chunk.js.map
