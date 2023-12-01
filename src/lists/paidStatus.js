@@ -1,4 +1,4 @@
-import useLocales from '../locales/use-locales'
+import useLocales from 'src/locales/use-locales'
 
 const Translate = (text) => {
     const { t } = useLocales()

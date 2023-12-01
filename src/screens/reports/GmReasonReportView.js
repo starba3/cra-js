@@ -1,19 +1,18 @@
 import { Helmet } from 'react-helmet-async';
-import SoonToCollectView from 'src/screens/components/reports/soonToCollect/soonToCollectView';
+import GmReasonReportView from 'src/screens/components/reports/gmReasonReport/gmReasonReportView';
 
 // ----------------------------------------------------------------------
 
-export default function SoonToCollectViewMain() {
+export default function GmReasonReportViewMain() {
 
   return (
     <>
         <Helmet>
             <title> Soon To Collect Report</title>
         </Helmet>
-        <SoonToCollectView />
+        <GmReasonReportView />
     </>
   );
 }
 
 
-soonToCollect

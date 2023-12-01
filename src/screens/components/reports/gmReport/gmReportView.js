@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import useLocales from 'src/locales/use-locales'
 // @mui
 import { useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -17,7 +18,7 @@ import { useRouter } from 'src/routes/hooks';
 import Scrollbar from 'src/components/scrollbar';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-import DonutChart from 'src/screens/components/reports/aging/Chart'
+import BarChart from 'src/screens/components/reports/gmReport/Chart'
 
 import {
   useTable,
@@ -29,9 +30,10 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 // DATA ACCESS
-import { getAgingReport } from 'src/data-access/reports';
+import { getGmReport } from 'src/data-access/reports';
 // COMPONENTS
 import TableRowNew from './tableRow';
+import ReportToolBar from './reportToolBar';
 
 
 // ----------------------------------------------------------------------
@@ -42,21 +44,27 @@ const defaultFilters = {
 };
 // ----------------------------------------------------------------------
 
-export default function SoonToCollectView() {
+export default function GmReportView() {
   const theme = useTheme();
 
   const settings = useSettingsContext();
 
   const router = useRouter();
 
+  const Translate = (text) => {
+    const { t } = useLocales();
+    return t(text);
+  }
+
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 
   const [tableData, setTableData] = useState([]);
+  const [collectionSource, setCollectionSource] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let result = await getAgingReport();
+        let result = await getGmReport(collectionSource);
         result = result.map((item, index) => {
           item.id = index;
           return item;
@@ -68,7 +76,7 @@ export default function SoonToCollectView() {
     };
 
     fetchData();
-  }, []);
+  }, [collectionSource]);
 
   const [filters, setFilters] = useState(defaultFilters);
 
@@ -90,6 +98,9 @@ export default function SoonToCollectView() {
     table.page * table.rowsPerPage + table.rowsPerPage
   );
 
+  const handleOnChange = (value) => {
+    setCollectionSource(value);
+  } 
 
 
   const denseHeight = table.dense ? 56 : 76;
@@ -101,21 +112,17 @@ export default function SoonToCollectView() {
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
   const TABLE_HEAD = [
-    { id: 'customerNameEn', label: 'Name English' },
-    { id: 'customerNameAr', label: 'Name Arabic' },
-    { id: 'balance', label: 'Balance' },
-    { id: 'zeroToThirty', label: '0-30 ' },
-    { id: 'thirtyOneToSixty', label: '31-60' },
-    { id: 'sixtyOneToNinety', label: '61-90' },
-    { id: 'ninetyOneToOneTwenty', label: '91-120' },
-    { id: 'oneTwentyOnePlus', label: 'Over 120' },
+    { id: 'week', label: Translate('week') },
+    { id: 'ready', label: Translate('ready') },
+    { id: 'notReady', label: Translate('notReady') },
+    { id: 'reject', label: Translate('reject') }
   ];
   
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading='Soon To Collect'
+          heading='GM Report'
           links={[
             {
               name: 'Dashboard',
@@ -125,7 +132,7 @@ export default function SoonToCollectView() {
               name: 'Reports',
             },
             {
-              name: 'Soon To Collect',
+              name: 'GM Report',
             },
           ]}
           
@@ -135,6 +142,7 @@ export default function SoonToCollectView() {
         />
 
         <Card sx={{ mb: 3 }}>
+          <ReportToolBar onChange={(value) => handleOnChange(value)}/>
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
             <Scrollbar>
               <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 800 }}>
@@ -154,7 +162,7 @@ export default function SoonToCollectView() {
                 />
 
                 <TableBody>
-                  {dataFiltered
+                  {dataFiltered && dataFiltered
                     .slice(
                       table.page * table.rowsPerPage,
                       table.page * table.rowsPerPage + table.rowsPerPage
@@ -179,7 +187,7 @@ export default function SoonToCollectView() {
           </TableContainer>
 
           <TablePaginationCustom
-            count={dataFiltered.length}
+            count={dataFiltered.length || 0}
             page={table.page}
             rowsPerPage={table.rowsPerPage}
             onPageChange={table.onChangePage}
@@ -192,8 +200,8 @@ export default function SoonToCollectView() {
 
            
         </Card>
-        <Card  sx={{ display:'flex', justifyContent: 'center', mb: 3 }}>
-          <DonutChart data={dataFiltered}/>  
+        <Card  sx={{  mb: 3 }}>
+          <BarChart data={tableData}/>  
         </Card>    
       </Container>
   );

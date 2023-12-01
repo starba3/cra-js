@@ -187,10 +187,10 @@ export default function InvoiceForCustomersView() {
                       />
                     ))}
 
-                  <TableEmptyRows
+                  {/* <TableEmptyRows
                     height={denseHeight}
                     emptyRows={emptyRows(table.page, table.rowsPerPage, tableData.length)}
-                  />
+                  /> */}
 
                   <TableNoData notFound={notFound} />
                 </TableBody>
@@ -199,7 +199,7 @@ export default function InvoiceForCustomersView() {
           </TableContainer>
 
           <TablePaginationCustom
-            count={dataFiltered.length}
+            count={dataFiltered.length || 0}
             page={table.page}
             rowsPerPage={table.rowsPerPage}
             onPageChange={table.onChangePage}

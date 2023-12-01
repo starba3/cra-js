@@ -455,13 +455,13 @@ export function useNavData() {
 
               },
               { 
-                title: 'UnderCollection',
-                path: paths.reports.underCollection,
+                title: 'GM Reason Report',
+                path: paths.reports.gmReasoneReport,
 
               },
               { 
-                title: 'SoonToCollect',
-                path: paths.reports.soonToCollect,
+                title: 'GM Report',
+                path: paths.reports.gmReport,
 
               },
               

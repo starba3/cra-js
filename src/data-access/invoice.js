@@ -1,4 +1,5 @@
 
+import { result } from "lodash";
 import { paths } from "src/routes/paths"
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
@@ -9,7 +10,7 @@ export async function getAllInvoices() {
     await fetch(`${baseUrl}/api/invoices`, {
         mode:'cors'
     })
-    .then(result => result.json())
+    .then(response => response.json())
     .then(invoices => {
         list = invoices
     })
@@ -23,7 +24,7 @@ export async function getInvoicesByDepartment(id) {
     await fetch(`${baseUrl}/api/Invoices/Department/${id}`, {
         mode:'cors'
     })
-    .then(result => result.json())
+    .then(response => response.json())
     .then(invoices => {
         list = invoices
     })
@@ -45,7 +46,7 @@ export async function getInvoicesBySalesConfirmation(confirmStatus) {
     await fetch(url, {
         mode:'cors'
     })
-    .then(result => result.json())
+    .then(response => response.json())
     .then(invoices => {
         list = invoices
     })
@@ -150,7 +151,7 @@ export async function getCollectionData() {
     await fetch(`${baseUrl}/api/CollectionData`, {
         mode:'cors'
     })
-    .then(result => result.json())
+    .then(response => response.json())
     .then(invoices => {
         list = invoices
     })
@@ -165,7 +166,7 @@ export async function getInvoiceInquiryData(id) {
     await fetch(`${baseUrl}/api/Invoices/${id}/Inquiry`, {
         mode:'cors'
     })
-    .then(result => result.json())
+    .then(response => response.json())
     .then(invoices => {
         data = invoices
     })
@@ -183,12 +184,18 @@ export async function getInvoiceForCustomers(customers) {
     await fetch(`${baseUrl}/api/Invoices/GetInvoicesForCustomers?customerIds=${customers}`, {
         mode:'cors'
     })
-    .then(result => result.json())
+    .then(response => response.json())
     .then(invoices => {
         list = invoices;
     })
-    .catch(error => console.log())
+    .catch(error => {
+        console.log(error);
+        list = [];
+        
+    })
 
+    console.log('Result: ', list)
+   
 
     return list;
 }

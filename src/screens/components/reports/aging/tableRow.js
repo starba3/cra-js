@@ -8,7 +8,7 @@ import TableCell from '@mui/material/TableCell';
 
 // ----------------------------------------------------------------------
 
-export default function TableRow_new({
+export default function TableRowNew({
   row,
   selected,
   isPercentage,
@@ -35,7 +35,7 @@ export default function TableRow_new({
   );
 }
 
-TableRow_new.propTypes = {
+TableRowNew.propTypes = {
   row: PropTypes.object,
   selected: PropTypes.bool,
   isPercentage: PropTypes.bool,

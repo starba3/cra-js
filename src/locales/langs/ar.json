@@ -79,5 +79,10 @@
   "NotStarted": "NotStarted",
   "InProgress": "InProgress",
   "Installed": "Installed",
-  "Delayed": "Delayed"
+  "Delayed": "Delayed",
+
+  "nupco": "نوبكو",
+  "etimad": "إعتماد",
+  "cash": "دفع نقدي",
+  "private": "زبون خاص"
 }

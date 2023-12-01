@@ -239,9 +239,9 @@ export const paths = {
   reports: {
     root: ROOTS.REPORTS,
     aging: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/aging`,
-    underCollection: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/UnderCollection`,
+    gmReasoneReport: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/gmReasonReport`,
     invoiceForCustomers: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/invoiceForCustomers`,
-    soonToCollect: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/soonToCollect`,
+    gmReport: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/GmReport`,
     
   },
 

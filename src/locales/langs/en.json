@@ -109,5 +109,21 @@
   "salesConfirm" : "Sales Confirm",
   "createdBy" : "Created By",
   "salesTaker" : "Sales Taker",
-  "collectorName" : "Collector Name"
+  "collectorName" : "Collector Name",
+  "week": "Week",
+  "ready": "Ready",
+  "notReady": "Not Ready",
+  "reject": "Reject",
+
+  "reason": "Reason",
+  "totalAmount": "Total Amount",
+
+  "nupco": "Nupco",
+  "etimad": "Etimad",
+  "cash": "Cash",
+  "private": "Private"
+
+  
+  
+
 }
