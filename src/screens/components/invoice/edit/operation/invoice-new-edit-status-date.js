@@ -1,10 +1,10 @@
 // react
-import { useCallback, useState, useEffect } from 'react';
+import {  useState, useEffect } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import PropTypes from 'prop-types';
+import { useLocales } from 'src/locales';
 // @mui
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import Stack from '@mui/material/Stack';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -26,7 +26,6 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TextField from '@mui/material/TextField';
 // components
-import Label from 'src/components/label';
 import Scrollbar from 'src/components/scrollbar';
 
 
@@ -48,8 +47,9 @@ export default function InvoiceNewEditStatusDate({
   const [claimsStatus, setClaimsStatus] = useState([])
   const [claimsDetailStatus, setClaimsDetailStatus] = useState([])
 
+  const { t } = useLocales()
 
-
+  const Translate = (text) => t(text)
   
   useEffect(() => {
     const fetchData = async () => {
@@ -162,7 +162,7 @@ export default function InvoiceNewEditStatusDate({
     render={({ field, fieldState: { error } }) => (
         <DatePicker
           
-          label="Delivery Date"
+          label={Translate("deliveryDate")}
           value={field.value}
           onChange={(newValue) => {
             field.onChange(newValue);
@@ -172,7 +172,7 @@ export default function InvoiceNewEditStatusDate({
     )}
   /> : 
   <TextField
-    label="Delivery Date"
+    label={Translate("deliveryDate")}
     value={currentInvoice.deliveryDate && currentInvoice.deliveryDate.substring(0, currentInvoice?.deliveryDate.indexOf('T'))  }
     disabled
     style={width80}      
@@ -199,7 +199,7 @@ export default function InvoiceNewEditStatusDate({
             onChange={(newValue) => {
               field.onChange(newValue);
             }}
-            input={<OutlinedInput label="Department" />}
+            input={<OutlinedInput label={Translate("department")} />}
             renderValue={(selected) => selected}
             sx={{
                 flex: 1,
@@ -219,7 +219,7 @@ export default function InvoiceNewEditStatusDate({
     />
     </FormControl> : 
     <TextField
-      label="Department"
+      label={Translate("department")}
       value={currentInvoice?.department }
       style={width80}
       disabled
@@ -245,7 +245,7 @@ export default function InvoiceNewEditStatusDate({
             onChange={(newValue) => {
               field.onChange(newValue);
             }}
-            input={<OutlinedInput label="Acknowledge Status" />}
+            input={<OutlinedInput label={Translate("acknowledgeStatus")} />}
             renderValue={(selected) => selected}
             sx={{ textTransform: 'capitalize', fullWidth: true }}
           >
@@ -259,40 +259,31 @@ export default function InvoiceNewEditStatusDate({
       />
     </FormControl> :
     <TextField
-      label="Department"
+      label={Translate("acknowledgeStatus")}
       value={currentInvoice?.acknowledgeStatus }
       style={width80}
       disabled
     /> 
 
   const installationDate = arrays.installationDate.includes(department.toLowerCase()) ? 
-    <Controller
-      name="InstallationDate"
-      control={control}
-      render={({ field, fieldState: { error } }) => (
-        <Box sx={grayBgStyle} >
-          <DatePicker
-            
-            label="Installation Date"
-            value={field.value}
-            onChange={(newValue) => {
-              field.onChange(newValue);
-            }}
-            slotProps={{
-              flex: 1,
-              textField: {
-                fullWidth: true,
-                error: !!error,
-                helperText: error?.message,
-              },
-            }}
-          />
-        </Box>
+  <Controller
+  name="installationDate"
+  control={control}
+  
+  render={({ field, fieldState: { error } }) => (
+      <DatePicker
         
-      )}
+        label={Translate("installationDate")}
+        value={field.value}
+        onChange={(newValue) => {
+          field.onChange(newValue);
+        }}
+        sx={grayBgStyle}
+      />
+    )}
     /> : 
     <TextField
-      label="Installation Date"
+      label={Translate("installationDate")}
       value={currentInvoice.installationDate}
       style={width80}
       disabled
@@ -303,10 +294,11 @@ export default function InvoiceNewEditStatusDate({
       sx={{
         flex: 1,
         flexShrink: 0,
-        width: { xs: 3, md: '80%' },
+        width: { xs: 3 },
       }}
+      style={width80}
     >
-      <InputLabel />
+      <InputLabel>{Translate("installationStatus")}</InputLabel>
       <Controller
         name="installationStatus"
         control={control}
@@ -317,7 +309,7 @@ export default function InvoiceNewEditStatusDate({
             onChange={(newValue) => {
               field.onChange(newValue);
             }}
-            input={<OutlinedInput label="" />}
+            input={<OutlinedInput label={Translate("installationStatus")} />}
             renderValue={(selected) => selected}
             sx={{ textTransform: 'capitalize', fullWidth: true }}
           >
@@ -331,7 +323,7 @@ export default function InvoiceNewEditStatusDate({
       />
     </FormControl> :
     <TextField
-      label="Installation Status"
+      label={Translate("installationStatus")}
       value={currentInvoice.installationStatus}
       style={width80}
       disabled
@@ -359,7 +351,7 @@ export default function InvoiceNewEditStatusDate({
               field.onChange(newValue);
               handleCollectionSourceChange(newValue);
             }}
-            input={<OutlinedInput label="Collection Source" />}
+            input={<OutlinedInput label={Translate("collectionSource")} />}
             renderValue={(selected) => selected}
             sx={{ textTransform: 'capitalize', fullWidth: true }}
           >
@@ -373,7 +365,7 @@ export default function InvoiceNewEditStatusDate({
       />
     </FormControl> : 
     <TextField
-        label="Collection Source"
+        label={Translate("collectionSource")}
         value={currentInvoice.collectionSource}
         style={width80}
         disabled
@@ -400,7 +392,7 @@ export default function InvoiceNewEditStatusDate({
               field.onChange(newValue);
               handleClaimStatusChange(newValue);
             }}
-            input={<OutlinedInput label="Claim Status" />}
+            input={<OutlinedInput label={Translate("claimStatus")} />}
             renderValue={(selected) => selected}
             sx={{ textTransform: 'capitalize', fullWidth: true }}
           >
@@ -414,7 +406,7 @@ export default function InvoiceNewEditStatusDate({
       />
     </FormControl> : 
     <TextField
-          label="Claim Status"
+          label={Translate("claimStatus")}
           value={currentInvoice.claimStatus}
           style={width80}
           disabled
@@ -442,7 +434,7 @@ export default function InvoiceNewEditStatusDate({
               handleClaimsDetailStatusChange(newValue)
             }}
             
-            input={<OutlinedInput label="Claims Detail Status" />}
+            input={<OutlinedInput label={Translate("claimsDetailStatus")} />}
             renderValue={(selected) => selected}
             sx={{ textTransform: 'capitalize', fullWidth: true }}
           >
@@ -455,7 +447,7 @@ export default function InvoiceNewEditStatusDate({
         )}
       />
     </FormControl> : <TextField
-          label="Claims Detail Status"
+          label={Translate("claimsDetailStatus")}
           value={currentInvoice.claimsDetailStatus}
           style={width80}
           disabled
@@ -464,7 +456,7 @@ export default function InvoiceNewEditStatusDate({
   const renderNotes = (
     <>
       <Typography variant="h6" gutterBottom>
-        Notes
+      {Translate("notes")}
       </Typography>
       <TableContainer sx={{ overflow: 'unset', mt: 5 }}>
         <Scrollbar>
@@ -474,11 +466,11 @@ export default function InvoiceNewEditStatusDate({
 
                 <TableCell width={40}>#</TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>Note</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("note")}</TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>User</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("user")}</TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>Create Date</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("createDate")}</TableCell>
 
               </TableRow>
             </TableHead>
@@ -511,7 +503,7 @@ export default function InvoiceNewEditStatusDate({
   const renderAttachments = (
     <>
       <Typography variant="h6" gutterBottom>
-      Attachments
+        {Translate("attachments")}
       </Typography>
       <TableContainer sx={{ overflow: 'unset', mt: 5, mb: 7 }}>
         <Scrollbar>
@@ -521,11 +513,11 @@ export default function InvoiceNewEditStatusDate({
 
                 <TableCell width={40}>#</TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>Name</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("name")}</TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>User</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("user")}</TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>Create Date</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("createDate")}</TableCell>
 
               </TableRow>
             </TableHead>
@@ -575,31 +567,6 @@ export default function InvoiceNewEditStatusDate({
   );
 
   return (
-    
-    // <Stack
-    //   spacing={2}
-    //   direction={{ xs: 'column', sm: 'row' }}
-    //   sx={{ p: 3, bgcolor: 'background.neutral' }}
-    // >
-      
-    //   {deliveryDate}
-        
-    //   {departmentSelect}
-
-    //   {installationDate}
-
-    //   {installationStatus}
-
-    //   {acknowledgeStatus}
-
-    //   {collectionSourceSelect}
-
-    //   {ClaimStatusSelect}
-
-    //   {ClaimsDetailStatusSelect} 
-
-    // </Stack>
-
     <Card sx={{ pt: 5, px: 5 }} >
       <Box
         rowGap={1}
@@ -610,89 +577,72 @@ export default function InvoiceNewEditStatusDate({
           sm: 'repeat(2, 1fr)',
         }}
       >
-        {/* <Box
-          component="img"
-          alt="logo"
-          src="/logo/logo_single.svg"
-          sx={{ width: 48, height: 48 }}
-        />
-
-        
-         <Stack spacing={1} alignItems={{ xs: 'flex-start', md: 'flex-end' }}>
-          <Label
-            variant="soft"
-            color= 'default'
-          >
-            {currentInvoice?.department}
-          </Label>
-
-        </Stack>  */}
 
         <TextField
-          label="Issue Date"
+          label={Translate("issueDate")}
           value={currentInvoice ? currentInvoice?.issueInvoiceDate.substring(0, currentInvoice?.issueInvoiceDate.indexOf('T')) : '' }
           style={width80}
           disabled
         />
 
         <TextField
-          label="Amount"
+          label={Translate("amount")}
           value={currentInvoice?.invoiceAmount}
           style={width80}
           disabled
         />
 
         <TextField
-          label="Currency"
+          label={Translate("currency")}
           value={currentInvoice?.currency}
           style={width80}
           disabled
         />
 
         <TextField
-          label="Customer Code"
+          label={Translate("customerCode")}
           value={currentInvoice?.customerCode}
           style={width80}
           disabled
         />
         
         <TextField
-          label="Name English"
+          label={Translate("nameEnglish")}
           value={currentInvoice?.customerNameEn}
           style={width80}
           disabled
         />
 
         <TextField
-          label="Name Arabic"
+          label={Translate("nameArabic")}
           value={currentInvoice?.customerNameAr}
           style={width80}
           disabled
         />
 
         <TextField
-          label="Po Number"
+          label={Translate("PoNumber")}
           value={currentInvoice?.customerPO}
           style={width80}
           disabled
         />
 
         <TextField
-          label="Po Value"
+          label={Translate("POValue")}
           value={currentInvoice?.poValue}
           style={width80}
           disabled
         />    
 
         <TextField
-          label="Region"
+          label={Translate("region")}
           value={currentInvoice?.region}
           style={width80}
           disabled
         />        
 
         <TextField
-          label="Contract Number"
+          label={Translate("contractNumber")}
           value={currentInvoice?.contractNo}
           style={width80}
           disabled
@@ -707,7 +657,7 @@ export default function InvoiceNewEditStatusDate({
         {installationStatus}
 
         <TextField
-          label="Days To Collected"
+          label={Translate("daysToCollected")}
           value={currentInvoice?.daysToCollected}
           style={width80}
           disabled
@@ -722,35 +672,35 @@ export default function InvoiceNewEditStatusDate({
         {ClaimsDetailStatusSelect}
 
         <TextField
-          label="Sales Confirm"
+          label={Translate("salesConfirm")}
           value={currentInvoice?.salesConfirm}
           style={width80}
           disabled
         />
 
         <TextField
-          label="Created By"
+          label={Translate("createdBy")}
           value={currentInvoice?.createdBy}
           style={width80}
           disabled
         />
 
         <TextField
-          label="Sales Taker"
+          label={Translate("salesTaker")}
           value={currentInvoice?.salesTakerName}
           style={width80}
           disabled
         />
 
         <TextField
-          label="Collector Name"
+          label={Translate("collectorName")}
           value={currentInvoice?.collectorName}
           style={width80}
           disabled
         />
 
         <TextField
-          label="Responsible Engineer Name"
+          label={Translate("responsibleEngineerName")}
           value={currentInvoice?.responsibleEngineerName}
           style={width80}
           disabled

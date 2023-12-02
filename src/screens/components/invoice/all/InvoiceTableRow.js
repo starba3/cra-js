@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
+import { useLocales } from 'src/locales';
 // @mui
 import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
@@ -32,7 +33,11 @@ export default function InvoiceTableRow({
   handleOpenInquiry,
 }) {
   const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameEn, paidStatus, department } = row;
+  
+  const { t } = useLocales()
 
+  
+  const Translate = (text) => t(text);
   const confirm = useBoolean();
 
   const popover = usePopover();
@@ -113,7 +118,7 @@ export default function InvoiceTableRow({
           }}
         >
           <Iconify icon="solar:eye-bold" />
-          View
+          {Translate("view")}
         </MenuItem>
 
         <Divider sx={{ borderStyle: 'solid' }} />
@@ -126,15 +131,15 @@ export default function InvoiceTableRow({
           }}
         >
           <Iconify icon="bx:file" />
-          Inquiry
+          {Translate("inquiry")}
         </MenuItem>
       </CustomPopover>
 
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}
-        title="Delete"
-        content="Are you sure want to delete?"
+        title={Translate("delete")}
+        content={Translate("deleteComfirmationMessage")}
         action={
           <Button variant="contained" color="error" onClick={onDeleteRow}>
             Delete

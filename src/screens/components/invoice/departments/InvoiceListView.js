@@ -1,6 +1,7 @@
 import sumBy from 'lodash/sumBy';
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate  } from 'react-router-dom';
+import { useLocales } from 'src/locales';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -81,6 +82,10 @@ export default function InvoiceListView({department, salesStatus}) {
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 
   const confirm = useBoolean();
+
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text);
   
   const [assignedUsers, setAssignedUsers] = useState([]);
   const [tableData, setTableData] = useState([]);
@@ -176,18 +181,13 @@ export default function InvoiceListView({department, salesStatus}) {
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
   const TABLE_HEAD = [
-    { id: 'invoiceNumber', label: 'Invoice Number' },
-    { id: 'issueInvoiceDate', label: 'Issue Date' },
-    { id: 'invoiceAmount', label: 'Amount' },
-    { id: 'region', label: 'Region', align: 'center' },
-    { id: 'customerNameAr', label: 'Name Arabic' , align: 'center' },
+    { id: 'invoiceNumber', label: Translate("invoiceNumber") },
+    { id: 'issueInvoiceDate', label: Translate("issueDate") },
+    { id: 'invoiceAmount', label: Translate("amount") },
+    { id: 'region', label: Translate("region"), align: 'center' },
+    { id: 'customerNameAr', label: Translate("nameArabic"), align: 'center' },
     { id: '6', label: '' },
   ];
-
-
-
-
-
 
   const handleFilters = useCallback(
     (name, value) => {
@@ -201,9 +201,6 @@ export default function InvoiceListView({department, salesStatus}) {
   );
 
   // Fetch data
-  
-
-  
   const handleDeleteRow = useCallback(
     (id) => {
       const deleteRow = tableData.filter((row) => row.id !== id);
@@ -260,19 +257,19 @@ export default function InvoiceListView({department, salesStatus}) {
     if (id) {
       switch(id) {
         case -1:
-          text = 'Operation';
+          text = Translate("operation");
           break;
         case 1:
-          text = 'Installation'
+          text = Translate("installation");
           break;
         case 2:
-          text = 'Sales'
+          text = Translate("sales");
           break;
         case 3:
-          text = 'collection';
+          text = Translate("collection");
           break;
         case 4:
-          text = 'Tender And Contract';
+          text = Translate("tenderAndContracts");
           break;
         default:
           break;
@@ -341,7 +338,7 @@ export default function InvoiceListView({department, salesStatus}) {
         throw new Error('Network response was not ok');
       })
       .then(res => {
-        setAlertMessage('Success');
+        setAlertMessage(Translate("success"));
       })
       .catch(error => {
         console.log(error);
@@ -400,7 +397,7 @@ export default function InvoiceListView({department, salesStatus}) {
         throw new Error('Network response was not ok');
       })
       .then(res => {
-        setAlertMessage('Success');
+        setAlertMessage(Translate("success"));
       })
       .catch(error => {
         console.log(error)
@@ -422,15 +419,15 @@ export default function InvoiceListView({department, salesStatus}) {
           heading={heading}
           links={[
             {
-              name: 'Dashboard',
+              name: Translate("app"),
               href: paths.dashboard.root,
             },
             {
-              name: 'Invoice',
+              name: Translate("invoice"),
               href: paths.dashboard.invoice.root,
             },
             {
-              name: 'List',
+              name: Translate("list"),
             },
           ]}
           
@@ -451,7 +448,7 @@ export default function InvoiceListView({department, salesStatus}) {
               sx={{ py: 2 }}
             >
               <InvoiceAnalytic
-                title="Total"
+                title={Translate("total")}
                 total={tableData.length}
                 percent={100}
                 price={sumBy(tableData, 'invoiceAmount')}
@@ -615,7 +612,7 @@ export default function InvoiceListView({department, salesStatus}) {
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}
-        title="Delete"
+        title={Translate("Delete")}
         content={
           <>
             Are you sure want to delete <strong> {table.selected.length} </strong> items?
@@ -630,7 +627,7 @@ export default function InvoiceListView({department, salesStatus}) {
               confirm.onFalse();
             }}
           >
-            Delete
+            {Translate("Delete")}
           </Button>
         }
       />
@@ -643,10 +640,10 @@ export default function InvoiceListView({department, salesStatus}) {
         onClose={handleClose}
 
       >
-        <DialogTitle>Assign User</DialogTitle>
+        <DialogTitle>{Translate("assignUser")}</DialogTitle>
         <DialogContent>
           <Select
-            value={assignedUsers.length ? assignedUsers[0].username : ''}
+            value={assignUser}
             onChange={(newValue) => {
               console.log(newValue.target.value);
               setAssignUser(newValue.target.value);
@@ -663,8 +660,8 @@ export default function InvoiceListView({department, salesStatus}) {
           </Select>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-          <Button onClick={handleAssignUser}>Save</Button>
+          <Button onClick={handleClose}>{Translate("close")}</Button>
+          <Button onClick={handleAssignUser}>{Translate("save")}</Button>
         </DialogActions>
       </Dialog>
 

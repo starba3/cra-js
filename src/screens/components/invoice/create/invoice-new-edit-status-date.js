@@ -1,4 +1,5 @@
 import { useFormContext, Controller } from 'react-hook-form';
+import { useLocales } from 'src/locales';
 // @mui
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Stack from '@mui/material/Stack';
@@ -9,6 +10,10 @@ import { RHFSelect, RHFTextField } from 'src/components/hook-form';
 
 export default function InvoiceNewEditStatusDate() {
   const { control, watch } = useFormContext();
+
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text);
 
   const values = watch();
 
@@ -21,7 +26,7 @@ export default function InvoiceNewEditStatusDate() {
       >
         <RHFTextField
           name="invoiceNumber"
-          label="Invoice number"
+          label={Translate("invoiceNumber")}
           value={values.invoiceNumber}
         />
         
@@ -30,7 +35,7 @@ export default function InvoiceNewEditStatusDate() {
           control={control}
           render={({ field, fieldState: { error } }) => (
             <DatePicker
-              label="Date create"
+              label={Translate("createDate")}
               value={field.value}
               onChange={(newValue) => {
                 field.onChange(newValue);
@@ -51,7 +56,7 @@ export default function InvoiceNewEditStatusDate() {
           control={control}
           render={({ field, fieldState: { error } }) => (
             <DatePicker
-              label="Deliver date"
+              label={Translate("deliveryDate")}
               value={field.value}
               onChange={(newValue) => {
                 field.onChange(newValue);
@@ -69,7 +74,7 @@ export default function InvoiceNewEditStatusDate() {
 
         <RHFTextField
           name="invoiceAmount"
-          label="Ammount"
+          label={Translate("invoiceAmount")}
           value={values.invoiceAmount}
           type="number"
         />
@@ -87,32 +92,32 @@ export default function InvoiceNewEditStatusDate() {
       >
         <RHFTextField
           name="currency"
-          label="Currency"
+          label={Translate("currency")}
           value={values.currency}
         />
 
         <RHFTextField
           name="region"
-          label="Region"
+          label={Translate("region")}
           value={values.region}
         />
 
         <RHFTextField
           name="customerPO"
-          label="PO Number"
+          label={Translate("PoNumber")}
           value={values.customerPO}
         />
 
         <RHFTextField
           name="poValue"
-          label="PO Value"
+          label={Translate("POValue")}
           value={values.poValue}
           type="number"
         />
 
         <RHFTextField
           name="contractNo"
-          label="Contract"
+          label={Translate("contract")}
           value={values.contractNo}
         />
       </Stack>

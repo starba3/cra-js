@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useCallback } from 'react';
+import { useLocales } from 'src/locales';
 // @mui
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -26,6 +27,11 @@ export default function AddressListDialog({
   selected,
   onSelect,
 }) {
+
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text);
+
   const [searchAddress, setSearchAddress] = useState('');
 
   const dataFiltered = applyFilter({
@@ -79,7 +85,7 @@ export default function AddressListDialog({
           }}
         >
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="subtitle2">Code: {address.customerCode}</Typography>
+            <Typography variant="subtitle2">{Translate("code")}: {address.customerCode}</Typography>
 
             {/* {address.primary && <Label color="info">Default</Label>} */}
           </Stack>
@@ -89,13 +95,13 @@ export default function AddressListDialog({
           )} */}
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          Name ENglish: {address.customerNameEn}
+            {Translate("nameEnglish")}: {address.customerNameEn}
           </Typography>
 
           
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Name Arabic: {address.customerNameAr}
-            </Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            {Translate("nameArabic")}: {address.customerNameAr}
+          </Typography>
           
         </Stack>
       ))}
@@ -119,7 +125,7 @@ export default function AddressListDialog({
         <TextField
           value={searchAddress}
           onChange={handleSearchAddress}
-          placeholder="Search..."
+          placeholder={Translate("searchCustomer")}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">

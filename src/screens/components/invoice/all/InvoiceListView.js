@@ -1,6 +1,7 @@
 import * as React from 'react';
 import sumBy from 'lodash/sumBy';
 import { useState, useCallback, useEffect } from 'react';
+import { useLocales } from 'src/locales';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -64,6 +65,7 @@ import { _statusList } from 'src/lists/paidStatus'
 //
 import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
 import InvoiceTableFiltersResult from 'src/sections/invoice/invoice-table-filters-result';
+import { Translation } from 'react-i18next';
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
 
@@ -73,15 +75,7 @@ import InvoiceTableToolbar from './InvoiceTableToolbar';
 
 // ----------------------------------------------------------------------
 
-const TABLE_HEAD = [
-  { id: 'invoiceNumber', label: 'Invoice Number' },
-  { id: 'issueInvoiceDate', label: 'Issue Date' },
-  { id: 'daysToCollected', label: 'Days To Collect' },
-  { id: 'invoiceAmount', label: 'Amount' },
-  { id: 'paidStatus', label: 'Paid Status', align: 'center' },
-  { id: 'department', label: 'Department' , align: 'center' },
-  { id: '' },
-];
+
 
 const defaultFilters = {
   name: '',
@@ -98,6 +92,8 @@ const dataGridData = await getAllInvoices()
 export default function InvoiceListView() {
   const theme = useTheme();
 
+  const { t } = useLocales()
+
   const settings = useSettingsContext();
 
   const router = useRouter();
@@ -105,6 +101,9 @@ export default function InvoiceListView() {
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 
   const confirm = useBoolean();
+
+  const Translate = (text) => t(text);
+  
 
   const [tableData, setTableData] = useState(dataGridData);
 
@@ -165,6 +164,16 @@ export default function InvoiceListView() {
     !!filters.service.length ||
     filters.status !== 'all' ||
     (!!filters.startDate && !!filters.endDate);
+
+  const TABLE_HEAD = [
+    { id: 'invoiceNumber', label: Translate("invoiceNumber") },
+    { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
+    { id: 'daysToCollected', label: Translate("daysToCollected") },
+    { id: 'invoiceAmount', label: Translate("invoiceAmount") },
+    { id: 'paidStatus', label: Translate("paidStatus"), align: 'center' },
+    { id: 'department', label: Translate("department"), align: 'center' },
+    { id: '' },
+  ];
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
@@ -339,18 +348,17 @@ export default function InvoiceListView() {
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="List"
+          heading={Translate("list")}
           links={[
             {
-              name: 'Dashboard',
+              name: Translate("app"),
               href: paths.dashboard.root,
             },
             {
-              name: 'Invoice',
-              href: paths.dashboard.invoice.root,
+              name: Translate("invoice"),
             },
             {
-              name: 'List',
+              name: Translate("list"),
             },
           ]}
           action= {
@@ -365,7 +373,7 @@ export default function InvoiceListView() {
                 variant="contained"
                 startIcon={<Iconify icon="mingcute:add-line" />}
               >
-                New Invoice
+                {Translate("newInvoice")}
               </Button>
               <Button
               component={RouterLink}
@@ -374,7 +382,7 @@ export default function InvoiceListView() {
               onClick={handleClickOpen}
               startIcon={<Iconify icon="solar:import-bold" />}
             >
-              Import
+              {Translate("import")}
             </Button>
           </Stack>
             
@@ -396,7 +404,7 @@ export default function InvoiceListView() {
               sx={{ py: 2 }}
             >
               <InvoiceAnalytic
-                title="Total"
+                title={Translate("total")}
                 total={tableData.length}
                 percent={100}
                 price={sumBy(tableData, 'invoiceAmount')}
@@ -405,7 +413,7 @@ export default function InvoiceListView() {
               />
 
                <InvoiceAnalytic
-                title="Paid"
+                title={Translate("paid")}
                 total={getInvoiceLength('paid')}
                 percent={getPercentByStatus('paid')}
                 price={getTotalAmount('paid')}
@@ -414,7 +422,7 @@ export default function InvoiceListView() {
               />
 
               <InvoiceAnalytic
-                title="UnPaid"
+                title={Translate("unpaid")}
                 total={getInvoiceLength('unpaid')}
                 percent={getPercentByStatus('unpaid')}
                 price={getTotalAmount('unpaid')}
@@ -509,7 +517,7 @@ export default function InvoiceListView() {
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}
-        title="Delete"
+        title={Translate("delete")}
         content={
           <>
             Are you sure want to delete <strong> {table.selected.length} </strong> items?
@@ -537,7 +545,7 @@ export default function InvoiceListView() {
             required
             margin="dense"
             id="file"
-            label="Import file"
+            label={Translate("importFile")}
             type="file"
             fullWidth
             variant="standard"
@@ -572,8 +580,8 @@ export default function InvoiceListView() {
         </DialogContent>
         
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleFileUpload} >Import</Button>
+          <Button onClick={handleClose}>{Translate("cancel")}</Button>
+          <Button onClick={handleFileUpload}>{Translate("import")}</Button>
         </DialogActions>
       </Dialog> 
 
@@ -587,12 +595,12 @@ export default function InvoiceListView() {
         onClose={handleClose}
 
       >
-        <DialogTitle>Invoice Inquiry</DialogTitle>
+        <DialogTitle>{Translate("invoiceInquiry")}</DialogTitle>
         <DialogContent>
           <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Typography>Invoice Number</Typography>
-            <Typography>Created By</Typography>
-            <Typography>Creation Date</Typography>
+            <Typography>{Translate("invoiceNumber")}</Typography>
+            <Typography>{Translate("createdBy")}</Typography>
+            <Typography>{Translate("creationDate")}</Typography>
           </Stack>
           {Object.prototype.hasOwnProperty.call(inquiryData, 'invoiceData') && 
               <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
@@ -608,11 +616,11 @@ export default function InvoiceListView() {
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
             <TableHead>
               <TableRow>
-                <TableCell>Property</TableCell>
-                <TableCell align="right">Old Value</TableCell>
-                <TableCell align="right">New Value</TableCell>
-                <TableCell align="right">Last Updated</TableCell>
-                <TableCell align="right">Updated By</TableCell>
+                <TableCell>{Translate("property")}</TableCell>
+                <TableCell align="right">{Translate("oldValue")}</TableCell>
+                <TableCell align="right">{Translate("newValue")}</TableCell>
+                <TableCell align="right">{Translate("lastUpdated")}</TableCell>
+                <TableCell align="right">{Translate("updatedBy")}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -634,7 +642,7 @@ export default function InvoiceListView() {
           </TableContainer>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenInquiry(false)}>Close</Button>
+          <Button onClick={() => setOpenInquiry(false)}>{Translate("close")}</Button>
         </DialogActions>
       </Dialog>
 

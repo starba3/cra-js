@@ -1,6 +1,7 @@
 // React
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import { useLocales } from 'src/locales';
 // @mui
 import Container from '@mui/material/Container';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -23,7 +24,9 @@ import InvoiceDetails from 'src/screens/components/invoice/details/InvoiceDetail
 export default function InvoiceEditView({ id }) {
   const settings = useSettingsContext();
 
-  
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text);
   
   const [currentInvoice, setCurrentInvoice] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -57,15 +60,15 @@ export default function InvoiceEditView({ id }) {
         heading="Edit invoice"
         links={[
           {
-            name: 'Dashboard',
+            name: Translate("app"),
             href: paths.dashboard.root,
           },
           {
-            name: 'Invoice',
+            name: Translate("invoice"),
             href: paths.dashboard.invoice.root,
           },
           {
-            name: 'New Invoice',
+            name: Translate("newInvoice"),
           },
         ]}
         sx={{

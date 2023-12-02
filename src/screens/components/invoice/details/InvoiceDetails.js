@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
+import { useLocales } from 'src/locales';
 // @mui
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
@@ -15,24 +15,25 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 // utils
-import { fDate } from 'src/utils/format-time';
-import { fCurrency } from 'src/utils/format-number';
 
 // components
 import Label from 'src/components/label';
 import Scrollbar from 'src/components/scrollbar';
 //
-import InvoiceToolbar from 'src/sections/invoice/invoice-toolbar';
 
 // ----------------------------------------------------------------------
 
 export default function InvoiceDetails({ invoice }) {
   const [currentInvoice, setCurrentInvoice] = useState(invoice);
   
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text)
+
   const renderNotes = (
     <>
       <Typography variant="h6" gutterBottom>
-        Notes
+        {Translate("notes")}
       </Typography>
       <TableContainer sx={{ overflow: 'unset', mt: 5 }}>
         <Scrollbar>
@@ -42,7 +43,11 @@ export default function InvoiceDetails({ invoice }) {
 
                 <TableCell width={40}>#</TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>Note</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("note")}</TableCell>
+
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("user")}</TableCell>
+
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("createDate")}</TableCell>
 
               </TableRow>
             </TableHead>
@@ -58,7 +63,9 @@ export default function InvoiceDetails({ invoice }) {
                     {/* </Box> */}
                   </TableCell>
 
-                  {/* <TableCell>{row.quantity}</TableCell> */}
+                  <TableCell>{row.createdBy}</TableCell>
+
+                  <TableCell>{row.createdDate.substring(0, row.createdDate.indexOf('T'))}</TableCell>
 
                   
                 </TableRow>
@@ -74,7 +81,7 @@ export default function InvoiceDetails({ invoice }) {
   const renderAttachments = (
     <>
       <Typography variant="h6" gutterBottom>
-      Attachments
+      {Translate("attachments")}
       </Typography>
       <TableContainer sx={{ overflow: 'unset', mt: 5, mb: 7 }}>
         <Scrollbar>
@@ -84,7 +91,11 @@ export default function InvoiceDetails({ invoice }) {
 
                 <TableCell width={40}>#</TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>Name</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("name")}</TableCell>
+
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("user")}</TableCell>
+
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("createDate")}</TableCell>
 
               </TableRow>
             </TableHead>
@@ -100,7 +111,9 @@ export default function InvoiceDetails({ invoice }) {
                     {/* </Box> */}
                   </TableCell>
 
-                  {/* <TableCell>{row.quantity}</TableCell> */}
+                  <TableCell>{row.createdBy}</TableCell>
+
+                  <TableCell>{row.createdDate.substring(0, row.createdDate.indexOf('T'))}</TableCell>
 
                   
                 </TableRow>
@@ -163,168 +176,168 @@ export default function InvoiceDetails({ invoice }) {
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-              Issue Date: 
+              {Translate("issueDate")}: 
             </Typography>
               {currentInvoice?.issueInvoiceDate }
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Amount
+              {Translate("amount")}
             </Typography>
             {currentInvoice?.invoiceAmount}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Currency
+              {Translate("currency")}
             </Typography>
             {currentInvoice?.currency}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Customer Code
+              {Translate("customerCode")}
             </Typography>
             {currentInvoice?.customerCode}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Name English
+              {Translate("nameEnglish")}
             </Typography>
             {currentInvoice?.customerNameEn}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Name Arabic
+              {Translate("nameArabic")}
             </Typography>
             {currentInvoice?.customerNameEn}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-              Po Number
+              {Translate("PoNumber")}
             </Typography>
             {currentInvoice?.customerPO}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            PO Value
+              {Translate("POValue")}
             </Typography>
-            {currentInvoice?.poValue}
+              {currentInvoice?.poValue}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Region
+              {Translate("region")}
             </Typography>
             {currentInvoice?.region}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Contract Number
+              {Translate("contractNumber")}
             </Typography>
             {currentInvoice?.contractNo}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Delivery Date
+              {Translate("deliveryDate")}
             </Typography>
             {currentInvoice?.deliveryDate}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Installation Date
+              {Translate("installationDate")}
             </Typography>
-            {currentInvoice?.installationDate}
+            {currentInvoice?.installationDate.substring(0, currentInvoice?.installationDate.indexOf("T"))}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Department
+              {Translate("department")}
             </Typography>
             {currentInvoice?.department}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Installation Status
+              {Translate("installationStatus")}
             </Typography>
             {currentInvoice?.installationStatus}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Days To Collected
+              {Translate("daysToCollected")}
             </Typography>
             {currentInvoice?.daysToCollected}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Acknowledge Status
+              {Translate("acknowledgeStatus")}
             </Typography>
             {currentInvoice?.acknowledgeStatus}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Collection Source
+              {Translate("collectionSource")}
             </Typography>
             {currentInvoice?.collectionSource}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Claim Status
+              {Translate("claimStatus")}
             </Typography>
             {currentInvoice?.claimStatus}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Claims Detail Status
+              {Translate("claimsDetailStatus")}
             </Typography>
             {currentInvoice?.claimsDetailStatus}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Sales Confirm
+              {Translate("salesConfirm")}
             </Typography>
             {currentInvoice?.salesConfirm}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Created By
+              {Translate("createdBy")}
             </Typography>
             {currentInvoice?.createdBy}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Sales Taker
+              {Translate("salesTaker")}
             </Typography>
             {currentInvoice?.salesTakerName}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Collector Name
+              {Translate("collectorName")}
             </Typography>
             {currentInvoice?.collectorName}
           </Stack>
 
           <Stack sx={{ typography: 'body2', mb: 3}}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Responsible Engineer Name
+              {Translate("responsibleEngineerName")}
             </Typography>
             {currentInvoice?.responsibleEngineerName}
           </Stack>
@@ -338,6 +351,10 @@ export default function InvoiceDetails({ invoice }) {
       </Card>
     
   );
+}
+
+const formateDate = (date) => {
+   date.substring(0, date.indexOf('T'))
 }
 
 InvoiceDetails.propTypes = {

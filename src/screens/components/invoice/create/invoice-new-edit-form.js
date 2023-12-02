@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useLocales } from 'src/locales';
 import { useMemo } from 'react';
 import * as Yup from 'yup';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -32,6 +33,11 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
   const loadingSend = useBoolean();
 
+  // import { useLocales } from 'src/locales';
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text);
+
   const NewInvoiceSchema = Yup.object().shape({
     customerId: Yup.mixed().nullable().required('Customer is required'),
     createDate: Yup.mixed().nullable().required('Create date is required'),
@@ -41,9 +47,9 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     currency: Yup.string().required('Currency is required'),
     customerCode: Yup.string().required('Customer code is required'),
     region: Yup.string().required('Region is required'),
-    customerPO: Yup.string().required('Customer PO number is required'),
-    poValue: Yup.number().required('PO value is required'),
-    contractNo: Yup.string().required('contractNo is required'),
+    customerPO: Yup.string(),
+    poValue: Yup.number(),
+    contractNo: Yup.string(),
     salesPerson: Yup.string().required('salesPerson is required'),
 
   });
@@ -85,24 +91,6 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
   // const onSubmit: SubmitHandler<defaultValues> = (data) => console.log(data);
 
-  const handleSaveAsDraft = handleSubmit(async (data) => {
-    console.info('Draft DATA', JSON.stringify(data));
-    loadingSave.onTrue();
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      reset();
-      loadingSave.onFalse();
-
-
-
-      router.push(paths.dashboard.invoice.root);
-      console.info('DATA', JSON.stringify(data, null, 2));
-    } catch (error) {
-      console.error(error);
-      loadingSave.onFalse();
-    }
-  });
 
   const handleCreateAndSend = handleSubmit(async (data) => {
     loadingSend.onTrue(); 
@@ -183,7 +171,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
           loading={loadingSend.value && isSubmitting}
           type='submit'
         >
-          {currentInvoice ? 'Update' : 'Create'} & Send
+          {currentInvoice ? Translate("update") : Translate("create")}) 
         </LoadingButton>
       </Stack>
     </FormProvider>

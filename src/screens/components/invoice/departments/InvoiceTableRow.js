@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
+import { useLocales } from 'src/locales';
 // @mui
 import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
-import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
@@ -15,9 +15,7 @@ import ListItemText from '@mui/material/ListItemText';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // utils
-import { fCurrency } from 'src/utils/format-number';
 // components
-import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
@@ -37,6 +35,10 @@ export default function InvoiceTableRow({
 }) {
   const { id, invoiceNo, issueInvoiceDate, invoiceAmount, region, customerNameEn, customerNameAr, sales } = row;
 
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text);
+
   const confirm = useBoolean();
 
   const popover = usePopover();
@@ -49,7 +51,7 @@ export default function InvoiceTableRow({
           }}
         >
           <Iconify icon="solar:pen-bold" />
-          Edit
+          {Translate("edit")}
         </MenuItem>
     :  null;
 
@@ -60,7 +62,7 @@ export default function InvoiceTableRow({
         color='success'
         onClick={() => handleConfirmAndReject(id, 'Confirm')}
       >
-        Accept
+        {Translate("accept")}
       </Button>
     </TableCell>
   :  null;
@@ -72,7 +74,7 @@ export default function InvoiceTableRow({
         color='error'
         onClick={() => handleConfirmAndReject(id, 'Reject')}
       >
-        Reject
+        {Translate("reject")}
       </Button>
     </TableCell>
   :  null;
@@ -84,7 +86,7 @@ export default function InvoiceTableRow({
         color='success'
         onClick={() => handleOpen(id)}
       >
-        Assign {salesStatus === 1 ? 'Engineer' : 'Collector'}
+        {Translate("assign")} {salesStatus === 1 ? Translate("engineer") : Translate("collector")}
       </Button>
     </TableCell>
   :  null;
@@ -169,7 +171,7 @@ export default function InvoiceTableRow({
           }}
         >
           <Iconify icon="solar:eye-bold" />
-          View
+          {Translate("view")}
         </MenuItem>
 
         
@@ -182,11 +184,11 @@ export default function InvoiceTableRow({
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}
-        title="Delete"
-        content="Are you sure want to delete?"
+        title={Translate("delete")}
+        content={Translate("deleteDialogContent")}
         action={
           <Button variant="contained" color="error" onClick={onDeleteRow}>
-            Delete
+            {Translate("delete")}
           </Button>
         }
       />

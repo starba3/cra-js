@@ -10,11 +10,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Alert from '@mui/material/Alert';
 import { Icon } from '@iconify/react';
 import Collapse from '@mui/material/Collapse';
+import { useLocales } from 'src/locales';
 
 import CircularProgress from '@mui/material/CircularProgress';
 
-const Fileupload = ({ open, handleClose, handleFileUpload, isUploadComplete, isEmportError, setIsUploadComplete, alertMessage, loading }) => {
-    <Dialog open={open} onClose={handleClose}>
+function Fileupload({ open, handleClose, handleFileUpload, isUploadComplete, isEmportError, setIsUploadComplete, alertMessage, loading }) {
+    
+    const { t } = useLocales();
+    const Translate = (text) => t(text);
+
+    return (
+     <Dialog open={open} onClose={handleClose}>
         <DialogTitle>File upload</DialogTitle>
         <DialogContent >
         <TextField
@@ -62,6 +68,7 @@ const Fileupload = ({ open, handleClose, handleFileUpload, isUploadComplete, isE
             <Button onClick={handleFileUpload} >Import</Button>
         </DialogActions>
     </Dialog>
+     );
 }
 
 export default Fileupload

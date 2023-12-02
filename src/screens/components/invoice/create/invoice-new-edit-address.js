@@ -1,11 +1,10 @@
 import { useFormContext } from 'react-hook-form';
+import { useLocales } from 'src/locales';
 // @mui
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import CircularProgress from '@mui/material/CircularProgress'; 
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useResponsive } from 'src/hooks/use-responsive';
@@ -31,6 +30,10 @@ export default function InvoiceNewEditAddress() {
     setValue,
     formState: { errors },
   } = useFormContext();
+
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text);
 
   console.log('customers: ', customers);
   console.log('salesPeople: ', salesPeople);
@@ -82,7 +85,7 @@ export default function InvoiceNewEditAddress() {
         <Stack sx={{ width: 1 }}>
           <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
             <Typography variant="h6" sx={{ color: 'text.disabled', flexGrow: 1 }}>
-              Customer:
+            {Translate("customer")}:
             </Typography>
 
             <IconButton onClick={from.onTrue}>
@@ -91,16 +94,16 @@ export default function InvoiceNewEditAddress() {
           </Stack>
 
           <Stack spacing={1}>
-            <Typography variant="subtitle2">Code: {customerObj?.customerCode}</Typography>
-            <Typography variant="body2">Name English: {customerObj?.customerNameEn}</Typography>
-            <Typography variant="body2">Name Arabic:  {customerObj?.customerNameAr}</Typography> 
+            <Typography variant="subtitle2">{Translate("code")}: {customerObj?.customerCode}</Typography>
+            <Typography variant="body2">{Translate("nameEnglish")}: {customerObj?.customerNameEn}</Typography>
+            <Typography variant="body2">{Translate("nameArabic")}:  {customerObj?.customerNameAr}</Typography> 
           </Stack>
         </Stack>
 
         <Stack sx={{ width: 1 }}>
           <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
             <Typography variant="h6" sx={{ color: 'text.disabled', flexGrow: 1 }}>
-              Sales Person:
+            {Translate("salesPerson")}:
             </Typography>
 
             <IconButton onClick={to.onTrue}>
@@ -123,7 +126,7 @@ export default function InvoiceNewEditAddress() {
       </Stack>
 
       <AddressListDialog
-        title="Customers"
+        title={Translate("customers")}
         open={from.value}
         onClose={from.onFalse}
         selected={(selectedId) => getAllCustomers?.id === selectedId}
@@ -145,7 +148,7 @@ export default function InvoiceNewEditAddress() {
       />
 
        <AddressListDialogSales
-        title="Sales"
+        title={Translate("sales")}
         open={to.value}
         onClose={to.onFalse}
         selected={(selectedId) => salesPerson?.id === selectedId}

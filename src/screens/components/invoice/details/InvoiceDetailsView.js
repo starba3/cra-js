@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useLocales } from 'src/locales';
 // @mui
 import Container from '@mui/material/Container';
 import CircularProgress from '@mui/material/CircularProgress';  
 // routes
 import { paths } from 'src/routes/paths';
 // _mock
-import { _invoices } from 'src/_mock';
 import { getInvoicesById } from 'src/data-access/invoice'
 // components
 import { useSettingsContext } from 'src/components/settings';
@@ -18,6 +18,10 @@ import InvoiceDetails from 'src/screens/components/invoice/details/InvoiceDetail
 
 export default function InvoiceDetailsView({ id }) {
   const settings = useSettingsContext();
+
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text);
   
   const [currentInvoice, setCurrentInvoice] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -49,12 +53,12 @@ export default function InvoiceDetailsView({ id }) {
         heading={currentInvoice?.invoiceNo}
         links={[
           {
-            name: 'Dashboard',
+            name: Translate("app"),
             href: paths.dashboard.root,
           },
           {
-            name: 'Invoice',
-            href: paths.dashboard.invoice.root,
+            name: Translate("invoice"),
+            href: paths.dashboard.invoice,
           },
           { name: currentInvoice?.invoiceNo },
         ]}

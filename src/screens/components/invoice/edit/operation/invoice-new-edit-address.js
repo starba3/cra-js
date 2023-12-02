@@ -1,4 +1,5 @@
 import { useFormContext, Controller } from 'react-hook-form';
+import { useLocales } from 'src/locales';
 import PropTypes from 'prop-types';
 // @mui
 import Stack from '@mui/material/Stack';
@@ -10,11 +11,9 @@ import Typography from '@mui/material/Typography';
 // hooks
 import { useResponsive } from 'src/hooks/use-responsive';
 // _mock
-import { _addressBooks } from 'src/_mock';
 // components
 import Iconify from 'src/components/iconify';
 // lists
-import { getAllCustomers, getSalesPersonList } from 'src/data-access/customers';
 //
 
 
@@ -30,43 +29,15 @@ export default function InvoiceNewEditAddress({currentInvoice}) {
     formState: { errors },
   } = useFormContext();
 
-  const customers = getAllCustomers();
-  const salesPeople = getSalesPersonList();
-
-  const selectedCustomer = {};
-  const selectedSalesPerson = {};
-
-  const updateCustomer = (customer) => {
-    console.log(customer)
-    selectedCustomer.customerCode = customer.customerCode
-    selectedCustomer.customerNameAr = customer.customerNameAr
-    selectedCustomer.customerNameEn = customer.customerNameEn
-    console.log('selectedCustomer', customer)
-  }
-
-  const updateSalesPerson = (person) => {
-    salesPeople.username = person.salesPeople
-  }
-
-
   const mdUp = useResponsive('up', 'md');
 
-  const values = watch();
+  const { t } = useLocales()
 
-  const { customerId, customerCode, salesPerson, customerObj, salesPersonObj } = values;
+  const Translate = (text) => t(text)
 
-  // setValue('salesPerson', selectedSalesPerson.username)
-  // setValue('customerId', selectedCustomer.id)
-  // setValue('customerCode', selectedCustomer.customerCode)
+  // const values = watch();
+  // const { customerId, customerCode, salesPerson, customerObj, salesPersonObj } = values;
 
-  
-  // console.log('values', values)
-
-
-
-  // const from = useBoolean();
-
-  // const to = useBoolean();
 
   return (
       <Stack
@@ -84,7 +55,7 @@ export default function InvoiceNewEditAddress({currentInvoice}) {
         <Stack sx={{ width: 1 }}>
           <Stack direction="row" alignItems="center" sx={{ mb: 1}}>
             <Typography variant="h6" sx={{ color: 'text.disabled', flexGrow: 1 }}>
-              Attachment:
+              {Translate("attachment")}:
             </Typography>
           </Stack>
 
@@ -101,7 +72,7 @@ export default function InvoiceNewEditAddress({currentInvoice}) {
         <Stack sx={{ width: 1 }}>
           <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
             <Typography variant="h6" sx={{ color: 'text.disabled', flexGrow: 1 }}>
-              New Note:
+              {Translate("newNote")}:
             </Typography>
           </Stack>
 
@@ -115,7 +86,7 @@ export default function InvoiceNewEditAddress({currentInvoice}) {
                   onChange={(newValue) => {
                     field.onChange(newValue);
                   }}
-                  placeholder="New Note here"
+                  placeholder={Translate("newNotePlaceHolder")}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">

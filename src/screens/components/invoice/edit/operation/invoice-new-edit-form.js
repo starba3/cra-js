@@ -181,7 +181,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       if(installationDate && arrays.installationDate.includes(currentInvoice.department.toLowerCase())) {
         body.push({
           op : "replace",
-          path : "/DeliveryDate",
+          path : "/InstallationDate",
           value : `${formatDate(installationDate)}`
         })
       }
@@ -189,7 +189,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       if(installationStatus && arrays.installationStatus.includes(currentInvoice.department.toLowerCase())) {
         body.push({
           op : "replace",
-          path : "/InstallationDate",
+          path : "/installationStatus",
           value : `${installationStatus}`
         })
       }

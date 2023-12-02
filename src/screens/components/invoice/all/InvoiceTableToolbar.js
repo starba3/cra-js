@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useCallback } from 'react';
+import { useLocales } from 'src/locales';
 // @mui
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Stack from '@mui/material/Stack';
@@ -26,6 +27,10 @@ export default function InvoiceTableToolbar({
   paidStatusOptions,
 }) {
   const popover = usePopover();
+
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text);
 
   const handleFilterName = useCallback(
     (event) => {
@@ -88,13 +93,13 @@ export default function InvoiceTableToolbar({
           width: { xs: 1, md: 180 },
         }}
       >
-        <InputLabel>Department</InputLabel>
+        <InputLabel>{Translate("departments")}</InputLabel>
 
         <Select
           multiple
           value={filters.service}
           onChange={handleFilterService}
-          input={<OutlinedInput label="Department" />}
+          input={<OutlinedInput label={Translate("departments")} />}
           renderValue={(selected) => selected.map((value) => value).join(', ')}
           sx={{ textTransform: 'capitalize' }}
         >
@@ -113,13 +118,13 @@ export default function InvoiceTableToolbar({
             width: { xs: 1, md: 180 },
           }}
         >
-          <InputLabel>Paid Status</InputLabel>
-
+          <InputLabel>{Translate("paidStatus")}</InputLabel>
+          
           <Select
             multiple
             value={filters.paidStatus}
             onChange={handleFilterPaidStatus}
-            input={<OutlinedInput label="Paid Status" />}
+            input={<OutlinedInput label={Translate("paidStatus")} />}
             renderValue={(selected) => selected.map((value) => value).join(', ')}
             sx={{ textTransform: 'capitalize' }}
           >
@@ -133,7 +138,7 @@ export default function InvoiceTableToolbar({
         </FormControl>
 
         <DatePicker
-          label="Start date"
+          label={Translate("startDate")}
           value={filters.startDate}
           onChange={handleFilterStartDate}
           slotProps={{ textField: { fullWidth: true } }}
@@ -143,7 +148,7 @@ export default function InvoiceTableToolbar({
         />
 
         <DatePicker
-          label="End date"
+          label={Translate("startDate")}
           value={filters.endDate}
           onChange={handleFilterEndDate}
           slotProps={{
@@ -162,7 +167,7 @@ export default function InvoiceTableToolbar({
             fullWidth
             value={filters.name}
             onChange={handleFilterName}
-            placeholder="Search customer or invoice number..."
+            placeholder={Translate("searchInvoiceNamePlaceHolder")}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -190,7 +195,7 @@ export default function InvoiceTableToolbar({
           }}
         >
           <Iconify icon="solar:printer-minimalistic-bold" />
-          Print
+          {Translate("print")}
         </MenuItem>
 
         <MenuItem
@@ -199,7 +204,7 @@ export default function InvoiceTableToolbar({
           }}
         >
           <Iconify icon="solar:import-bold" />
-          Import
+          {Translate("import")}
         </MenuItem>
 
         <MenuItem
@@ -208,7 +213,7 @@ export default function InvoiceTableToolbar({
           }}
         >
           <Iconify icon="solar:export-bold" />
-          Export
+          {Translate("export")}
         </MenuItem>
       </CustomPopover>
     </>

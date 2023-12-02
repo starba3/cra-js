@@ -47,14 +47,9 @@ export default function CustomerTableRow({
 
         <TableCell >{customerCode}</TableCell>
 
-        {/* <TableCell align="right" sx={{ px: 1 }}>
-          <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
-            <Iconify icon="eva:more-vertical-fill" />
-          </IconButton>
-        </TableCell> */}
       </TableRow>
 
-      <CustomPopover
+      {/* <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
         arrow="right-top"
@@ -94,7 +89,7 @@ export default function CustomerTableRow({
             Delete
           </Button>
         }
-      />
+      /> */}
     </>
   );
 }

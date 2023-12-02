@@ -5,6 +5,7 @@ import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import { useLocales } from 'src/locales';
 // components
 import Iconify from 'src/components/iconify';
 import { shortDateLabel } from 'src/components/custom-date-range-picker';
@@ -22,6 +23,9 @@ export default function InvoiceTableFiltersResult({
 }) {
   const shortLabel = shortDateLabel(filters.startDate, filters.endDate);
 
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text);
 
   const handleRemoveDate = () => {
     onFilters('startDate', null);
@@ -33,7 +37,7 @@ export default function InvoiceTableFiltersResult({
       <Box sx={{ typography: 'body2' }}>
         <strong>{results}</strong>
         <Box component="span" sx={{ color: 'text.secondary', ml: 0.25 }}>
-          results found
+          {Translate("resultsfound")}
         </Box>
       </Box>
 

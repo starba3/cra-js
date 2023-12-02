@@ -6,6 +6,7 @@ import { paths } from 'src/routes/paths';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
+import { useLocales } from 'src/locales';
 import InvoiceNewEditForm from './invoice-new-edit-form';
 
 // ----------------------------------------------------------------------
@@ -13,21 +14,25 @@ import InvoiceNewEditForm from './invoice-new-edit-form';
 export default function InvoiceCreateView() {
   const settings = useSettingsContext();
 
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text);
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
         heading="Create a new invoice"
         links={[
           {
-            name: 'Dashboard',
+            name: Translate("app"),
             href: paths.dashboard.root,
           },
           {
-            name: 'Invoice',
+            name: Translate("invoice"),
             href: paths.dashboard.invoice.root,
           },
           {
-            name: 'New Invoice',
+            name: Translate("newInvoice"),
           },
         ]}
         sx={{

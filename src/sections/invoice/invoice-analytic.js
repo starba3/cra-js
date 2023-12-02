@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useLocales } from 'src/locales';
 // @mui
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -13,6 +14,11 @@ import Iconify from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 export default function InvoiceAnalytic({ title, total, icon, color, percent, price }) {
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text);
+  
+
   return (
     <Stack
       spacing={2.5}
@@ -51,7 +57,7 @@ export default function InvoiceAnalytic({ title, total, icon, color, percent, pr
         <Typography variant="subtitle1">{title}</Typography>
 
         <Box component="span" sx={{ color: 'text.disabled', typography: 'body2' }}>
-          {fShortenNumber(total)} invoices
+          {fShortenNumber(total)} {Translate("invoices")}
         </Box>
 
         <Typography variant="subtitle2">{fCurrency(price)}</Typography>

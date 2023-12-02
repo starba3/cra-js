@@ -111,17 +111,10 @@ export default function CustomerListView() {
   const [tableData, setTableData] = useState(dataGridData);
 
   const [filters, setFilters] = useState(defaultFilters);
-
-  const [open, setOpen] = React.useState(false);
-  const [openErrorList, setOpenErrorList] = useState(false);
-  const [errorList, setErrorList] = useState(['']);
-  const [isEmportError, setIsEmportError] = useState(false);
-  const [isUploadComplete, setIsUploadComplete] = useState(false);
+  
   const [alertMessage, setAlertMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [openInquiry, setOpenInquiry] = useState(false);
-  const [inquiryId, setInquiryId] = useState(0);
-  const [inquiryData, setInquiryData] = useState({});
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -164,16 +157,6 @@ export default function CustomerListView() {
     (!!filters.startDate && !!filters.endDate);
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
-
-  const getInvoiceLength = (status) => tableData.filter((item) => item.paidStatus === status).length;
-
-  const getTotalAmount = (status) =>
-    sumBy(
-      tableData.filter((item) => item.paidStatus === status),
-      'invoiceAmount'
-    );
-
-  const getPercentByStatus = (status) => (getInvoiceLength(status) / tableData.length) * 100;
 
   const handleFilters = useCallback(
     (name, value) => {
@@ -221,120 +204,16 @@ export default function CustomerListView() {
     [router]
   );
 
-  const handleFilterStatus = useCallback(
-    (event, newValue) => {
-      handleFilters('paidStatus', newValue);
-    },
-    [handleFilters]
-  );
 
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
-  const handleOpenInquiry = (id) => {
-    setInquiryId(id);
-    setOpenInquiry(true);
-  }
 
-  const handleCloseInquiry = () => {
-    setInquiryId(0);
-    setOpenInquiry(false);
-  }
-
-  const handleClose = () => {
-    setOpen(false);
-    setIsUploadComplete(false);
-  };
-
-  const handleClickOpenErrorList = () => {
-    setOpenErrorList(true);
-  };
-
-  const handleCloseErrorList = () => {
-    setOpenErrorList(false);
-  };
-  
-  const handleFileUpload = () => {
-
-    
-    console.log('Loading:', loading);
-
-    const formData = new FormData();
-    
-    const fileInput = document.querySelector("#file").files[0];      
-    
-    if(fileInput) {
-      setLoading(true);
-      formData.append('file', fileInput); 
-      
-      try {
-        
-        
-        // Send create invoice request
-        
-        console.log('Loading', loading)
-
-        const url = getInvoiceImportUrl()
-        console.log('Url', url )
-        fetch(url, {
-          mode: 'cors',
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-          },
-          body: formData,
-          Cache: 'default'  
-        })
-        .then(async response => {
-          await new Promise(resolve => setTimeout(resolve, 3000));
-          
-          if (!response.ok) {
-            if (response.status === 400 || response.status === 415) {
-
-              const error = await response.text();
-
-              throw new Error(`Bad Request: ${error}`);
-            } 
-            // For other error status codes, throw a generic error
-            throw new Error('Network response was not ok');
-            
-          }
-          return response.text(); // Use text() instead of json()
-          
-        })
-        .then(res => {
-          setIsEmportError(false)
-          setAlertMessage(res)
-        })
-        .catch(error => {
-          console.error('Fetch Error:', error);
-          
-          setAlertMessage("Invalid Data, check the file and try again")
-
-          setIsEmportError(true)
-        })
-         
-      } catch (error) {
-        // Empty
-      } finally {
-        setLoading(false)
-      }
-    }
-    else {
-      setIsEmportError(true)
-      setAlertMessage('No file selecetd.')
-    }
-    setIsUploadComplete(true)
-  }
 
   return (
-    <>
-      <Container maxWidth={settings.themeStretch ? false : 'lg'}>
+    <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
           heading="List"
           links={[
@@ -380,47 +259,6 @@ export default function CustomerListView() {
             mb: { xs: 3, md: 5 },
           }}
         />
-
-        <Card
-          sx={{
-            mb: { xs: 3, md: 5 },
-          }}
-        >
-          {/* <Scrollbar>
-            <Stack
-              direction="row"
-              divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
-              sx={{ py: 2 }}
-            >
-              <InvoiceAnalytic
-                title="Total"
-                total={tableData.length}
-                percent={100}
-                price={sumBy(tableData, 'invoiceAmount')}
-                icon="solar:bill-list-bold-duotone"
-                color={theme.palette.info.main}
-              />
-
-               <InvoiceAnalytic
-                title="Paid"
-                total={getInvoiceLength('paid')}
-                percent={getPercentByStatus('paid')}
-                price={getTotalAmount('paid')}
-                icon="solar:file-check-bold-duotone"
-                color={theme.palette.success.main}
-              />
-
-              <InvoiceAnalytic
-                title="UnPaid"
-                total={getInvoiceLength('unpaid')}
-                percent={getPercentByStatus('unpaid')}
-                price={getTotalAmount('unpaid')}
-                icon="solar:sort-by-time-bold-duotone"
-                color={theme.palette.warning.main}
-              />
-            </Stack>
-          </Scrollbar> */}
-        </Card>
 
         <Card>
           <CustomerTableToolbar
@@ -476,7 +314,7 @@ export default function CustomerListView() {
                         onViewRow={() => handleViewRow(row.id)}
                         onEditRow={() => handleEditRow(row.id)}
                         onDeleteRow={() => handleDeleteRow(row.id)}
-                        handleOpenInquiry={() => handleOpenInquiry(row.id)}
+                        handleOpenInquiry={() => console.log(row.id)}
                       />
                     ))}
 
@@ -502,140 +340,6 @@ export default function CustomerListView() {
           />
         </Card>
       </Container>
-
-      {/* <ConfirmDialog
-        open={confirm.value}
-        onClose={confirm.onFalse}
-        title="Delete"
-        content={
-          <>
-            Are you sure want to delete <strong> {table.selected.length} </strong> items?
-          </>
-        }
-        action={
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => {
-              handleDeleteRows();
-              confirm.onFalse();
-            }}
-          >
-            Delete
-          </Button>
-        }
-      /> */}
-
-      {/* <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>File upload</DialogTitle>
-        <DialogContent >
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="file"
-            label="Import file"
-            type="file"
-            fullWidth
-            variant="standard"
-            inputProps={{ accept: '.xls, .xlsx' }}
-          />
-            <Collapse in={isUploadComplete}>
-              <Alert
-                severity={isEmportError ? "error" : "success"}
-                action={
-                  <IconButton
-                    aria-label="close"
-                    color="inherit"
-                    size="small"
-                    onClick={() => {
-                      setIsUploadComplete(false);
-                    }}
-                    
-                  >
-                    <Icon icon="ic:baseline-close" />
-
-                  </IconButton>
-                }
-                sx={{ mb: 2 }}
-              >
-                {alertMessage}
-              </Alert>
-              
-            </Collapse>
-          
-            {loading && <CircularProgress />}
-          
-        </DialogContent>
-        
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleFileUpload} >Import</Button>
-        </DialogActions>
-      </Dialog>  */}
-
-
-      {/* <Dialog
-        open={openInquiry}
-        maxWidth={false}
-        color="#ef5350"
-        // TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-
-      >
-        <DialogTitle>Invoice Inquiry</DialogTitle>
-        <DialogContent>
-          <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Typography>Invoice Number</Typography>
-            <Typography>Created By</Typography>
-            <Typography>Creation Date</Typography>
-          </Stack>
-          {Object.prototype.hasOwnProperty.call(inquiryData, 'invoiceData') && 
-              <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
-                <Typography>{inquiryData.invoiceData.invoiceNO}</Typography>
-                <Typography>{inquiryData.invoiceData.createdBy}</Typography>
-                <Typography>
-                  {
-                    inquiryData.invoiceData.createdDate.substring(0, inquiryData.invoiceData.createdDate.indexOf('T'))
-                  }
-                </Typography>
-              </Stack>
-          }
-          <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
-            <TableHead>
-              <TableRow>
-                <TableCell>Property</TableCell>
-                <TableCell align="right">Old Value</TableCell>
-                <TableCell align="right">New Value</TableCell>
-                <TableCell align="right">Last Updated</TableCell>
-                <TableCell align="right">Updated By</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-            {Object.prototype.hasOwnProperty.call(inquiryData, 'logs') && inquiryData.logs.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                {row.propertyName}
-                </TableCell>
-                <TableCell align="right">{row.oldValue}</TableCell>
-                <TableCell align="right">{row.newValue}</TableCell>
-                <TableCell align="right">{row.dateModified.substring(0, row.dateModified.indexOf('T'))}</TableCell>
-                <TableCell align="right">{row.modifiedBy}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-          </TableContainer>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenInquiry(false)}>Close</Button>
-        </DialogActions>
-      </Dialog> */}
-
-    </>
 
     
   );
@@ -664,32 +368,32 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
       );
     }
   
-    if (status !== 'all') {
-      inputData = inputData.filter((invoice) => invoice.status === status);
-    }
+    // if (status !== 'all') {
+    //   inputData = inputData.filter((invoice) => invoice.status === status);
+    // }
   
-    if (service.length) {
-      inputData = inputData.filter((invoice) =>
-        // service.map((serviceName) => serviceName.toLowerCase()).includes(invoice.department)
-        service.includes('All') || service.includes(invoice.department)
-      );
-    }
+    // if (service.length) {
+    //   inputData = inputData.filter((invoice) =>
+    //     // service.map((serviceName) => serviceName.toLowerCase()).includes(invoice.department)
+    //     service.includes('All') || service.includes(invoice.department)
+    //   );
+    // }
     
-    if (paidStatus.length) {
-      inputData = inputData.filter((invoice) =>
-        paidStatus.includes('All') || paidStatus.map((option) => option.toLowerCase()).includes(invoice.paidStatus)
-      );
-    }
+    // if (paidStatus.length) {
+    //   inputData = inputData.filter((invoice) =>
+    //     paidStatus.includes('All') || paidStatus.map((option) => option.toLowerCase()).includes(invoice.paidStatus)
+    //   );
+    // }
 
-    if (!dateError) {
-      if (startDate && endDate) {
-        inputData = inputData.filter(
-          (invoice) =>
-            fTimestamp(invoice.issueInvoiceDate) >= fTimestamp(startDate) &&
-            fTimestamp(invoice.issueInvoiceDate) <= fTimestamp(endDate)
-        );
-      }
-    }
+    // if (!dateError) {
+    //   if (startDate && endDate) {
+    //     inputData = inputData.filter(
+    //       (invoice) =>
+    //         fTimestamp(invoice.issueInvoiceDate) >= fTimestamp(startDate) &&
+    //         fTimestamp(invoice.issueInvoiceDate) <= fTimestamp(endDate)
+    //     );
+    //   }
+    // }
   
     return inputData;
   }
