@@ -14,6 +14,8 @@ const ROOTS = {
   DASHBOARD: '/dashboard',
   STATUS: '/status',
   REPORTS: '/reports',
+  CUSTOMER: '/customer',
+  PRODUCT: '/product',
   DEPARTMENT: {
     main: '/department',
     operation: 'operation',
@@ -243,6 +245,12 @@ export const paths = {
     invoiceForCustomers: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/invoiceForCustomers`,
     gmReport: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/GmReport`,
     
+  },
+  // Customers
+  customers: {
+    root: ROOTS.CUSTOMER,
+    list: `${ROOTS.CUSTOMER}/list`,
+    create: `${ROOTS.CUSTOMER}/create`,
   },
 
 };

@@ -22,7 +22,7 @@ export default function InvoiceNewEditStatusDate() {
       <Stack
         spacing={2}
         direction={{ xs: 'column', sm: 'row' }}
-        sx={{ p: 3, bgcolor: 'background.neutral' }}
+        sx={{ p: 3 }}
       >
         <RHFTextField
           name="invoiceNumber"
@@ -88,7 +88,7 @@ export default function InvoiceNewEditStatusDate() {
       <Stack
       spacing={2}
       direction={{ xs: 'column', sm: 'row' }}
-      sx={{ p: 3, bgcolor: 'background.neutral' }}
+      sx={{ p: 3 }}
       >
         <RHFTextField
           name="currency"

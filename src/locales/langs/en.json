@@ -23,7 +23,7 @@
   "booking": "booking",
   "profile": "profile",
   "account": "account",
-  "product": "product",
+  "product": "Product",
   "invoice": "invoice",
   "details": "details",
   "checkout": "checkout",
@@ -183,13 +183,12 @@
   "responsibleEngineerName": "Responsible Engineer Name",
   "newNote": "New Note", 
   "newNotePlaceHolder": "New Note here",
-  "deleteDialogContent": "Are you sure want to delete?", 
-  "resultsfound": "results found",
-  "engineer": "Engineer", 
-  "collector": "Collector", 
-  "deleteDialogContent": "Are you sure want to delete?", 
-  "resultsfound": "results found",
-  
+
+  "searchCustomerName": "Search customer name", 
+  "newCustomer": "New Customer", 
+  "createNewCustomer": "Create new customer",
+  "createNewProduct": "Create New Product",
+  "newProduct": "New Product",
 
   "nupco": "Nupco",
   "etimad": "Etimad",

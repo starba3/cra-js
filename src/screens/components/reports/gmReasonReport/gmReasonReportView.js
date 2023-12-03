@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import useLocales from 'src/locales/use-locales'
 
 // @mui
@@ -33,7 +33,7 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 // DATA ACCESS
-import { getAgingReport, getGmReport, getGmReasonReport } from 'src/data-access/reports';
+import { getGmReasonReport } from 'src/data-access/reports';
 
 // COMPONENTS
 import TableRowNew from './tableRow';

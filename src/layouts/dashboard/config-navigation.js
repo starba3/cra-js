@@ -391,7 +391,24 @@ export function useNavData() {
               // { title: t('edit'), path: paths.dashboard.invoice.demo.edit },
             ],
           },
-          
+          // Customer
+          {
+            title: t('customers'),
+            path: paths.customers.root,
+            icon: ICONS.user,
+            children: [
+              { 
+                title: t('list'),
+                path: paths.customers.list,
+
+              },
+              { 
+                title: t('create'),
+                path: paths.customers.create,
+
+              },
+            ],
+          },
           // USER
           {
             title: t('departments'),
@@ -464,13 +481,9 @@ export function useNavData() {
                 path: paths.reports.gmReasoneReport,
 
               },
-
-              
-
-              
-              
             ],
           },
+          
         ],
       },
     ],

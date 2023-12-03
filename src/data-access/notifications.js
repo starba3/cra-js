@@ -6,10 +6,12 @@ const STORAGE_KEY = 'accessToken';
 
 export async function getAllNotifications() {
 
-    const accessToken = sessionStorage.getItem(STORAGE_KEY);
+    // localStorage.clear();
+    const accessToken = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    // console.log('accessToken: ', accessToken.value)
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", `Bearer ${accessToken}`);
+    myHeaders.append("Authorization", `Bearer ${accessToken.value}`);
 
     let list = []
     await fetch(`${baseUrl}/api/Notifications`, {

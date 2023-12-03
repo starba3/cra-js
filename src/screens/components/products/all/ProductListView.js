@@ -44,8 +44,8 @@ import { _statusList } from 'src/lists/paidStatus'
 import { getAllCustomers } from 'src/data-access/customers';
 //
 import InvoiceTableFiltersResult from 'src/sections/invoice/invoice-table-filters-result';
-import CustomerTableRow from './CustomerTableRow';
-import CustomerTableToolbar from './CustomerTableToolbar';
+import CustomerTableRow from './ProductTableRow';
+import CustomerTableToolbar from './ProductTableToolbar';
 
 // ----------------------------------------------------------------------
 
@@ -63,7 +63,7 @@ const defaultFilters = {
 const dataGridData = await getAllInvoices()
 // ----------------------------------------------------------------------
 
-export default function CustomerListView() {
+export default function ProductListView() {
 
   const settings = useSettingsContext();
 
@@ -221,7 +221,7 @@ export default function CustomerListView() {
                 variant="contained"
                 startIcon={<Iconify icon="mingcute:add-line" />}
               >
-                {Translate("newCustomer")}
+                {Translate("newProduct0")}
               </Button>
               
           </Stack>

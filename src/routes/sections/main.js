@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
 // layouts
 import MainLayout from 'src/layouts/main';
 import SimpleLayout from 'src/layouts/simple';
@@ -33,6 +33,10 @@ const AgingViewMain = lazy(() => import('src/screens/reports/aging'));
 const InvoiceForCustomersViewMain = lazy(() => import('src/screens/reports/invoiceForCustomers'));
 const GmReportView = lazy(() => import('src/screens/reports/gmReportView'));
 const GmReasonReportView = lazy(() => import('src/screens/reports/GmReasonReportView'));
+// Customers
+const CustomerListViewMain = lazy(() => import('src/screens/customer/all/CustomerListView'));
+const CustomerCreateViewMain = lazy(() => import('src/screens/customer/create/CustomerCreateView'));
+
 // BLOG
 const PostListPage = lazy(() => import('src/pages/post/list'));
 const PostDetailsPage = lazy(() => import('src/pages/post/details'));
@@ -44,6 +48,7 @@ const InvoiceListViewByDepartment = lazy(() => import ("src/screens/invoice/depa
 // ----------------------------------------------------------------------
 
 export const mainRoutes = [
+  { path: 'cra-js', element: <Navigate to="/dashboard" /> },
   {
     element: (
       <MainLayout>
@@ -161,6 +166,14 @@ export const mainRoutes = [
       { 
         path: paths.reports.gmReasoneReport,
         element: <GmReasonReportView />  
+      },
+      { 
+        path: paths.customers.list,
+        element: <CustomerListViewMain />  
+      },
+      { 
+        path: paths.customers.create,
+        element: <CustomerCreateViewMain />  
       },
       
     ]

@@ -56,12 +56,21 @@ export function AuthProvider({ children }) {
 
   const initialize = useCallback(async () => {
     try {
-      const accessToken = sessionStorage.getItem(STORAGE_KEY);
+      const accessToken = localStorage.getItem(STORAGE_KEY);
 
-      if (accessToken && isValidToken(accessToken)) {
+      if (accessToken ) { // && isValidToken(accessToken)
         setSession(accessToken);
 
-        const response = await axios.get(endpoints.auth.me);
+        // const response = await axios.get(endpoints.auth.me);
+
+        const response = {
+          data: {
+            "accessToken": getWithExpiration(STORAGE_KEY),
+            "id": getWithExpiration("id"),
+            "userName": getWithExpiration("userName"),
+            "email": getWithExpiration("email"),
+          }
+        }
 
         const { user } = response.data;
 
@@ -125,10 +134,17 @@ export function AuthProvider({ children }) {
     // });
 
       const { token, id, userName } = response.data;
-      sessionStorage.setItem(STORAGE_KEY, token);
-      sessionStorage.setItem("id", id);
-      sessionStorage.setItem("userName", userName);
-      sessionStorage.setItem("email", email);
+
+      // sessionStorage.setItem(STORAGE_KEY, token);
+      // sessionStorage.setItem("id", id);
+      // sessionStorage.setItem("userName", userName);
+      // sessionStorage.setItem("email", email);
+
+      setWithExpiration(STORAGE_KEY, token, 10);
+      setWithExpiration("id", id, 10);
+      setWithExpiration("userName", userName, 10);
+      setWithExpiration("email", email, 10);
+      
       dispatch({
         type: 'LOGIN',
         payload: {
@@ -138,6 +154,31 @@ export function AuthProvider({ children }) {
 
 
   }, []);
+
+  // Set an item in localStorage with an expiration time
+  const setWithExpiration = (key, value, expirationInHours) => {
+    const expirationTime = new Date().getTime() + expirationInHours * 60 * 60 * 1000;
+    localStorage.setItem(key, JSON.stringify({ value, expirationTime }));
+  };
+
+  // Get an item from localStorage and check if it has expired
+  const getWithExpiration = (key) => {
+    const item = localStorage.getItem(key);
+    if (!item) {
+      return null;
+    }
+
+    const { value, expirationTime } = JSON.parse(item);
+
+    // Check if the item has expired
+    if (new Date().getTime() > expirationTime) {
+      // Remove the item if it has expired
+      localStorage.removeItem(key);
+      return null;
+    }
+
+    return value;
+  };
 
   // REGISTER
   const register = useCallback(async (email, password, firstName, lastName) => {
@@ -167,7 +208,8 @@ export function AuthProvider({ children }) {
 
   // LOGOUT
   const logout = useCallback(async () => {
-    setSession(null);
+    // setSession(null);
+    localStorage.clear();
     dispatch({
       type: 'LOGOUT',
     });

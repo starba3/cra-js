@@ -10,7 +10,7 @@ import { usePopover } from 'src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 
-export default function CustomerTableRow({
+export default function ProductTableRow({
   row,
   selected,
   onSelectRow,
@@ -82,7 +82,7 @@ export default function CustomerTableRow({
   );
 }
 
-CustomerTableRow.propTypes = {
+ProductTableRow.propTypes = {
   onDeleteRow: PropTypes.func,
   onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,

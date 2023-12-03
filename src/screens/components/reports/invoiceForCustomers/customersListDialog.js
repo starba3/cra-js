@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useCallback } from 'react';
 // @mui
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Dialog from '@mui/material/Dialog';
 import TextField from '@mui/material/TextField';
@@ -9,7 +8,6 @@ import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 import ListItemButton, { listItemButtonClasses } from '@mui/material/ListItemButton';
 // components
-import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import SearchNotFound from 'src/components/search-not-found';
 

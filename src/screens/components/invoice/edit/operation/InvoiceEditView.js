@@ -6,7 +6,6 @@ import { useLocales } from 'src/locales';
 import Container from '@mui/material/Container';
 import CircularProgress from '@mui/material/CircularProgress';
 //
-import InvoiceToolbar from 'src/sections/invoice/invoice-toolbar';
 // routes
 import { paths } from 'src/routes/paths';
 // Invoice
@@ -17,7 +16,6 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
 import InvoiceNewEditForm from 'src/screens/components/invoice/edit/operation/invoice-new-edit-form';
 
-import InvoiceDetails from 'src/screens/components/invoice/details/InvoiceDetails';
 
 // ----------------------------------------------------------------------
 

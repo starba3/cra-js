@@ -57,6 +57,7 @@ export default function InvoiceNewEditStatusDate({
         const data = await getCollectionData();
         setCollectionData(data);
         setCollectionSource(data.filter(option => option.entityType === 'Collection Source'))
+        
         console.log(data)
       } catch (error) {
         console.error('Error fetching invoice:', error);
@@ -69,9 +70,10 @@ export default function InvoiceNewEditStatusDate({
     
   }, []);
   
-  // if(!loading) {
-  //   
-  // }
+  if(!collectionSource) {
+    console.log('collectionSource[0]: ', collectionSource);
+    handleCollectionSourceChange(collectionSource[0]);
+  }
 
   const {
     control,
@@ -345,6 +347,7 @@ export default function InvoiceNewEditStatusDate({
         control={control}
         render={({ field }) => (
           <Select
+            
             style={outlinedStyle}
             value={field.value}
             onChange={(newValue) => {
@@ -355,8 +358,8 @@ export default function InvoiceNewEditStatusDate({
             renderValue={(selected) => selected}
             sx={{ textTransform: 'capitalize', fullWidth: true }}
           >
-            {collectionSource.map((option, index) => (
-              <MenuItem key={index} value={option.value}>
+            {collectionSource && collectionSource.map((option, index) => (
+              <MenuItem key={index} value={option.value} >
                 {option.value}
               </MenuItem>
             ))}

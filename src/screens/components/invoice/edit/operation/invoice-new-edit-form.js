@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react'
+import React, { useMemo, useState, useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
@@ -21,6 +21,7 @@ import { useRouter } from 'src/routes/hooks';
 // _mock
 import { getInvoiceEditUrl, getInvoiceRedirectUrl, getAddAttachmentUrl } from 'src/data-access/invoice';
 import { _departments_withoutAll } from 'src/lists/departments';
+
 
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -103,9 +104,9 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       DeliveryDate: currentInvoice?.DeliveryDate || new Date(),
       installationStatus: currentInvoice?.installationStatus || '',
       installationDate: currentInvoice?.installationDate || new Date(),
-      collectionSource: currentInvoice?.CollectionSource || '',
-      claimStatus: currentInvoice?.ClaimStatus || '',
-      claimsDetailStatus: currentInvoice?.ClaimsDetailStatus || '',
+      collectionSource: currentInvoice?.CollectionSource || 'Select Source',
+      claimStatus: currentInvoice?.ClaimStatus || 'Select Status',
+      claimsDetailStatus: currentInvoice?.ClaimsDetailStatus || 'Select Details',
     }),
     [currentInvoice]
   );

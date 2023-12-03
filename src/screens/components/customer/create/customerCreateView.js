@@ -1,33 +1,38 @@
 // @mui
 import Container from '@mui/material/Container';
+import { useLocales } from 'src/locales';
 // routes
 import { paths } from 'src/routes/paths';
 // components
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
-import InvoiceNewEditForm from './invoice-new-edit-form';
+import CustomerEditForm from './customerEditForm';
 
 // ----------------------------------------------------------------------
 
-export default function InvoiceCreateView() {
+export default function CustomerCreateView() {
   const settings = useSettingsContext();
+
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Create a new invoice"
+        heading={Translate("createNewCustomer")}
         links={[
           {
-            name: 'Dashboard',
+            name: Translate("app"),
             href: paths.dashboard.root,
           },
           {
-            name: 'Invoice',
-            href: paths.dashboard.invoice.root,
+            name: Translate("customer"),
+            
           },
           {
-            name: 'New Invoice',
+            name: Translate("newCustomer"),
           },
         ]}
         sx={{
@@ -35,7 +40,7 @@ export default function InvoiceCreateView() {
         }}
       />
 
-      <InvoiceNewEditForm />
+      <CustomerEditForm />
     </Container>
   );
 }
