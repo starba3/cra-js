@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import useLocales from 'src/locales/use-locales'
+import useLocales from 'src/locales/use-locales';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -18,7 +18,7 @@ import { useRouter } from 'src/routes/hooks';
 import Scrollbar from 'src/components/scrollbar';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-import BarChart from 'src/screens/components/reports/gmReport/Chart'
+import BarChart from 'src/screens/components/reports/gmReport/Chart';
 
 import {
   useTable,
@@ -62,6 +62,12 @@ export default function GmReportView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        let collections = collectionSource.reduce((acc, item) => `${acc + item},`, '');
+        
+        if(collections) {
+          collections = collections.substring(-1);
+        }
+
         let result = await getGmReport(collectionSource);
         result = result.map((item, index) => {
           item.id = index;
@@ -167,7 +173,7 @@ export default function GmReportView() {
                     )
                     .map((row, index) => (
                       <TableRowNew
-                        key={index.id}
+                        key={index}
                         row={row}
                         selected={table.selected.includes(row.id)}
                       />

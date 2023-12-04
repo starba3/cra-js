@@ -7,6 +7,7 @@ const Translate = (text) => {
 
 export function _sourcesList() {
     return [
+        { value: "All", text: Translate('all')},
         { value: "Nupco", text: Translate('nupco')},
         { value: "Etimad", text: Translate('etimad')},
         { value: "Cash", text: Translate('cash')},

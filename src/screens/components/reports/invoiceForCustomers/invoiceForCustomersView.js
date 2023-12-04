@@ -17,7 +17,7 @@ import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import CustomersListDialog from 'src/screens/components/reports/invoiceForCustomers/customersListDialog';
 // Data Access
-import { getAllCustomers } from 'src/data-access/customers';
+import { GetAllCustomersWithAll } from 'src/data-access/customers';
 import { getInvoiceForCustomers } from 'src/data-access/invoice';
 
 import {
@@ -51,20 +51,24 @@ export default function InvoiceForCustomersView() {
 
   const router = useRouter();
 
+  const { t } = useLocales()
+  const Translate = (text) => t(text);
+
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 
   const [tableData, setTableData] = useState([]);
   const [customersList, setCustomersList] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState('');
+  const [selectedCustomers, setSelectedCustomers] = useState([]);
   const [open, setOpen] = useState(false);
 
-  const { t } = useLocales()
-  const Translate = (text) => t(text);
+
 
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const result = await getAllCustomers();
+        const result = await GetAllCustomersWithAll();
+        console.log('Result: ', result);
         setCustomersList(result);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -74,18 +78,18 @@ export default function InvoiceForCustomersView() {
     fetchCustomers();
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getInvoiceForCustomers(selectedCustomer);
-        setTableData(result);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const result = await getInvoiceForCustomers(selectedCustomers);
+  //       setTableData(result);
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
 
-    fetchData();
-  }, [selectedCustomer]);
+  //   fetchData();
+  // }, [selectedCustomers]);
 
   const [filters, setFilters] = useState(defaultFilters);
 
@@ -153,7 +157,9 @@ export default function InvoiceForCustomersView() {
         <Card sx={{ mb: 3 }}>
           <InvoiceTableToolbar 
             handleOpen={() => setOpen(true)}
-
+            customers={customersList}
+            selectedCustomers={selectedCustomers}
+            onChange={(value) => setSelectedCustomers(value)}
           />
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
             <Scrollbar>

@@ -7,6 +7,7 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 
 // Lists
@@ -51,6 +52,7 @@ export default function ReportToolBar({
             multiple
             value={selectedValue}  // Ensure that the initial value is set correctly
             onChange={(event) => {
+              console.log(event);
               setSelectedValue(event.target.value);
               onChange(event.target.value);
             }}  // Use event.target.value to get the selected value

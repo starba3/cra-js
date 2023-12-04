@@ -89,6 +89,11 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
   });
 
+  // Default lists values
+  const selectSource = Translate("selectSource");
+  const selectStatus = Translate("selectStatus");
+  const selectDetails = Translate("selectDetails");
+
   const defaultValues = useMemo(
     () => ({
       CreateNote: currentInvoice?.CreateNote || '',
@@ -97,11 +102,11 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       DeliveryDate: currentInvoice?.DeliveryDate || new Date(),
       installationStatus: currentInvoice?.installationStatus || '',
       installationDate: currentInvoice?.installationDate || new Date(),
-      collectionSource: currentInvoice?.CollectionSource || Translate("selectSource"),
-      claimStatus: currentInvoice?.ClaimStatus || Translate("selectStatus"),
-      claimsDetailStatus: currentInvoice?.ClaimsDetailStatus || Translate("selectDetails"),
+      collectionSource: currentInvoice?.CollectionSource || selectSource,
+      claimStatus: currentInvoice?.ClaimStatus || selectStatus,
+      claimsDetailStatus: currentInvoice?.ClaimsDetailStatus || selectDetails,
     }),
-    [currentInvoice]
+    [currentInvoice, selectSource, selectStatus, selectDetails]
   );
 
   // const {notes} = currentInvoice;

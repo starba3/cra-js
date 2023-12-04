@@ -1,5 +1,4 @@
 import React from 'react';
-import useLocales from 'src/locales';
 import Chart from 'react-apexcharts';
 import PropTypes from 'prop-types';
 import { useLocales } from 'src/locales';
