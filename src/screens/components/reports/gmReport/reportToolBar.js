@@ -17,10 +17,9 @@ import {_sourcesList} from 'src/lists/collectionSource';
 
 export default function ReportToolBar({
   onChange,
-
 }) {
 
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState([]);
 
   const sourceList = _sourcesList();
 
@@ -49,6 +48,7 @@ export default function ReportToolBar({
         <InputLabel>Collection Source</InputLabel>
 
           <Select
+            multiple
             value={selectedValue}  // Ensure that the initial value is set correctly
             onChange={(event) => {
               setSelectedValue(event.target.value);
@@ -61,9 +61,10 @@ export default function ReportToolBar({
             {sourceList.map((option, index) => (
               <MenuItem key={index} value={option.value} selected>
                 {/* Use Typography inside MenuItem */}
-                <Typography>
+                <Checkbox disableRipple size="small" checked={selectedValue.includes(option.value)} />
+                {/* <Typography> */}
                   {option.text}
-                </Typography>
+                {/* </Typography> */}
               </MenuItem>
             ))}
           </Select>

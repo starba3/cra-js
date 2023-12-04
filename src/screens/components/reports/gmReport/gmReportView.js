@@ -57,7 +57,7 @@ export default function GmReportView() {
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 
   const [tableData, setTableData] = useState([]);
-  const [collectionSource, setCollectionSource] = useState('');
+  const [collectionSource, setCollectionSource] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
