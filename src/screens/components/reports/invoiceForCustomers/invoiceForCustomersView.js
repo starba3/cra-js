@@ -78,18 +78,18 @@ export default function InvoiceForCustomersView() {
     fetchCustomers();
   }, []);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const result = await getInvoiceForCustomers(selectedCustomers);
-  //       setTableData(result);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getInvoiceForCustomers(selectedCustomers);
+        setTableData(result);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-  //   fetchData();
-  // }, [selectedCustomers]);
+    fetchData();
+  }, [selectedCustomers]);
 
   const [filters, setFilters] = useState(defaultFilters);
 

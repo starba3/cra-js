@@ -181,11 +181,8 @@ export async function getInvoiceForCustomers(customers) {
     if(!customers)
         return list;
 
-    let queryData = customers.reduce((acc, customer) => `customerIds=${customers},`, '');
-
-    if(queryData) {
-        queryData = queryData.substring(-1);
-    }
+    const queryData = customers.reduce((acc, customer) => `${acc}customerIds=${customer}&`, '');
+    // queryData = queryData.slice(-1);
 
     await fetch(`${baseUrl}/api/Invoices/GetInvoicesForCustomers?${queryData}`, {
         mode:'cors'
