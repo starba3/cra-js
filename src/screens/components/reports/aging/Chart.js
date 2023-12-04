@@ -1,8 +1,14 @@
 import React from 'react';
+import { useLocales } from 'src/locales';
+
 import Chart from 'react-apexcharts';
 import PropTypes from 'prop-types';
 
 const DonutChart = ({ data }) => {
+
+  const { t } = useLocales()
+  const Translate = (text) => t(text);
+
   // Extracting values for each category from the data
   const zeroToThirty = data.map(item => item.zeroToThirty);
   const thirtyOneToSixty = data.map(item => item.thirtyOneToSixty);
@@ -17,8 +23,9 @@ const DonutChart = ({ data }) => {
   const totalNinetyOneToOneTwenty = ninetyOneToOneTwenty.reduce((acc, value) => acc + value, 0);
   const totalOneTwentyOnePlus = oneTwentyOnePlus.reduce((acc, value) => acc + value, 0);
 
+  
   const chartOptions = {
-    labels: ['0-30', '31-60', '61-90', '91-120', '120+'],
+    labels: [Translate('zeroToThirty'), Translate('thirtyOneToSixty'), Translate('sixtyOneToNinety'), Translate('ninetyOneToOneTwenty'), Translate('oneTwentyOnePlus')],
   };
 
   const chartSeries = [

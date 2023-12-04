@@ -14,7 +14,6 @@ import { _addressBooks } from 'src/_mock';
 import Iconify from 'src/components/iconify';
 // lists
 import { getAllCustomers, getSalesPersonList } from 'src/data-access/customers';
-//
 import  AddressListDialog  from '../../dialogs/AddressListDialog';
 import  AddressListDialogSales  from '../../dialogs/AddressListDialogSales';
 
@@ -32,7 +31,6 @@ export default function InvoiceNewEditAddress() {
   } = useFormContext();
 
   const { t } = useLocales()
-
   const Translate = (text) => t(text);
 
   console.log('customers: ', customers);
@@ -53,7 +51,6 @@ export default function InvoiceNewEditAddress() {
     salesPeople.username = person.salesPeople
   }
 
-
   const mdUp = useResponsive('up', 'md');
 
   const values = watch();
@@ -61,8 +58,6 @@ export default function InvoiceNewEditAddress() {
   const { customerId, customerCode, salesPerson, customerObj, salesPersonObj } = values;
 
   console.log('values', values)
-
-
 
   const from = useBoolean();
 
@@ -114,8 +109,6 @@ export default function InvoiceNewEditAddress() {
           {salesPeople ? (
             <Stack spacing={1}>
               <Typography variant="subtitle2">{salesPersonObj?.username}</Typography>
-              {/* <Typography variant="body2">{invoiceTo.fullAddress}</Typography>
-              <Typography variant="body2"> {invoiceTo.phoneNumber}</Typography> */}
             </Stack>
           ) : (
             <Typography typography="caption" sx={{ color: 'error.main' }}>

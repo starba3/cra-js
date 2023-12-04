@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import useLocales from 'src/locales/use-locales';
 // @mui
 import Stack from '@mui/material/Stack';
 import Select from '@mui/material/Select';
@@ -27,6 +28,9 @@ export default function ReportToolBar({
   const sourceList = _sourcesList();
   const statusList = _statusList();
 
+  const { t } = useLocales()
+  const Translate = (text) => t(text);
+
   return (
     <Stack
         spacing={2}
@@ -49,7 +53,7 @@ export default function ReportToolBar({
           width: { xs: 1, md: 180 },
         }}
       >
-        <InputLabel>Collection Source</InputLabel>
+        <InputLabel>{Translate("collectionSource")}</InputLabel>
 
           <Select
             value={selectedSource}  // Ensure that the initial value is set correctly
@@ -59,7 +63,7 @@ export default function ReportToolBar({
               onStatusChange('Ready');
               onChange(event.target.value);
             }}  // Use event.target.value to get the selected value
-            input={<OutlinedInput label="Collection Source" />}
+            input={<OutlinedInput label={Translate("collectionSource")} />}
             renderValue={(selected) => selected}
             sx={{ textTransform: 'capitalize' }}
           >
@@ -80,7 +84,7 @@ export default function ReportToolBar({
           width: { xs: 1, md: 180 },
         }}
       >
-        <InputLabel>Collection Source</InputLabel>
+        <InputLabel>{Translate("claimStatus")}</InputLabel>
 
           <Select
             value={selectedStatus}  // Ensure that the initial value is set correctly
@@ -88,7 +92,7 @@ export default function ReportToolBar({
               setSelectedStatus(event.target.value);
               onStatusChange(event.target.value);
             }}  // Use event.target.value to get the selected value
-            input={<OutlinedInput label="Collection Source" />}
+            input={<OutlinedInput label={Translate("claimStatus")} />}
             renderValue={(selected) => selected}
             sx={{ textTransform: 'capitalize' }}
           >

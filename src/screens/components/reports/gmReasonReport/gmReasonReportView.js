@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import useLocales from 'src/locales/use-locales'
+import useLocales from 'src/locales/use-locales';
 
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -56,10 +56,8 @@ export default function GmReasonReportView() {
 
   const router = useRouter();
 
-  const Translate = (text) => {
-    const { t } = useLocales();
-    return t(text);
-  }
+  const { t } = useLocales()
+  const Translate = (text) => t(text);
 
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 
@@ -130,17 +128,17 @@ export default function GmReasonReportView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading='GM Report'
+          heading= {Translate("gmReasonReport_heading")} 
           links={[
             {
-              name: 'Dashboard',
+              name: Translate("app"),
               href: paths.dashboard.root,
             },
             {
-              name: 'Reports',
+              name: Translate("reports"),
             },
             {
-              name: 'GM Report',
+              name: Translate("gmReasonReport_heading"),
             },
           ]}
           

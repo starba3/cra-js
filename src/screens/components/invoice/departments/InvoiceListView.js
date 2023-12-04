@@ -20,13 +20,11 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { Icon } from '@iconify/react';
 import Collapse from '@mui/material/Collapse';
-
 // @mui Dialog
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -101,8 +99,6 @@ export default function InvoiceListView({department, salesStatus}) {
     const fetchData = async () => {
       try {
 
-        console.log('Department:', department)
-        console.log('salesStatus:', salesStatus)
         if (department !== undefined) {
           const departmentId = department === -1 ? 0 : department
           const result = await getInvoicesByDepartment(departmentId);
@@ -120,7 +116,6 @@ export default function InvoiceListView({department, salesStatus}) {
     const fetchUsers = async () => {
       try {
 
-        console.log('Role:', role)
         if (role) {
           const result = await getUsersByRole(role);
           console.log(result);
@@ -277,13 +272,13 @@ export default function InvoiceListView({department, salesStatus}) {
     } else {
       switch(salesConfirmStatus) {
         case 0:
-          text = 'Confirm Invoices';
+          text = Translate("confirm_invoices");
           break;
         case 1:
-          text = 'Assign Engineer'
+          text = Translate("assign_engineer");
           break;
         case 2:
-          text = 'Assign Collector'
+          text = Translate("assign_collector");
           break;
         default:
           break;

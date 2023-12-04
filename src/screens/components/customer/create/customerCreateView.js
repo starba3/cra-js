@@ -15,7 +15,6 @@ export default function CustomerCreateView() {
   const settings = useSettingsContext();
 
   const { t } = useLocales()
-
   const Translate = (text) => t(text);
 
   return (

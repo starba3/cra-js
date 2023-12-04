@@ -14,8 +14,7 @@ import CustomerEditForm from './productEditForm';
 export default function ProductCreateView() {
   const settings = useSettingsContext();
 
-  const { t } = useLocales()
-
+  const { t } = useLocales();
   const Translate = (text) => t(text);
 
   return (

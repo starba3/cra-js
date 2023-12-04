@@ -12,15 +12,10 @@ import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
-
-
-
-
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
 import FormProvider from 'src/components/hook-form';
-
 import CustomerEditInputs from './productEditInputs';
 
 // ----------------------------------------------------------------------
@@ -118,14 +113,10 @@ export default function ProductEditForm({ currentInvoice }) {
   return (
     <FormProvider methods={methods} onSubmit={handleCreateAndSend} >
       <Card>
-
         <CustomerEditInputs />
-
       </Card>
 
       <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
-        
-
         <LoadingButton
           size="large"
           variant="contained"

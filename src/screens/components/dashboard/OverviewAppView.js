@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types'; // Import the prop-types package
+import PropTypes from 'prop-types'; 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
- import { useLocales } from 'src/locales';
+import { useLocales } from 'src/locales';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
@@ -15,9 +15,6 @@ import { useMockedUser } from 'src/hooks/use-mocked-user';
 import { _appFeatured, _appAuthors, _appInstalled, _appRelated, _appInvoices } from 'src/_mock';
 // components
 import { useSettingsContext } from 'src/components/settings';
-// assets
-//
-
 import AppWidgetSummary from 'src/sections/overview/app/app-widget-summary';
 import AppCurrentDownload from 'src/sections/overview/app/app-current-download';
 import ChartRadialBar from 'src/screens/components/dashboard/chart-radial-bar';
@@ -30,7 +27,6 @@ import AppNewInvoice from 'src/screens/components/dashboard/AppNewInvoice';
 export default function OverviewAppView() {
   const { user } = useMockedUser();
 
-  
   const [unpaidInvoicesCount, setUnpaidInvoicesCount] = useState(0);
   const [paidInvoicesCount, setPaidInvoicesCount] = useState(0);
   const [unpaidInvoicesTotalAmmount, setUnpaidInvoicesTotalAmmount] = useState(0);
@@ -39,11 +35,9 @@ export default function OverviewAppView() {
   const [lastestCreatedInvoices, setLastestCreatedInvoices] = useState([]);
 
   const { t } = useLocales()
-
   const Translate = (text) => t(text);
 
   const theme = useTheme();
-
   const settings = useSettingsContext();
 
   // hit the route

@@ -94,9 +94,6 @@ export default function InvoiceTableRow({
         <TableCell align="center" >{paidStatus}</TableCell>
 
         <TableCell align="center" >{department}</TableCell>
-        {/* <TableCell>{fCurrency(department)}</TableCell> */}
-
-
 
         <TableCell align="right" sx={{ px: 1 }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>

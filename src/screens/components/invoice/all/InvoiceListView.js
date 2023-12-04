@@ -29,7 +29,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Alert from '@mui/material/Alert';
 import { Icon } from '@iconify/react';
 import Collapse from '@mui/material/Collapse';
-
 import CircularProgress from '@mui/material/CircularProgress';
 
 // routes
@@ -59,23 +58,15 @@ import {
 
 // DATA ACCESS
 import { getAllInvoices, getInvoiceImportUrl, getInvoiceInquiryData } from 'src/data-access/invoice'
-
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
 //
 import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
 import InvoiceTableFiltersResult from 'src/sections/invoice/invoice-table-filters-result';
-import { Translation } from 'react-i18next';
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
 
-
-
-
-
 // ----------------------------------------------------------------------
-
-
 
 const defaultFilters = {
   name: '',
@@ -91,9 +82,6 @@ const dataGridData = await getAllInvoices()
 
 export default function InvoiceListView() {
   const theme = useTheme();
-
-  const { t } = useLocales()
-
   const settings = useSettingsContext();
 
   const router = useRouter();
@@ -102,8 +90,8 @@ export default function InvoiceListView() {
 
   const confirm = useBoolean();
 
+  const { t } = useLocales();
   const Translate = (text) => t(text);
-  
 
   const [tableData, setTableData] = useState(dataGridData);
 
@@ -285,10 +273,7 @@ export default function InvoiceListView() {
       formData.append('file', fileInput); 
       
       try {
-        
-        
         // Send create invoice request
-        
         console.log('Loading', loading)
 
         const url = getInvoiceImportUrl()

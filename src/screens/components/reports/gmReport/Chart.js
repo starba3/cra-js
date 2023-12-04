@@ -1,9 +1,14 @@
 import React from 'react';
+import useLocales from 'src/locales';
 import Chart from 'react-apexcharts';
 import PropTypes from 'prop-types';
+import { useLocales } from 'src/locales';
 
 
 const BarChart = ({ data }) => {
+
+  const { t } = useLocales()
+  const Translate = (text) => t(text);
   // Extracting values for each category from the data
   const dates = data.map(item => `${subtractDaysFromDate(new Date(item.date), 7)} -  ${formatDate(new Date(item.date))} `);
   const ready = data.map(item => item.ready);
@@ -36,15 +41,15 @@ const BarChart = ({ data }) => {
 
   const chartSeries = [
     {
-      name: 'Ready',
+      name: Translate("ready"),
       data: ready,
     },
     {
-      name: 'Not Ready',
+      name: Translate("notReady"),
       data: notReady,
     },
     {
-      name: 'Reject',
+      name: Translate("reject"),
       data: reject,
     },
   ];

@@ -4,19 +4,13 @@ import PropTypes from 'prop-types';
 // @mui
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
-
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import Typography from '@mui/material/Typography';
 // hooks
 import { useResponsive } from 'src/hooks/use-responsive';
-// _mock
 // components
 import Iconify from 'src/components/iconify';
-// lists
-//
-
-
 
 // ----------------------------------------------------------------------
 
@@ -31,9 +25,8 @@ export default function InvoiceNewEditAddress({currentInvoice}) {
 
   const mdUp = useResponsive('up', 'md');
 
-  const { t } = useLocales()
-
-  const Translate = (text) => t(text)
+  const { t } = useLocales();
+  const Translate = (text) => t(text);
 
   // const values = watch();
   // const { customerId, customerCode, salesPerson, customerObj, salesPersonObj } = values;

@@ -22,7 +22,6 @@ export default function InvoiceTableToolbar({
   const popover = usePopover();
 
   const { t } = useLocales()
-
   const Translate = (text) => t(text);
 
   const handleFilterName = useCallback(
@@ -61,9 +60,6 @@ export default function InvoiceTableToolbar({
         }}
       >
         
-
-        
-
         <DatePicker
           label={Translate("startDate")}
           value={filters.startDate}
@@ -104,9 +100,9 @@ export default function InvoiceTableToolbar({
             }}
           />
 
-          <IconButton onClick={popover.onOpen}>
+          {/* <IconButton onClick={popover.onOpen}>
             <Iconify icon="eva:more-vertical-fill" />
-          </IconButton>
+          </IconButton> */}
         </Stack>
       </Stack>
 

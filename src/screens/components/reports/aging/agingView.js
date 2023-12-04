@@ -14,6 +14,7 @@ import { paths } from 'src/routes/paths';
 // components
 import Scrollbar from 'src/components/scrollbar';
 import { useSettingsContext } from 'src/components/settings';
+import { useLocales } from 'src/locales';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import DonutChart from 'src/screens/components/reports/aging/Chart'
 
@@ -67,6 +68,8 @@ export default function AgingView() {
 
   const [filters, setFilters] = useState(defaultFilters);
 
+  const { t } = useLocales()
+  const Translate = (text) => t(text);
 
   const dateError =
     filters.startDate && filters.endDate
@@ -96,14 +99,14 @@ export default function AgingView() {
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
   const TABLE_HEAD = [
-    { id: 'customerNameEn', label: 'Name English' },
-    { id: 'customerNameAr', label: 'Name Arabic' },
-    { id: 'balance', label: 'Balance' },
-    { id: 'zeroToThirty', label: '0-30 ' },
-    { id: 'thirtyOneToSixty', label: '31-60' },
-    { id: 'sixtyOneToNinety', label: '61-90' },
-    { id: 'ninetyOneToOneTwenty', label: '91-120' },
-    { id: 'oneTwentyOnePlus', label: 'Over 120' },
+    { id: 'customerNameEn', label: Translate("nameEnglish")  },
+    { id: 'customerNameAr', label: Translate("nameArabic")  },
+    { id: 'balance', label: Translate("balance") },
+    { id: 'zeroToThirty', label: Translate("zeroToThirty") },
+    { id: 'thirtyOneToSixty', label: Translate("thirtyOneToSixty") },
+    { id: 'sixtyOneToNinety', label: Translate("sixtyOneToNinety") },
+    { id: 'ninetyOneToOneTwenty', label: Translate("ninetyOneToOneTwenty") },
+    { id: 'oneTwentyOnePlus', label: Translate("oneTwentyOnePlus") },
   ];
   
   const calculateOverallTotal = () => 
@@ -142,17 +145,17 @@ export default function AgingView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading='Aging'
+          heading={Translate("aging")}
           links={[
             {
-              name: 'Dashboard',
+              name: Translate("app"),
               href: paths.dashboard.root,
             },
             {
-              name: 'Reports',
+              name: Translate("reports"),
             },
             {
-              name: 'Aging',
+              name: Translate("aging"),
             },
           ]}
           

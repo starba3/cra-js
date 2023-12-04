@@ -11,15 +11,11 @@ import Stack from '@mui/material/Stack';
 import Divider  from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 
-// @mui Dialog
-
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 import { Link, useNavigate } from 'react-router-dom';
-// hooks
-// utils
-// _mock
+
 // components
 import Iconify from 'src/components/iconify';
 import { RouterLink } from 'src/routes/components';
@@ -73,19 +69,14 @@ export default function CustomerListView() {
 
   const navigate = useNavigate();
 
-
   const { t } = useLocales()
-
   const Translate = (text) => t(text);
 
   const [tableData, setTableData] = useState(dataGridData);
-
   const [filters, setFilters] = useState(defaultFilters);
-  
   const [alertMessage, setAlertMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,20 +88,9 @@ export default function CustomerListView() {
         console.error('Error fetching customers:', error);
       }
     };
-
     
     fetchData();
   }, []);
-
-  // useEffect(() => {
-  //   const unlisten = history.listen(() => {
-  //     // This will be called whenever the URL changes
-  //     setRefreshKey((prevKey) => prevKey + 1);
-  //   });
-
-  //   // Cleanup the listener when the component unmounts
-  //   return () => unlisten();
-  // }, [history]);
 
   const TABLE_HEAD = [
     { id: 'customerCode', label: Translate("customerCode")  },

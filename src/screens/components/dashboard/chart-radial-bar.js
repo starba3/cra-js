@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useLocales } from 'src/locales';
 // @mui
 import { styled } from '@mui/material/styles';
 // utils
@@ -29,6 +30,8 @@ const StyledChart = styled(Chart)(({ theme }) => ({
 
 export default function ChartRadialBar({ series , outsideNumber }) {
 
+  const { t } = useLocales()
+  const Translate = (text) => t(text);
   
   const chartOptions = useChart({
     chart: {
@@ -36,7 +39,7 @@ export default function ChartRadialBar({ series , outsideNumber }) {
         enabled: true,
       },
     },
-    labels: ['Paid', 'Unpaid'],
+    labels: [Translate('paid'), Translate('unPaid')],
     legend: {
       floating: true,
       position: 'bottom',

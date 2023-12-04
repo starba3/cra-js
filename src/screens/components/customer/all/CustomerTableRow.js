@@ -4,7 +4,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
-// utils
+
 // components
 import { usePopover } from 'src/components/custom-popover';
 

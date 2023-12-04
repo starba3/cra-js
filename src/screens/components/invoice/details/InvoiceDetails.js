@@ -14,8 +14,6 @@ import TableBody from '@mui/material/TableBody';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
-// utils
-
 // components
 import Label from 'src/components/label';
 import Scrollbar from 'src/components/scrollbar';
@@ -26,9 +24,8 @@ import Scrollbar from 'src/components/scrollbar';
 export default function InvoiceDetails({ invoice }) {
   const [currentInvoice, setCurrentInvoice] = useState(invoice);
   
-  const { t } = useLocales()
-
-  const Translate = (text) => t(text)
+  const { t } = useLocales();
+  const Translate = (text) => t(text);
 
   const renderNotes = (
     <>
@@ -58,9 +55,7 @@ export default function InvoiceDetails({ invoice }) {
                   <TableCell>{index + 1}</TableCell>
 
                   <TableCell>
-                    {/* <Box sx={{ maxWidth: 560 }}> */}
                       <Typography variant="subtitle2">{row.noteText}</Typography>
-                    {/* </Box> */}
                   </TableCell>
 
                   <TableCell>{row.createdBy}</TableCell>
@@ -106,9 +101,7 @@ export default function InvoiceDetails({ invoice }) {
                   <TableCell>{index + 1}</TableCell>
 
                   <TableCell>
-                    {/* <Box sx={{ maxWidth: 560 }}> */}
                       <Typography variant="subtitle2"> <a target='_blank' rel="noreferrer" href={row.attachmentPath}>{row.fileName}</a> </Typography>
-                    {/* </Box> */}
                   </TableCell>
 
                   <TableCell>{row.createdBy}</TableCell>

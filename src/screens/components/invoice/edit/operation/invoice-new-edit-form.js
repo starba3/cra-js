@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types';
+import { useLocales } from 'src/locales';
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,28 +9,21 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Button from "@mui/material/Button";
-
 // @mui Dialog
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
 // routes
 import { useRouter } from 'src/routes/hooks';
 // _mock
 import { getInvoiceEditUrl, getInvoiceRedirectUrl, getAddAttachmentUrl } from 'src/data-access/invoice';
 import { _departments_withoutAll } from 'src/lists/departments';
-
-
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
 import FormProvider from 'src/components/hook-form';
-
-// lists
-//
 import InvoiceNewEditAddress from './invoice-new-edit-address';
 import InvoiceNewEditStatusDate from './invoice-new-edit-status-date';
 
@@ -45,20 +39,19 @@ const formatDate = (date) => {
   return [year, month, day].join('-');
 }
 
-
 export default function InvoiceNewEditForm({ currentInvoice }) {
+
   const router = useRouter();
-
   const loadingSave = useBoolean();
-
   const loadingSend = useBoolean();
   
+  const { t } = useLocales();
+  const Translate = (text) => t(text);
 
   const[didUpdate, setDidUpdate] = useState(false);
   const[isError, setIsError] = useState(false);
   const[errorMessage, setErrorMessage] = useState('');
 
-  console.log(currentInvoice.department)
 
   const departmentId = _departments_withoutAll()
                           .map(item => item.toLocaleLowerCase())
@@ -104,9 +97,9 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       DeliveryDate: currentInvoice?.DeliveryDate || new Date(),
       installationStatus: currentInvoice?.installationStatus || '',
       installationDate: currentInvoice?.installationDate || new Date(),
-      collectionSource: currentInvoice?.CollectionSource || 'Select Source',
-      claimStatus: currentInvoice?.ClaimStatus || 'Select Status',
-      claimsDetailStatus: currentInvoice?.ClaimsDetailStatus || 'Select Details',
+      collectionSource: currentInvoice?.CollectionSource || Translate("selectSource"),
+      claimStatus: currentInvoice?.ClaimStatus || Translate("selectStatus"),
+      claimsDetailStatus: currentInvoice?.ClaimsDetailStatus || Translate("selectDetails"),
     }),
     [currentInvoice]
   );
@@ -140,27 +133,23 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
   const handleCreateAndSend = handleSubmit(async (data) => {
 
-
     handleFileUpload();
-    console.log('File uploaded');
-    console.log('Data:', data);
+
     loadingSend.onTrue(); 
     
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       
-      const {CreateNote,department,acknowledgeStatus,DeliveryDate, installationDate, installationStatus, collectionSource, claimStatus, claimsDetailStatus} = watch()
+      const {CreateNote,department,acknowledgeStatus,DeliveryDate, installationDate, installationStatus, collectionSource, claimStatus, claimsDetailStatus} = watch();
 
-      const body = [
-
-      ]
+      const body = [];
 
       if(department && arrays.department.includes(currentInvoice.department.toLowerCase())) {
         body.push({
           op : "replace",
           path : "/department",
           value : `${department}`
-        })
+        });
       }
 
       if(acknowledgeStatus && arrays.acknowledgeStatuses.includes(currentInvoice.department.toLowerCase())) {
@@ -168,7 +157,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
           op : "replace",
           path : "/acknowledgeStatus",
           value : `${acknowledgeStatus}`
-        })
+        });
       }
 
       if(DeliveryDate&& arrays.deliveryDate.includes(currentInvoice.department.toLowerCase())) {
@@ -176,7 +165,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
           op : "replace",
           path : "/DeliveryDate",
           value : `${formatDate(DeliveryDate)}`
-        })
+        });
       }
 
       if(installationDate && arrays.installationDate.includes(currentInvoice.department.toLowerCase())) {
@@ -184,7 +173,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
           op : "replace",
           path : "/InstallationDate",
           value : `${formatDate(installationDate)}`
-        })
+        });
       }
 
       if(installationStatus && arrays.installationStatus.includes(currentInvoice.department.toLowerCase())) {
@@ -192,7 +181,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
           op : "replace",
           path : "/installationStatus",
           value : `${installationStatus}`
-        })
+        });
       }
 
       if(collectionSource && arrays.collectionSource.includes(currentInvoice.department.toLowerCase())) {
@@ -200,7 +189,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
           op : "replace",
           path : "/CollectionSource",
           value : `${collectionSource}`
-        })
+        });
       }
 
       if(claimStatus && arrays.claimStatus.includes(currentInvoice.department.toLowerCase())) {
@@ -208,7 +197,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
           op : "replace",
           path : "/ClaimStatus",
           value : `${claimStatus}`
-        })
+        });
       }
 
       if(claimsDetailStatus && arrays.claimsDetailStatus.includes(currentInvoice.department.toLowerCase())) {
@@ -216,7 +205,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
           op : "replace",
           path : "/ClaimsDetailStatus",
           value : `${claimsDetailStatus}`
-        })
+        });
       }
 
       body.push({
@@ -225,7 +214,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         value : {
           NoteText : `${CreateNote}`
         }
-      })
+      });
       
        reset();
       // loadingSend.onFalse();
@@ -272,14 +261,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       .catch(error => {
         console.error('Fetch Error:', error);
       });
-      // .then(res => {
-      //   console.log(res)
-      //   setDidUpdate(true)   
-      // })
-      // .catch(error => console.log(error.message))
 
-      
-      // console.info('DATA', JSON.stringify(data, null, 2));
     } catch (error) {
       console.error('Error:', error);
       loadingSend.onFalse();
@@ -409,10 +391,6 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       </FormProvider>
     
   );
-
-
-
-
 
 }
 

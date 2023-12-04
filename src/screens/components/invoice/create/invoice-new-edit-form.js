@@ -13,14 +13,10 @@ import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 // _mock
 import { _addressBooks } from 'src/_mock';
-
-
-
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
 import FormProvider from 'src/components/hook-form';
-
 import InvoiceNewEditAddress from './invoice-new-edit-address';
 import InvoiceNewEditStatusDate from './invoice-new-edit-status-date';
 
@@ -33,9 +29,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
   const loadingSend = useBoolean();
 
-  // import { useLocales } from 'src/locales';
   const { t } = useLocales()
-
   const Translate = (text) => t(text);
 
   const NewInvoiceSchema = Yup.object().shape({
@@ -86,11 +80,6 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
-
-  
-
-  // const onSubmit: SubmitHandler<defaultValues> = (data) => console.log(data);
-
 
   const handleCreateAndSend = handleSubmit(async (data) => {
     loadingSend.onTrue(); 
@@ -143,9 +132,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       if(redirectUrl) {
         router.replace(redirectUrl);
       }
-
       
-      // console.info('DATA', JSON.stringify(data, null, 2));
     } catch (error) {
       console.error('Error:', error);
       loadingSend.onFalse();
@@ -156,15 +143,10 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     <FormProvider methods={methods} onSubmit={handleCreateAndSend} >
       <Card>
         <InvoiceNewEditAddress />
-
         <InvoiceNewEditStatusDate />
-
-        {/* <InvoiceNewEditDetails /> */}
       </Card>
 
       <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
-        
-
         <LoadingButton
           size="large"
           variant="contained"

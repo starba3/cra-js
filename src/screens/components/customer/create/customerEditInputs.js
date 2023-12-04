@@ -1,6 +1,5 @@
 import { useFormContext } from 'react-hook-form';
 import { useLocales } from 'src/locales';
-
 // @mui
 import Stack from '@mui/material/Stack';
 // components
@@ -10,11 +9,9 @@ import { RHFTextField } from 'src/components/hook-form';
 
 export default function CustomerEditInputs() {
   const { control, watch } = useFormContext();
-
   const values = watch();
 
   const { t } = useLocales();
-
   const Translate = (text) => t(text);
 
   return (

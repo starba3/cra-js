@@ -1,6 +1,5 @@
 import { useFormContext } from 'react-hook-form';
 import { useLocales } from 'src/locales';
-
 // @mui
 import Stack from '@mui/material/Stack';
 // components

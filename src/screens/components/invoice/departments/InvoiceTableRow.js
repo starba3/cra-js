@@ -141,7 +141,6 @@ export default function InvoiceTableRow({
         <TableCell align="center" >{region}</TableCell>
 
         <TableCell align="center" >{customerNameAr}</TableCell>
-        {/* <TableCell>{fCurrency(department)}</TableCell> */}
 
         {acceptButton}
 

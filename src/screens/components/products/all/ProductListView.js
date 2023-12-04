@@ -203,7 +203,7 @@ export default function ProductListView() {
               href: paths.dashboard.root,
             },
             {
-              name: Translate("customer"),
+              name: Translate("product"),
               
             },
             {
@@ -221,7 +221,7 @@ export default function ProductListView() {
                 variant="contained"
                 startIcon={<Iconify icon="mingcute:add-line" />}
               >
-                {Translate("newProduct0")}
+                {Translate("newProduct")}
               </Button>
               
           </Stack>

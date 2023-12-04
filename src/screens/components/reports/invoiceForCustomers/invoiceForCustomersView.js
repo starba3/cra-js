@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocales } from 'src/locales';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -10,9 +11,6 @@ import TableContainer from '@mui/material/TableContainer';
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
-// hooks
-// utils
-// _mock
 // components
 import Scrollbar from 'src/components/scrollbar';
 import { useSettingsContext } from 'src/components/settings';
@@ -59,6 +57,9 @@ export default function InvoiceForCustomersView() {
   const [customersList, setCustomersList] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState('');
   const [open, setOpen] = useState(false);
+
+  const { t } = useLocales()
+  const Translate = (text) => t(text);
 
   useEffect(() => {
     const fetchCustomers = async () => {
@@ -118,29 +119,29 @@ export default function InvoiceForCustomersView() {
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
   const TABLE_HEAD = [
-    { id: 'invoiceNumber', label: 'Invoice Number' },
-    { id: 'issueInvoiceDate', label: 'Issue Date' },
-    { id: 'daysToCollected', label: 'Days To Collect' },
-    { id: 'invoiceAmount', label: 'Amount' },
-    // { id: 'customerNameAr', label: 'Name Arabic' },
-    { id: 'paidStatus', label: 'Paid Status', align: 'center' },
-    { id: 'department', label: 'Department' , align: 'center' },
+    { id: 'invoiceNumber', label: Translate("invoiceNumber") },
+    { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
+    { id: 'daysToCollected', label: Translate("daysToCollected") },
+    { id: 'invoiceAmount', label: Translate("invoiceAmount") },
+    // { id: 'customerNameAr', label: Translate("customerNameAr") },
+    { id: 'paidStatus', label: Translate("paidStatus"), align: 'center' },
+    { id: 'department', label: Translate("department"), align: 'center' },
   ];
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading='Invoices For Customers'
+          heading={Translate("invoicesForCustomer")}
           links={[
             {
-              name: 'Dashboard',
+              name: Translate("app"),
               href: paths.dashboard.root,
             },
             {
-              name: 'Reports',
+              name: Translate("reports"),
             },
             {
-              name: 'Invoices For Customers',
+              name: Translate("invoicesForCustomer"),
             },
           ]}
           
@@ -216,9 +217,8 @@ export default function InvoiceForCustomersView() {
         </Card>     */}
 
         <CustomersListDialog 
-          title='Customers'
+          title={Translate("customers")}
           list={customersList}  
-          // selectedList={selectedCustomers}
           open={open}
           onClose={() => setOpen(false)}  
           selected={(id) => selectedCustomer === id}        

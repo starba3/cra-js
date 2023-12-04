@@ -12,6 +12,7 @@ import CardHeader from '@mui/material/CardHeader';
 import Card from '@mui/material/Card';
 import TableContainer from '@mui/material/TableContainer';
 // utils
+import { fCurrency } from 'src/utils/format-number';
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -97,8 +98,7 @@ function AppNewInvoiceRow({ row }) {
         
         <TableCell>{row.invoiceNo}</TableCell>
 
-        <TableCell>{row.invoiceAmount}</TableCell>
-        {/* <TableCell>{fCurrency(row.invoiceAmount)}</TableCell> */}
+        <TableCell>{fCurrency(row.invoiceAmount)}</TableCell>
 
         <TableCell>{row.createdBy}</TableCell>
 

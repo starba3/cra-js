@@ -51,10 +51,8 @@ export default function GmReportView() {
 
   const router = useRouter();
 
-  const Translate = (text) => {
-    const { t } = useLocales();
-    return t(text);
-  }
+  const { t } = useLocales()
+  const Translate = (text) => t(text);
 
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 
@@ -122,17 +120,17 @@ export default function GmReportView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading='GM Report'
+          heading={Translate("gmReport_heading")}
           links={[
             {
-              name: 'Dashboard',
+              name: Translate("app"),
               href: paths.dashboard.root,
             },
             {
-              name: 'Reports',
+              name: Translate("reports"),
             },
             {
-              name: 'GM Report',
+              name: Translate("gmReport_heading"),
             },
           ]}
           

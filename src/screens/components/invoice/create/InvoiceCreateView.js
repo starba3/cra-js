@@ -5,7 +5,6 @@ import { paths } from 'src/routes/paths';
 // components
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-//
 import { useLocales } from 'src/locales';
 import InvoiceNewEditForm from './invoice-new-edit-form';
 
@@ -15,7 +14,6 @@ export default function InvoiceCreateView() {
   const settings = useSettingsContext();
 
   const { t } = useLocales()
-
   const Translate = (text) => t(text);
 
   return (

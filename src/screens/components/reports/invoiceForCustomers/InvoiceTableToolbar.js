@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import { useLocales } from 'src/locales';
+
 // @mui
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -13,6 +15,8 @@ export default function InvoiceTableToolbar({
   handleOpen,
 }) {
 
+  const { t } = useLocales()
+  const Translate = (text) => t(text);
 
   return (
     <Stack
@@ -32,7 +36,7 @@ export default function InvoiceTableToolbar({
 
         <Button onClick={handleOpen}>
           <Iconify icon="ic:twotone-list" />
-          Select User
+          {Translate("selectCustomer")}
         </Button>
 
         {/* <Button >

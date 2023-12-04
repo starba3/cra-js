@@ -19,8 +19,7 @@ import InvoiceDetails from 'src/screens/components/invoice/details/InvoiceDetail
 export default function InvoiceDetailsView({ id }) {
   const settings = useSettingsContext();
 
-  const { t } = useLocales()
-
+  const { t } = useLocales();
   const Translate = (text) => t(text);
   
   const [currentInvoice, setCurrentInvoice] = useState(null);

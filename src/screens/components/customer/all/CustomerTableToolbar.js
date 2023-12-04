@@ -10,7 +10,6 @@ import Iconify from 'src/components/iconify';
 import { usePopover } from 'src/components/custom-popover';
 
 // ----------------------------------------------------------------------
-
 export default function CustomerTableToolbar({
   filters,
   onFilters,
@@ -28,8 +27,8 @@ export default function CustomerTableToolbar({
   );
 
   const { t } = useLocales();
-
   const Translate = (text) => t(text);
+
   return (
     <>
       <Stack

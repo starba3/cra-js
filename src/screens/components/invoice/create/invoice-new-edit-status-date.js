@@ -12,7 +12,6 @@ export default function InvoiceNewEditStatusDate() {
   const { control, watch } = useFormContext();
 
   const { t } = useLocales()
-
   const Translate = (text) => t(text);
 
   const values = watch();

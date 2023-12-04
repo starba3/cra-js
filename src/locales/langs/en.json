@@ -130,7 +130,7 @@
   "unpaidToPaidInvoices": "unpaid To Paid Invoices",
   "departmentInvoicesCount": "department Invoices Count",
   "paid": "Paid",
-  "unPaid": "UnPaid",
+  "unPaid": "Unpaid",
   "invoices": "Invoices",
   "viewAll": "View All",
 
@@ -189,6 +189,21 @@
   "createNewCustomer": "Create new customer",
   "createNewProduct": "Create New Product",
   "newProduct": "New Product",
+  "balance": "Balance",
+  "zeroToThirty": "0-30",
+  "thirtyOneToSixty": "31-60",
+  "sixtyOneToNinety": "61-90",
+  "ninetyOneToOneTwenty": "91-120",
+  "oneTwentyOnePlus": "Over 120",
+  "gmReport_heading": "GM Report",
+  "gmReasonReport_heading": "GM Reason Report",
+  "aging": "Aging",
+  "selectCustomer": "Select Customer",
+  "selectSource": "Select Source",
+  "selectStatus": "Select Status",
+  "selectDetails": "Select Details",
+  
+  
 
   "nupco": "Nupco",
   "etimad": "Etimad",

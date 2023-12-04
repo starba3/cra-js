@@ -35,6 +35,10 @@ export default function ProductTableRow({
 
         <TableCell >{customerNameAr}</TableCell>
 
+        {/* <IconButton onClick={popover.onOpen}>
+            <Iconify icon="eva:more-vertical-fill" />
+          </IconButton> */}
+
       </TableRow>
 
       {/* <CustomPopover
