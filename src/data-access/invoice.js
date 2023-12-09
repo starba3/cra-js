@@ -202,3 +202,41 @@ export async function getInvoiceForCustomers(customers) {
 
     return list;
 }
+
+export async function deleteInvoice(id) {
+    let success = true;
+    await fetch(`${baseUrl}/api/Invoices/${id}/Delete`, {
+        mode:'cors',
+        method: 'PATCH',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        Cache: 'default'
+    })
+    .then(res => {
+        // Check if the status code is 200 or 204
+        if (res.ok) {
+          // Check if the status code is 200 or 204
+          if (res.status === 204) {
+            return null; // Handle 204 No Content
+          }  if (res.status === 200) {
+            return res.json(); // Parse JSON for other successful responses
+          } 
+
+          throw new Error(`Unexpected status code: ${res.status}`);
+          
+        } 
+
+        throw new Error('Network response was not ok');
+      })
+    .then(invoices => {
+        console.log("Deleted successfuly")
+    })
+    .catch(error => {
+        console.log(error) 
+        success = false;
+    })
+
+    return success;
+}

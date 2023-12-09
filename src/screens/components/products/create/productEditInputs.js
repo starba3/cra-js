@@ -24,21 +24,21 @@ export default function ProductEditInputs() {
       >
         
         <RHFTextField
-          name="customerCode"
-          label={Translate("customerCode")}
+          name="code"
+          label={Translate("code")}
           value={values.customerCode}
         />
 
         <RHFTextField
-          name="customerNameEn"
-          label={Translate("customerNameEn")}
-          value={values.customerNameEn}
+          name="nameEn"
+          label={Translate("nameEn")}
+          value={values.nameEn}
         />
 
         <RHFTextField
-          name="customerNameAr"
-          label={Translate("customerNameAr")}
-          value={values.customerNameAr}
+          name="nameAr"
+          label={Translate("nameAr")}
+          value={values.nameAr}
         />
 
       </Stack>

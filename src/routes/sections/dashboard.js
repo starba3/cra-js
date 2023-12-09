@@ -6,6 +6,9 @@ import { AuthGuard } from 'src/auth/guard';
 import DashboardLayout from 'src/layouts/dashboard';
 // components
 import { LoadingScreen } from 'src/components/loading-screen';
+// Customers
+const CustomerCreateViewMain = lazy(() => import('src/screens/customer/create/CustomerCreateView'));
+
 
 // ----------------------------------------------------------------------
 
@@ -100,16 +103,22 @@ export const dashboardRoutes = [
           { path: 'account', element: <UserAccountPage /> },
         ],
       },
-      {
-        path: 'product',
-        children: [
-          { element: <ProductListPage />, index: true },
-          { path: 'list', element: <ProductListPage /> },
-          { path: ':id', element: <ProductDetailsPage /> },
-          { path: 'new', element: <ProductCreatePage /> },
-          { path: ':id/edit', element: <ProductEditPage /> },
-        ],
-      },
+      // {
+      //   path: 'customer',
+      //   children: [
+      //     { path: ':id/edit', element: <CustomerCreateViewMain /> },
+      //   ],
+      // },
+      // {
+      //   path: 'product',
+      //   children: [
+      //     { element: <ProductListPage />, index: true },
+      //     { path: 'list', element: <ProductListPage /> },
+      //     { path: ':id', element: <ProductDetailsPage /> },
+      //     { path: 'new', element: <ProductCreatePage /> },
+      //     { path: ':id/edit', element: <ProductEditPage /> },
+      //   ],
+      // },
       {
         path: 'order',
         children: [

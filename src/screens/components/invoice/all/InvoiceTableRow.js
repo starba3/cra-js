@@ -32,10 +32,10 @@ export default function InvoiceTableRow({
   onDeleteRow,
   handleOpenInquiry,
 }) {
-  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameEn, paidStatus, department } = row;
+  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameAr, customerNameEn, paidStatus, department } = row;
   
-  const { t } = useLocales()
-
+  const { t, currentLang } = useLocales()
+  const customerName = currentLang.value === 'ar' ? customerNameAr : customerNameEn;
   
   const Translate = (text) => t(text);
   const confirm = useBoolean();
@@ -50,15 +50,15 @@ export default function InvoiceTableRow({
         </TableCell>
 
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt={customerNameEn} sx={{ mr: 2 }}>
-            {customerNameEn.charAt(0).toUpperCase()}
+          <Avatar alt={customerName} sx={{ mr: 2 }}>
+            {customerName.charAt(0).toUpperCase()}
           </Avatar>
 
           <ListItemText
             disableTypography
             primary={
               <Typography variant="body2" noWrap>
-                {customerNameEn}
+                {customerName}
               </Typography>
             }
             secondary={
@@ -118,7 +118,7 @@ export default function InvoiceTableRow({
           {Translate("view")}
         </MenuItem>
 
-        <Divider sx={{ borderStyle: 'solid' }} />
+        
 
         <MenuItem
           onClick={() => {
@@ -130,6 +130,19 @@ export default function InvoiceTableRow({
           <Iconify icon="bx:file" />
           {Translate("inquiry")}
         </MenuItem>
+
+        <Divider sx={{ borderStyle: 'solid' }} />
+        
+        <MenuItem
+          onClick={() => {
+            confirm.onTrue();
+            popover.onClose();
+          }}
+          sx={{ color: 'error.main' }}
+        >
+          <Iconify icon="solar:trash-bin-trash-bold" />
+          {Translate("delete")}
+        </MenuItem>
       </CustomPopover>
 
       <ConfirmDialog
@@ -138,8 +151,12 @@ export default function InvoiceTableRow({
         title={Translate("delete")}
         content={Translate("deleteComfirmationMessage")}
         action={
-          <Button variant="contained" color="error" onClick={onDeleteRow}>
-            Delete
+          <Button variant="contained" color="error" onClick={() => {
+            console.log("Delete clicked");
+            onDeleteRow();
+            confirm.onFalse()
+          }}>
+            {Translate("delete")}
           </Button>
         }
       />

@@ -409,6 +409,24 @@ export function useNavData() {
               },
             ],
           },
+          // Product
+          {
+            title: t('products'),
+            path: paths.products.root,
+            icon: ICONS.user,
+            children: [
+              { 
+                title: t('list'),
+                path: paths.products.list,
+
+              },
+              { 
+                title: t('create'),
+                path: paths.products.create,
+
+              },
+            ],
+          },
           // USER
           {
             title: t('departments'),

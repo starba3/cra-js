@@ -21,7 +21,7 @@ import CustomerEditInputs from './customerEditInputs';
 
 // ----------------------------------------------------------------------
 
-export default function CustomerEditForm({ currentInvoice }) {
+export default function CustomerEditForm({ currentCustomer }) {
   const router = useRouter();
 
   const loadingSend = useBoolean();
@@ -36,11 +36,11 @@ export default function CustomerEditForm({ currentInvoice }) {
 
   const defaultValues = useMemo(
     () => ({
-      customerCode: currentInvoice?.customerCode,
-      customerNameEn: currentInvoice?.customerNameEn,
-      customerNameAr: currentInvoice?.customerNameAr, 
+      customerCode: currentCustomer?.customerCode,
+      customerNameEn: currentCustomer?.customerNameEn,
+      customerNameAr: currentCustomer?.customerNameAr, 
     }),
-    [currentInvoice]
+    [currentCustomer]
   );
 
   const methods = useForm({
@@ -121,7 +121,7 @@ export default function CustomerEditForm({ currentInvoice }) {
           loading={loadingSend.value && isSubmitting}
           type='submit'
         >
-          {currentInvoice ? Translate('Update') : Translate('Create')} 
+          {currentCustomer ? Translate('Update') : Translate('Create')} 
         </LoadingButton>
       </Stack>
     </FormProvider>
@@ -129,5 +129,5 @@ export default function CustomerEditForm({ currentInvoice }) {
 }
 
 CustomerEditForm.propTypes = {
-  currentInvoice: PropTypes.object,
+  currentCustomer: PropTypes.object,
 };

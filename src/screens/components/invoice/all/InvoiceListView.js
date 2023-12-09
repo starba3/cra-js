@@ -57,7 +57,7 @@ import {
 } from 'src/components/table';
 
 // DATA ACCESS
-import { getAllInvoices, getInvoiceImportUrl, getInvoiceInquiryData } from 'src/data-access/invoice'
+import { getAllInvoices, getInvoiceImportUrl, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
 //
@@ -77,7 +77,6 @@ const defaultFilters = {
   endDate: null,
 };
 
-const dataGridData = await getAllInvoices()
 // ----------------------------------------------------------------------
 
 export default function InvoiceListView() {
@@ -93,8 +92,8 @@ export default function InvoiceListView() {
   const { t } = useLocales();
   const Translate = (text) => t(text);
 
-  const [tableData, setTableData] = useState(dataGridData);
-
+  const [tableData, setTableData] = useState([]);
+  const [refresh, setRefresh] = useState(false);
   const [filters, setFilters] = useState(defaultFilters);
 
   const [open, setOpen] = React.useState(false);
@@ -107,6 +106,20 @@ export default function InvoiceListView() {
   const [openInquiry, setOpenInquiry] = useState(false);
   const [inquiryId, setInquiryId] = useState(0);
   const [inquiryData, setInquiryData] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getAllInvoices();
+        setTableData(result);
+      } catch (error) {
+        console.error('Error fetching invoices:', error);
+      }
+    };
+
+    
+    fetchData();
+  }, [refresh]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -186,15 +199,31 @@ export default function InvoiceListView() {
     [table]
   );
 
-  const handleDeleteRow = useCallback(
-    (id) => {
-      const deleteRow = tableData.filter((row) => row.id !== id);
-      setTableData(deleteRow);
-
-      table.onUpdatePageDeleteRow(dataInPage.length);
-    },
-    [dataInPage.length, table, tableData]
-  );
+  const handleDeleteRow = (id) => {
+      let success = true;
+      const deleteData = async () => {
+        try {
+          success = await deleteInvoice(id);          
+        } catch (error) {
+          console.error('Error fetching invoices:', error);
+        } 
+        console.log("Success status: ", success);
+        if (success) {
+          // Fetch data only if deletion was successful
+          try {
+            const result = await getAllInvoices();
+            setTableData(result);
+          } catch (error) {
+            console.error('Error fetching invoices:', error);
+          }
+      
+          // Update refresh state after fetching data
+          setRefresh(!refresh);
+        }
+      };
+      
+      deleteData();
+  };
 
   const handleDeleteRows = useCallback(() => {
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));

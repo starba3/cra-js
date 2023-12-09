@@ -1,12 +1,19 @@
 import PropTypes from 'prop-types';
+import { useLocales } from 'src/locales';
 // @mui
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import MenuItem from '@mui/material/MenuItem';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
+import IconButton from '@mui/material/IconButton';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
-
+// utils
 // components
-import { usePopover } from 'src/components/custom-popover';
+import Iconify from 'src/components/iconify';
+import { ConfirmDialog } from 'src/components/custom-dialog';
+import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 
@@ -20,6 +27,9 @@ export default function CustomerTableRow({
   handleOpenInquiry,
 }) {
   const { id, customerCode, customerNameEn, customerNameAr } = row;
+
+  const { t } = useLocales()
+  const Translate = (text) => t(text);
 
   const confirm = useBoolean();
 
@@ -35,9 +45,15 @@ export default function CustomerTableRow({
 
         <TableCell >{customerNameAr}</TableCell>
 
+        <TableCell align="right" sx={{ px: 1 }}>
+          <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
+            <Iconify icon="eva:more-vertical-fill" />
+          </IconButton>
+        </TableCell>
+
       </TableRow>
 
-      {/* <CustomPopover
+      <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
         arrow="right-top"
@@ -45,39 +61,43 @@ export default function CustomerTableRow({
       >
         <MenuItem
           onClick={() => {
-            onViewRow();
+            onEditRow();
             popover.onClose();
           }}
         >
           <Iconify icon="solar:eye-bold" />
-          View
+          {Translate("edit")}
         </MenuItem>
 
         <Divider sx={{ borderStyle: 'solid' }} />
 
         <MenuItem
           onClick={() => {
-            handleOpenInquiry();
-            // confirm.onTrue();
+            confirm.onTrue();
             popover.onClose();
           }}
+          sx={{ color: 'error.main' }}
         >
-          <Iconify icon="bx:file" />
-          Inquiry
+          <Iconify icon="solar:trash-bin-trash-bold" />
+          {Translate("delete")}
         </MenuItem>
       </CustomPopover>
 
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}
-        title="Delete"
-        content="Are you sure want to delete?"
+        title={Translate("delete")}
+        content={Translate("deleteDialogContent")}
         action={
-          <Button variant="contained" color="error" onClick={onDeleteRow}>
-            Delete
+          <Button variant="contained" color="error" onClick={() => {
+            console.log("Delete clicked");
+            onDeleteRow();
+            confirm.onFalse()
+          }}>
+            {Translate("delete")}
           </Button>
         }
-      /> */}
+      />
     </>
   );
 }

@@ -19,7 +19,7 @@ export default function ProductTableRow({
   onDeleteRow,
   handleOpenInquiry,
 }) {
-  const { id, customerCode, customerNameEn, customerNameAr } = row;
+  const { id, code, nameEn, nameAr } = row;
 
   const confirm = useBoolean();
 
@@ -29,11 +29,11 @@ export default function ProductTableRow({
     <>
       <TableRow hover >
         
-        <TableCell >{customerCode}</TableCell>
+        <TableCell >{code}</TableCell>
         
-        <TableCell >{customerNameEn}</TableCell>
+        <TableCell >{nameEn}</TableCell>
 
-        <TableCell >{customerNameAr}</TableCell>
+        <TableCell >{nameAr}</TableCell>
 
         {/* <IconButton onClick={popover.onOpen}>
             <Iconify icon="eva:more-vertical-fill" />

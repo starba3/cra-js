@@ -180,7 +180,7 @@ export default function InvoiceListView({department, salesStatus}) {
     { id: 'issueInvoiceDate', label: Translate("issueDate") },
     { id: 'invoiceAmount', label: Translate("amount") },
     { id: 'region', label: Translate("region"), align: 'center' },
-    { id: 'customerNameAr', label: Translate("nameArabic"), align: 'center' },
+    { id: 'productName', label: Translate("productName"), align: 'center' },
     { id: '6', label: '' },
   ];
 

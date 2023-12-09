@@ -7,7 +7,7 @@ import { paths } from 'src/routes/paths';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
-import CustomerEditForm from './productEditForm';
+import ProductEditForm from './productEditForm';
 
 // ----------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ export default function ProductCreateView() {
         }}
       />
 
-      <CustomerEditForm />
+      <ProductEditForm />
     </Container>
   );
 }

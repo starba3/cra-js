@@ -24,19 +24,18 @@ const PricingPage = lazy(() => import('src/pages/pricing'));
 const PaymentPage = lazy(() => import('src/pages/payment'));
 const ComingSoonPage = lazy(() => import('src/pages/coming-soon'));
 const MaintenancePage = lazy(() => import('src/pages/maintenance'));
-// PRODUCT
-const ProductListPage = lazy(() => import('src/pages/product/list'));
-const ProductDetailsPage = lazy(() => import('src/pages/product/details'));
-const ProductCheckoutPage = lazy(() => import('src/pages/product/checkout'));
+
 // Reports
 const AgingViewMain = lazy(() => import('src/screens/reports/aging'));
 const InvoiceForCustomersViewMain = lazy(() => import('src/screens/reports/invoiceForCustomers'));
 const GmReportView = lazy(() => import('src/screens/reports/gmReportView'));
 const GmReasonReportView = lazy(() => import('src/screens/reports/GmReasonReportView'));
+// Products
+const ProductListViewMain = lazy(() => import('src/screens/products/all/ProductListView'));
+const ProductCreateViewMain = lazy(() => import('src/screens/products/create/ProductCreateView'));
 // Customers
 const CustomerListViewMain = lazy(() => import('src/screens/customer/all/CustomerListView'));
 const CustomerCreateViewMain = lazy(() => import('src/screens/customer/create/CustomerCreateView'));
-
 // BLOG
 const PostListPage = lazy(() => import('src/pages/post/list'));
 const PostDetailsPage = lazy(() => import('src/pages/post/details'));
@@ -61,15 +60,15 @@ export const mainRoutes = [
       { path: 'about-us', element: <AboutPage /> },
       { path: 'contact-us', element: <ContactPage /> },
       { path: 'faqs', element: <FaqsPage /> },
-      {
-        path: 'product',
-        children: [
-          { element: <ProductListPage />, index: true },
-          { path: 'list', element: <ProductListPage /> },
-          { path: ':id', element: <ProductDetailsPage /> },
-          { path: 'checkout', element: <ProductCheckoutPage /> },
-        ],
-      },
+      // {
+      //   path: 'product',
+      //   children: [
+      //     { element: <ProductListPage />, index: true },
+      //     { path: 'list', element: <ProductListPage /> },
+      //     { path: ':id', element: <ProductDetailsPage /> },
+      //     { path: 'checkout', element: <ProductCheckoutPage /> },
+      //   ],
+      // },
       {
         path: 'post',
         children: [
@@ -174,6 +173,23 @@ export const mainRoutes = [
       { 
         path: paths.customers.create,
         element: <CustomerCreateViewMain />  
+      },
+      { 
+        path: paths.customers.editUrl,
+        element: <CustomerCreateViewMain />  
+      },
+      
+      { 
+        path: paths.products.list,
+        element: <ProductListViewMain />  
+      },
+      { 
+        path: paths.products.create,
+        element: <ProductCreateViewMain />  
+      },
+      { 
+        path: paths.products.editUrl,
+        element: <ProductCreateViewMain />  
       },
       
     ]

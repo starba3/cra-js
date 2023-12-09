@@ -248,7 +248,7 @@ export default function InvoiceDetails({ invoice }) {
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("installationDate")}
             </Typography>
-            {currentInvoice?.installationDate.substring(0, currentInvoice?.installationDate.indexOf("T"))}
+            {currentInvoice?.installationDate && currentInvoice?.installationDate.substring(0, currentInvoice?.installationDate.indexOf("T"))}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>

@@ -16,7 +16,8 @@ import { useRouter } from 'src/routes/hooks';
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
 import FormProvider from 'src/components/hook-form';
-import CustomerEditInputs from './productEditInputs';
+import ProductEditInputs from './productEditInputs';
+
 
 // ----------------------------------------------------------------------
 
@@ -28,16 +29,16 @@ export default function ProductEditForm({ currentInvoice }) {
   const navigate = useNavigate();
 
   const NewInvoiceSchema = Yup.object().shape({
-    customerCode: Yup.string().required('Customer Code is required'),
-    customerNameEn: Yup.string().required('English Name code is required'),
-    customerNameAr: Yup.string().required('Arabic Name is required'),
+    code: Yup.string().required('Product Code is required'),
+    nameEn: Yup.string().required('English Name code is required'),
+    nameAr: Yup.string().required('Arabic Name is required'),
   });
 
   const defaultValues = useMemo(
     () => ({
-      customerCode: currentInvoice?.customerCode,
-      customerNameEn: currentInvoice?.customerNameEn,
-      customerNameAr: currentInvoice?.customerNameAr, 
+      code: currentInvoice?.code,
+      nameEn: currentInvoice?.nameEn,
+      nameAr: currentInvoice?.nameAr, 
     }),
     [currentInvoice]
   );
@@ -64,22 +65,22 @@ export default function ProductEditForm({ currentInvoice }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       
-      const {customerCode ,customerNameEn ,customerNameAr} = watch()
+      const {code ,nameEn ,nameAr} = watch()
       const body = {
-        customerCode,
-        customerNameEn,
-        customerNameAr
+        code,
+        nameEn,
+        nameAr
       }
 
 
       reset();
       loadingSend.onFalse();
 
-      let redirectUrl = paths.customers.list;
+      let redirectUrl = paths.products.list;
       // Send create invoice request
       
       console.log(body)
-      fetch('https://invoicecollectionsystemapi.azurewebsites.net/Customer/add', {
+      fetch('https://invoicecollectionsystemapi.azurewebsites.net/Product', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -113,7 +114,7 @@ export default function ProductEditForm({ currentInvoice }) {
   return (
     <FormProvider methods={methods} onSubmit={handleCreateAndSend} >
       <Card>
-        <CustomerEditInputs />
+        <ProductEditInputs />
       </Card>
 
       <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>

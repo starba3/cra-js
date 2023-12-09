@@ -251,6 +251,16 @@ export const paths = {
     root: ROOTS.CUSTOMER,
     list: `${ROOTS.CUSTOMER}/list`,
     create: `${ROOTS.CUSTOMER}/create`,
+    editUrl:`${ROOTS.CUSTOMER}/:id/edit`,
+    edit: (id) => `${ROOTS.CUSTOMER}/${id}/edit`
+  },
+  // Products
+  products: {
+    root: ROOTS.PRODUCT,
+    list: `${ROOTS.PRODUCT}/list`,
+    create: `${ROOTS.PRODUCT}/create`,
+    editUrl:`${ROOTS.PRODUCT}/:id/edit`,
+    edit: (id) => `${ROOTS.PRODUCT}/${id}/edit`
   },
 
 };

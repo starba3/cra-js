@@ -37,7 +37,7 @@ import { getAllInvoices } from 'src/data-access/invoice'
 
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
-import { getAllCustomers } from 'src/data-access/customers';
+import { getAllCustomers, deleteCustomer } from 'src/data-access/customers';
 //
 import InvoiceTableFiltersResult from 'src/sections/invoice/invoice-table-filters-result';
 import CustomerTableRow from './CustomerTableRow';
@@ -74,6 +74,7 @@ export default function CustomerListView() {
 
   const [tableData, setTableData] = useState(dataGridData);
   const [filters, setFilters] = useState(defaultFilters);
+  const [refresh, setRefresh] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -90,12 +91,13 @@ export default function CustomerListView() {
     };
     
     fetchData();
-  }, []);
+  }, [refresh]);
 
   const TABLE_HEAD = [
     { id: 'customerCode', label: Translate("customerCode")  },
     { id: 'customerNameEn', label: Translate("customerNameEn")  },
     { id: 'customerNameAr', label: Translate("customerNameAr")  },
+    { id: '' },
   ];
 
   const dateError =
@@ -140,20 +142,47 @@ export default function CustomerListView() {
     [table]
   );
 
-  const handleDeleteRow = useCallback(
-    (id) => {
-      const deleteRow = tableData.filter((row) => row.id !== id);
-      setTableData(deleteRow);
+  // const handleDeleteRow = useCallback(
+  //   (id) => {
+  //     const deleteRow = tableData.filter((row) => row.id !== id);
+  //     setTableData(deleteRow);
 
-      table.onUpdatePageDeleteRow(dataInPage.length);
-    },
-    [dataInPage.length, table, tableData]
-  );
+  //     table.onUpdatePageDeleteRow(dataInPage.length);
+  //   },
+  //   [dataInPage.length, table, tableData]
+  // );
+
+  const handleDeleteRow = (id) => {
+    let success = true;
+    const deleteData = async () => {
+      try {
+        success = await deleteCustomer(id);          
+      } catch (error) {
+        console.error('Error fetching invoices:', error);
+      } 
+      console.log("Success status: ", success);
+      if (success) {
+        // Fetch data only if deletion was successful
+        try {
+          const result = await getAllInvoices();
+          setTableData(result);
+        } catch (error) {
+          console.error('Error fetching invoices:', error);
+        }
+    
+        // Update refresh state after fetching data
+        setRefresh(!refresh);
+      }
+    };
+    
+    deleteData();
+};
 
 
   const handleEditRow = useCallback(
     (id) => {
-      router.push(paths.dashboard.invoice.edit(id));
+      console.log(paths.customers.edit(id));
+      router.push(paths.customers.edit(id));
     },
     [router]
   );

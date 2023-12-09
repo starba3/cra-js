@@ -67,7 +67,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
   
   const arrays = {
     deliveryDate: ['operation'],
-    department: ['operation', 'sales', 'tenderandcontracts'],
+    department: ['operation', 'sales', 'tenderandcontracts', 'collection'],
     acknowledgeStatuses: ['operation', 'sales'],
     installationStatus: ['installation'],
     installationDate: ['installation'],

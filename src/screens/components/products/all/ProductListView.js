@@ -41,7 +41,7 @@ import { getAllInvoices } from 'src/data-access/invoice'
 
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
-import { getAllCustomers } from 'src/data-access/customers';
+import { getAllProducts } from 'src/data-access/products';
 //
 import InvoiceTableFiltersResult from 'src/sections/invoice/invoice-table-filters-result';
 import CustomerTableRow from './ProductTableRow';
@@ -74,7 +74,11 @@ export default function ProductListView() {
   const navigate = useNavigate();
 
 
-  const { t } = useLocales()
+  const { t, currentLang } = useLocales();
+
+  // Arabic language: currentLang.value === 'ar'
+  // English language: currentLang.value === 'en'
+
 
   const Translate = (text) => t(text);
 
@@ -90,7 +94,7 @@ export default function ProductListView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getAllCustomers();
+        const result = await getAllProducts();
         setTableData(result);
         
       } catch (error) {
@@ -113,9 +117,9 @@ export default function ProductListView() {
   // }, [history]);
 
   const TABLE_HEAD = [
-    { id: 'customerCode', label: Translate("customerCode")  },
-    { id: 'customerNameEn', label: Translate("customerNameEn")  },
-    { id: 'customerNameAr', label: Translate("customerNameAr")  },
+    { id: 'code', label: Translate("code")  },
+    { id: 'nameEn', label: Translate("nameEnglish")  },
+    { id: 'nameAr', label: Translate("nameArabic")  },
   ];
 
   const dateError =
@@ -333,8 +337,8 @@ function applyFilter({ inputData, comparator, filters }) {
     if (name) {
       inputData = inputData.filter(
         (invoice) =>
-          invoice.customerNameEn.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-          invoice.customerNameAr.indexOf(name.toLowerCase()) !== -1
+          invoice.nameEn.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
+          invoice.nameAr.indexOf(name.toLowerCase()) !== -1
           
           // invoice.invoiceTo.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
       );
