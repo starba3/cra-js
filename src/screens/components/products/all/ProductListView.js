@@ -41,7 +41,7 @@ import { getAllInvoices } from 'src/data-access/invoice'
 
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
-import { getAllProducts } from 'src/data-access/products';
+import { getAllProducts, deleteProduct } from 'src/data-access/products';
 //
 import InvoiceTableFiltersResult from 'src/sections/invoice/invoice-table-filters-result';
 import CustomerTableRow from './ProductTableRow';
@@ -85,7 +85,7 @@ export default function ProductListView() {
   const [tableData, setTableData] = useState(dataGridData);
 
   const [filters, setFilters] = useState(defaultFilters);
-  
+  const [refresh, setRefresh] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -104,7 +104,7 @@ export default function ProductListView() {
 
     
     fetchData();
-  }, []);
+  }, [refreshKey]);
 
   // useEffect(() => {
   //   const unlisten = history.listen(() => {
@@ -120,6 +120,7 @@ export default function ProductListView() {
     { id: 'code', label: Translate("code")  },
     { id: 'nameEn', label: Translate("nameEnglish")  },
     { id: 'nameAr', label: Translate("nameArabic")  },
+    { id: '' },
   ];
 
   const dateError =
@@ -164,20 +165,46 @@ export default function ProductListView() {
     [table]
   );
 
-  const handleDeleteRow = useCallback(
-    (id) => {
-      const deleteRow = tableData.filter((row) => row.id !== id);
-      setTableData(deleteRow);
+  // const handleDeleteRow = useCallback(
+  //   (id) => {
+  //     const deleteRow = tableData.filter((row) => row.id !== id);
+  //     setTableData(deleteRow);
 
-      table.onUpdatePageDeleteRow(dataInPage.length);
-    },
-    [dataInPage.length, table, tableData]
-  );
+  //     table.onUpdatePageDeleteRow(dataInPage.length);
+  //   },
+  //   [dataInPage.length, table, tableData]
+  // );
+
+  const handleDeleteRow = (id) => {
+    let success = true;
+    const deleteData = async () => {
+      try {
+        success = await deleteProduct(id);          
+      } catch (error) {
+        console.error('Error fetching invoices:', error);
+      } 
+      console.log("Success status: ", success);
+      if (success) {
+        // Fetch data only if deletion was successful
+        try {
+          const result = await getAllProducts();
+          setTableData(result);
+        } catch (error) {
+          console.error('Error fetching invoices:', error);
+        }
+    
+        // Update refresh state after fetching data
+        setRefresh(!refresh);
+      }
+    };
+    
+    deleteData();
+};
 
 
   const handleEditRow = useCallback(
     (id) => {
-      router.push(paths.dashboard.invoice.edit(id));
+      router.push(paths.products.edit(id));
     },
     [router]
   );
@@ -221,7 +248,7 @@ export default function ProductListView() {
               sx={{ py: 2 }}
             >
               <Button
-                onClick={() => navigate(paths.customers.create)}
+                onClick={() => navigate(paths.products.create)}
                 variant="contained"
                 startIcon={<Iconify icon="mingcute:add-line" />}
               >

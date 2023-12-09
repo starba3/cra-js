@@ -52,3 +52,23 @@ export async function deleteProduct(id) {
     return success;
 }
 
+export async  function getProductById(id) {
+    try {
+        const response = await fetch(`${baseUrl}/Product/${id}`, {
+            mode: 'cors'
+        });
+
+        if (response.ok) {
+            const invoice = await response.json();
+            return invoice;
+        } 
+            // Handle non-successful response here if needed.
+            console.error(`Failed to fetch invoice: ${response.status} - ${response.statusText}`);
+        
+    } catch (error) {
+        console.error(error);
+    }
+
+    return {}; // Return an empty object by default or handle errors as needed.
+    
+}

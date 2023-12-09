@@ -64,8 +64,22 @@ export default function CustomerEditForm({ currentCustomer }) {
     
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
+
+      const url = currentCustomer 
+        ? `https://invoicecollectionsystemapi.azurewebsites.net/Customer/${currentCustomer.id}`
+        : 'https://invoicecollectionsystemapi.azurewebsites.net/Customer/add';
       
+      const method = currentCustomer 
+        ? 'PATCH'
+        : 'POST';
+
+      const body2 = currentCustomer 
+        ? {}
+        : { customerCode, customerNameEn, customerNameAr };
+
+
       const {customerCode ,customerNameEn ,customerNameAr} = watch()
+      
       const body = {
         customerCode,
         customerNameEn,

@@ -26,7 +26,7 @@ export default function ProductEditInputs() {
         <RHFTextField
           name="code"
           label={Translate("code")}
-          value={values.customerCode}
+          value={values.code}
         />
 
         <RHFTextField

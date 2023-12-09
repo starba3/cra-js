@@ -21,14 +21,16 @@ import ProductEditInputs from './productEditInputs';
 
 // ----------------------------------------------------------------------
 
-export default function ProductEditForm({ currentInvoice }) {
+export default function ProductEditForm({ currentProduct }) {
   const router = useRouter();
 
   const loadingSend = useBoolean();
 
   const navigate = useNavigate();
 
-  const NewInvoiceSchema = Yup.object().shape({
+  console.log(currentProduct)
+
+  const NewProductSchema = Yup.object().shape({
     code: Yup.string().required('Product Code is required'),
     nameEn: Yup.string().required('English Name code is required'),
     nameAr: Yup.string().required('Arabic Name is required'),
@@ -36,15 +38,15 @@ export default function ProductEditForm({ currentInvoice }) {
 
   const defaultValues = useMemo(
     () => ({
-      code: currentInvoice?.code,
-      nameEn: currentInvoice?.nameEn,
-      nameAr: currentInvoice?.nameAr, 
+      code: currentProduct?.code,
+      nameEn: currentProduct?.nameEn,
+      nameAr: currentProduct?.nameAr, 
     }),
-    [currentInvoice]
+    [currentProduct]
   );
 
   const methods = useForm({
-    resolver: yupResolver(NewInvoiceSchema),
+    resolver: yupResolver(NewProductSchema),
     defaultValues,
   });
 
@@ -124,7 +126,7 @@ export default function ProductEditForm({ currentInvoice }) {
           loading={loadingSend.value && isSubmitting}
           type='submit'
         >
-          {currentInvoice ? Translate('Update') : Translate('Create')} 
+          {currentProduct ? Translate('Update') : Translate('Create')} 
         </LoadingButton>
       </Stack>
     </FormProvider>
@@ -132,5 +134,5 @@ export default function ProductEditForm({ currentInvoice }) {
 }
 
 ProductEditForm.propTypes = {
-  currentInvoice: PropTypes.object,
+  currentProduct: PropTypes.object,
 };
