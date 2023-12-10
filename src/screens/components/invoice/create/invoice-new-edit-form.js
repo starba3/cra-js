@@ -41,6 +41,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     currency: Yup.string().required('Currency is required'),
     customerCode: Yup.string().required('Customer code is required'),
     region: Yup.string().required('Region is required'),
+    productCode: Yup.string().required('Product code is required'),
     customerPO: Yup.string(),
     poValue: Yup.number(),
     contractNo: Yup.string(),
@@ -51,6 +52,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
   const defaultValues = useMemo(
     () => ({
       customerObj: {},
+      productObj: {},
       salesPersonObj: {},
       invoiceNumber: currentInvoice?.invoiceNumber,
       createDate: currentInvoice?.createDate || new Date(),
@@ -59,7 +61,8 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       customerId: currentInvoice?.customerId,
       customerCode: currentInvoice?.customerCode,
       region: currentInvoice?.region,
-      customerPO: currentInvoice?.customerPO ,
+      customerPO: currentInvoice?.customerPO,
+      productCode: currentInvoice?.productCode,
       poValue: currentInvoice?.poValue,
       contractNo: currentInvoice?.contractNo,
       salesPerson: currentInvoice?.salesPerson,
@@ -87,13 +90,14 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       
-      const {invoiceNumber, createDate, invoiceAmount, currency, customerCode, region, customerPO, poValue, contractNo, salesPerson, deliveryDate} = watch()
+      const {invoiceNumber, createDate, invoiceAmount, currency, customerCode, productCode, region, customerPO, poValue, contractNo, salesPerson, deliveryDate} = watch()
       const body = {
         invoiceNo: invoiceNumber,
         issueInvoiceDate: createDate,
         invoiceAmount,
         currency,
         customerCode,
+        productCode,
         region,
         customerPO,
         poValue,
@@ -144,6 +148,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       <Card>
         <InvoiceNewEditAddress />
         <InvoiceNewEditStatusDate />
+
       </Card>
 
       <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
@@ -153,7 +158,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
           loading={loadingSend.value && isSubmitting}
           type='submit'
         >
-          {currentInvoice ? Translate("update") : Translate("create")}) 
+          {currentInvoice ? Translate("update") : Translate("create")} 
         </LoadingButton>
       </Stack>
     </FormProvider>

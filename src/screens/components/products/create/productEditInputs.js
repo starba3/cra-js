@@ -31,14 +31,26 @@ export default function ProductEditInputs() {
 
         <RHFTextField
           name="nameEn"
-          label={Translate("nameEn")}
+          label={Translate("nameEnglish")}
           value={values.nameEn}
         />
 
         <RHFTextField
           name="nameAr"
-          label={Translate("nameAr")}
+          label={Translate("nameArabic")}
           value={values.nameAr}
+        />
+
+        <RHFTextField
+          name="descriptionEn"
+          label={Translate("descriptionEnglish")}
+          value={values.descriptionEn}
+        />
+
+        <RHFTextField
+          name="descriptionAr"
+          label={Translate("descriptionArabic")}
+          value={values.descriptionAr}
         />
 
       </Stack>

@@ -65,6 +65,8 @@ export default function CustomerEditForm({ currentCustomer }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
+      const {customerCode ,customerNameEn ,customerNameAr} = watch()
+
       const url = currentCustomer 
         ? `https://invoicecollectionsystemapi.azurewebsites.net/Customer/${currentCustomer.id}`
         : 'https://invoicecollectionsystemapi.azurewebsites.net/Customer/add';
@@ -73,18 +75,30 @@ export default function CustomerEditForm({ currentCustomer }) {
         ? 'PATCH'
         : 'POST';
 
-      const body2 = currentCustomer 
-        ? {}
-        : { customerCode, customerNameEn, customerNameAr };
+      const patchBody = [
+        { 
+          "op": "replace", 
+          "path": "/CustomerNameEn",
+          "value": customerNameEn
+        },
+        { 
+          "op": "replace", 
+          "path": "/CustomerNameAr",
+          "value": customerNameAr 
+        },
+        { 
+          "op": "replace",
+          "path": "/CustomerCode", 
+          "value": customerCode
+        }
+      ];
+
+      const postBody = { customerCode, customerNameEn, customerNameAr };
 
 
-      const {customerCode ,customerNameEn ,customerNameAr} = watch()
-      
-      const body = {
-        customerCode,
-        customerNameEn,
-        customerNameAr
-      }
+      const body = currentCustomer 
+        ? patchBody
+        : postBody;
 
       reset();
       loadingSend.onFalse();
@@ -93,8 +107,8 @@ export default function CustomerEditForm({ currentCustomer }) {
       // Send create invoice request
       
       console.log(body)
-      fetch('https://invoicecollectionsystemapi.azurewebsites.net/Customer/add', {
-        method: 'POST',
+      fetch(url, {
+        method,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

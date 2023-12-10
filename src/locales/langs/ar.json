@@ -164,7 +164,9 @@
   "nupco": "نوبكو",
   "etimad": "إعتماد",
   "cash": "دفع نقدي",
-  "private": "زبون خاص"
+  "private": "زبون خاص",
+  "descriptionEnglish" : "الوصف بالانجليزي",
+  "descriptionArabic" : "الوصف بالعربي"
 
   
 }

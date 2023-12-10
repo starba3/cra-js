@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 // @mui
 import Stack from '@mui/material/Stack';
 import Select from '@mui/material/Select';
@@ -21,7 +21,6 @@ export default function ReportToolBar({
 }) {
 
   const [selectedValue, setSelectedValue] = useState([]);
-
   const sourceList = _sourcesList();
 
   return (
@@ -52,9 +51,34 @@ export default function ReportToolBar({
             multiple
             value={selectedValue}  // Ensure that the initial value is set correctly
             onChange={(event) => {
-              console.log(event);
-              setSelectedValue(event.target.value);
-              onChange(event.target.value);
+              const allItems = sourceList.map((option) => option.value);
+              const selected = event.target.value;
+              const lastIndex = selected.length - 1;
+              const lastSelectedItem = selected[lastIndex];
+
+              console.log(selected);
+
+              if (selected[lastIndex] === "All") {
+                setSelectedValue(allItems);
+                onChange(allItems);
+              } else if(selected[0] === "All"){
+                setSelectedValue(selected.slice(1));
+                onChange(selected.slice(1));
+              } else  {
+                setSelectedValue(selected);
+                onChange(selected);
+              }
+
+              // if (selected.indexOf("All") &&  !prevSelectedValue.includes("All")) {
+              //   setSelectedValue(allItems);
+              //   onChange(allItems);
+              // }
+
+              // if(selected.includes("All") && selected !== prevSelectedValue ) {
+              //   setSelectedValue(selected.slice(1));
+              //   onChange(selected.slice(1));
+              // } 
+              
             }}  // Use event.target.value to get the selected value
             input={<OutlinedInput label="Collection Source" />}
             renderValue={(selected) => selected}

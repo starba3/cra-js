@@ -68,18 +68,26 @@ export default function GmReportView() {
           collections = collections.substring(-1);
         }
 
-        let result = await getGmReport(collectionSource);
-        result = result.map((item, index) => {
-          item.id = index;
-          return item;
-      });
-        setTableData(result);
+        
+          let result = await getGmReport(collectionSource);
+          result = result.map((item, index) => {
+            item.id = index;
+            return item;
+          })
+          setTableData(result);
+
+        
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
-    fetchData();
+    if(collectionSource.length > 0) {
+      fetchData();
+    } else {
+      setTableData([]);
+    }
+    
   }, [collectionSource]);
 
   const [filters, setFilters] = useState(defaultFilters);
@@ -106,6 +114,16 @@ export default function GmReportView() {
     setCollectionSource(value);
   } 
 
+  const handleOnChange2 = useCallback(
+    (name, value) => {
+      table.onResetPage();
+      setFilters((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    },
+    [table]
+  );
 
   const denseHeight = table.dense ? 56 : 76;
 

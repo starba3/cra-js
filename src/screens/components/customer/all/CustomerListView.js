@@ -82,7 +82,8 @@ export default function CustomerListView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getAllCustomers();
+        const result = 
+         getAllCustomers();
         setTableData(result);
         
       } catch (error) {

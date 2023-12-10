@@ -53,9 +53,24 @@ export default function InvoiceTableToolbar({
           multiple
           value={selectedCustomers}  // Ensure that the initial value is set correctly
           onChange={(event) => {
-            console.log(event.target.value);
+            
             // setSelectedValue(event.target.value);
-            onChange(event.target.value);
+            // onChange(event.target.value);
+
+            const allItems = customers.map((option) => option.id);
+            const selected = event.target.value;
+            const lastIndex = selected.length - 1;
+            const lastSelectedItem = selected[lastIndex];
+
+            console.log(selected);
+
+            if (selected[lastIndex] === "0") {
+              onChange(allItems);
+            } else if(selected[0] === "0"){
+              onChange(selected.slice(1));
+            } else  {
+              onChange(selected);
+            }
           }}  // Use event.target.value to get the selected value
           input={<OutlinedInput label="Customers List" />}
           renderValue={(selected) => selected}

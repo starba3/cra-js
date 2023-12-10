@@ -118,8 +118,8 @@ export default function ProductListView() {
 
   const TABLE_HEAD = [
     { id: 'code', label: Translate("code")  },
-    { id: 'nameEn', label: Translate("nameEnglish")  },
-    { id: 'nameAr', label: Translate("nameArabic")  },
+    { id: 'productName', label: Translate("productName")  },
+    { id: 'description', label: Translate("description")  },
     { id: '' },
   ];
 

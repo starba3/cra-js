@@ -32,15 +32,19 @@ export default function ProductEditForm({ currentProduct }) {
 
   const NewProductSchema = Yup.object().shape({
     code: Yup.string().required('Product Code is required'),
-    nameEn: Yup.string().required('English Name code is required'),
+    nameEn: Yup.string().required('English Name is required'),
     nameAr: Yup.string().required('Arabic Name is required'),
+    descriptionEn: Yup.string().required('English Description is required'),
+    descriptionAr: Yup.string().required('Arabic Description is required'),
   });
 
   const defaultValues = useMemo(
     () => ({
       code: currentProduct?.code,
       nameEn: currentProduct?.nameEn,
-      nameAr: currentProduct?.nameAr, 
+      nameAr: currentProduct?.nameAr,
+      descriptionEn: currentProduct?.descriptionEn,
+      descriptionAr: currentProduct?.descriptionAr, 
     }),
     [currentProduct]
   );
@@ -67,13 +71,53 @@ export default function ProductEditForm({ currentProduct }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       
-      const {code ,nameEn ,nameAr} = watch()
-      const body = {
-        code,
-        nameEn,
-        nameAr
-      }
+      const {code ,nameEn ,nameAr, descriptionEn, descriptionAr} = watch()
 
+      const url = currentProduct 
+        ? `https://invoicecollectionsystemapi.azurewebsites.net/Product/${currentProduct.id}`
+        : 'https://invoicecollectionsystemapi.azurewebsites.net/Product';
+      
+      const method = currentProduct 
+        ? 'PATCH'
+        : 'POST';
+
+      const patchBody = [
+        { 
+          "op": "replace", 
+          "path": "/Code",
+          "value": code
+        },
+        { 
+          "op": "replace", 
+          "path": "/NameEn",
+          "value": nameEn
+        },
+        { 
+          "op": "replace",
+          "path": "/NameAr", 
+          "value": nameAr
+        },
+        { 
+          "op": "replace", 
+          "path": "/DescriptionEn",
+          "value": descriptionEn
+        },
+        { 
+          "op": "replace", 
+          "path": "/DescriptionAr",
+          "value": descriptionAr
+        },
+      ];
+      
+      const postBody = { code, nameEn, nameAr, descriptionEn, descriptionAr }
+
+      const body = currentProduct 
+        ? patchBody
+        : postBody;
+
+      
+
+      
 
       reset();
       loadingSend.onFalse();
@@ -82,8 +126,8 @@ export default function ProductEditForm({ currentProduct }) {
       // Send create invoice request
       
       console.log(body)
-      fetch('https://invoicecollectionsystemapi.azurewebsites.net/Product', {
-        method: 'POST',
+      fetch(url, {
+        method,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

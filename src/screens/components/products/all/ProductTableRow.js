@@ -26,14 +26,20 @@ export default function ProductTableRow({
   onDeleteRow,
   handleOpenInquiry,
 }) {
-  const { id, code, nameEn, nameAr } = row;
+  const { id, code, nameEn, nameAr, descriptionEn, descriptionAr } = row;
 
   const confirm = useBoolean();
 
   const popover = usePopover();
 
-  const { t } = useLocales()
+  const { t, currentLang } = useLocales();
   const Translate = (text) => t(text);
+
+  // Arabic language: currentLang.value === 'ar'
+  // English language: currentLang.value === 'en'
+
+  const name = currentLang.value === 'ar' ? nameAr : nameEn;
+  const description = currentLang.value === 'ar' ? descriptionAr : descriptionEn;
 
   return (
     <>
@@ -41,9 +47,9 @@ export default function ProductTableRow({
         
         <TableCell >{code}</TableCell>
         
-        <TableCell >{nameEn}</TableCell>
+        <TableCell >{name}</TableCell>
 
-        <TableCell >{nameAr}</TableCell>
+        <TableCell >{description}</TableCell>
 
         <TableCell align="right" sx={{ px: 1 }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
