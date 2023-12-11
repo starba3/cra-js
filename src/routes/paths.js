@@ -13,6 +13,7 @@ const ROOTS = {
   AUTH_DEMO: '/auth-demo',
   DASHBOARD: '/dashboard',
   STATUS: '/status',
+  USER: '/user',
   REPORTS: '/reports',
   CUSTOMER: '/customer',
   PRODUCT: '/product',
@@ -240,10 +241,11 @@ export const paths = {
   // Reports
   reports: {
     root: ROOTS.REPORTS,
-    aging: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/aging`,
-    gmReasoneReport: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/gmReasonReport`,
-    invoiceForCustomers: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/invoiceForCustomers`,
-    gmReport: `${ROOTS.REPORTS}/${ROOTS.DEPARTMENT.operation}/GmReport`,
+    aging: `${ROOTS.REPORTS}/aging`,
+    gmReasoneReport: `${ROOTS.REPORTS}/gmReasonReport`,
+    invoiceForCustomers: `${ROOTS.REPORTS}/invoiceForCustomers`,
+    invoiceByUsers: `${ROOTS.REPORTS}/invoiceByUsers`,
+    gmReport: `${ROOTS.REPORTS}/GmReport`,
     
   },
   // Customers
@@ -261,6 +263,12 @@ export const paths = {
     create: `${ROOTS.PRODUCT}/create`,
     editUrl:`${ROOTS.PRODUCT}/:id/edit`,
     edit: (id) => `${ROOTS.PRODUCT}/${id}/edit`
+  },
+
+  // Users
+  users: {
+    root: ROOTS.USER,
+    list: `${ROOTS.USER}/list`,
   },
 
 };

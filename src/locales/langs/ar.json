@@ -141,6 +141,11 @@
   "newNote": "ملاحظة جديدة", 
   "newNotePlaceHolder": "ملاحظة جديدة",
 
+  "firstName" : "الأسم الأول",
+  "lastName" : "الأسم الأخير",
+  "userName": "اسم المستخدم",
+  "roles": "الأقسام",
+
   "searchCustomerName": "ابحث عن العميل", 
   "newCustomer": "عميل جديد", 
   "createNewCustomer": "اضافة عميل جديد",

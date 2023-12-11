@@ -208,6 +208,17 @@
   "descriptionEnglish" : "Description English",
   "descriptionArabic" : "Description Arabic",
 
+  
+  "firstName" : "First Name",
+  "lastName" : "Last Name",
+  "userName": "User Name",
+  "roles": "Roles",
+  "usersList": "Users List",
+  "invoiceByUser" : "Invoice By User",
+  "searchUsers": "Search Users",
+
+
+
   "nupco": "Nupco",
   "etimad": "Etimad",
   "cash": "Cash",

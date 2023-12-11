@@ -30,9 +30,12 @@ const AgingViewMain = lazy(() => import('src/screens/reports/aging'));
 const InvoiceForCustomersViewMain = lazy(() => import('src/screens/reports/invoiceForCustomers'));
 const GmReportView = lazy(() => import('src/screens/reports/gmReportView'));
 const GmReasonReportView = lazy(() => import('src/screens/reports/GmReasonReportView'));
+const InvoiceByUsersViewMain = lazy(() => import('src/screens/reports/invoiceByUsers'));
 // Products
 const ProductListViewMain = lazy(() => import('src/screens/products/all/ProductListView'));
 const ProductCreateViewMain = lazy(() => import('src/screens/products/create/ProductCreateView'));
+// Users
+const UserListViewMain = lazy(() => import('src/screens/user/all/UserListView'));
 // Customers
 const CustomerListViewMain = lazy(() => import('src/screens/customer/all/CustomerListView'));
 const CustomerCreateViewMain = lazy(() => import('src/screens/customer/create/CustomerCreateView'));
@@ -190,6 +193,15 @@ export const mainRoutes = [
       { 
         path: paths.products.editUrl,
         element: <ProductCreateViewMain />  
+      },
+
+      { 
+        path: paths.users.list,
+        element: <UserListViewMain />  
+      },
+      { 
+        path: paths.reports.invoiceByUsers,
+        element: <InvoiceByUsersViewMain />  
       },
       
     ]

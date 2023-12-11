@@ -26,10 +26,12 @@ export default function UserTableRow({
   onDeleteRow,
   handleOpenInquiry,
 }) {
-  const { id, customerCode, customerNameEn, customerNameAr } = row;
+  const { id, firstName, lastName, userName, roles } = row;
 
   const { t } = useLocales()
   const Translate = (text) => t(text);
+
+  const concatRoles = roles.reduce((acc, role) => `${acc}, ${role} `, '').slice(1, -1);
 
   const confirm = useBoolean();
 
@@ -39,17 +41,19 @@ export default function UserTableRow({
     <>
       <TableRow hover >
         
-        <TableCell >{customerCode}</TableCell>
+        <TableCell >{firstName}</TableCell>
         
-        <TableCell >{customerNameEn}</TableCell>
+        <TableCell >{lastName}</TableCell>
 
-        <TableCell >{customerNameAr}</TableCell>
+        <TableCell >{userName}</TableCell>
 
-        <TableCell align="right" sx={{ px: 1 }}>
+        <TableCell >{concatRoles}</TableCell>
+
+        {/* <TableCell align="right" sx={{ px: 1 }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>
-        </TableCell>
+        </TableCell> */}
 
       </TableRow>
 

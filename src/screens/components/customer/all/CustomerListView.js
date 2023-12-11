@@ -55,8 +55,6 @@ const defaultFilters = {
   startDate: null,
   endDate: null,
 };
-
-const dataGridData = await getAllInvoices()
 // ----------------------------------------------------------------------
 
 export default function CustomerListView() {
@@ -72,7 +70,7 @@ export default function CustomerListView() {
   const { t } = useLocales()
   const Translate = (text) => t(text);
 
-  const [tableData, setTableData] = useState(dataGridData);
+  const [tableData, setTableData] = useState([]);
   const [filters, setFilters] = useState(defaultFilters);
   const [refresh, setRefresh] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -82,8 +80,7 @@ export default function CustomerListView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = 
-         getAllCustomers();
+        const result = await getAllCustomers();
         setTableData(result);
         
       } catch (error) {
@@ -330,7 +327,7 @@ export default function CustomerListView() {
 function applyFilter({ inputData, comparator, filters }) {
     const { name } = filters;
   
-    const stabilizedThis = inputData.map((el, index) => [el, index]);
+    const stabilizedThis = inputData ? inputData.map((el, index) => [el, index]) : [];
   
     stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0]);

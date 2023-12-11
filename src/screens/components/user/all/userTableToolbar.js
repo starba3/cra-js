@@ -5,6 +5,13 @@ import { useLocales } from 'src/locales';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+
 // components
 import Iconify from 'src/components/iconify';
 import { usePopover } from 'src/components/custom-popover';
@@ -13,11 +20,16 @@ import { usePopover } from 'src/components/custom-popover';
 export default function UserTableToolbar({
   filters,
   onFilters,
-  dateError,
-  serviceOptions,
-  paidStatusOptions,
+  departmentOptions,
 }) {
   const popover = usePopover();
+
+  const handleFilterDepartment = useCallback(
+    (value) => {
+      onFilters('departments', value);
+    },
+    [onFilters]
+  );
 
   const handleFilterName = useCallback(
     (event) => {
@@ -46,6 +58,49 @@ export default function UserTableToolbar({
       
 
         <Stack direction="row" alignItems="center" spacing={2} flexGrow={1} sx={{ width: 1 }}>
+          <FormControl
+            sx={{
+              flexShrink: 0,
+              width: { xs: 1, md: 180 },
+            }}
+          >
+            <InputLabel>{Translate("departments")}</InputLabel>
+
+            <Select
+              multiple
+              value={filters.departments}
+              onChange={(event) => {
+                  const allItems = departmentOptions;
+                  const selected = event.target.value;
+                  const lastIndex = selected.length - 1;
+                  const lastSelectedItem = selected[lastIndex];
+
+                  console.log(selected);
+
+                  if (selected[lastIndex] === "All") { // Selected All
+                    handleFilterDepartment(allItems);
+                  } else if(selected[0] === "All"){ // Selected All previously then deselected other value
+                    handleFilterDepartment(selected.slice(1));
+                  } else if(selected === allItems.slice(1)){ // Selected All previously then deselected All
+                    handleFilterDepartment([]);
+                  } else  {
+                    handleFilterDepartment(selected);
+                  }
+                  // handleFilterDepartment(event);
+                }
+              }
+              input={<OutlinedInput label={Translate("departments")} />}
+              renderValue={(selected) => selected.map((value) => value).join(', ')}
+              sx={{ textTransform: 'capitalize' }}
+            >
+              {departmentOptions.map((option, index) => (
+                <MenuItem key={index} value={option}>
+                  <Checkbox disableRipple size="small" checked={filters.departments.includes(option)} />
+                  {index === 0 ? Translate('all') : option}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <TextField
             fullWidth
             value={filters.name}
@@ -104,9 +159,7 @@ export default function UserTableToolbar({
 }
 
 UserTableToolbar.propTypes = {
-  dateError: PropTypes.bool,
   filters: PropTypes.object,
   onFilters: PropTypes.func,
-  serviceOptions: PropTypes.array,
-  paidStatusOptions: PropTypes.array,
+  departmentOptions: PropTypes.array,
 };

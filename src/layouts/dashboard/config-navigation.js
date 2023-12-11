@@ -417,8 +417,8 @@ export function useNavData() {
             children: [
               // { title: t('profile'), path: paths.dashboard.user.root },
               // { title: t('cards'), path: paths.dashboard.user.cards },
-              { title: t('list'), path: paths.dashboard.user.list },
-              { title: t('create'), path: paths.dashboard.user.new },
+              { title: t('list'), path: paths.users.list },
+              // { title: t('create'), path: paths.dashboard.user.new },
               // { title: t('edit'), path: paths.dashboard.user.demo.edit },
               // { title: t('account'), path: paths.dashboard.user.account },
             ],
@@ -512,6 +512,10 @@ export function useNavData() {
                 title: t('gmReasonReport'),
                 path: paths.reports.gmReasoneReport,
 
+              },
+              { 
+                title: t('invoiceByUser'),
+                path: paths.reports.invoiceByUsers,
               },
             ],
           },

@@ -38,6 +38,7 @@ import { getAllInvoices } from 'src/data-access/invoice'
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
 import { getAllCustomers, deleteCustomer } from 'src/data-access/customers';
+import { getAllUsers, getUsersRoles } from 'src/data-access/users';
 //
 import InvoiceTableFiltersResult from 'src/sections/invoice/invoice-table-filters-result';
 import UserTableRow from './userTableRow';
@@ -51,12 +52,12 @@ const defaultFilters = {
   name: '',
   service: [],
   paidStatus: [],
+  departments: [],
   status: 'all',
   startDate: null,
   endDate: null,
 };
 
-const dataGridData = await getAllInvoices()
 // ----------------------------------------------------------------------
 
 export default function UserListView() {
@@ -72,7 +73,8 @@ export default function UserListView() {
   const { t } = useLocales()
   const Translate = (text) => t(text);
 
-  const [tableData, setTableData] = useState(dataGridData);
+  const [tableData, setTableData] = useState([]);
+  const [userRoles, setUserRoles] = useState([]);
   const [filters, setFilters] = useState(defaultFilters);
   const [refresh, setRefresh] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -80,25 +82,36 @@ export default function UserListView() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUsers = async () => {
       try {
-        const result = 
-         getAllCustomers();
+        const result = await getAllUsers();
         setTableData(result);
         
       } catch (error) {
         console.error('Error fetching customers:', error);
       }
     };
+
+    const fetchRoles = async () => {
+      try {
+        const result = await getUsersRoles();
+        setUserRoles(result);
+        
+      } catch (error) {
+        console.error('Error fetching customers:', error);
+      }
+    };
+
+    fetchRoles();
+    fetchUsers();
     
-    fetchData();
-  }, [refresh]);
+  }, []);
 
   const TABLE_HEAD = [
-    { id: 'customerCode', label: Translate("customerCode")  },
-    { id: 'customerNameEn', label: Translate("customerNameEn")  },
-    { id: 'customerNameAr', label: Translate("customerNameAr")  },
-    { id: '' },
+    { id: 'firstName', label: Translate("firstName")  },
+    { id: 'lastName', label: Translate("lastName")  },
+    { id: 'userName', label: Translate("userName")  },
+    { id: 'roles', label: Translate("roles")  },
   ];
 
   const dateError =
@@ -246,9 +259,7 @@ export default function UserListView() {
           <UserTableToolbar
             filters={filters}
             onFilters={handleFilters}
-            dateError={dateError}
-            serviceOptions={_departments().map((option) => option)}
-            paidStatusOptions={_statusList().map((option) => option)}
+            departmentOptions={userRoles.map((option) => option.name)}
           />
 
           {canReset && (
@@ -328,7 +339,7 @@ export default function UserListView() {
 }
 
 function applyFilter({ inputData, comparator, filters }) {
-    const { name } = filters;
+    const { name, departments } = filters;
   
     const stabilizedThis = inputData.map((el, index) => [el, index]);
   
@@ -342,9 +353,10 @@ function applyFilter({ inputData, comparator, filters }) {
   
     if (name) {
       inputData = inputData.filter(
-        (invoice) =>
-          invoice.customerNameEn.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-          invoice.customerNameAr.indexOf(name.toLowerCase()) !== -1
+        (user) =>
+          user.firstName.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
+          user.lastName.indexOf(name.toLowerCase()) !== -1 ||
+          user.userName.toLowerCase().indexOf(name.toLowerCase()) !== -1 
           
           // invoice.invoiceTo.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
       );
@@ -361,11 +373,11 @@ function applyFilter({ inputData, comparator, filters }) {
     //   );
     // }
     
-    // if (paidStatus.length) {
-    //   inputData = inputData.filter((invoice) =>
-    //     paidStatus.includes('All') || paidStatus.map((option) => option.toLowerCase()).includes(invoice.paidStatus)
-    //   );
-    // }
+    if (departments.length) {
+      inputData = inputData.filter((user) =>
+        user.roles.every(element => departments.includes(element)) || departments.includes('All')
+      )
+    }
 
     // if (!dateError) {
     //   if (startDate && endDate) {

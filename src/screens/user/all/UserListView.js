@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import  UserListView  from 'src/screens/components/customer/all/CustomerListView';
+import  UserListView  from 'src/screens/components/user/all/userListView';
 
 // ----------------------------------------------------------------------
 
