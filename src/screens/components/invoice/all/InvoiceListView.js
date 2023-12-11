@@ -60,6 +60,8 @@ import {
 import { getAllInvoices, getInvoiceImportUrl, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
+// Utility
+import { exportToExcel } from 'src/utils/export';
 //
 import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
 import InvoiceTableFiltersResult from 'src/sections/invoice/invoice-table-filters-result';
@@ -89,7 +91,7 @@ export default function InvoiceListView() {
 
   const confirm = useBoolean();
 
-  const { t } = useLocales();
+  const { t, currentLang } = useLocales();
   const Translate = (text) => t(text);
 
   const [tableData, setTableData] = useState([]);
@@ -174,6 +176,16 @@ export default function InvoiceListView() {
     { id: 'paidStatus', label: Translate("paidStatus"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
     { id: '' },
+  ];
+
+  const exportHeaderRow = [
+    Translate("invoiceNumber"),
+    Translate("customerName"),
+    Translate("issueInvoiceDate"),
+    Translate("daysToCollected"),
+    Translate("invoiceAmount"),
+    Translate("paidStatus"),
+    Translate("department")
   ];
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
@@ -398,6 +410,14 @@ export default function InvoiceListView() {
             >
               {Translate("import")}
             </Button>
+            <Button
+                variant="contained"
+                color='primary'
+                onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, 'AllInvoices', 'ExportFile')}
+                startIcon={<Iconify icon="eva:download-outline" />}
+              >
+                {Translate("export")}
+              </Button>
           </Stack>
             
           }

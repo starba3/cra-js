@@ -1,5 +1,5 @@
 import sumBy from 'lodash/sumBy';
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo  } from 'react';
 import { useNavigate  } from 'react-router-dom';
 import { useLocales } from 'src/locales';
 // @mui
@@ -20,6 +20,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { Icon } from '@iconify/react';
 import Collapse from '@mui/material/Collapse';
+import Tooltip from '@mui/material/Tooltip';
 // @mui Dialog
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -39,6 +40,7 @@ import Scrollbar from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import Iconify from 'src/components/iconify';
 import {
   useTable,
   getComparator,
@@ -47,17 +49,21 @@ import {
   TableEmptyRows,
   TableHeadCustom,
   TablePaginationCustom,
+  TableSelectedAction,
 } from 'src/components/table';
 // DATA ACCESS
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
 import { getUsersByRole } from 'src/data-access/users';
+// Utility
+import { exportToExcel } from 'src/utils/export';
 // COMPONENTS
 import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
 import InvoiceTableFiltersResult from 'src/screens/components/invoice/departments/InvoiceTableFiltersResult';
 import { getInvoicesByDepartment, getInvoicesBySalesConfirmation  } from 'src/data-access/invoice'
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
+
 
 
 // ----------------------------------------------------------------------
@@ -81,13 +87,15 @@ export default function InvoiceListView({department, salesStatus}) {
 
   const confirm = useBoolean();
 
-  const { t } = useLocales()
-
+  const { t, currentLang } = useLocales()
+  const currentLanguage = currentLang.value;
   const Translate = (text) => t(text);
   
   const [assignedUsers, setAssignedUsers] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [dataUpdated, setDataUpdated] = useState(false);
+
+  
 
   useEffect(() => {
     let role = '';
@@ -96,6 +104,8 @@ export default function InvoiceListView({department, salesStatus}) {
     } else if (salesStatus === 3) {
       role = 'collection';
     } 
+    
+
     const fetchData = async () => {
       try {
 
@@ -130,7 +140,7 @@ export default function InvoiceListView({department, salesStatus}) {
 
     fetchData();
     fetchUsers();
-  }, [ department, salesStatus, dataUpdated]);
+  }, [ department, salesStatus]);
 
   const [filters, setFilters] = useState(defaultFilters);
   const [isConfirmReport, setIsConfirmReport] = useState(department === undefined);
@@ -182,6 +192,15 @@ export default function InvoiceListView({department, salesStatus}) {
     { id: 'region', label: Translate("region"), align: 'center' },
     { id: 'productName', label: Translate("productName"), align: 'center' },
     { id: '6', label: '' },
+  ];
+
+  const exportHeaderRow = [
+    Translate("invoiceNumber"),
+    Translate("customerName"),
+    Translate("issueDate"),
+    Translate("amount"),
+    Translate("region"),
+    Translate("productName")
   ];
 
   const handleFilters = useCallback(
@@ -425,7 +444,23 @@ export default function InvoiceListView({department, salesStatus}) {
               name: Translate("list"),
             },
           ]}
-          
+          action= {
+            <Stack
+              direction="row"
+              divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+              sx={{ py: 2 }}
+            >
+              <Button
+                variant="contained"
+                color='primary'
+                onClick={() => exportToExcel(tableData, exportHeaderRow, currentLanguage, 'InvoiceByDepartments', 'ExportFile')}
+                startIcon={<Iconify icon="eva:download-outline" />}
+              >
+                {Translate("export")}
+              </Button>
+            </Stack>
+            
+          }
           sx={{
             mb: { xs: 3, md: 5 },
           }}
@@ -484,11 +519,14 @@ export default function InvoiceListView({department, salesStatus}) {
               dense={table.dense}
               numSelected={table.selected.length}
               rowCount={tableData.length}
-              onSelectAllRows={(checked) =>
-                table.onSelectAllRows(
-                  checked,
-                  tableData.map((row) => row.id)
-                )
+              onSelectAllRows={(checked) => {
+                  console.log('Selected:', checked);
+                  table.onSelectAllRows(
+                    checked,
+                    tableData.map((row) => row.id)
+                  );
+                  
+                }
               }
               action={
                 <Stack direction="row">
@@ -665,6 +703,8 @@ export default function InvoiceListView({department, salesStatus}) {
     </>
   );
 }
+
+
 
 function applyFilter({ inputData, comparator, filters, dateError }) {
     const { name, status, service, startDate, paidStatus, endDate } = filters;
