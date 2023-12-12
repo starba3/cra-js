@@ -25,12 +25,12 @@ export default function TableRowNew({
         
         <TableCell >{customerNameEn}</TableCell>
         <TableCell >{customerNameAr}</TableCell>
-        <TableCell >{isPercentage ? '100%' : `${total} ${Translate('currencyShortcut')}`}</TableCell>
-        <TableCell >{isPercentage ? ((zeroToThirty / total) * 100).toFixed(2) : zeroToThirty} </TableCell>
-        <TableCell >{isPercentage ? ((thirtyOneToSixty / total) * 100).toFixed(2) : thirtyOneToSixty} </TableCell>
-        <TableCell >{isPercentage ? ((sixtyOneToNinety / total) * 100).toFixed(2) : sixtyOneToNinety} </TableCell>
-        <TableCell >{isPercentage ? ((ninetyOneToOneTwenty / total) * 100).toFixed(2) : ninetyOneToOneTwenty} </TableCell>
-        <TableCell >{isPercentage ? ((oneTwentyOnePlus / total) * 100).toFixed(2) : oneTwentyOnePlus} </TableCell>
+        <TableCell >{isPercentage ? '100%' : `${total.toLocaleString()} ${Translate('currencyShortcut')}`}</TableCell>
+        <TableCell >{isPercentage ? ((zeroToThirty / total) * 100).toFixed(2) : `${zeroToThirty.toLocaleString()} ${Translate('currencyShortcut')}`  } </TableCell>
+        <TableCell >{isPercentage ? ((thirtyOneToSixty / total) * 100).toFixed(2) : `${thirtyOneToSixty.toLocaleString()} ${Translate('currencyShortcut')}`  } </TableCell>
+        <TableCell >{isPercentage ? ((sixtyOneToNinety / total) * 100).toFixed(2) : `${sixtyOneToNinety.toLocaleString()} ${Translate('currencyShortcut')}`  } </TableCell>
+        <TableCell >{isPercentage ? ((ninetyOneToOneTwenty / total) * 100).toFixed(2) : `${ninetyOneToOneTwenty.toLocaleString()} ${Translate('currencyShortcut')}`  } </TableCell>
+        <TableCell >{isPercentage ? ((oneTwentyOnePlus / total) * 100).toFixed(2) : `${oneTwentyOnePlus.toLocaleString()} ${Translate('currencyShortcut')}`  } </TableCell>
 
         
       </TableRow>

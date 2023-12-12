@@ -102,7 +102,7 @@ function AppNewInvoiceRow({ row }) {
         
         <TableCell>{row.invoiceNo}</TableCell>
 
-        <TableCell>{`${row.invoiceAmount} ${Translate('currencyShortcut')}`}</TableCell>
+        <TableCell>{`${row.invoiceAmount.toLocaleString()} ${Translate('currencyShortcut')}`}</TableCell>
 
         <TableCell>{row.createdBy}</TableCell>
 
