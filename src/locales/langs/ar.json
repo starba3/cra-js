@@ -158,6 +158,9 @@
   "productNameAr": "اسم المنتج بالعربي",
   "productNameEn": "اسم المنتج بالانجليزي", 
   "currencyShortcut": "ر.س",
+  "total": "المجموع الكلي",
+  "customer": "الزبون",
+  "update": "تحديث",
 
   "searchCustomerName": "ابحث عن العميل", 
   "newCustomer": "عميل جديد", 

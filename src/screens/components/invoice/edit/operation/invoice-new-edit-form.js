@@ -104,7 +104,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       installationDate: currentInvoice ? new Date(currentInvoice?.installationDate ) : new Date(), 
       collectionSource: currentInvoice?.CollectionSource || '',
       claimStatus: currentInvoice?.ClaimStatus || '',
-      daysToCollect: currentInvoice?.daysToCollect || 0,
+      daysToCollect: currentInvoice?.daysToCollected || 0,
       claimsDetailStatus: currentInvoice?.ClaimsDetailStatus || '',
     }),
     [currentInvoice]

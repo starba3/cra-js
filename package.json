@@ -105,7 +105,6 @@
     "yet-another-react-lightbox": "^3.12.1",
     "yup": "^1.2.0"
   },
-  "homepage": ".",
   "devDependencies": {
     "@babel/core": "^7.22.11",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",

@@ -149,7 +149,7 @@ export default function CustomerEditForm({ currentCustomer }) {
           loading={loadingSend.value && isSubmitting}
           type='submit'
         >
-          {currentCustomer ? Translate('Update') : Translate('Create')} 
+          {currentCustomer ? Translate('update') : Translate('create')} 
         </LoadingButton>
       </Stack>
     </FormProvider>
