@@ -25,7 +25,7 @@ export default function TableRowNew({
 }) {
   const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameEn, customerNameAr, productNameEn, productNameAr, paidStatus, department } = row;
 
-  const { currentLang } = useLocales();
+  const { t, currentLang } = useLocales();
 
   const customerName = currentLang.value === 'ar' ? customerNameAr : customerNameEn;
   const productName = currentLang.value === 'ar' ? productNameAr : productNameEn;
@@ -74,7 +74,7 @@ export default function TableRowNew({
 
         <TableCell >{daysToCollected}</TableCell>
         
-        <TableCell >${invoiceAmount}</TableCell>
+        <TableCell >{`${invoiceAmount.toLocaleString()} ${t('currencyShortcut')}`}</TableCell>
 
 
         <TableCell >{productName}</TableCell>

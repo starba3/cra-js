@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useLocales } from 'src/locales';
 // @mui
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
@@ -14,16 +15,17 @@ export default function TableRowNew({
 }) {
   const { date,ready,notReady,reject } = row;
 
-
+  const { t } = useLocales()
+  const Translate = (text) => t(text);
 
   return (
     <TableRow hover selected={selected}>
         
         {/* <TableCell >{`${subtractDaysFromDate(new Date(date, 7))} - ${subtractDaysFromDate(new Date(date))}`}</TableCell> */}
         <TableCell >{`${subtractDaysFromDate(new Date(date), 7)} -  ${formatDate(new Date(date))} `} </TableCell>
-        <TableCell >{ready} </TableCell>
-        <TableCell >{notReady} </TableCell>
-        <TableCell >{reject} </TableCell>
+        <TableCell >{`${ready.toLocaleString()} ${Translate('currencyShortcut')}`}  </TableCell>
+        <TableCell >{`${notReady.toLocaleString()} ${Translate('currencyShortcut')}`}  </TableCell>
+        <TableCell >{`${reject.toLocaleString()} ${Translate('currencyShortcut')}`}  </TableCell>
 
         
       </TableRow>

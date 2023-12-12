@@ -51,6 +51,7 @@ const InvoiceListViewByDepartment = lazy(() => import ("src/screens/invoice/depa
 
 export const mainRoutes = [
   { path: 'cra-js', element: <Navigate to="/dashboard" /> },
+  { path: '', element: <Navigate to="/dashboard" /> },
   {
     element: (
       <MainLayout>

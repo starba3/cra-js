@@ -120,8 +120,8 @@
   "reports" : "Reports",
   "agingReport": "Aging",
   "invoicesForCustomer": "Invoices By Customer",
-  "gmReport": "GM ",
-  "gmReasonReport": "GM Reason",
+  "gmReport": "Invoice Analysis",
+  "gmReasonReport": "Analysis Details",
 
   "paidInvoicesTotal": "Paid Invoices Total",
   "unpaidInvoicesTotal": "Unpaid Invoices Total",
@@ -222,7 +222,7 @@
   "downlaod": "Downlaod",
   "productNameAr": "Product Name English",
   "productNameEn": "Product Name Arabic",
-  "currencyShortcut": "S.R",
+  "currencyShortcut": "SAR",
 
 
   "nupco": "Nupco",

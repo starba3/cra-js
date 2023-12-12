@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useLocales } from 'src/locales';
 import { format } from 'date-fns';
 // @mui
 import TableRow from '@mui/material/TableRow';
@@ -22,7 +23,8 @@ export default function TableRowNew({
 }) {
   const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameEn, paidStatus, department } = row;
 
-
+  const { t } = useLocales()
+  const Translate = (text) => t(text);
 
   return (
     <TableRow hover selected={selected}>
@@ -67,7 +69,7 @@ export default function TableRowNew({
 
         <TableCell >{daysToCollected}</TableCell>
         
-        <TableCell >${invoiceAmount}</TableCell>
+        <TableCell >{`${invoiceAmount.toLocaleString()} ${Translate('currencyShortcut')}`} </TableCell>
 
         <TableCell align="center" >{paidStatus}</TableCell>
 

@@ -161,6 +161,11 @@
   "total": "المجموع الكلي",
   "customer": "الزبون",
   "update": "تحديث",
+  "code": "الرمز",
+  "salesPerson": "مندوب المبيعات",
+  "createDate": "تاريخ الانشاء",
+  "contract": "رقم العقد",
+  "productName": "اسم المنتج",
 
   "searchCustomerName": "ابحث عن العميل", 
   "newCustomer": "عميل جديد", 

@@ -128,7 +128,7 @@ export default function GmReasonReportView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading= {Translate("gmReasonReport_heading")} 
+          heading= {Translate("gmReasonReport")} 
           links={[
             {
               name: Translate("app"),
@@ -138,7 +138,7 @@ export default function GmReasonReportView() {
               name: Translate("reports"),
             },
             {
-              name: Translate("gmReasonReport_heading"),
+              name: Translate("gmReasonReport"),
             },
           ]}
           

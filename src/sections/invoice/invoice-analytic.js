@@ -15,7 +15,6 @@ import Iconify from 'src/components/iconify';
 
 export default function InvoiceAnalytic({ title, total, icon, color, percent, price }) {
   const { t } = useLocales()
-
   const Translate = (text) => t(text);
   
 
