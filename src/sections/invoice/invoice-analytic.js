@@ -60,7 +60,8 @@ export default function InvoiceAnalytic({ title, total, icon, color, percent, pr
           {fShortenNumber(total)} {Translate("invoices")}
         </Box>
 
-        <Typography variant="subtitle2">{fCurrency(price)}</Typography>
+        {/* <Typography variant="subtitle2">{fCurrency(price)}</Typography> */}
+        <Typography variant="subtitle2">{`${price} ${Translate('currencyShortcut')}`}</Typography>
       </Stack>
     </Stack>
   );

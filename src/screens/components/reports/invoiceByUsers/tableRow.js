@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useLocales } from 'src/locales';
 import { format } from 'date-fns';
 // @mui
+import Link from '@mui/material/Link';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Avatar from '@mui/material/Avatar';
@@ -19,6 +20,7 @@ import Typography from '@mui/material/Typography';
 export default function TableRowNew({
   row,
   selected,
+  onViewRow,
   isPercentage,
 }) {
   const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameEn, customerNameAr, productNameEn, productNameAr, paidStatus, department } = row;
@@ -44,16 +46,16 @@ export default function TableRowNew({
                 {customerName}
               </Typography>
             }
-            // secondary={
-            //   <Link
-            //     noWrap
-            //     variant="body2"
-            //     onClick={onViewRow}
-            //     sx={{ color: 'text.disabled', cursor: 'pointer' }}
-            //   >
-            //     {invoiceNo}
-            //   </Link>
-            // }
+            secondary={
+              <Link
+                noWrap
+                variant="body2"
+                onClick={onViewRow}
+                sx={{ color: 'text.disabled', cursor: 'pointer' }}
+              >
+                {invoiceNo}
+              </Link>
+            }
           />
         </TableCell>
 
@@ -89,6 +91,7 @@ export default function TableRowNew({
 
 TableRowNew.propTypes = {
   row: PropTypes.object,
+  onViewRow: PropTypes.func,
   selected: PropTypes.bool,
   isPercentage: PropTypes.bool,
 };

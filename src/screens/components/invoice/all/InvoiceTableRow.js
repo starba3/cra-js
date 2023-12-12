@@ -89,7 +89,7 @@ export default function InvoiceTableRow({
 
         <TableCell >{daysToCollected}</TableCell>
         
-        <TableCell >${invoiceAmount}</TableCell>
+        <TableCell >{`${invoiceAmount} ${Translate('currencyShortcut')}`}</TableCell>
 
         <TableCell align="center" >{paidStatus}</TableCell>
 

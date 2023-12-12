@@ -155,6 +155,9 @@
   "startDate": "تاريخ البداية",
   "endDate": "تاريخ النهاية",
   "searchInvoiceNamePlaceHolder": "ابحث عن اسم الزبون أو رفم الفاتورة",
+  "productNameAr": "اسم المنتج بالعربي",
+  "productNameEn": "اسم المنتج بالانجليزي", 
+  "currencyShortcut": "ر.س",
 
   "searchCustomerName": "ابحث عن العميل", 
   "newCustomer": "عميل جديد", 

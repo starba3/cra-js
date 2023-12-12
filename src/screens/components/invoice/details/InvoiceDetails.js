@@ -206,7 +206,21 @@ export default function InvoiceDetails({ invoice }) {
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("nameArabic")}
             </Typography>
-            {currentInvoice?.customerNameEn}
+            {currentInvoice?.customerNameAr}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+              {Translate("productNameEn")}
+            </Typography>
+            {currentInvoice?.productNameEn}
+          </Stack>
+
+          <Stack sx={{ typography: 'body2' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+              {Translate("productNameAr")}
+            </Typography>
+            {currentInvoice?.customerNameAr}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>

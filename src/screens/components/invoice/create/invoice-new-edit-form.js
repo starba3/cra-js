@@ -99,9 +99,9 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         customerCode,
         productCode,
         region,
-        customerPO,
-        poValue,
-        contractNo,
+        "customerPO": customerPO || '',
+        "poValue": poValue || 0,
+        "contractNo": contractNo || '',
         salesTakerUsername: salesPerson,
         deliveryDate
       }

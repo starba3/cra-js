@@ -27,6 +27,7 @@ import { TableHeadCustom } from 'src/components/table';
 export default function AppNewInvoice({ title, subheader, tableData, tableLabels, ...other }) {
     const router = useRouter()
     const {t} = useLocales();
+    const Translate = (text) => t(text);
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} sx={{ mb: 3 }} />
@@ -73,6 +74,9 @@ AppNewInvoice.propTypes = {
 function AppNewInvoiceRow({ row }) {
   const popover = usePopover();
 
+  const {t} = useLocales();
+    const Translate = (text) => t(text);
+
   const handleDownload = () => {
     popover.onClose();
     console.info('DOWNLOAD', row.id);
@@ -98,7 +102,7 @@ function AppNewInvoiceRow({ row }) {
         
         <TableCell>{row.invoiceNo}</TableCell>
 
-        <TableCell>{fCurrency(row.invoiceAmount)}</TableCell>
+        <TableCell>{`${row.invoiceAmount} ${Translate('currencyShortcut')}`}</TableCell>
 
         <TableCell>{row.createdBy}</TableCell>
 

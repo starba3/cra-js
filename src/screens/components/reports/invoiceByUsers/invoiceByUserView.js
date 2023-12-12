@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocales } from 'src/locales';
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -64,7 +64,7 @@ export default function InvoiceByUserView() {
   const [selectedCustomers, setSelectedCustomers] = useState([]);
   const [open, setOpen] = useState(false);
 
-
+  
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -114,6 +114,12 @@ export default function InvoiceByUserView() {
   //   table.page * table.rowsPerPage + table.rowsPerPage
   // );
 
+  const handleViewRow = useCallback(
+    (id) => {
+      router.push(paths.dashboard.invoice.details(id));
+    },
+    [router]
+  );
 
 
   const denseHeight = table.dense ? 56 : 76;
@@ -144,7 +150,8 @@ export default function InvoiceByUserView() {
               href: paths.dashboard.root,
             },
             {
-              name: Translate("reports"),
+              name: Translate("invoiceByUser"),
+              href: paths.reports.invoiceByUsers,
             },
             {
               name: Translate("invoiceByUser"),
@@ -191,6 +198,7 @@ export default function InvoiceByUserView() {
                       <TableRowNew
                         key={index}
                         row={row}
+                        onViewRow={() => handleViewRow(row.id)}
                         selected={table.selected.includes(row.id)}
                       />
                     ))}
