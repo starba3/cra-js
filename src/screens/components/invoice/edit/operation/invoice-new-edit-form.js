@@ -99,9 +99,9 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       CreateNote: currentInvoice?.CreateNote || '',
       department: currentInvoice?.department || '',
       acknowledgeStatus: currentInvoice?.acknowledgeStatus || '',
-      DeliveryDate: currentInvoice?.DeliveryDate || new Date(),
+      DeliveryDate: currentInvoice ? new Date(currentInvoice?.DeliveryDate ) : new Date(),
       installationStatus: currentInvoice?.installationStatus || '',
-      installationDate: currentInvoice?.installationDate || new Date(),
+      installationDate: currentInvoice ? new Date(currentInvoice?.installationDate ) : new Date(), 
       collectionSource: currentInvoice?.CollectionSource || '',
       claimStatus: currentInvoice?.ClaimStatus || '',
       daysToCollect: currentInvoice?.daysToCollect || 0,
@@ -356,7 +356,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
             onFilters={handleFilters}
             departmentOptions={_departments_withoutAll().map((option) => option)}
             department={currentInvoice.department}
-            />
+          />
 
           {/* <InvoiceNewEditDetails /> */}
         </Card>

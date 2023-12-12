@@ -17,7 +17,7 @@ export default function InvoiceEditPage() {
         <title> Edit invoice</title>
       </Helmet>
 
-      <InvoiceEditView id={id}/>
+      <InvoiceEditView id={Number(id)}/>
     </>
   );
 }

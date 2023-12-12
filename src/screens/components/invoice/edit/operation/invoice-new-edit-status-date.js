@@ -68,7 +68,8 @@ export default function InvoiceNewEditStatusDate({
 
   const values = watch();
 
-  
+  console.log("CUrrent invoice: ", currentInvoice);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -95,7 +96,7 @@ export default function InvoiceNewEditStatusDate({
   }, [setIsFetched, collectionSource]);
 
   useEffect(() => {
-    if(isFetched && !selectedCollectionSource ) {
+    if(isFetched && !selectedCollectionSource && currentInvoice && currentInvoice.department.toLowerCase() === 'collection' ) {
       setValue('collectionSource', defaultCollectionSource);
       setSelectedCollectionSource(defaultCollectionSource);
       setSelectedCollectionSource((prev) => {
@@ -114,7 +115,7 @@ export default function InvoiceNewEditStatusDate({
         return newValue;
       });
     }
-  }, [isFetched, setValue, collectionSource, collectionData, setClaimsStatus, setSelectedCollectionSource, setClaimsDetailStatus, defaultCollectionSource, defaultClaimsDetailStatus, defaultClaimsStatus, selectedCollectionSource]);
+  }, [isFetched, setValue, collectionSource, collectionData, setClaimsStatus, setSelectedCollectionSource, setClaimsDetailStatus, defaultCollectionSource, defaultClaimsDetailStatus, defaultClaimsStatus, selectedCollectionSource, currentInvoice]);
   
   if(!collectionSource) {
     console.log('collectionSource[0]: ', collectionSource);
@@ -796,6 +797,7 @@ export default function InvoiceNewEditStatusDate({
       {renderNotes}
 
       <Divider sx={{ mt: 5, borderStyle: 'dashed', mb: 3}} />
+      
       {renderAttachments}
 
       {/* <Divider sx={{ mt: 5, borderStyle: 'dashed' }} /> */}
