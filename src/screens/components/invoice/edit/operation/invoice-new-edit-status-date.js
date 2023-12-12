@@ -27,6 +27,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TextField from '@mui/material/TextField';
 // components
 import Scrollbar from 'src/components/scrollbar';
+import { Input } from '@mui/material';
 
 
 
@@ -46,10 +47,26 @@ export default function InvoiceNewEditStatusDate({
   const [collectionSource, setCollectionSource] = useState([])
   const [claimsStatus, setClaimsStatus] = useState([])
   const [claimsDetailStatus, setClaimsDetailStatus] = useState([])
+  const [defaultCollectionSource, setDefaultCollectionSource] = useState(currentInvoice?.collectionSource)
+  const [defaultClaimsStatus, setDefaultClaimsStatus] = useState(currentInvoice?.claimStatus)
+  const [defaultClaimsDetailStatus, setDefaultClaimsDetailStatus] = useState(currentInvoice?.claimsDetailStatus)
+  const [selectedCollectionSource, setSelectedCollectionSource] = useState('')
+  const [isFetched, setIsFetched] = useState(false)
 
   const { t } = useLocales()
 
   const Translate = (text) => t(text)
+
+  const {
+    control,
+    watch,
+    resetField,
+    setValue,
+    formState: { errors },
+  } = useFormContext();
+
+  const values = watch();
+
   
   useEffect(() => {
     const fetchData = async () => {
@@ -69,23 +86,44 @@ export default function InvoiceNewEditStatusDate({
     fetchData();
     
   }, []);
+
+  useEffect(() => {
+    if(collectionSource.length > 0) {
+      setIsFetched(true);
+    }
+  }, [setIsFetched, collectionSource]);
+
+  useEffect(() => {
+    if(isFetched && !selectedCollectionSource ) {
+      setValue('collectionSource', defaultCollectionSource);
+      setSelectedCollectionSource(defaultCollectionSource);
+      setSelectedCollectionSource((prev) => {
+        const newValue = defaultCollectionSource;
+        // Perform your logic based on the updated state
+        const collectionSourceId = collectionSource.filter(option => option.value === defaultCollectionSource)[0].id;
+        const claimStatusTemp = collectionData.filter(data => data.parentId === collectionSourceId);
+    
+        setClaimsStatus(claimStatusTemp)
+        setValue('claimStatus', defaultClaimsStatus);
+
+        const claimStatusId = claimStatusTemp.filter(option => option.value === defaultClaimsStatus)[0].id;
+        setClaimsDetailStatus(collectionData.filter(data => data.parentId === claimStatusId))
+        setValue('claimsDetailStatus', defaultClaimsDetailStatus);
+
+        return newValue;
+      });
+    }
+  }, [isFetched, setValue, collectionSource, collectionData, setClaimsStatus, setSelectedCollectionSource, setClaimsDetailStatus, defaultCollectionSource, defaultClaimsDetailStatus, defaultClaimsStatus, selectedCollectionSource]);
   
   if(!collectionSource) {
     console.log('collectionSource[0]: ', collectionSource);
     handleCollectionSourceChange(collectionSource[0]);
   }
 
-  const {
-    control,
-    watch,
-    resetField,
-    setValue,
-    formState: { errors },
-  } = useFormContext();
-
-  const values = watch();
+  
 
   const arrays = {
+    daysToCollect: ['collection'],
     deliveryDate: ['operation'],
     department: ['operation', 'sales', 'collection', 'tenderandcontracts'],
     acknowledgeStatuses: ['operation', 'sales'],
@@ -156,6 +194,8 @@ export default function InvoiceNewEditStatusDate({
   };
 
   // Components
+
+  
   const deliveryDate = arrays.deliveryDate.includes(department.toLowerCase()) ? 
   <Controller
     name="DeliveryDate"
@@ -176,6 +216,33 @@ export default function InvoiceNewEditStatusDate({
   <TextField
     label={Translate("deliveryDate")}
     value={currentInvoice.deliveryDate && currentInvoice.deliveryDate.substring(0, currentInvoice?.deliveryDate.indexOf('T'))  }
+    disabled
+    style={width80}      
+  />
+  const daysToCollect = arrays.daysToCollect.includes(department.toLowerCase()) ? 
+  <Controller
+    name="daysToCollect"
+    control={control}
+    
+    render={({ field, fieldState: { error } }) => (
+        <TextField
+          type='Number'
+          label={Translate("daysToCollected")}
+          value={field.value}
+          
+          onChange={(newValue) => {
+            field.onChange(newValue);
+          }}
+          sx={grayBgStyle}
+          inputProps={{ 
+            max: 365
+           }}
+        />
+    )}
+  /> : 
+  <TextField
+    label={Translate("daysToCollected")}
+    value={currentInvoice.daysToCollected }
     disabled
     style={width80}      
   />
@@ -341,7 +408,7 @@ export default function InvoiceNewEditStatusDate({
       }}
       style={width80}
     >
-      <InputLabel> Collection Source </InputLabel>
+      <InputLabel> {Translate("collectionSource")} </InputLabel>
       <Controller
         name="collectionSource"
         control={control}
@@ -351,6 +418,7 @@ export default function InvoiceNewEditStatusDate({
             style={outlinedStyle}
             value={field.value}
             onChange={(newValue) => {
+              setSelectedCollectionSource(newValue.target.value);
               field.onChange(newValue);
               handleCollectionSourceChange(newValue);
             }}
@@ -659,12 +727,7 @@ export default function InvoiceNewEditStatusDate({
 
         {installationStatus}
 
-        <TextField
-          label={Translate("daysToCollected")}
-          value={currentInvoice?.daysToCollected}
-          style={width80}
-          disabled
-        />
+        {daysToCollect}
 
         {acknowledgeStatus}
 

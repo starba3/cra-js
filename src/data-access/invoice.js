@@ -197,7 +197,7 @@ export async function getInvoiceForCustomers(customers) {
         
     })
 
-    console.log('Result: ', list)
+    // console.log('Result: ', list)
    
 
     return list;

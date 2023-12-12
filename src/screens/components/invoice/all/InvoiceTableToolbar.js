@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import { useLocales } from 'src/locales';
 // @mui
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -28,6 +28,9 @@ export default function InvoiceTableToolbar({
 }) {
   const popover = usePopover();
 
+  const prevSelectedPaidStatus = useRef([]);
+  const prevSelectedDepartment = useRef([]);
+
   const { t } = useLocales()
 
   const Translate = (text) => t(text);
@@ -40,20 +43,20 @@ export default function InvoiceTableToolbar({
   );
 
   const handleFilterService = useCallback(
-    (event) => {
+    (value) => {
       onFilters(
-        'service',
-        typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value
+        'departments',
+        typeof value === 'string' ? value.split(',') : value
       );
     },
     [onFilters]
   );
 
   const handleFilterPaidStatus = useCallback(
-    (event) => {
+    (value) => {
       onFilters(
         'paidStatus',
-        typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value
+        typeof value === 'string' ? value.split(',') : value
       );
     },
     [onFilters]
@@ -97,15 +100,37 @@ export default function InvoiceTableToolbar({
 
         <Select
           multiple
-          value={filters.service}
-          onChange={handleFilterService}
+          value={filters.departments}
+          onChange={(event) => {
+            const allItems = serviceOptions;
+            const selected = event.target.value;
+            const lastIndex = selected.length - 1;
+
+            console.log(selected);
+            
+
+            if (selected[lastIndex] === "All") { // Selected All option
+              handleFilterService(allItems);
+              prevSelectedDepartment.current = allItems;
+            } else if(selected[0] === "All"){ // Selected All option then deslected another option
+              handleFilterService(selected.slice(1));
+              prevSelectedDepartment.current = selected.slice(1);
+            } else if(prevSelectedDepartment.current.length && prevSelectedDepartment.current.slice()[0] === "All")  { // Selected All option then deslected All
+              handleFilterService([]);
+              prevSelectedDepartment.current = [];
+            } else { // Selected any option other than all
+              handleFilterService(selected);
+              prevSelectedDepartment.current = selected;
+            }
+
+          }}
           input={<OutlinedInput label={Translate("departments")} />}
           renderValue={(selected) => selected.map((value) => value).join(', ')}
           sx={{ textTransform: 'capitalize' }}
         >
           {serviceOptions.map((option) => (
             <MenuItem key={option} value={option}>
-              <Checkbox disableRipple size="small" checked={filters.service.includes(option)} />
+              <Checkbox disableRipple size="small" checked={filters.departments.includes(option)} />
               {option}
             </MenuItem>
           ))}
@@ -123,7 +148,29 @@ export default function InvoiceTableToolbar({
           <Select
             multiple
             value={filters.paidStatus}
-            onChange={handleFilterPaidStatus}
+            onChange={(event) => {
+              const allItems = paidStatusOptions;
+              const selected = event.target.value;
+              const lastIndex = selected.length - 1;
+
+              console.log(selected);
+              
+
+              if (selected[lastIndex] === "All") { // Selected All option
+                handleFilterPaidStatus(allItems);
+                prevSelectedPaidStatus.current = allItems;
+              } else if(selected[0] === "All"){ // Selected All option then deslected another option
+                handleFilterPaidStatus(selected.slice(1));
+                prevSelectedPaidStatus.current = selected.slice(1);
+              } else if(prevSelectedPaidStatus.current.length && prevSelectedPaidStatus.current.slice()[0] === "All")  { // Selected All option then deslected All
+                handleFilterPaidStatus([]);
+                prevSelectedPaidStatus.current = [];
+              } else { // Selected any option other than all
+                handleFilterPaidStatus(selected);
+                prevSelectedPaidStatus.current = selected;
+              }
+
+            }}
             input={<OutlinedInput label={Translate("paidStatus")} />}
             renderValue={(selected) => selected.map((value) => value).join(', ')}
             sx={{ textTransform: 'capitalize' }}
@@ -148,7 +195,7 @@ export default function InvoiceTableToolbar({
         />
 
         <DatePicker
-          label={Translate("startDate")}
+          label={Translate("endDate")}
           value={filters.endDate}
           onChange={handleFilterEndDate}
           slotProps={{

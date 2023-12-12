@@ -129,6 +129,7 @@
   "departmentInvoicesCount": "الفواتير لكل قسم",
   "paid": "مدفوع",
   "unPaid": "غير مدفوع",
+  "unpaid": "غير مدفوع",
   "viewAll": "عرض الكل",
   "resultsfound": "نتائج البحث", 
 
@@ -145,6 +146,15 @@
   "lastName" : "الأسم الأخير",
   "userName": "اسم المستخدم",
   "roles": "الأقسام",
+  "searchUserName": "ابحث عن اسم الزبون",
+  "searchProductName": "ابحث عن اسم المنتج",
+  "export": "تصدير",
+  "newInvoice": "فاتورة جديدة",
+  "import": "استيراد",
+  "downlaod": "تحميل",
+  "startDate": "تاريخ البداية",
+  "endDate": "تاريخ النهاية",
+  "searchInvoiceNamePlaceHolder": "ابحث عن اسم الزبون أو رفم الفاتورة",
 
   "searchCustomerName": "ابحث عن العميل", 
   "newCustomer": "عميل جديد", 

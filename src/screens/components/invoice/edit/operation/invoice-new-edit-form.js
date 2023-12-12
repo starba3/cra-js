@@ -66,6 +66,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
   };
   
   const arrays = {
+    daysToCollect: ['collection'],
     deliveryDate: ['operation'],
     department: ['operation', 'sales', 'tenderandcontracts', 'collection'],
     acknowledgeStatuses: ['operation', 'sales'],
@@ -84,15 +85,14 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     installationStatus: Yup.string(),
     installationDate: Yup.mixed().nullable(),
     collectionSource: Yup.string(),
+    daysToCollect: Yup.string(),
     claimStatus: Yup.string(),
     claimsDetailStatus: Yup.string(),
 
   });
 
   // Default lists values
-  const selectSource = Translate("selectSource");
-  const selectStatus = Translate("selectStatus");
-  const selectDetails = Translate("selectDetails");
+  
 
   const defaultValues = useMemo(
     () => ({
@@ -102,11 +102,12 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       DeliveryDate: currentInvoice?.DeliveryDate || new Date(),
       installationStatus: currentInvoice?.installationStatus || '',
       installationDate: currentInvoice?.installationDate || new Date(),
-      collectionSource: currentInvoice?.CollectionSource || selectSource,
-      claimStatus: currentInvoice?.ClaimStatus || selectStatus,
-      claimsDetailStatus: currentInvoice?.ClaimsDetailStatus || selectDetails,
+      collectionSource: currentInvoice?.CollectionSource || '',
+      claimStatus: currentInvoice?.ClaimStatus || '',
+      daysToCollect: currentInvoice?.daysToCollect || 0,
+      claimsDetailStatus: currentInvoice?.ClaimsDetailStatus || '',
     }),
-    [currentInvoice, selectSource, selectStatus, selectDetails]
+    [currentInvoice]
   );
 
   // const {notes} = currentInvoice;
@@ -145,7 +146,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       
-      const {CreateNote,department,acknowledgeStatus,DeliveryDate, installationDate, installationStatus, collectionSource, claimStatus, claimsDetailStatus} = watch();
+      const {CreateNote,department,acknowledgeStatus,DeliveryDate, installationDate, installationStatus, collectionSource, daysToCollect, claimStatus, claimsDetailStatus} = watch();
 
       const body = [];
 
@@ -154,6 +155,14 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
           op : "replace",
           path : "/department",
           value : `${department}`
+        });
+      }
+
+      if(daysToCollect && arrays.daysToCollect.includes(currentInvoice.department.toLowerCase())) {
+        body.push({
+          op : "replace",
+          path : "/daysToCollected",
+          value : `${daysToCollect}`
         });
       }
 

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useState, useRef } from 'react';
 import { useLocales } from 'src/locales';
 
 // @mui
@@ -22,7 +23,10 @@ export default function InvoiceTableToolbar({
   selectedCustomers,
 }) {
 
-  const { t } = useLocales()
+  const [selectedValue, setSelectedValue] = useState([]);
+  const prevSelected = useRef(selectedValue);
+
+  const { t, currentLang } = useLocales()
   const Translate = (text) => t(text);
 
   return (
@@ -53,23 +57,29 @@ export default function InvoiceTableToolbar({
           multiple
           value={selectedCustomers}  // Ensure that the initial value is set correctly
           onChange={(event) => {
-            
-            // setSelectedValue(event.target.value);
-            // onChange(event.target.value);
 
             const allItems = customers.map((option) => option.id);
             const selected = event.target.value;
             const lastIndex = selected.length - 1;
-            const lastSelectedItem = selected[lastIndex];
 
             console.log(selected);
 
-            if (selected[lastIndex] === "0") {
+            if (selected[lastIndex] === "0") { // Selected All option
+              setSelectedValue(allItems);
               onChange(allItems);
-            } else if(selected[0] === "0"){
+              prevSelected.current = allItems;
+            } else if(selected[0] === "0"){ // Selected All option then deslected another option
+              setSelectedValue(selected.slice(1));
               onChange(selected.slice(1));
-            } else  {
+              prevSelected.current = selected.slice(1);
+            } else if(prevSelected.current.length && prevSelected.current.slice()[0] === "0")  { // Selected All option then deslected All
+              setSelectedValue([]);
+              onChange([]);
+              prevSelected.current = [];
+            } else { // Selected any option other than all
+              setSelectedValue(selected);
               onChange(selected);
+              prevSelected.current = selected;
             }
           }}  // Use event.target.value to get the selected value
           input={<OutlinedInput label="Customers List" />}

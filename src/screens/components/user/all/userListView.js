@@ -226,30 +226,31 @@ export default function UserListView() {
               href: paths.dashboard.root,
             },
             {
-              name: Translate("customer"),
+              name: Translate("User"),
+              href: paths.users.list,
               
             },
             {
               name: Translate("list"),
             },
           ]}
-          action= {
-            <Stack
-              direction="row"
-              divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
-              sx={{ py: 2 }}
-            >
-              <Button
-                onClick={() => navigate(paths.customers.create)}
-                variant="contained"
-                startIcon={<Iconify icon="mingcute:add-line" />}
-              >
-                {Translate("newCustomer")}
-              </Button>
+          // action= {
+          //   <Stack
+          //     direction="row"
+          //     divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+          //     sx={{ py: 2 }}
+          //   >
+          //     <Button
+          //       onClick={() => navigate(paths.customers.create)}
+          //       variant="contained"
+          //       startIcon={<Iconify icon="mingcute:add-line" />}
+          //     >
+          //       {Translate("newCustomer")}
+          //     </Button>
               
-          </Stack>
+          // </Stack>
             
-          }
+          // }
           sx={{
             mb: { xs: 3, md: 5 },
           }}

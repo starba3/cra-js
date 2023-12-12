@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import { useLocales } from 'src/locales';
 // @mui
 import Stack from '@mui/material/Stack';
@@ -23,6 +23,8 @@ export default function UserTableToolbar({
   departmentOptions,
 }) {
   const popover = usePopover();
+
+  const prevSelected = useRef([]);
 
   const handleFilterDepartment = useCallback(
     (value) => {
@@ -77,15 +79,30 @@ export default function UserTableToolbar({
 
                   console.log(selected);
 
-                  if (selected[lastIndex] === "All") { // Selected All
+                  // if (selected[lastIndex] === "All") { // Selected All
+                  //   handleFilterDepartment(allItems);
+                  // } else if(selected[0] === "All"){ // Selected All previously then deselected other value
+                  //   handleFilterDepartment(selected.slice(1));
+                  // } else if(selected === allItems.slice(1)){ // Selected All previously then deselected All
+                  //   handleFilterDepartment([]);
+                  // } else  {
+                  //   handleFilterDepartment(selected);
+                  // }
+
+                  if (selected[lastIndex] === "All") { // Selected All option
                     handleFilterDepartment(allItems);
-                  } else if(selected[0] === "All"){ // Selected All previously then deselected other value
+                    prevSelected.current = allItems;
+                  } else if(selected[0] === "All"){ // Selected All option then deslected another option
                     handleFilterDepartment(selected.slice(1));
-                  } else if(selected === allItems.slice(1)){ // Selected All previously then deselected All
+                    prevSelected.current = selected.slice(1);
+                  } else if(prevSelected.current.length && prevSelected.current.slice()[0] === "All")  { // Selected All option then deslected All
                     handleFilterDepartment([]);
-                  } else  {
+                    prevSelected.current = [];
+                  } else { // Selected any option other than all
                     handleFilterDepartment(selected);
+                    prevSelected.current = selected;
                   }
+
                   // handleFilterDepartment(event);
                 }
               }
@@ -105,7 +122,7 @@ export default function UserTableToolbar({
             fullWidth
             value={filters.name}
             onChange={handleFilterName}
-            placeholder={Translate("searchCustomerName")}
+            placeholder={Translate("searchUserName")}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

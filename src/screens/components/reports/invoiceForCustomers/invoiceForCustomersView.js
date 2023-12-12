@@ -68,7 +68,7 @@ export default function InvoiceForCustomersView() {
     const fetchCustomers = async () => {
       try {
         const result = await GetAllCustomersWithAll();
-        console.log('Result: ', result);
+        // console.log('Result: ', result);
         setCustomersList(result);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -222,14 +222,14 @@ export default function InvoiceForCustomersView() {
           <DonutChart data={dataFiltered}/>  
         </Card>     */}
 
-        <CustomersListDialog 
+        {/* <CustomersListDialog 
           title={Translate("customers")}
           list={customersList}  
           open={open}
           onClose={() => setOpen(false)}  
           selected={(id) => selectedCustomer === id}        
           onSelect={(value) => setSelectedCustomer(value.id)}
-        />
+        /> */}
       </Container>
       
   );

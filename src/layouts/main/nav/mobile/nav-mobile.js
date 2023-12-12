@@ -54,7 +54,7 @@ export default function NavMobile({ offsetTop, data }) {
         }}
       >
         <Scrollbar>
-          <Logo sx={{ mx: 2.5, my: 3 }} />
+          {/* <Logo sx={{ mx: 2.5, my: 3 }} /> */}
 
           <List component="nav" disablePadding>
             {data.map((link) => (

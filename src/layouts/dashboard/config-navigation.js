@@ -394,7 +394,7 @@ export function useNavData() {
           // Customer
           {
             title: t('customers'),
-            path: paths.customers.root,
+            path: paths.customers.list,
             icon: ICONS.user,
             children: [
               { 
@@ -412,7 +412,7 @@ export function useNavData() {
           // USER
           {
             title: t('user'),
-            path: paths.dashboard.user.root,
+            path: paths.users.list,
             icon: ICONS.user,
             children: [
               // { title: t('profile'), path: paths.dashboard.user.root },
@@ -426,7 +426,7 @@ export function useNavData() {
           // Product
           {
             title: t('products'),
-            path: paths.products.root,
+            path: paths.products.list,
             icon: ICONS.user,
             children: [
               { 
@@ -444,19 +444,19 @@ export function useNavData() {
           // USER
           {
             title: t('departments'),
-            path: paths.departments.root,
+            path: paths.departments.operation.list,
             icon: ICONS.user,
             children: [
               { 
                 title: t('operation'),
-                path: paths.departments.operation.root,
+                path: paths.departments.operation.list,
                 children: [
                   { title: t('list'), path: paths.departments.operation.list },
                 ]
               },
               { 
                 title: t('sales'), 
-                path: paths.departments.sales.root,
+                path: paths.departments.sales.list,
                 children: [
                   { title: t('confirm_invoices'), path: paths.departments.sales.confirm_invoices },
                   { title: t('list'), path: paths.departments.sales.list }, 
@@ -464,7 +464,7 @@ export function useNavData() {
               },
               { 
                 title: t('installation'), 
-                path: paths.departments.installation.root,
+                path: paths.departments.installation.list,
                 children: [
                   { title: t('assign_engineer'), path: paths.departments.installation.assign_engineer },
                   { title: t('list'), path: paths.departments.installation.list }, 
@@ -472,7 +472,7 @@ export function useNavData() {
               },
               { 
                 title: t('collection'), 
-                path: paths.departments.collection.root,
+                path: paths.departments.collection.list,
                 children: [
                   { title: t('assign_collector'), path: paths.departments.collection.assign_collector },
                   { title: t('list'), path: paths.departments.collection.list }, 
@@ -480,7 +480,7 @@ export function useNavData() {
               },
               { 
                 title: t('tender_and_contract'), 
-                path: paths.departments.tenderAndConract.root,
+                path: paths.departments.tenderAndConract.list,
                 children: [
                   { title: t('list'), path: paths.departments.tenderAndConract.list }, 
                 ]

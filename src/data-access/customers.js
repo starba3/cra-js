@@ -33,7 +33,7 @@ export async function GetAllCustomersWithAll() {
         list.push(...invoices);
     })
     .catch(error => console.log())
-    console.log('List: '. list);
+    // console.log('List: '. list);
     return list
 
 }

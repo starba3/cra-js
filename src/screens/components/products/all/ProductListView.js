@@ -235,6 +235,7 @@ export default function ProductListView() {
             },
             {
               name: Translate("product"),
+              href: paths.products.list,
               
             },
             {

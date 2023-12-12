@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 // @mui
 import Stack from '@mui/material/Stack';
 import Select from '@mui/material/Select';
@@ -21,6 +21,7 @@ export default function ReportToolBar({
 }) {
 
   const [selectedValue, setSelectedValue] = useState([]);
+  const prevSelected = useRef(selectedValue);
   const sourceList = _sourcesList();
 
   return (
@@ -51,33 +52,28 @@ export default function ReportToolBar({
             multiple
             value={selectedValue}  // Ensure that the initial value is set correctly
             onChange={(event) => {
+
               const allItems = sourceList.map((option) => option.value);
               const selected = event.target.value;
               const lastIndex = selected.length - 1;
-              const lastSelectedItem = selected[lastIndex];
-
-              console.log(selected);
-
-              if (selected[lastIndex] === "All") {
+              
+              if (selected[lastIndex] === "All") { // Selected All option
                 setSelectedValue(allItems);
                 onChange(allItems);
-              } else if(selected[0] === "All"){
+                prevSelected.current = allItems;
+              } else if(selected[0] === "All"){ // Selected All option then deslected another option
                 setSelectedValue(selected.slice(1));
                 onChange(selected.slice(1));
-              } else  {
+                prevSelected.current = selected.slice(1);
+              } else if(prevSelected.current.length && prevSelected.current.slice()[0] === "All")  { // Selected All option then deslected All
+                setSelectedValue([]);
+                onChange([]);
+                prevSelected.current = [];
+              } else { // Selected any option other than all
                 setSelectedValue(selected);
                 onChange(selected);
+                prevSelected.current = selected;
               }
-
-              // if (selected.indexOf("All") &&  !prevSelectedValue.includes("All")) {
-              //   setSelectedValue(allItems);
-              //   onChange(allItems);
-              // }
-
-              // if(selected.includes("All") && selected !== prevSelectedValue ) {
-              //   setSelectedValue(selected.slice(1));
-              //   onChange(selected.slice(1));
-              // } 
               
             }}  // Use event.target.value to get the selected value
             input={<OutlinedInput label="Collection Source" />}

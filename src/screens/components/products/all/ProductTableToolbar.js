@@ -51,7 +51,7 @@ export default function ProductTableToolbar({
             fullWidth
             value={filters.name}
             onChange={handleFilterName}
-            placeholder={Translate("searchCustomerName")}
+            placeholder={Translate("searchProductName")}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

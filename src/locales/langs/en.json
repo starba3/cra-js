@@ -131,6 +131,7 @@
   "departmentInvoicesCount": "Department Invoices Count",
   "paid": "Paid",
   "unPaid": "Unpaid",
+  "unpaid": "Unpaid",
   "invoices": "Invoices",
   "viewAll": "View All",
 
@@ -216,6 +217,9 @@
   "usersList": "Users List",
   "invoiceByUser" : "Invoice By User",
   "searchUsers": "Search Users",
+  "searchUserName": "Search User Name",
+  "searchProductName": "Search Product Name",
+  "downlaod": "Downlaod",
 
 
 

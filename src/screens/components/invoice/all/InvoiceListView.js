@@ -64,7 +64,7 @@ import { _statusList } from 'src/lists/paidStatus'
 import { exportToExcel } from 'src/utils/export';
 //
 import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
-import InvoiceTableFiltersResult from 'src/sections/invoice/invoice-table-filters-result';
+import InvoiceTableFiltersResult from './InvoiceTableFiltersResult';
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
 
@@ -72,7 +72,7 @@ import InvoiceTableToolbar from './InvoiceTableToolbar';
 
 const defaultFilters = {
   name: '',
-  service: [],
+  departments: [],
   paidStatus: [],
   status: 'all',
   startDate: null,
@@ -164,7 +164,7 @@ export default function InvoiceListView() {
 
   const canReset =
     !!filters.name ||
-    !!filters.service.length ||
+    !!filters.departments.length ||
     filters.status !== 'all' ||
     (!!filters.startDate && !!filters.endDate);
 
@@ -413,7 +413,7 @@ export default function InvoiceListView() {
             <Button
                 variant="contained"
                 color='primary'
-                onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, 'AllInvoices', 'ExportFile')}
+                onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, 'AllInvoices', `ExportFile-${new Date()}`)}
                 startIcon={<Iconify icon="eva:download-outline" />}
               >
                 {Translate("export")}
@@ -687,7 +687,7 @@ export default function InvoiceListView() {
 }
 
 function applyFilter({ inputData, comparator, filters, dateError }) {
-    const { name, status, service, startDate, paidStatus, endDate } = filters;
+    const { name, status, departments, startDate, paidStatus, endDate } = filters;
   
     const stabilizedThis = inputData.map((el, index) => [el, index]);
   
@@ -713,10 +713,10 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
       inputData = inputData.filter((invoice) => invoice.status === status);
     }
   
-    if (service.length) {
+    if (departments.length) {
       inputData = inputData.filter((invoice) =>
         // service.map((serviceName) => serviceName.toLowerCase()).includes(invoice.department)
-        service.includes('All') || service.includes(invoice.department)
+        departments.includes('All') || departments.includes(invoice.department)
       );
     }
     
