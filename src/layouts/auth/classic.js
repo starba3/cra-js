@@ -54,15 +54,15 @@ export default function AuthClassicLayout({ children, image, title }) {
 
   const mdUp = useResponsive('up', 'md');
 
-  const renderLogo = (
-    <Logo
-      sx={{
-        zIndex: 9,
-        position: 'absolute',
-        m: { xs: 2, md: 5 },
-      }}
-    />
-  );
+  // const renderLogo = (
+    // <Logo
+    //   sx={{
+    //     zIndex: 9,
+    //     position: 'absolute',
+    //     m: { xs: 2, md: 5 },
+    //   }}
+    // />
+  // );
 
   const renderContent = (
     <Stack
@@ -102,7 +102,7 @@ export default function AuthClassicLayout({ children, image, title }) {
       <Box
         component="img"
         alt="auth"
-        src={image || '/assets/illustrations/illustration_dashboard.png'}
+        src={image || '/cra-js/assets/illustrations/Login-Image.jpeg'}
         sx={{
           maxWidth: {
             xs: 480,
@@ -143,7 +143,7 @@ export default function AuthClassicLayout({ children, image, title }) {
         minHeight: '100vh',
       }}
     >
-      {renderLogo}
+      {/* {renderLogo} */}
 
       {mdUp && renderSection}
 

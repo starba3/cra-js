@@ -22,12 +22,12 @@ export default function AuthModernLayout({ children, image }) {
         px: { xs: 2, md: 8 },
       }}
     >
-      <Logo
+      {/* <Logo
         sx={{
           mt: { xs: 2, md: 8 },
           mb: { xs: 10, md: 8 },
         }}
-      />
+      /> */}
 
       <Card
         sx={{

@@ -13,6 +13,7 @@ import Select from '@mui/material/Select';
 import { getCollectionData } from 'src/data-access/invoice';
 import { _acknowledgeStatuses as acknowledgeOptions} from 'src/lists/acknowledgeStatus';
 import { _installationStatus } from 'src/lists/installation';
+import { _daysToCollectList } from 'src/lists/collectionSource';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -220,26 +221,45 @@ export default function InvoiceNewEditStatusDate({
     style={width80}      
   />
   const daysToCollect = arrays.daysToCollect.includes(department.toLowerCase()) ? 
-  <Controller
-    name="daysToCollect"
-    control={control}
-    
-    render={({ field, fieldState: { error } }) => (
-        <TextField
-          type='Number'
-          label={Translate("daysToCollected")}
-          value={field.value}
-          
-          onChange={(newValue) => {
-            field.onChange(newValue);
-          }}
-          sx={grayBgStyle}
-          inputProps={{ 
-            max: 365
-           }}
-        />
-    )}
-  /> : 
+  <FormControl
+      sx={{
+        flex: 1,
+        flexShrink: 0,
+        width: { xs: 3 },
+      }}
+      style={width80}
+    >
+    <InputLabel  > {Translate("daysToCollected")} </InputLabel>
+    <Controller
+      
+      name="daysToCollect"
+      control={control}
+      render={({ field }) => (
+            <Select
+            style={outlinedStyle}
+            value={field.value}
+            onChange={(newValue) => {
+              field.onChange(newValue);
+            }}
+            input={<OutlinedInput label={Translate("daysToCollected")} />}
+            renderValue={(selected) => selected}
+            sx={{
+                flex: 1,
+                textField: {
+                textTransform: 'capitalize',
+                fullWidth: true,
+              }
+            }}
+          >
+            {_daysToCollectList().map((option, index) => (
+              <MenuItem key={index} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+      )}
+    />
+    </FormControl> : 
   <TextField
     label={Translate("daysToCollected")}
     value={currentInvoice.daysToCollected }
@@ -256,7 +276,7 @@ export default function InvoiceNewEditStatusDate({
       }}
       style={width80}
     >
-    <InputLabel  > Department </InputLabel>
+    <InputLabel  > {Translate("department")} </InputLabel>
     <Controller
       
       name="department"

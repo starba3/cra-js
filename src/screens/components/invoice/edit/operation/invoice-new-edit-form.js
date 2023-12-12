@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback, useEffect } from 'react'
+import React, { useMemo, useState, useCallback } from 'react'
 import PropTypes from 'prop-types';
 import { useLocales } from 'src/locales';
 import * as Yup from 'yup';
@@ -160,9 +160,9 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
       if(daysToCollect && arrays.daysToCollect.includes(currentInvoice.department.toLowerCase())) {
         body.push({
-          op : "replace",
-          path : "/daysToCollected",
-          value : `${daysToCollect}`
+          op: "replace",
+          path: "/daysToCollected",
+          value: `${daysToCollect}`
         });
       }
 

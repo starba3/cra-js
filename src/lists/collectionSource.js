@@ -22,3 +22,13 @@ export function _statusList() {
         { value: "Reject", text: Translate('reject')}
     ]
 }
+
+export function _daysToCollectList() {
+    return [
+        "0",
+        "30",
+        "60",
+        "90",
+        "120",
+    ]
+}
