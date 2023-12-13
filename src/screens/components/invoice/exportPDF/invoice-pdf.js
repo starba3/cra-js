@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useLocales } from 'src/locales';
 import { useMemo } from 'react';
-import { Page, View, Text, Image, Document, Font, StyleSheet } from '@react-pdf/renderer';
+import { Page, View, Text, Image, Document, Font, StyleSheet, Link } from '@react-pdf/renderer';
 // utils
 import { fDate } from 'src/utils/format-time';
 import { fCurrency } from 'src/utils/format-number';
@@ -27,9 +27,13 @@ const useStyles = () =>
         col4: { width: '25%' },
         col8: { width: '75%' },
         col6: { width: '50%' },
+        mb2: { marginBottom: 2 },
         mb4: { marginBottom: 4 },
         mb8: { marginBottom: 8 },
+        mb10: { marginBottom: 10 },
+        mb15: { marginBottom: 15 },
         mb40: { marginBottom: 40 },
+        mb100: { marginBottom: 100 },
         h3: { fontSize: 16, fontWeight: 700 },
         h4: { fontSize: 13, fontWeight: 700 },
         body1: { fontSize: 10 },
@@ -38,7 +42,7 @@ const useStyles = () =>
         subtitle2: { fontSize: 9, fontWeight: 700 },
         alignRight: { textAlign: 'right' },
         page: {
-          fontSize: 9,
+          fontSize: 12,
           lineHeight: 1.6,
           fontFamily: 'Amiri',
           backgroundColor: '#FFFFFF',
@@ -108,29 +112,44 @@ export default function InvoicePDF({ invoice }) {
     poValue,
     region,
     contractNo,
+    deliveryDate,
+    installationDate,
+    installationStatus,
+    daysToCollected,
+    acknowledgeStatus,
+    collectionSource,
+    claimStatus,
+    claimsDetailStatus,
+    salesConfirm,
+    createdBy,
+    salesTakerName,
+    collectorName,
+    responsibleEngineerName,
+    notes,
+    attachments
   } = invoice;
 
   const { t } = useLocales()
   const Translate = (text) => t(text)
 
   const styles = useStyles();
-
+  const dateFormat = "yyyy-MM-dd";
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <View style={[styles.gridContainer, styles.mb40]}>
-          <Image source="/logo/logo_single.png" style={{ width: 48, height: 48 }} />
+        <View style={[styles.gridContainer, styles.mb15]}>
+          <Image source="/assets/illustrations/Login-Image.jpeg" style={{ width: 48, height: 48 }} />
 
-          <View style={{ alignItems: 'flex-end', flexDirection: 'column' }}>
+          {/* <View style={{ alignItems: 'flex-end', flexDirection: 'column' }}>
             <Text style={styles.h3}>{department}</Text>
             <Text> {invoiceNo} </Text>
-          </View>
+          </View> */}
         </View>
 
-        <View style={[styles.gridContainer, styles.mb40]}>
+        <View style={[styles.gridContainer, styles.mb10]}>
           <View style={styles.col6}>
             <Text style={[styles.subtitle2, styles.mb4]}>{Translate("issueDate")}</Text>
-            <Text style={styles.body2}>{issueInvoiceDate }</Text>
+            <Text style={styles.body2}>{fDate(issueInvoiceDate, dateFormat) }</Text>
           </View>
 
           <View style={styles.col6}>
@@ -139,7 +158,7 @@ export default function InvoicePDF({ invoice }) {
           </View>
         </View>
 
-        <View style={[styles.gridContainer, styles.mb40]}>
+        <View style={[styles.gridContainer, styles.mb10]}>
           <View style={styles.col6}>
             <Text style={[styles.subtitle2, styles.mb4]}>{Translate("currency")}</Text>
             <Text style={styles.body2}>{currency}</Text>
@@ -150,7 +169,7 @@ export default function InvoicePDF({ invoice }) {
           </View>
         </View>
 
-        <View style={[styles.gridContainer, styles.mb40]}>
+        <View style={[styles.gridContainer, styles.mb10]}>
           <View style={styles.col6}>
             <Text style={[styles.subtitle2, styles.mb4]}>{Translate("nameEnglish")}</Text>
             <Text style={styles.body2}>{customerNameEn}</Text>
@@ -162,7 +181,7 @@ export default function InvoicePDF({ invoice }) {
           </View>
         </View>
 
-        <View style={[styles.gridContainer, styles.mb40]}>
+        <View style={[styles.gridContainer, styles.mb10]}>
           <View style={styles.col6}>
             <Text style={[styles.subtitle2, styles.mb4]}>{Translate("productNameEn")}</Text>
             <Text style={styles.body2}>{productNameEn}</Text>
@@ -173,7 +192,7 @@ export default function InvoicePDF({ invoice }) {
           </View>
         </View>
 
-        <View style={[styles.gridContainer, styles.mb40]}>
+        <View style={[styles.gridContainer, styles.mb10]}>
           <View style={styles.col6}>
             <Text style={[styles.subtitle2, styles.mb4]}>{Translate("PoNumber")}</Text>
             <Text style={styles.body2}>{customerPO}</Text>
@@ -185,7 +204,7 @@ export default function InvoicePDF({ invoice }) {
           </View>
         </View>
 
-        <View style={[styles.gridContainer, styles.mb40]}>
+        <View style={[styles.gridContainer, styles.mb10]}>
           <View style={styles.col6}>
             <Text style={[styles.subtitle2, styles.mb4]}>{Translate("region")}</Text>
             <Text style={styles.body2}>{region}</Text>
@@ -196,7 +215,134 @@ export default function InvoicePDF({ invoice }) {
           </View>
         </View>
 
-        <Text style={[styles.subtitle1, styles.mb8]}>Invoice Details</Text>
+        <View style={[styles.gridContainer, styles.mb10]}>
+          <View style={styles.col6}>
+            <Text style={[styles.subtitle2, styles.mb4]}>{Translate("deliveryDate")}</Text>
+            <Text style={styles.body2}>{fDate(deliveryDate, dateFormat)}</Text>
+          </View>
+          <View style={styles.col6}>
+            <Text style={[styles.subtitle2, styles.mb4]}>{Translate("installationDate")}</Text>
+            <Text style={styles.body2}>{fDate(installationDate, dateFormat)}</Text>
+          </View>
+        </View>
+
+        <View style={[styles.gridContainer, styles.mb10]}>
+          <View style={styles.col6}>
+            <Text style={[styles.subtitle2, styles.mb4]}>{Translate("department")}</Text>
+            <Text style={styles.body2}>{department}</Text>
+          </View>
+          <View style={styles.col6}>
+            <Text style={[styles.subtitle2, styles.mb4]}>{Translate("installationStatus")}</Text>
+            <Text style={styles.body2}>{installationStatus}</Text>
+          </View>
+        </View>
+
+        <View style={[styles.gridContainer, styles.mb10]}>
+          <View style={styles.col6}>
+            <Text style={[styles.subtitle2, styles.mb4]}>{Translate("daysToCollected")}</Text>
+            <Text style={styles.body2}>{daysToCollected}</Text>
+          </View>
+          <View style={styles.col6}>
+            <Text style={[styles.subtitle2, styles.mb4]}>{Translate("acknowledgeStatus")}</Text>
+            <Text style={styles.body2}>{acknowledgeStatus}</Text>
+          </View>
+        </View>
+
+        <View style={[styles.gridContainer, styles.mb10]}>
+          <View style={styles.col6}>
+            <Text style={[styles.subtitle2, styles.mb4]}>{Translate("collectionSource")}</Text>
+            <Text style={styles.body2}>{collectionSource}</Text>
+          </View>
+          <View style={styles.col6}>
+            <Text style={[styles.subtitle2, styles.mb4]}>{Translate("claimStatus")}</Text>
+            <Text style={styles.body2}>{claimStatus}</Text>
+          </View>
+        </View>
+
+        <View style={[styles.gridContainer, styles.mb10]}>
+          <View style={styles.col6}>
+            <Text style={[styles.subtitle2, styles.mb4]}>{Translate("claimsDetailStatus")}</Text>
+            <Text style={styles.body2}>{claimsDetailStatus}</Text>
+          </View>
+          <View style={styles.col6}>
+            <Text style={[styles.subtitle2, styles.mb4]}>{Translate("salesConfirm")}</Text>
+            <Text style={styles.body2}>{salesConfirm}</Text>
+          </View>
+        </View>
+
+        <View style={[styles.gridContainer, styles.mb10]}>
+          <View style={styles.col6}>
+            <Text style={[styles.subtitle2, styles.mb4]}>{Translate("createdBy")}</Text>
+            <Text style={styles.body2}>{createdBy}</Text>
+          </View>
+          <View style={styles.col6}>
+            <Text style={[styles.subtitle2, styles.mb4]}>{Translate("salesTakerName")}</Text>
+            <Text style={styles.body2}>{salesTakerName}</Text>
+          </View>
+        </View>
+
+        <View style={[styles.gridContainer, styles.mb100]}>
+          <View style={styles.col6}>
+            <Text style={[styles.subtitle2, styles.mb4]}>{Translate("collectorName")}</Text>
+            <Text style={styles.body2}>{collectorName}</Text>
+          </View>
+          <View style={styles.col6}>
+            <Text style={[styles.subtitle2, styles.mb4]}>{Translate("responsibleEngineerName")}</Text>
+            <Text style={styles.body2}>{responsibleEngineerName}</Text>
+          </View>
+        </View>
+
+        <Text style={[styles.subtitle1, styles.mb8]}>{Translate('notes')}</Text>
+
+        <View style={[styles.table, styles.mb15]}>
+          <View>
+            <View style={styles.tableRow}>
+              <View style={styles.tableCell_1}>
+                <Text style={styles.subtitle2}>#</Text>
+              </View>
+
+              <View style={styles.tableCell_2}>
+                <Text style={styles.subtitle2}>{Translate("note")}</Text>
+              </View>
+
+              <View style={styles.tableCell_3}>
+                <Text style={styles.subtitle2}>{Translate("user")}</Text>
+              </View>
+
+              <View style={styles.tableCell_3}>
+                <Text style={styles.subtitle2}>{Translate("createDate")}</Text>
+              </View>
+
+            </View>
+          </View>
+
+          <View>
+            {notes.map((item, index) => (
+              <View style={styles.tableRow} key={item.id}>
+                <View style={styles.tableCell_1}>
+                  <Text>{index + 1}</Text>
+                </View>
+
+                <View style={styles.tableCell_2}>
+                  <Text style={styles.subtitle2}>{item.noteText}</Text>
+                </View>
+
+                <View style={styles.tableCell_3}>
+                  <Text>{item.createdBy}</Text>
+                </View>
+
+                <View style={styles.tableCell_3}>
+                  <Text>{fDate(item.createdDate, dateFormat)}</Text>
+                </View>
+
+              </View>
+            ))}
+
+           
+          </View>
+        </View>
+
+        <Text style={[styles.subtitle1, styles.mb8]}>{Translate('attachments')}</Text>
 
         <View style={styles.table}>
           <View>
@@ -206,108 +352,46 @@ export default function InvoicePDF({ invoice }) {
               </View>
 
               <View style={styles.tableCell_2}>
-                <Text style={styles.subtitle2}>Description</Text>
+                <Text style={styles.subtitle2}>{Translate("name")}</Text>
               </View>
 
               <View style={styles.tableCell_3}>
-                <Text style={styles.subtitle2}>Qty</Text>
+                <Text style={styles.subtitle2}>{Translate("user")}</Text>
               </View>
 
               <View style={styles.tableCell_3}>
-                <Text style={styles.subtitle2}>Unit price</Text>
+                <Text style={styles.subtitle2}>{Translate("createDate")}</Text>
               </View>
 
-              <View style={[styles.tableCell_3, styles.alignRight]}>
-                <Text style={styles.subtitle2}>Total</Text>
-              </View>
             </View>
           </View>
 
           <View>
-            {/* {notes.map((item, index) => (
+            {attachments.map((item, index) => (
               <View style={styles.tableRow} key={item.id}>
                 <View style={styles.tableCell_1}>
                   <Text>{index + 1}</Text>
                 </View>
 
                 <View style={styles.tableCell_2}>
-                  <Text style={styles.subtitle2}>{item.noteText}</Text>
-                  <Text>{item.description}</Text>
+                {/* <Text onClick={handleLinkClick} style={{ color: 'blue', textDecoration: 'underline' }}>
+                  Click me to simulate a link
+                </Text> */}
+                  <Link style={styles.subtitle2} src={item.attachmentPath} >{item.fileName}</Link>
                 </View>
 
                 <View style={styles.tableCell_3}>
-                  <Text>{item.quantity}</Text>
+                  <Text >{item.createdBy}</Text>
                 </View>
 
                 <View style={styles.tableCell_3}>
-                  <Text>{item.price}</Text>
+                  <Text>{fDate(item.createdDate, dateFormat)}</Text>
                 </View>
 
-                <View style={[styles.tableCell_3, styles.alignRight]}>
-                  <Text>{fCurrency(item.price * item.quantity)}</Text>
-                </View>
               </View>
-            ))} */}
+            ))}
 
-            {/* <View style={[styles.tableRow, styles.noBorder]}>
-              <View style={styles.tableCell_1} />
-              <View style={styles.tableCell_2} />
-              <View style={styles.tableCell_3} />
-              <View style={styles.tableCell_3}>
-                <Text>Subtotal</Text>
-              </View>
-              <View style={[styles.tableCell_3, styles.alignRight]}>
-                <Text>{fCurrency(subTotal)}</Text>
-              </View>
-            </View>
 
-            <View style={[styles.tableRow, styles.noBorder]}>
-              <View style={styles.tableCell_1} />
-              <View style={styles.tableCell_2} />
-              <View style={styles.tableCell_3} />
-              <View style={styles.tableCell_3}>
-                <Text>Shipping</Text>
-              </View>
-              <View style={[styles.tableCell_3, styles.alignRight]}>
-                <Text>{fCurrency(-shipping)}</Text>
-              </View>
-            </View>
-
-            <View style={[styles.tableRow, styles.noBorder]}>
-              <View style={styles.tableCell_1} />
-              <View style={styles.tableCell_2} />
-              <View style={styles.tableCell_3} />
-              <View style={styles.tableCell_3}>
-                <Text>Discount</Text>
-              </View>
-              <View style={[styles.tableCell_3, styles.alignRight]}>
-                <Text>{fCurrency(-discount)}</Text>
-              </View>
-            </View>
-
-            <View style={[styles.tableRow, styles.noBorder]}>
-              <View style={styles.tableCell_1} />
-              <View style={styles.tableCell_2} />
-              <View style={styles.tableCell_3} />
-              <View style={styles.tableCell_3}>
-                <Text>Taxes</Text>
-              </View>
-              <View style={[styles.tableCell_3, styles.alignRight]}>
-                <Text>{fCurrency(taxes)}</Text>
-              </View>
-            </View>
-
-            <View style={[styles.tableRow, styles.noBorder]}>
-              <View style={styles.tableCell_1} />
-              <View style={styles.tableCell_2} />
-              <View style={styles.tableCell_3} />
-              <View style={styles.tableCell_3}>
-                <Text style={styles.h4}>Total</Text>
-              </View>
-              <View style={[styles.tableCell_3, styles.alignRight]}>
-                <Text style={styles.h4}>{fCurrency(totalAmount)}</Text>
-              </View>
-            </View> */}
           </View>
         </View>
 

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useLocales } from 'src/locales';
 import { useCallback } from 'react';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 // @mui
@@ -29,6 +30,9 @@ export default function InvoiceToolbar({ invoice }) {
 
   const view = useBoolean();
 
+  const { t } = useLocales()
+  const Translate = (text) => t(text)
+
   const handleEdit = useCallback(() => {
     router.push(paths.dashboard.invoice.edit(invoice.id));
   }, [invoice.id, router]);
@@ -56,7 +60,7 @@ export default function InvoiceToolbar({ invoice }) {
 
           <PDFDownloadLink
             document={<InvoicePDF invoice={invoice} />}
-            fileName={invoice.invoiceNumber}
+            fileName={`${Translate("invoice")}-${invoice.invoiceNo}`}
             style={{ textDecoration: 'none' }}
           >
             {({ loading }) => (
