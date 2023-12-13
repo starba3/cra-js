@@ -30,9 +30,9 @@ export default function InvoiceDetails({ invoice }) {
 
   const renderNotes = (
     <>
-      <Typography variant="h6" gutterBottom>
+      {/* <Typography variant="h6" gutterBottom>
         {Translate("notes")}
-      </Typography>
+      </Typography> */}
       <TableContainer sx={{ overflow: 'unset', mt: 5 }}>
         <Scrollbar>
           <Table sx={{ minWidth: 960 }}>

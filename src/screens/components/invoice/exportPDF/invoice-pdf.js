@@ -13,6 +13,13 @@ Font.register({
   fonts: [{ src: '/fonts/Roboto-Regular.ttf' }, { src: '/fonts/Roboto-Bold.ttf' }],
 });
 
+Font.register({
+  family: 'Amiri',
+  fonts: [{ src: '/fonts/Amiri-Regular.ttf' }, { src: '/fonts/Amiri-Bold.ttf' }],
+});
+
+
+
 const useStyles = () =>
   useMemo(
     () =>
@@ -33,7 +40,7 @@ const useStyles = () =>
         page: {
           fontSize: 9,
           lineHeight: 1.6,
-          fontFamily: 'sans-serif',
+          fontFamily: 'Amiri',
           backgroundColor: '#FFFFFF',
           textTransform: 'capitalize',
           padding: '40px 24px 120px 24px',
