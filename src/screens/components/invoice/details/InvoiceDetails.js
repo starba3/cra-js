@@ -17,6 +17,7 @@ import TableContainer from '@mui/material/TableContainer';
 // components
 import Label from 'src/components/label';
 import Scrollbar from 'src/components/scrollbar';
+import InvoiceToolbar from 'src/screens/components/invoice/exportPDF/invoice-toolbar';
 //
 
 // ----------------------------------------------------------------------
@@ -139,7 +140,12 @@ export default function InvoiceDetails({ invoice }) {
 
 
   return (
-    
+    <>
+     <InvoiceToolbar
+        invoice={invoice}
+        
+      />
+      
       <Card sx={{ pt: 5, px: 5 }}>
         <Box
           rowGap={5}
@@ -169,7 +175,7 @@ export default function InvoiceDetails({ invoice }) {
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-              {Translate("issueDate")}: 
+              {Translate("issueDate")} 
             </Typography>
               {currentInvoice?.issueInvoiceDate }
           </Stack>
@@ -220,7 +226,7 @@ export default function InvoiceDetails({ invoice }) {
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("productNameAr")}
             </Typography>
-            {currentInvoice?.customerNameAr}
+            {currentInvoice?.productNameAr}
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
@@ -356,6 +362,8 @@ export default function InvoiceDetails({ invoice }) {
         {renderAttachments}
 
       </Card>
+    </>
+      
     
   );
 }
