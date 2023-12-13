@@ -5,13 +5,17 @@ import Table from '@mui/material/Table';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
 // routes
 import { paths } from 'src/routes/paths';
 // hooks
-// utils
+// Utility
+import { exportToExcel } from 'src/utils/export';
 // _mock
 // components
+import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import { useSettingsContext } from 'src/components/settings';
 import { useLocales } from 'src/locales';
@@ -68,7 +72,7 @@ export default function AgingView() {
 
   const [filters, setFilters] = useState(defaultFilters);
 
-  const { t } = useLocales()
+  const { t, currentLang } = useLocales()
   const Translate = (text) => t(text);
 
   const dateError =
@@ -99,14 +103,23 @@ export default function AgingView() {
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
   const TABLE_HEAD = [
-    { id: 'customerNameEn', label: Translate("nameEnglish")  },
-    { id: 'customerNameAr', label: Translate("nameArabic")  },
+    { id: 'customerName', label: Translate("customerName")  },
     { id: 'balance', label: Translate("balance") },
     { id: 'zeroToThirty', label: Translate("zeroToThirty") },
     { id: 'thirtyOneToSixty', label: Translate("thirtyOneToSixty") },
     { id: 'sixtyOneToNinety', label: Translate("sixtyOneToNinety") },
     { id: 'ninetyOneToOneTwenty', label: Translate("ninetyOneToOneTwenty") },
     { id: 'oneTwentyOnePlus', label: Translate("oneTwentyOnePlus") },
+  ];
+
+  const exportHeaderRow = [
+    Translate("customerName"),
+    Translate("balance"),
+    Translate("zeroToThirty"),
+    Translate("thirtyOneToSixty"),
+    Translate("sixtyOneToNinety"),
+    Translate("ninetyOneToOneTwenty"),
+    Translate("oneTwentyOnePlus")
   ];
   
   const calculateOverallTotal = () => 
@@ -124,8 +137,8 @@ export default function AgingView() {
 
 
   const totalsRow = {
-    customerNameEn: 'Total',
-    customerNameAr: '',
+    customerNameEn: Translate("total"),
+    customerNameAr: Translate("total"),
     zeroToThirty: calculate0to30Total(),
     thirtyOneToSixty: calculate31to60Total(),
     sixtyOneToNinety: calculate61to90Total(),
@@ -133,8 +146,8 @@ export default function AgingView() {
     oneTwentyOnePlus: calculateAbove120Total()
   }
   const PercentageRow = {
-    customerNameEn: 'Percentage',
-    customerNameAr: '',
+    customerNameEn: Translate("percentage"),
+    customerNameAr: Translate("percentage"),
     zeroToThirty: calculate0to30Total(),
     thirtyOneToSixty: calculate31to60Total(),
     sixtyOneToNinety: calculate61to90Total(),
@@ -163,7 +176,27 @@ export default function AgingView() {
             mb: { xs: 3, md: 5 },
           }}
         />
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          // divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+          sx={{ 
+            py: 2
+            }}
+        >
 
+          <Button
+            variant="contained"
+            color='primary'
+            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'Aging', `${Translate("aging")}-${new Date().toLocaleDateString()}`)}
+            startIcon={<Iconify icon="eva:download-outline" />}
+            sx={{
+              margin: 0.5
+            }}
+          >
+            {Translate("export")}
+          </Button>
+        </Stack>
         <Card sx={{ mb: 3 }}>
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
             <Scrollbar>

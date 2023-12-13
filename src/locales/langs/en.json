@@ -176,6 +176,7 @@
   "collector": "Collector", 
   "deleteDialogContent": "Are you sure want to delete?", 
   "resultsfound": "results found", 
+  "percentage": "Percentage", 
 
   "name": "Name", 
   "attachments": "Attachments", 
@@ -223,7 +224,7 @@
   "productNameAr": "Product Name English",
   "productNameEn": "Product Name Arabic",
   "currencyShortcut": "SAR",
-
+  "users": "Users",
 
   "nupco": "Nupco",
   "etimad": "Etimad",

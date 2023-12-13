@@ -444,23 +444,6 @@ export default function InvoiceListView({department, salesStatus}) {
               name: Translate("list"),
             },
           ]}
-          action= {
-            <Stack
-              direction="row"
-              divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
-              sx={{ py: 2 }}
-            >
-              <Button
-                variant="contained"
-                color='primary'
-                onClick={() => exportToExcel(tableData, exportHeaderRow, currentLanguage, 'InvoiceByDepartments', 'ExportFile')}
-                startIcon={<Iconify icon="eva:download-outline" />}
-              >
-                {Translate("export")}
-              </Button>
-            </Stack>
-            
-          }
           sx={{
             mb: { xs: 3, md: 5 },
           }}
@@ -490,7 +473,21 @@ export default function InvoiceListView({department, salesStatus}) {
             </Stack>
           </Scrollbar>
         </Card>
-
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+          sx={{ py: 2 }}
+        >
+          <Button
+            variant="contained"
+            color='primary'
+            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLanguage, Translate("currencyShortcut"), 'InvoiceByDepartments', `${heading}-${new Date().toLocaleDateString()}`)}
+            startIcon={<Iconify icon="eva:download-outline" />}
+          >
+            {Translate("export")}
+          </Button>
+        </Stack>
         <Card>
            
 

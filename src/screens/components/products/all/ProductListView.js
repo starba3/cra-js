@@ -18,7 +18,8 @@ import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 import { Link, useNavigate } from 'react-router-dom';
 // hooks
-// utils
+// Utility
+import { exportToExcel } from 'src/utils/export';
 // _mock
 // components
 import Iconify from 'src/components/iconify';
@@ -75,12 +76,13 @@ export default function ProductListView() {
 
 
   const { t, currentLang } = useLocales();
+  const Translate = (text) => t(text);
 
   // Arabic language: currentLang.value === 'ar'
   // English language: currentLang.value === 'en'
 
 
-  const Translate = (text) => t(text);
+  
 
   const [tableData, setTableData] = useState(dataGridData);
 
@@ -121,6 +123,12 @@ export default function ProductListView() {
     { id: 'productName', label: Translate("productName")  },
     { id: 'description', label: Translate("description")  },
     { id: '' },
+  ];
+
+  const exportHeaderRow = [
+    Translate("code"),
+    Translate("productName"),
+    Translate("description")
   ];
 
   const dateError =
@@ -242,28 +250,70 @@ export default function ProductListView() {
               name: Translate("list"),
             },
           ]}
-          action= {
-            <Stack
-              direction="row"
-              divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
-              sx={{ py: 2 }}
-            >
-              <Button
-                onClick={() => navigate(paths.products.create)}
-                variant="contained"
-                startIcon={<Iconify icon="mingcute:add-line" />}
-              >
-                {Translate("newProduct")}
-              </Button>
+          // action= {
+          //   <Stack
+          //     direction="row"
+          //     divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+          //     sx={{ py: 2 }}
+          //   >
+              // <Button
+              //   onClick={() => navigate(paths.products.create)}
+              //   variant="contained"
+              //   startIcon={<Iconify icon="mingcute:add-line" />}
+              // >
+              //   {Translate("newProduct")}
+              // </Button>
               
-          </Stack>
+          // </Stack>
             
-          }
+          // }
           sx={{
             mb: { xs: 3, md: 5 },
           }}
         />
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          // divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+          sx={{ 
+            py: 2
+            }}
+        >
+          {/* <Button
+            component={RouterLink}
+            variant="contained"
+            color='primary'
+            onClick={handleClickOpen}
+            startIcon={<Iconify icon="solar:import-bold" />}
+            sx={{
+              margin: 1
+            }}
+          >
+            {Translate("import")}
+          </Button> */}
+          <Button
+            onClick={() => navigate(paths.products.create)}
+            variant="contained"
+            startIcon={<Iconify icon="mingcute:add-line" />}
+            sx={{
+              margin: 0.5
+            }}
+          >
+            {Translate("newProduct")}
+          </Button>
 
+          <Button
+            variant="contained"
+            color='primary'
+            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'Products', `${Translate("products")}-${new Date().toLocaleDateString()}`)}
+            startIcon={<Iconify icon="eva:download-outline" />}
+            sx={{
+              margin: 0.5
+            }}
+          >
+            {Translate("export")}
+          </Button>
+        </Stack>
         <Card>
           <CustomerTableToolbar
             filters={filters}

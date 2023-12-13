@@ -31,10 +31,10 @@ import {
   TableHeadCustom,
   TablePaginationCustom,
 } from 'src/components/table';
-
+// Utility
+import { exportToExcel } from 'src/utils/export';
 // DATA ACCESS
 import { getAllInvoices } from 'src/data-access/invoice'
-
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
 import { getAllCustomers, deleteCustomer } from 'src/data-access/customers';
@@ -67,7 +67,7 @@ export default function CustomerListView() {
 
   const navigate = useNavigate();
 
-  const { t } = useLocales()
+  const { t, currentLang } = useLocales()
   const Translate = (text) => t(text);
 
   const [tableData, setTableData] = useState([]);
@@ -96,6 +96,12 @@ export default function CustomerListView() {
     { id: 'customerNameEn', label: Translate("customerNameEn")  },
     { id: 'customerNameAr', label: Translate("customerNameAr")  },
     { id: '' },
+  ];
+
+  const exportHeaderRow = [
+    Translate("customerCode"),
+    Translate("customerNameEn"),
+    Translate("customerNameAr")
   ];
 
   const dateError =
@@ -217,27 +223,65 @@ export default function CustomerListView() {
               name: Translate("list"),
             },
           ]}
-          action= {
-            <Stack
-              direction="row"
-              divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
-              sx={{ py: 2 }}
-            >
-              <Button
-                onClick={() => navigate(paths.customers.create)}
-                variant="contained"
-                startIcon={<Iconify icon="mingcute:add-line" />}
-              >
-                {Translate("newCustomer")}
-              </Button>
+          // action= {
+          //   <Stack
+          //     direction="row"
+          //     divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+          //     sx={{ py: 2 }}
+          //   >
               
-          </Stack>
+              
+          // </Stack>
             
-          }
+          // }
           sx={{
             mb: { xs: 3, md: 5 },
           }}
         />
+
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          // divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+          sx={{ 
+            py: 2
+            }}
+        >
+          {/* <Button
+            component={RouterLink}
+            variant="contained"
+            color='primary'
+            onClick={handleClickOpen}
+            startIcon={<Iconify icon="solar:import-bold" />}
+            sx={{
+              margin: 1
+            }}
+          >
+            {Translate("import")}
+          </Button> */}
+          <Button
+            onClick={() => navigate(paths.customers.create)}
+            variant="contained"
+            startIcon={<Iconify icon="mingcute:add-line" />}
+            sx={{
+              margin: 0.5
+            }}
+          >
+            {Translate("newCustomer")}
+          </Button>
+
+          <Button
+            variant="contained"
+            color='primary'
+            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'Customers', `${Translate("customers")}-${new Date().toLocaleDateString()}`)}
+            startIcon={<Iconify icon="eva:download-outline" />}
+            sx={{
+              margin: 0.5
+            }}
+          >
+            {Translate("export")}
+          </Button>
+        </Stack>
 
         <Card>
           <CustomerTableToolbar

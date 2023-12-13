@@ -387,40 +387,18 @@ export default function InvoiceListView() {
               name: Translate("list"),
             },
           ]}
-          action= {
-            <Stack
-              direction="row"
-              divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
-              sx={{ py: 2 }}
-            >
-              <Button
-                component={RouterLink}
-                href={paths.dashboard.invoice.new}
-                variant="contained"
-                startIcon={<Iconify icon="mingcute:add-line" />}
-              >
-                {Translate("newInvoice")}
-              </Button>
-              <Button
-              component={RouterLink}
-              variant="contained"
-              color='primary'
-              onClick={handleClickOpen}
-              startIcon={<Iconify icon="solar:import-bold" />}
-            >
-              {Translate("import")}
-            </Button>
-            <Button
-                variant="contained"
-                color='primary'
-                onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, 'AllInvoices', `ExportFile-${new Date()}`)}
-                startIcon={<Iconify icon="eva:download-outline" />}
-              >
-                {Translate("export")}
-              </Button>
-          </Stack>
+          // action= {
+          //   <Stack
+          //     direction="row"
+          //        divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+          //     sx={{ 
+          //        flexDirection: { xs: "column", md: "row" },
+          //       py: 2
+          //      }}
+          //   >
             
-          }
+          //   </Stack>
+          // }
           sx={{
             mb: { xs: 3, md: 5 },
           }}
@@ -466,8 +444,55 @@ export default function InvoiceListView() {
             </Stack>
           </Scrollbar>
         </Card>
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          // divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+          sx={{ 
+            py: 2
+            }}
+        >
+          <Button
+            component={RouterLink}
+            href={paths.dashboard.invoice.new}
+            variant="contained"
+            startIcon={<Iconify icon="mingcute:add-line" />}
+            sx={{
+              margin: 0.5
+            }}
+          >
+            {Translate("newInvoice")}
+          </Button>
+
+          <Button
+            component={RouterLink}
+            variant="contained"
+            color='primary'
+            onClick={handleClickOpen}
+            startIcon={<Iconify icon="solar:import-bold" />}
+            sx={{
+              margin: 0.5
+            }}
+          >
+            {Translate("import")}
+          </Button>
+          
+          <Button
+            variant="contained"
+            color='primary'
+            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'AllInvoices', `${Translate("invoices")}-${new Date().toLocaleDateString()}`)}
+            startIcon={<Iconify icon="eva:download-outline" />}
+            sx={{
+              margin: 0.5
+            }}
+          >
+            {Translate("export")}
+          </Button>
+
+        </Stack>
 
         <Card>
+        
           <InvoiceTableToolbar
             filters={filters}
             onFilters={handleFilters}

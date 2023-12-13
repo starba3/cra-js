@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocales } from 'src/locales';
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -7,12 +7,16 @@ import Table from '@mui/material/Table';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
-
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+// Utility
+import { exportToExcel } from 'src/utils/export';
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
-// components
+// components 
 import Scrollbar from 'src/components/scrollbar';
+import Iconify from 'src/components/iconify';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import CustomersListDialog from 'src/screens/components/reports/invoiceForCustomers/customersListDialog';
@@ -51,7 +55,7 @@ export default function InvoiceForCustomersView() {
 
   const router = useRouter();
 
-  const { t } = useLocales()
+  const { t, currentLang } = useLocales()
   const Translate = (text) => t(text);
 
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
@@ -106,6 +110,13 @@ export default function InvoiceForCustomersView() {
     dateError,
   });
 
+  const handleViewRow = useCallback(
+    (id) => {
+      router.push(paths.dashboard.invoice.details(id));
+    },
+    [router]
+  );
+
   
   // const dataInPage = dataFiltered.slice(
   //   table.page * table.rowsPerPage,
@@ -127,9 +138,18 @@ export default function InvoiceForCustomersView() {
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
     { id: 'daysToCollected', label: Translate("daysToCollected") },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
-    // { id: 'customerNameAr', label: Translate("customerNameAr") },
     { id: 'paidStatus', label: Translate("paidStatus"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
+  ];
+
+  const exportHeaderRow = [
+    Translate("invoiceNumber"),
+    Translate("customerName"),
+    Translate("issueInvoiceDate"),
+    Translate("daysToCollected"),
+    Translate("invoiceAmount"),
+    Translate("paidStatus"),
+    Translate("department")
   ];
 
   return (
@@ -153,7 +173,27 @@ export default function InvoiceForCustomersView() {
             mb: { xs: 3, md: 5 },
           }}
         />
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          // divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+          sx={{ 
+            py: 2
+            }}
+        >
 
+          <Button
+            variant="contained"
+            color='primary'
+            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'InvoiceByCustomers', `${Translate("invoicesForCustomer")}-${new Date().toLocaleDateString()}`)}
+            startIcon={<Iconify icon="eva:download-outline" />}
+            sx={{
+              margin: 0.5
+            }}
+          >
+            {Translate("export")}
+          </Button>
+        </Stack>
         <Card sx={{ mb: 3 }}>
           <InvoiceTableToolbar 
             handleOpen={() => setOpen(true)}
@@ -187,6 +227,7 @@ export default function InvoiceForCustomersView() {
                     )
                     .map((row, index) => (
                       <TableRowNew
+                        onViewRow={() => handleViewRow(row.id)}
                         key={index}
                         row={row}
                         selected={table.selected.includes(row.id)}

@@ -10,12 +10,12 @@ import TableContainer from '@mui/material/TableContainer';
 import Stack from '@mui/material/Stack';
 import Divider  from '@mui/material/Divider';
 import Button from '@mui/material/Button';
-
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 import { Link, useNavigate } from 'react-router-dom';
-
+// Utility
+import { exportToExcel } from 'src/utils/export';
 // components
 import Iconify from 'src/components/iconify';
 import { RouterLink } from 'src/routes/components';
@@ -112,6 +112,13 @@ export default function UserListView() {
     { id: 'lastName', label: Translate("lastName")  },
     { id: 'userName', label: Translate("userName")  },
     { id: 'roles', label: Translate("roles")  },
+  ];
+
+  const exportHeaderRow = [
+    Translate("firstName"),
+    Translate("lastName"),
+    Translate("userName"),
+    Translate("roles")
   ];
 
   const dateError =
@@ -240,13 +247,6 @@ export default function UserListView() {
           //     divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
           //     sx={{ py: 2 }}
           //   >
-          //     <Button
-          //       onClick={() => navigate(paths.customers.create)}
-          //       variant="contained"
-          //       startIcon={<Iconify icon="mingcute:add-line" />}
-          //     >
-          //       {Translate("newCustomer")}
-          //     </Button>
               
           // </Stack>
             
@@ -255,7 +255,26 @@ export default function UserListView() {
             mb: { xs: 3, md: 5 },
           }}
         />
-
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          // divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+          sx={{ 
+            py: 2
+            }}
+        >
+          <Button
+            variant="contained"
+            color='primary'
+            onClick={() => exportToExcel(tableData, exportHeaderRow, '', Translate("currencyShortcut"), 'Users', `${Translate('users')}-${new Date().toLocaleDateString()}`)}
+            startIcon={<Iconify icon="eva:download-outline" />}
+            sx={{
+              margin: 0.5
+            }}
+          >
+            {Translate("export")}
+          </Button>
+        </Stack>
         <Card>
           <UserTableToolbar
             filters={filters}

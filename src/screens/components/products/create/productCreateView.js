@@ -63,7 +63,7 @@ export default function ProductCreateView({ id }) {
           },
           {
             name: Translate("product"),
-            
+            href: paths.products.list,
           },
           {
             name: Translate("newProduct"),

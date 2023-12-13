@@ -3,6 +3,7 @@ import { useLocales } from 'src/locales';
 import { format } from 'date-fns';
 // @mui
 import TableRow from '@mui/material/TableRow';
+import Link from '@mui/material/Link';
 import TableCell from '@mui/material/TableCell';
 import Avatar from '@mui/material/Avatar';
 import ListItemText from '@mui/material/ListItemText';
@@ -19,38 +20,41 @@ import Typography from '@mui/material/Typography';
 export default function TableRowNew({
   row,
   selected,
+  onViewRow,
   isPercentage,
 }) {
-  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameEn, paidStatus, department } = row;
+  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameEn, customerNameAr, paidStatus, department } = row;
 
-  const { t } = useLocales()
+  const { t, currentLang } = useLocales()
   const Translate = (text) => t(text);
+
+  const customerName = currentLang.value === 'ar' ? customerNameAr : customerNameEn;
 
   return (
     <TableRow hover selected={selected}>
 
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt={customerNameEn} sx={{ mr: 2 }}>
-            {customerNameEn.charAt(0).toUpperCase()}
+          <Avatar alt={customerName} sx={{ mr: 2 }}>
+            {customerName.charAt(0).toUpperCase()}
           </Avatar>
 
           <ListItemText
             disableTypography
             primary={
               <Typography variant="body2" noWrap>
-                {customerNameEn}
+                {customerName}
               </Typography>
             }
-            // secondary={
-            //   <Link
-            //     noWrap
-            //     variant="body2"
-            //     onClick={onViewRow}
-            //     sx={{ color: 'text.disabled', cursor: 'pointer' }}
-            //   >
-            //     {invoiceNo}
-            //   </Link>
-            // }
+            secondary={
+              <Link
+                noWrap
+                variant="body2"
+                onClick={onViewRow}
+                sx={{ color: 'text.disabled', cursor: 'pointer' }}
+              >
+                {invoiceNo}
+              </Link>
+            }
           />
         </TableCell>
 
@@ -83,6 +87,7 @@ export default function TableRowNew({
 
 TableRowNew.propTypes = {
   row: PropTypes.object,
+  onViewRow: PropTypes.func,
   selected: PropTypes.bool,
   isPercentage: PropTypes.bool,
 };
