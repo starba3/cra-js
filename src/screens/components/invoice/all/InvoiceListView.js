@@ -446,7 +446,7 @@ export default function InvoiceListView() {
         </Card>
         <Stack
           direction="row"
-          justifyContent="flex-end"
+          // justifyContent="flex-end"
           // divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
           sx={{ 
             py: 2
@@ -568,6 +568,7 @@ export default function InvoiceListView() {
             onPageChange={table.onChangePage}
             onRowsPerPageChange={table.onChangeRowsPerPage}
             dense={table.dense}
+            denseLabel={Translate("dense")}
             onChangeDense={table.onChangeDense}
           />
         </Card>

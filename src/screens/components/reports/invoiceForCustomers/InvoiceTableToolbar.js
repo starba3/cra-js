@@ -33,7 +33,7 @@ export default function InvoiceTableToolbar({
     <Stack
       spacing={2}
       alignItems={{ xs: 'flex-end', md: 'center' }}
-      justifyContent="flex-end"
+      // justifyContent="flex-end"
       direction={{
         xs: 'column',
         md: 'row',
@@ -51,7 +51,7 @@ export default function InvoiceTableToolbar({
         width: { xs: 1, md: 180 },
       }}
     >
-      <InputLabel>Customers List</InputLabel>
+      <InputLabel>{Translate("customersList")}</InputLabel>
 
         <Select
           multiple
@@ -82,7 +82,7 @@ export default function InvoiceTableToolbar({
               prevSelected.current = selected;
             }
           }}  // Use event.target.value to get the selected value
-          input={<OutlinedInput label="Customers List" />}
+          input={<OutlinedInput label={Translate("customersList")} />}
           renderValue={(selected) => selected}
           sx={{ textTransform: 'capitalize' }}
         >

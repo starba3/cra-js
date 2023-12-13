@@ -178,7 +178,7 @@ export default function AgingView() {
         />
         <Stack
           direction="row"
-          justifyContent="flex-end"
+          // justifyContent="flex-end"
           // divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
           sx={{ 
             py: 2
@@ -259,7 +259,7 @@ export default function AgingView() {
             rowsPerPage={table.rowsPerPage}
             onPageChange={table.onChangePage}
             onRowsPerPageChange={table.onChangeRowsPerPage}
-            //
+            denseLabel={Translate("dense")}
             dense={table.dense}
             onChangeDense={table.onChangeDense}
           />

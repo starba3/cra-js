@@ -7,12 +7,17 @@ import Table from '@mui/material/Table';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
+// Utility
+import { exportToExcel } from 'src/utils/export';
 // components
 import Scrollbar from 'src/components/scrollbar';
+import Iconify from 'src/components/iconify';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import CustomersListDialog from 'src/screens/components/reports/invoiceForCustomers/customersListDialog';
@@ -53,7 +58,7 @@ export default function InvoiceByUserView() {
 
   const router = useRouter();
 
-  const { t } = useLocales()
+  const { t, currentLang } = useLocales()
   const Translate = (text) => t(text);
 
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
@@ -139,6 +144,15 @@ export default function InvoiceByUserView() {
     { id: 'paidStatus', label: Translate("paidStatus"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
   ];
+  const exportHeaderRow = [
+    Translate("invoiceNumber"),
+    Translate("customerName"),
+    Translate("issueInvoiceDate"),
+    Translate("daysToCollected"),
+    Translate("invoiceAmount"),
+    Translate("paidStatus"),
+    Translate("department")
+  ];
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -162,7 +176,27 @@ export default function InvoiceByUserView() {
             mb: { xs: 3, md: 5 },
           }}
         />
+        <Stack
+          direction="row"
+          // justifyContent="flex-end"
+          // divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+          sx={{ 
+            py: 2
+            }}
+        >
 
+          <Button
+            variant="contained"
+            color='primary'
+            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'InvoicesByUser', `${Translate("invoiceByUser")}-${new Date().toLocaleDateString()}`)}
+            startIcon={<Iconify icon="eva:download-outline" />}
+            sx={{
+              margin: 0.5
+            }}
+          >
+            {Translate("export")}
+          </Button>
+        </Stack>
         <Card sx={{ mb: 3 }}>
           <InvoiceTableToolbar 
             handleOpen={() => setOpen(true)}
@@ -220,7 +254,7 @@ export default function InvoiceByUserView() {
             rowsPerPage={table.rowsPerPage}
             onPageChange={table.onChangePage}
             onRowsPerPageChange={table.onChangeRowsPerPage}
-            //
+            denseLabel={Translate("dense")}
             dense={table.dense}
             onChangeDense={table.onChangeDense}
           />

@@ -389,6 +389,7 @@ export default function ProductListView() {
             rowsPerPage={table.rowsPerPage}
             onPageChange={table.onChangePage}
             onRowsPerPageChange={table.onChangeRowsPerPage}
+            denseLabel={Translate("dense")}
             dense={table.dense}
             onChangeDense={table.onChangeDense}
           />

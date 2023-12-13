@@ -8,20 +8,23 @@ import Table from '@mui/material/Table';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
-
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 // hooks
-// utils
+// Utility
+import { exportToExcel } from 'src/utils/export';
 // _mock
 // components
+import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import BarChart from 'src/screens/components/reports/gmReasonReport/Chart'
 
-
+ 
 
 import {
   useTable,
@@ -56,7 +59,7 @@ export default function GmReasonReportView() {
 
   const router = useRouter();
 
-  const { t } = useLocales()
+  const { t, currentLang } = useLocales()
   const Translate = (text) => t(text);
 
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
@@ -123,6 +126,12 @@ export default function GmReasonReportView() {
     { id: 'reason', label: Translate('reason') },
     { id: 'totalAmount', label: Translate('totalAmount') },
   ];
+
+  const exportHeaderRow = [
+    Translate("week"),
+    Translate("reason"),
+    Translate("totalAmount"),
+  ];
   
 
   return (
@@ -146,6 +155,28 @@ export default function GmReasonReportView() {
             mb: { xs: 3, md: 5 },
           }}
         />
+
+        <Stack
+          direction="row"
+          // justifyContent="flex-end"
+          // divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+          sx={{ 
+            py: 2
+            }}
+        >
+
+          <Button
+            variant="contained"
+            color='primary'
+            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'GMReasonReport', `${Translate("gmReasonReport")}-${new Date().toLocaleDateString()}`)}
+            startIcon={<Iconify icon="eva:download-outline" />}
+            sx={{
+              margin: 0.5
+            }}
+          >
+            {Translate("export")}
+          </Button>
+        </Stack>
 
         <Card sx={{ mb: 3 }}>
           <ReportToolBar onChange={(value) => handleOnChange(value)}  onStatusChange={(value) => setStatus(value)}/>
@@ -198,7 +229,7 @@ export default function GmReasonReportView() {
             rowsPerPage={table.rowsPerPage}
             onPageChange={table.onChangePage}
             onRowsPerPageChange={table.onChangeRowsPerPage}
-            //
+            denseLabel={Translate("dense")}
             dense={table.dense}
             onChangeDense={table.onChangeDense}
           />

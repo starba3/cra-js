@@ -29,7 +29,7 @@ export default function InvoiceTableToolbar({
     <Stack
       spacing={2}
       alignItems={{ xs: 'flex-end', md: 'center' }}
-      justifyContent="flex-end"
+      // justifyContent="flex-end"
       direction={{
         xs: 'column',
         md: 'row',
@@ -45,7 +45,6 @@ export default function InvoiceTableToolbar({
 
        <Button 
         variant='contained'
-        color='success'
         endIcon={<Iconify icon="mdi:search" />}
         onClick={handleOpen}
        >

@@ -475,7 +475,7 @@ export default function InvoiceListView({department, salesStatus}) {
         </Card>
         <Stack
           direction="row"
-          justifyContent="flex-end"
+          // justifyContent="flex-end"
           divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
           sx={{ py: 2 }}
         >
@@ -609,7 +609,7 @@ export default function InvoiceListView({department, salesStatus}) {
             rowsPerPage={table.rowsPerPage}
             onPageChange={table.onChangePage}
             onRowsPerPageChange={table.onChangeRowsPerPage}
-            //
+            denseLabel={Translate("dense")}
             dense={table.dense}
             onChangeDense={table.onChangeDense}
           />

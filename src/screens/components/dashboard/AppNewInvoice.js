@@ -26,7 +26,7 @@ import { TableHeadCustom } from 'src/components/table';
 
 export default function AppNewInvoice({ title, subheader, tableData, tableLabels, ...other }) {
     const router = useRouter()
-    const {t} = useLocales();
+    const { t, currentLang} = useLocales();
     const Translate = (text) => t(text);
   return (
     <Card {...other}>
@@ -53,7 +53,7 @@ export default function AppNewInvoice({ title, subheader, tableData, tableLabels
           size="small"
           color="inherit"
           onClick={() => router.replace(paths.dashboard.invoice.root)}
-          endIcon={<Iconify icon="eva:arrow-ios-forward-fill" width={18} sx={{ ml: -0.5 }} />}
+          endIcon={<Iconify icon={currentLang.value === 'ar' ? "eva:arrow-ios-back-fill" : "eva:arrow-ios-forward-fill"}  width={18} sx={{ ml: -0.5 }} />}
         >
           {t("viewAll")}
         </Button>

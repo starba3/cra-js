@@ -359,6 +359,7 @@ export default function CustomerListView() {
             onPageChange={table.onChangePage}
             onRowsPerPageChange={table.onChangeRowsPerPage}
             dense={table.dense}
+            denseLabel={Translate("dense")}
             onChangeDense={table.onChangeDense}
           />
         </Card>

@@ -177,6 +177,8 @@
   "users": "المسنخدمون",
   "customerName" : "اسم الزبون",
   "percentage": "النسبة", 
+  "customersList": "قائمة العملاء",
+  "dense": "ضغط الجدول",
 
   "searchCustomerName": "ابحث عن العميل", 
   "newCustomer": "عميل جديد", 
