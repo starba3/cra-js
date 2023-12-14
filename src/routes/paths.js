@@ -237,6 +237,8 @@ export const paths = {
   // INVOICES
   invoices: {
     list: `${ROOTS.INVOICES}/list`,
+    editUrl: `${ROOTS.INVOICES}/:id/edit`,
+    edit: (id) => `${ROOTS.INVOICES}/${id}/edit`,
   },
   // Reports
   reports: {

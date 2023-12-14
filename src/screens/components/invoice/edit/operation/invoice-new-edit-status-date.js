@@ -102,15 +102,18 @@ export default function InvoiceNewEditStatusDate({
       setSelectedCollectionSource((prev) => {
         const newValue = defaultCollectionSource;
         // Perform your logic based on the updated state
-        const collectionSourceId = collectionSource.filter(option => option.value === defaultCollectionSource)[0].id;
-        const claimStatusTemp = collectionData.filter(data => data.parentId === collectionSourceId);
-    
-        setClaimsStatus(claimStatusTemp)
-        setValue('claimStatus', defaultClaimsStatus);
+        if(defaultCollectionSource) {
+          const collectionSourceId = collectionSource.filter(option => option.value === defaultCollectionSource)[0].id;
+          const claimStatusTemp = collectionData.filter(data => data.parentId === collectionSourceId);
+      
+          setClaimsStatus(claimStatusTemp)
+          setValue('claimStatus', defaultClaimsStatus);
 
-        const claimStatusId = claimStatusTemp.filter(option => option.value === defaultClaimsStatus)[0].id;
-        setClaimsDetailStatus(collectionData.filter(data => data.parentId === claimStatusId))
-        setValue('claimsDetailStatus', defaultClaimsDetailStatus);
+          const claimStatusId = claimStatusTemp.filter(option => option.value === defaultClaimsStatus)[0].id;
+          setClaimsDetailStatus(collectionData.filter(data => data.parentId === claimStatusId))
+          setValue('claimsDetailStatus', defaultClaimsDetailStatus);
+        }
+        
 
         return newValue;
       });

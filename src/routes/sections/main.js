@@ -25,6 +25,8 @@ const PaymentPage = lazy(() => import('src/pages/payment'));
 const ComingSoonPage = lazy(() => import('src/pages/coming-soon'));
 const MaintenancePage = lazy(() => import('src/pages/maintenance'));
 
+// Invoices
+const InvoiceEditPage = lazy(() => import('src/screens/invoice/edit/InvoiceEditPage'));
 // Reports
 const AgingViewMain = lazy(() => import('src/screens/reports/aging'));
 const InvoiceForCustomersViewMain = lazy(() => import('src/screens/reports/invoiceForCustomers'));
@@ -122,6 +124,11 @@ export const mainRoutes = [
       </DashboardLayout>
     ),
     children: [
+      // Invoice Edit
+      { 
+        path: paths.invoices.editUrl, 
+        element: <InvoiceEditPage /> 
+      },
       { 
         path: paths.departments.operation.list, 
         element: <InvoiceListViewByDepartment id={-1} /> 

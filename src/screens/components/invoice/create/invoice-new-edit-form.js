@@ -37,7 +37,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     createDate: Yup.mixed().nullable().required('Create date is required'),
     deliveryDate: Yup.mixed().nullable().required('Delivery date is required'),
     invoiceNumber: Yup.string().required('Invoice number is required'),
-    invoiceAmount: Yup.date().required('Invoice amount is required'),
+    invoiceAmount: Yup.number().required('Invoice amount is required'),
     currency: Yup.string().required('Currency is required'),
     customerCode: Yup.string().required('Customer code is required'),
     region: Yup.string().required('Region is required'),
