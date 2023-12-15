@@ -159,23 +159,24 @@ export default function InvoiceByUserView() {
         <CustomBreadcrumbs
           heading={Translate("invoiceByUser")}
           links={[
-            {
-              name: Translate("app"),
-              href: paths.dashboard.root,
-            },
-            {
-              name: Translate("invoiceByUser"),
-              href: paths.reports.invoiceByUsers,
-            },
-            {
-              name: Translate("invoiceByUser"),
-            },
+            // {
+            //   name: Translate("app"),
+            //   href: paths.dashboard.root,
+            // },
+            // {
+            //   name: Translate("invoiceByUser"),
+            //   href: paths.reports.invoiceByUsers,
+            // },
+            // {
+            //   name: Translate("invoiceByUser"),
+            // },
           ]}
           
           sx={{
             mb: { xs: 3, md: 5 },
           }}
         />
+        
         <Stack
           direction="row"
           // justifyContent="flex-end"

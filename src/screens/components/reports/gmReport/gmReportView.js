@@ -157,22 +157,23 @@ export default function GmReportView() {
         <CustomBreadcrumbs
           heading={Translate("gmReport")}
           links={[
-            {
-              name: Translate("app"),
-              href: paths.dashboard.root,
-            },
-            {
-              name: Translate("reports"),
-            },
-            {
-              name: Translate("gmReport"),
-            },
+            // {
+            //   name: Translate("app"),
+            //   href: paths.dashboard.root,
+            // },
+            // {
+            //   name: Translate("reports"),
+            // },
+            // {
+            //   name: Translate("gmReport"),
+            // },
           ]}
           
           sx={{
             mb: { xs: 3, md: 5 },
           }}
         />
+        
         <Stack
           direction="row"
           // justifyContent="flex-end"

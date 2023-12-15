@@ -226,20 +226,20 @@ export default function UserListView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="List"
+          heading={Translate("list")}
           links={[
-            {
-              name: Translate("app"),
-              href: paths.dashboard.root,
-            },
-            {
-              name: Translate("User"),
-              href: paths.users.list,
+            // {
+            //   name: Translate("app"),
+            //   href: paths.dashboard.root,
+            // },
+            // {
+            //   name: Translate("User"),
+            //   href: paths.users.list,
               
-            },
-            {
-              name: Translate("list"),
-            },
+            // },
+            // {
+            //   name: Translate("list"),
+            // },
           ]}
           // action= {
           //   <Stack
@@ -257,7 +257,7 @@ export default function UserListView() {
         />
         <Stack
           direction="row"
-          justifyContent="flex-end"
+          // justifyContent="flex-end"
           // divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
           sx={{ 
             py: 2

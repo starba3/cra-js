@@ -51,15 +51,15 @@ export default function InvoiceDetailsView({ id }) {
       <CustomBreadcrumbs
         heading={currentInvoice?.invoiceNo}
         links={[
-          {
-            name: Translate("app"),
-            href: paths.dashboard.root,
-          },
-          {
-            name: Translate("invoice"),
-            href: paths.dashboard.invoice,
-          },
-          { name: currentInvoice?.invoiceNo },
+          // {
+          //   name: Translate("app"),
+          //   href: paths.dashboard.root,
+          // },
+          // {
+          //   name: Translate("invoice"),
+          //   href: paths.dashboard.invoice,
+          // },
+          // { name: currentInvoice?.invoiceNo },
         ]}
         sx={{ mb: { xs: 3, md: 5 } }}
       />

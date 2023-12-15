@@ -235,20 +235,20 @@ export default function ProductListView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="List"
+          heading={Translate("list")}
           links={[
-            {
-              name: Translate("app"),
-              href: paths.dashboard.root,
-            },
-            {
-              name: Translate("product"),
-              href: paths.products.list,
+            // {
+            //   name: Translate("app"),
+            //   href: paths.dashboard.root,
+            // },
+            // {
+            //   name: Translate("product"),
+            //   href: paths.products.list,
               
-            },
-            {
-              name: Translate("list"),
-            },
+            // },
+            // {
+            //   name: Translate("list"),
+            // },
           ]}
           // action= {
           //   <Stack
@@ -273,7 +273,7 @@ export default function ProductListView() {
         />
         <Stack
           direction="row"
-          justifyContent="flex-end"
+          // justifyContent="flex-end"
           // divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
           sx={{ 
             py: 2

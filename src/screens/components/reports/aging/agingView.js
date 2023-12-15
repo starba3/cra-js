@@ -160,16 +160,16 @@ export default function AgingView() {
         <CustomBreadcrumbs
           heading={Translate("aging")}
           links={[
-            {
-              name: Translate("app"),
-              href: paths.dashboard.root,
-            },
-            {
-              name: Translate("reports"),
-            },
-            {
-              name: Translate("aging"),
-            },
+            // {
+            //   name: Translate("app"),
+            //   href: paths.dashboard.root,
+            // },
+            // {
+            //   name: Translate("reports"),
+            // },
+            // {
+            //   name: Translate("aging"),
+            // },
           ]}
           
           sx={{

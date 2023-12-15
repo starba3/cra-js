@@ -57,17 +57,17 @@ export default function ProductCreateView({ id }) {
       <CustomBreadcrumbs
         heading={Translate("createNewProduct")}
         links={[
-          {
-            name: Translate("app"),
-            href: paths.dashboard.root,
-          },
-          {
-            name: Translate("product"),
-            href: paths.products.list,
-          },
-          {
-            name: Translate("newProduct"),
-          },
+          // {
+          //   name: Translate("app"),
+          //   href: paths.dashboard.root,
+          // },
+          // {
+          //   name: Translate("product"),
+          //   href: paths.products.list,
+          // },
+          // {
+          //   name: Translate("newProduct"),
+          // },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },

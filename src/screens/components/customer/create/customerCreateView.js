@@ -58,17 +58,17 @@ export default function CustomerCreateView({ id }) {
       <CustomBreadcrumbs
         heading={Translate("createNewCustomer")}
         links={[
-          {
-            name: Translate("app"),
-            href: paths.dashboard.root,
-          },
-          {
-            name: Translate("customer"),
+          // {
+          //   name: Translate("app"),
+          //   href: paths.dashboard.root,
+          // },
+          // {
+          //   name: Translate("customer"),
             
-          },
-          {
-            name: Translate("newCustomer"),
-          },
+          // },
+          // {
+          //   name: Translate("newCustomer"),
+          // },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },

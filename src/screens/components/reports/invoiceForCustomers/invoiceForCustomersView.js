@@ -157,16 +157,16 @@ export default function InvoiceForCustomersView() {
         <CustomBreadcrumbs
           heading={Translate("invoicesForCustomer")}
           links={[
-            {
-              name: Translate("app"),
-              href: paths.dashboard.root,
-            },
-            {
-              name: Translate("reports"),
-            },
-            {
-              name: Translate("invoicesForCustomer"),
-            },
+            // {
+            //   name: Translate("app"),
+            //   href: paths.dashboard.root,
+            // },
+            // {
+            //   name: Translate("reports"),
+            // },
+            // {
+            //   name: Translate("invoicesForCustomer"),
+            // },
           ]}
           
           sx={{

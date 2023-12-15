@@ -57,17 +57,17 @@ export default function InvoiceEditView({ id }) {
       <CustomBreadcrumbs
         heading="Edit invoice"
         links={[
-          {
-            name: Translate("app"),
-            href: paths.dashboard.root,
-          },
-          {
-            name: Translate("invoice"),
-            href: paths.dashboard.invoice.root,
-          },
-          {
-            name: Translate("newInvoice"),
-          },
+          // {
+          //   name: Translate("app"),
+          //   href: paths.dashboard.root,
+          // },
+          // {
+          //   name: Translate("invoice"),
+          //   href: paths.dashboard.invoice.root,
+          // },
+          // {
+          //   name: Translate("newInvoice"),
+          // },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },

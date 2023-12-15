@@ -376,16 +376,16 @@ export default function InvoiceListView() {
         <CustomBreadcrumbs
           heading={Translate("list")}
           links={[
-            {
-              name: Translate("app"),
-              href: paths.dashboard.root,
-            },
-            {
-              name: Translate("invoice"),
-            },
-            {
-              name: Translate("list"),
-            },
+            // {
+            //   name: Translate("app"),
+            //   href: paths.dashboard.root,
+            // },
+            // {
+            //   name: Translate("invoice"),
+            // },
+            // {
+            //   name: Translate("list"),
+            // },
           ]}
           // action= {
           //   <Stack
