@@ -82,6 +82,8 @@ export default function OverviewAppView() {
   const unpaidToPaidInvoicesCountPrecentage = (unpaidInvoicesCount / paidInvoicesCount) * 100;
 
   const sum = paidInvoicesTotalAmmount + unpaidInvoicesTotalAmmount;
+  console.log(sum);
+
   const paidInvoicesTotalAmmountPrecentage = ((paidInvoicesTotalAmmount / sum) * 100).toFixed(2);
 
   const unpaidInvoicesTotalAmmountPrecentage = ((unpaidInvoicesTotalAmmount / sum) * 100).toFixed(2);
@@ -116,7 +118,7 @@ export default function OverviewAppView() {
         <Grid item="true" xs={12} md={6} lg={3}>
           <AppWidgetSummary
             title={Translate("unpaidInvoicesTotal")}
-            percent={paidToUnpaidInvoicesCountPrecentage}
+            percent={unpaidInvoicesTotalAmmountPrecentage}
             total={unpaidInvoicesTotalAmmount}
             chart={{
               colors: [theme.palette.warning.light, theme.palette.warning.main],
@@ -128,7 +130,7 @@ export default function OverviewAppView() {
         <Grid item="true" xs={12} md={6} lg={3}>
           <AppWidgetSummary
             title={Translate("paidInvoicesTotal")}
-            percent={unpaidToPaidInvoicesCountPrecentage}
+            percent={paidInvoicesTotalAmmountPrecentage}
             total={paidInvoicesTotalAmmount}
             chart={{
               colors: [theme.palette.warning.light, theme.palette.warning.main],
