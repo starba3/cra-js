@@ -11,8 +11,8 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 // hooks
 import { useMockedUser } from 'src/hooks/use-mocked-user';
-// _mock
-import { _appFeatured, _appAuthors, _appInstalled, _appRelated, _appInvoices } from 'src/_mock';
+// Data access
+import { getDashboardData } from 'src/data-access/dashboard';
 // components
 import { useSettingsContext } from 'src/components/settings';
 import AppWidgetSummary from 'src/sections/overview/app/app-widget-summary';
@@ -43,7 +43,7 @@ export default function OverviewAppView() {
   // hit the route
   const getInvoices = async () => {
     // Fetching the token from the session storage
-    const token = sessionStorage.getItem('accessToken');
+    const token = localStorage.getItem('accessToken') && JSON.parse(localStorage.getItem('accessToken')).value ;
     if (token) {
       const config = {
         headers: {
@@ -52,7 +52,7 @@ export default function OverviewAppView() {
       };
 
       try {
-        const res = await axios.get(`https://invoicecollectionsystemapi.azurewebsites.net/api/Dashboard`);
+        const res = await getDashboardData();
         console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>', res.data);
 
         setUnpaidInvoicesCount(res.data.unpaidInvoicesCount);
@@ -63,7 +63,7 @@ export default function OverviewAppView() {
         setLastestCreatedInvoices(res.data.lastestCreatedInvoices);
 
       } catch (error) {
-        console.error('Error fetching chart Data:', error);
+        console.error('Error fetching chart Data:', error); 
       }
     } else {
       console.error('Token not found in session storage');

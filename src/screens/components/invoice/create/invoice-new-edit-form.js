@@ -11,8 +11,8 @@ import Stack from '@mui/material/Stack';
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
-// _mock
-import { _addressBooks } from 'src/_mock';
+// Data access
+import { createInvoice } from 'src/data-access/invoice';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
@@ -110,30 +110,11 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       reset();
       loadingSend.onFalse();
 
-      let redirectUrl = paths.dashboard.invoice.root
+      const redirectUrl = paths.dashboard.invoice.root
       // Send create invoice request
-      
-      console.log(body)
-      fetch('https://invoicecollectionsystemapi.azurewebsites.net/api/Invoices', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body),
-        Cache: 'default'
-      })
-      .then(res => res.json())
-      .then(res => {
-        console.log(res)
-        
-      })
-      .catch(error => {
-        console.log(error)
-        redirectUrl = ''
-      })
+      const createResult = await createInvoice(body);
 
-      if(redirectUrl) {
+      if(createResult) {
         router.replace(redirectUrl);
       }
       

@@ -1,78 +1,85 @@
 
-import { result } from "lodash";
+// import { result } from "lodash";
+import axios from "axios";
 import { paths } from "src/routes/paths"
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
 
-
 export async function getAllInvoices() {
-    let list = []
-    await fetch(`${baseUrl}/api/invoices`, {
-        mode:'cors'
-    })
-    .then(response => response.json())
-    .then(invoices => {
-        list = invoices
-    })
-    .catch(error => console.log())
+    let list = [];
 
-    return list
+    try {
+        const response = await axios.get(`${baseUrl}/api/invoices`);
+        list = response.data;
+    } catch (error) {
+        console.log("Fetching error: ", error)
+    }
+    // await fetch(`${baseUrl}/api/invoices`, {
+    //     mode:'cors'
+    // })
+    // .then(response => response.json())
+    // .then(invoices => {
+    //     list = invoices
+    // })
+    // .catch(error => console.log())
+
+    return list;
 }
 
 export async function getInvoicesByDepartment(id) {
-    let list = []
-    await fetch(`${baseUrl}/api/Invoices/Department/${id}`, {
-        mode:'cors'
-    })
-    .then(response => response.json())
-    .then(invoices => {
-        list = invoices
-    })
-    .catch(error => console.log())
+    let list = [];
 
-    return list
+    try {
+        const response = await axios.get(`${baseUrl}/api/Invoices/Department/${id}`);
+        list = response.data;
+    } catch (error) {
+        console.log("Fetching error: ", error)
+    }
+
+    // await fetch(`${baseUrl}/api/Invoices/Department/${id}`, {
+    //     mode:'cors'
+    // })
+    // .then(response => response.json())
+    // .then(invoices => {
+    //     list = invoices
+    // })
+    // .catch(error => console.log())
+
+    return list;
 }
 
 export async function getInvoicesBySalesConfirmation(confirmStatus) {
     let list = []
     let url = '';
+
     if(confirmStatus) {
         url = `${baseUrl}/api/Invoices/GetInvoicesBySalesConfirmation?salesConfirm=${confirmStatus}`;
     }
     else {
         url = `${baseUrl}/api/Invoices/NotConfirmedBySales`;
     }
-    
-    await fetch(url, {
-        mode:'cors'
-    })
-    .then(response => response.json())
-    .then(invoices => {
-        list = invoices
-    })
-    .catch(error => console.log())
+
+    try {
+        const response = await axios.get(url);
+        list = response.data;
+    } catch (error) {
+        console.log("Fetching error: ", error)
+    }
 
     return list
 }
 
 export async  function getInvoicesById(id) {
-    try {
-        const response = await fetch(`${baseUrl}/api/invoices/${id}`, {
-            mode: 'cors'
-        });
+    let invoice = {};
 
-        if (response.ok) {
-            const invoice = await response.json();
-            return invoice;
-        } 
-            // Handle non-successful response here if needed.
-            console.error(`Failed to fetch invoice: ${response.status} - ${response.statusText}`);
-        
+    try {
+        const response = await axios.get(`${baseUrl}/api/invoices/${id}`);
+        invoice = response.data;
     } catch (error) {
-        console.error(error);
+        console.log("Fetching error: ", error)
     }
 
-    return {}; // Return an empty object by default or handle errors as needed.
+    return invoice; // Return an empty object by default or handle errors as needed.
     
 }
 
@@ -147,30 +154,28 @@ export function getAddAttachmentUrl(id) {
 }
 
 export async function getCollectionData() {
+
     let list = [];
-    await fetch(`${baseUrl}/api/CollectionData`, {
-        mode:'cors'
-    })
-    .then(response => response.json())
-    .then(invoices => {
-        list = invoices
-    })
-    .catch(error => console.log())
+
+    try {
+        const response = await axios.get(`${baseUrl}/api/CollectionData`);
+        list = response.data;
+    } catch (error) {
+        console.log("Fetching error: ", error)
+    }
 
     return list;
 }
 
 export async function getInvoiceInquiryData(id) {
     let data = {};
-    console.log(`${baseUrl}/api/Invoices/${id}/Inquiry`);
-    await fetch(`${baseUrl}/api/Invoices/${id}/Inquiry`, {
-        mode:'cors'
-    })
-    .then(response => response.json())
-    .then(invoices => {
-        data = invoices
-    })
-    .catch(error => console.log())
+
+    try {
+        const response = await axios.get(`${baseUrl}/api/Invoices/${id}/Inquiry`);
+        data = response.data;
+    } catch (error) {
+        console.log("Fetching error: ", error)
+    }
 
     return data;
 }
@@ -184,59 +189,98 @@ export async function getInvoiceForCustomers(customers) {
     const queryData = customers.reduce((acc, customer) => `${acc}customerIds=${customer}&`, '');
     // queryData = queryData.slice(-1);
 
-    await fetch(`${baseUrl}/api/Invoices/GetInvoicesForCustomers?${queryData}`, {
-        mode:'cors'
-    })
-    .then(response => response.json())
-    .then(invoices => {
-        list = invoices;
-    })
-    .catch(error => {
-        console.log(error);
-        list = [];
-        
-    })
-
-    // console.log('Result: ', list)
-   
+    try {
+        const response = await axios.get(`${baseUrl}/api/Invoices/GetInvoicesForCustomers?${queryData}`);
+        list = response.data;
+    } catch (error) {
+        console.log("Fetching error: ", error)
+    }
 
     return list;
 }
 
 export async function deleteInvoice(id) {
     let success = true;
-    await fetch(`${baseUrl}/api/Invoices/${id}/Delete`, {
-        mode:'cors',
-        method: 'PATCH',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        Cache: 'default'
-    })
-    .then(res => {
-        // Check if the status code is 200 or 204
-        if (res.ok) {
-          // Check if the status code is 200 or 204
-          if (res.status === 204) {
-            return null; // Handle 204 No Content
-          }  if (res.status === 200) {
-            return res.json(); // Parse JSON for other successful responses
-          } 
 
-          throw new Error(`Unexpected status code: ${res.status}`);
-          
-        } 
-
-        throw new Error('Network response was not ok');
-      })
-    .then(invoices => {
-        console.log("Deleted successfuly")
-    })
-    .catch(error => {
-        console.log(error) 
+    try {
+        const response = await axios.patch(`${baseUrl}/api/Invoices/${id}/Delete`);
+    } catch (error) {
+        console.log("Delete error: ", error)
         success = false;
-    })
+    }
 
     return success;
 }
+
+export async function createInvoice(body) {
+    let success = true;
+
+    try {
+        const response = await axios.post(`${baseUrl}/api/Invoices`, body);
+    } catch (error) {
+        console.log("Create error: ", error)
+        success = false;
+    }
+
+    return success;
+}
+
+export async function editInvoice(url, body) {
+    let result = "";
+
+    axios.patch(url, body)
+    .then(response => {
+        if (response.status >= 200 && response.status < 300) {
+          // Successful response
+          return response.data;
+        } 
+        console.log("error")
+        // Unsuccessful response
+        throw new Error(response.statusText);
+        
+      })
+    .then(data => {
+    // Handle successful response data
+        console.log('Response data:', data);
+    })
+    .catch(error => {
+        console.log("Error: ", error);
+        if (axios.isAxiosError(error)) {
+            // Axios error (HTTP error)
+            if (error.response) {
+              console.error('HTTP error details:', error.response.data);
+              result = error.response.data;
+
+            } else {
+              console.error('Request failed:', error.message);
+              result = error.message;
+            }
+        } else {
+            // Non-Axios error
+            console.error('Non-Axios error:', error.message);
+            result = error.message;
+        }
+    });
+
+    return result;
+}
+
+export async function addAttachment(url, formData) {
+    let success = true;
+
+    try {
+        const response = await axios.post(url, formData, {
+            headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          timeout: 3000, // Adjust timeout as needed
+        });
+    } catch (error) {
+        // Handle other errors
+        console.error('Axios Error:', error);
+        success = false;
+    } 
+
+    return success;
+}
+

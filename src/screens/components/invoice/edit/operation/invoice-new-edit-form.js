@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useCallback } from 'react'
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useLocales } from 'src/locales';
 import * as Yup from 'yup';
@@ -18,7 +19,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 // routes
 import { useRouter } from 'src/routes/hooks';
 // _mock
-import { getInvoiceEditUrl, getInvoiceRedirectUrl, getAddAttachmentUrl } from 'src/data-access/invoice';
+import { getInvoiceEditUrl, getInvoiceRedirectUrl, getAddAttachmentUrl, addAttachment, editInvoice } from 'src/data-access/invoice';
 import { _departments_withoutAll } from 'src/lists/departments';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -233,9 +234,9 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
        reset();
       // loadingSend.onFalse();
 
-      const redirectUrl = getInvoiceRedirectUrl(departmentId)
-      // Send create invoice request
-      
+      const redirectUrl = getInvoiceRedirectUrl(departmentId);
+
+      // Send Edit invoice request      
       console.log('Body', JSON.stringify(body) )
       const url = getInvoiceEditUrl(departmentId, currentInvoice.id)
       console.log('Url', url )
@@ -247,8 +248,8 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         },
         body: JSON.stringify(body),
         Cache: 'default'  
-      })
-      .then(response => {
+       })
+       .then(response => {
         if (!response.ok) {
           if (response.status === 400) {
             // If status code is 400, log the error message
@@ -260,21 +261,21 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
           } 
           // For other error status codes, throw a generic error
           throw new Error('Network response was not ok');
-          
+           
         }
         return response.text(); // Use text() instead of json()
-        
-      })
-      .then(res => {
-        setDidUpdate(true)  
-        loadingSend.onFalse();
-        router.replace(redirectUrl);
-        // Handle the non-JSON error message
-        console.log('res:', res);
-      })
-      .catch(error => {
-        console.error('Fetch Error:', error);
-      });
+         
+       })
+       .then(res => {
+         setDidUpdate(true)  
+         loadingSend.onFalse();
+         router.replace(redirectUrl);
+         // Handle the non-JSON error message
+         console.log('res:', res);
+       })
+       .catch(error => {
+         console.error('Fetch Error:', error);
+       });
 
     } catch (error) {
       console.error('Error:', error);
@@ -282,7 +283,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     }
   });
 
-  const handleFileUpload = () => {
+  const handleFileUpload = async () => {
 
     
     const formData = new FormData();
@@ -291,53 +292,9 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     
     if(fileInput) {
       formData.append('file', fileInput);
+      const url = getAddAttachmentUrl(currentInvoice.id);
 
-      try {
-        // Send Add Attachment request
-        
-        const url = getAddAttachmentUrl(currentInvoice.id)
-        console.log('Url', url )
-        fetch(url, {
-          mode: 'cors',
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-          },
-          body: formData,
-          Cache: 'default'  
-        })
-        .then(async response => {
-          await new Promise(resolve => setTimeout(resolve, 3000));
-          
-          if (!response.ok) {
-            if (response.status === 400 || response.status === 415) {
-
-              const error = await response.text();
-
-              throw new Error(`Bad Request: ${error}`);
-            } 
-            // For other error status codes, throw a generic error
-            throw new Error('Network response was not ok');
-            
-          }
-          return response.text(); // Use text() instead of json()
-          
-        })
-        .then(res => {
-
-        })
-        .catch(error => {
-          console.error('Fetch Error:', error);
-          
-        })
-         
-      } catch (error) {
-        console.log(error)
-      } 
-    }
-    else {
-      // setIsEmportError(true)
-      // setAlertMessage('No file selecetd.')
+      const addResult = await addAttachment(url, formData);
     }
   }
 
