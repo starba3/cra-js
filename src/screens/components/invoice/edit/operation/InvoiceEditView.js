@@ -74,7 +74,6 @@ export default function InvoiceEditView({ id }) {
         }}
       />
       <InvoiceNewEditForm currentInvoice={currentInvoice} />
-      {/* <InvoiceDetails  currentInvoice = {currentInvoice} /> */}
     </Container>
   );
 }

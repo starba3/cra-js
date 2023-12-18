@@ -237,8 +237,6 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       const redirectUrl = getInvoiceRedirectUrl(departmentId);
 
       // Send Edit invoice request      
-      // console.log('Body', JSON.stringify(body) )
-      // const url = getInvoiceEditUrl(departmentId, currentInvoice.id)
 
       const editResponse = await editInvoice(currentInvoice.id, departmentId, body);
 
@@ -250,43 +248,6 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         loadingSend.onFalse();
         router.replace(redirectUrl);
       }
-
-      // fetch(url, {
-      //   method: 'PATCH',
-      //   headers: {
-      //     'Accept': 'application/json',
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(body),
-      //   Cache: 'default'  
-      //  })
-      //  .then(response => {
-      //   if (!response.ok) {
-      //     if (response.status === 400) {
-      //       // If status code is 400, log the error message
-      //       return response.text().then(error => {
-      //         setErrorMessage(error);
-      //         setIsError(true);
-      //         throw new Error(`Bad Request: ${error}`);
-      //       });
-      //     } 
-      //     // For other error status codes, throw a generic error
-      //     throw new Error('Network response was not ok');
-           
-      //   }
-      //   return response.text(); // Use text() instead of json()
-         
-      //  })
-      //  .then(res => {
-      //    setDidUpdate(true)  
-      //    loadingSend.onFalse();
-      //    router.replace(redirectUrl);
-      //    // Handle the non-JSON error message
-      //    console.log('res:', res);
-      //  })
-      //  .catch(error => {
-      //    console.error('Fetch Error:', error);
-      //  });
 
     } catch (error) {
       console.error('Error:', error);
@@ -326,19 +287,10 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
             department={currentInvoice.department}
           />
 
-          {/* <InvoiceNewEditDetails /> */}
         </Card>
 
         <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
-          {/* <LoadingButton
-            color="inherit"
-            size="large"
-            variant="outlined"
-            loading={loadingSave.value && isSubmitting}
-            onClick={handleSaveAsDraft}
-          >
-            Save as Draft
-          </LoadingButton> */}
+
 
           <LoadingButton
             size="large"

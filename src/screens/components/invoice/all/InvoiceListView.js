@@ -387,18 +387,7 @@ export default function InvoiceListView() {
             //   name: Translate("list"),
             // },
           ]}
-          // action= {
-          //   <Stack
-          //     direction="row"
-          //        divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
-          //     sx={{ 
-          //        flexDirection: { xs: "column", md: "row" },
-          //       py: 2
-          //      }}
-          //   >
-            
-          //   </Stack>
-          // }
+          
           sx={{
             mb: { xs: 3, md: 5 },
           }}
