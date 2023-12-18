@@ -1,45 +1,44 @@
+import axios from "axios";
+
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
 
 export async function getUsersByRole(role) {
-    let users = []
-    await fetch(`${baseUrl}/api/User/UsersNameByRole/${role}`, {
-        mode:'cors'
-    })
-    .then(result => result.json())
-    .then(res => {
-        users = res
-    })
-    .catch(error => console.log())
+    let users = [];
 
-    return users
+    try {
+        const response = await axios.get(`${baseUrl}/api/User/UsersNameByRole/${role}`);
+        users = response.data;
+    } catch (error) {
+        console.log("Fetching error: ", error);
+    }
+
+    return users;
 }
 
 export async function getAllUsers() {
-    let users = []
-    await fetch(`${baseUrl}/api/User`, {
-        mode:'cors'
-    })
-    .then(result => result.json())
-    .then(res => {
-        users = res
-    })
-    .catch(error => console.log())
+    let users = [];
 
-    return users
+    try {
+        const response = await axios.get(`${baseUrl}/api/User`);
+        users = response.data;
+    } catch (error) {
+        console.log("Fetching error: ", error);
+    }
+
+    return users;
 }
 
 export async function getInvoicesForUser(id) {
-    let users = []
-    await fetch(`${baseUrl}/api/Invoices/GetInvoicesForUser?User=${id}`, {
-        mode:'cors'
-    })
-    .then(result => result.json())
-    .then(res => {
-        users = res
-    })
-    .catch(error => console.log())
+    let users = [];
 
-    return users
+    try {
+        const response = await axios.get(`${baseUrl}/api/Invoices/GetInvoicesForUser?User=${id}`);
+        users = response.data;
+    } catch (error) {
+        console.log("Fetching error: ", error);
+    }
+
+    return users;
 }
 
 export async function getUsersRoles() {
@@ -48,14 +47,12 @@ export async function getUsersRoles() {
         "name": "All",
     }];
     
-    await fetch(`${baseUrl}/api/User/roles`, {
-        mode:'cors'
-    })
-    .then(result => result.json())
-    .then(res => {
-        roles.push(...res);
-    })
-    .catch(error => console.log())
+    try {
+        const response = await axios.get(`${baseUrl}/api/User/roles`);
+        roles.push(...response.data);
+    } catch (error) {
+        console.log("Fetching error: ", error);
+    }
 
-    return roles
+    return roles;
 }

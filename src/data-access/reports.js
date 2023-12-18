@@ -1,45 +1,43 @@
+import axios from "axios";
 import { paths } from "src/routes/paths"
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
 
 export async function getAgingReport() {
-    let list = []
-    await fetch(`${baseUrl}/api/Reports/aging`, {
-        mode:'cors'
-    })
-    .then(response => response.json())
-    .then(res => {
-        list = res;
-    })
-    .catch(error => console.log())
+    let list = [];
 
-    return list
+    try {
+        const response = await axios.get(`${baseUrl}/api/Reports/aging`);
+        list = response.data;
+    } catch (error) {
+        console.log("Fetching error: ", error);
+    }
+
+    return list;
 }
 
 export async function getGmReport(source) {
-    let list = []
-    await fetch(`${baseUrl}/api/Reports/GmReport?collection=${source}`, {
-        mode:'cors'
-    })
-    .then(response => response.json())
-    .then(res => {
-        list = res;
-    })
-    .catch(error => console.log())
+    let list = [];
 
-    return list
+    try {
+        const response = await axios.get(`${baseUrl}/api/Reports/GmReport?collection=${source}`);
+        list = response.data;
+    } catch (error) {
+        console.log("Fetching error: ", error);
+    }
+
+    return list;
 }
 
 export async function getGmReasonReport(source, status) {
-    let list = []
-    await fetch(`${baseUrl}/api/Reports/GmReasonReport?collection=${source}&status=${status}`, {
-        mode:'cors'
-    })
-    .then(response => response.json())
-    .then(res => {
-        list = res;
-    })
-    .catch(error => console.log())
+    let list = [];
 
-    return list
+    try {
+        const response = await axios.get(`${baseUrl}/api/Reports/GmReasonReport?collection=${source}&status=${status}`);
+        list = response.data;
+    } catch (error) {
+        console.log("Fetching error: ", error);
+    }
+
+    return list;
 }

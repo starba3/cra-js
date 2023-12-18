@@ -14,14 +14,6 @@ export async function getAllInvoices() {
     } catch (error) {
         console.log("Fetching error: ", error)
     }
-    // await fetch(`${baseUrl}/api/invoices`, {
-    //     mode:'cors'
-    // })
-    // .then(response => response.json())
-    // .then(invoices => {
-    //     list = invoices
-    // })
-    // .catch(error => console.log())
 
     return list;
 }

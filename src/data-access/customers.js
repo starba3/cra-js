@@ -1,18 +1,18 @@
+import axios from "axios";
+
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
 
 export async function getAllCustomers() {
     let list = [];
-    await fetch(`${baseUrl}/customer`, {
-        mode:'cors'
-    })
-    .then(result => result.json())
-    .then(invoices => {
-        list = invoices;
-    })
-    .catch(error => console.log())
 
-    return list
+    try {
+        const response = await axios.get(`${baseUrl}/customer`);
+        list = response.data;
+    } catch (error) {
+        console.log("Fetching error: ", error)
+    }
 
+    return list;
 }
 
 export async function GetAllCustomersWithAll() {
@@ -23,91 +23,97 @@ export async function GetAllCustomersWithAll() {
         "customerNameEn": "All",
         "customerNameAr": "All",
     }];
-    await fetch(`${baseUrl}/customer`, {
-        mode:'cors'
-    })
-    .then(result => result.json())
-    .then(invoices => {
 
-        // Add all invoices to the list
-        list.push(...invoices);
-    })
-    .catch(error => console.log())
-    // console.log('List: '. list);
-    return list
+    try {
+        const response = await axios.get(`${baseUrl}/customer`);
+        list.push(...response.data);
+    } catch (error) {
+        console.log("Fetching error: ", error)
+    }
+
+    return list;
 
 }
 
 export async function getSalesPersonList() {
     let list = []
-    await fetch(`${baseUrl}/api/User/UsersNameByRole/sales`, {
-        mode:'cors'
-    })
-    .then(result => result.json())
-    .then(invoices => {
-        list = invoices
-    })
-    .catch(error => console.log())
 
-    return list
+    try {
+        const response = await axios.get(`${baseUrl}/api/User/UsersNameByRole/sales`);
+        list = response.data;
+    } catch (error) {
+        console.log("Fetching error: ", error);
+    }
 
+    return list;
 }
 
 export async  function getCustomerById(id) {
-    try {
-        const response = await fetch(`${baseUrl}/Customer/${id}`, {
-            mode: 'cors'
-        });
 
-        if (response.ok) {
-            const invoice = await response.json();
-            return invoice;
-        } 
-            // Handle non-successful response here if needed.
-            console.error(`Failed to fetch invoice: ${response.status} - ${response.statusText}`);
-        
+    try {
+        const response = await axios.get(`${baseUrl}/Customer/${id}`);
+        return response.data;
     } catch (error) {
-        console.error(error);
+        console.log("Fetching error: ", error);
     }
 
-    return {}; // Return an empty object by default or handle errors as needed.
+    return {}; 
     
+}
+
+export async function createCustomer(body) {
+    let success = true;
+
+    try {
+        const response = await axios.post(`${baseUrl}/Customer/add`, body);
+    } catch (error) {
+        console.log("Create error: ", error);
+        success = false;
+    }
+
+    return success;
+}
+
+export async function editCustomer(id, body) {
+    try {
+        
+        const url = `${baseUrl}/Customer/${id}`
+
+        const response = await axios.patch(url, body);
+        console.log(response);
+        if (!response.ok) {
+            if (response.status === 400) {
+                // If status code is 400, return the error message
+                
+                const error = await response.data;
+                throw new Error(error);
+            }
+            // For other error status codes, throw a generic error
+            // throw new Error('Network response was not ok');
+        }
+
+        // Return null if there is no error
+        return null;
+    } catch (error) {
+        console.log(error);
+        
+        if(axios.isAxiosError(error))
+            return error.response.data
+        // Return the error message
+        
+        return error.message;
+    }
 }
 
 export async function deleteCustomer(id) {
     let success = true;
-    await fetch(`${baseUrl}/Customer/${id}/Delete`, {
-        mode:'cors',
-        method: 'PATCH',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        Cache: 'default'
-    })
-    .then(res => {
-        // Check if the status code is 200 or 204
-        if (res.ok) {
-          // Check if the status code is 200 or 204
-          if (res.status === 204) {
-            return null; // Handle 204 No Content
-          }  if (res.status === 200) {
-            return res.json(); // Parse JSON for other successful responses
-          } 
 
-          throw new Error(`Unexpected status code: ${res.status}`);
-          
-        } 
-
-        throw new Error('Network response was not ok');
-      })
-    .then(invoices => {
-        console.log("Deleted successfuly")
-    })
-    .catch(error => {
-        console.log(error) 
+    try {
+        const response = await axios.patch(`${baseUrl}/Customer/${id}/Delete`);
+    } catch (error) {
+        console.log("Fetching error: ", error);
         success = false;
-    })
+    }
 
     return success;
 }

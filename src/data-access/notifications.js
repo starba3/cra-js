@@ -1,28 +1,22 @@
+import axios from "axios";
 import { paths } from "src/routes/paths"
 
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
 const STORAGE_KEY = 'accessToken';
 
+axios.defaults.headers.common.Authorization = `Bearer ${JSON.parse(localStorage.getItem(STORAGE_KEY)).value}`;
+
 export async function getAllNotifications() {
+    let list = [];
 
-    // localStorage.clear();
-    const accessToken = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    // console.log('accessToken: ', accessToken.value)
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", `Bearer ${accessToken.value}`);
+    try {
+        const response = await axios.get(`${baseUrl}/api/Notifications`);
+        list = response.data;
+    } catch (error) {
+        console.log("Fetching error: ", error);
+    }
 
-    let list = []
-    await fetch(`${baseUrl}/api/Notifications`, {
-        mode:'cors',
-        headers: myHeaders
-    })
-    .then(result => result.json())
-    .then(notifications => {
-        list = notifications;
-    })
-    .catch(error => console.log())
     
     return list;
 }

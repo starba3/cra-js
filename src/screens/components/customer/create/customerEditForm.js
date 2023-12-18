@@ -12,6 +12,8 @@ import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
+// Data access
+import { createCustomer, editCustomer } from 'src/data-access/customers';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
@@ -20,6 +22,25 @@ import FormProvider from 'src/components/hook-form';
 import CustomerEditInputs from './customerEditInputs';
 
 // ----------------------------------------------------------------------
+
+const createPostBody = (customerCode, customerNameEn, customerNameAr) => ({ customerCode, customerNameEn, customerNameAr });
+const createPatchBody = (customerCode, customerNameEn, customerNameAr) =>  [
+  { 
+    "op": "replace", 
+    "path": "/CustomerNameEn",
+    "value": customerNameEn
+  },
+  { 
+    "op": "replace", 
+    "path": "/CustomerNameAr",
+    "value": customerNameAr 
+  },
+  { 
+    "op": "replace",
+    "path": "/CustomerCode", 
+    "value": customerCode
+  }
+];
 
 export default function CustomerEditForm({ currentCustomer }) {
   const router = useRouter();
@@ -65,68 +86,27 @@ export default function CustomerEditForm({ currentCustomer }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
+      let requestSuccess = true;
       const {customerCode ,customerNameEn ,customerNameAr} = watch()
-
-      const url = currentCustomer 
-        ? `https://invoicecollectionsystemapi.azurewebsites.net/Customer/${currentCustomer.id}`
-        : 'https://invoicecollectionsystemapi.azurewebsites.net/Customer/add';
-      
-      const method = currentCustomer 
-        ? 'PATCH'
-        : 'POST';
-
-      const patchBody = [
-        { 
-          "op": "replace", 
-          "path": "/CustomerNameEn",
-          "value": customerNameEn
-        },
-        { 
-          "op": "replace", 
-          "path": "/CustomerNameAr",
-          "value": customerNameAr 
-        },
-        { 
-          "op": "replace",
-          "path": "/CustomerCode", 
-          "value": customerCode
-        }
-      ];
-
-      const postBody = { customerCode, customerNameEn, customerNameAr };
-
-
-      const body = currentCustomer 
-        ? patchBody
-        : postBody;
 
       reset();
       loadingSend.onFalse();
 
-      let redirectUrl = paths.customers.list;
+      const redirectUrl = paths.customers.list;
       // Send create invoice request
-      
-      console.log(body)
-      fetch(url, {
-        method,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body),
-        Cache: 'default'
-      })
-      .then(res => res.json())
-      .then(res => {
-        console.log(res)
-        
-      })
-      .catch(error => {
-        console.log(error)
-        redirectUrl = ''
-      })
 
-      if(redirectUrl) {
+      if (currentCustomer) {
+        const body = createPatchBody(customerCode, customerNameEn, customerNameAr);
+        const responseError = await editCustomer(currentCustomer.id, body);
+        if(responseError) {
+          requestSuccess = false;
+        }
+      } else {
+        const body = createPostBody(customerCode, customerNameEn, customerNameAr)
+        requestSuccess = await createCustomer(body);
+      }
+      
+      if(requestSuccess) {
         navigate(redirectUrl);
       }
 
