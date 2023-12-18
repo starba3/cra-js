@@ -19,7 +19,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 // routes
 import { useRouter } from 'src/routes/hooks';
 // _mock
-import { getInvoiceEditUrl, getInvoiceRedirectUrl, getAddAttachmentUrl, addAttachment, editInvoice } from 'src/data-access/invoice';
+import { getInvoiceRedirectUrl, getAddAttachmentUrl, addAttachment, editInvoice } from 'src/data-access/invoice';
 import { _departments_withoutAll } from 'src/lists/departments';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -237,45 +237,56 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       const redirectUrl = getInvoiceRedirectUrl(departmentId);
 
       // Send Edit invoice request      
-      console.log('Body', JSON.stringify(body) )
-      const url = getInvoiceEditUrl(departmentId, currentInvoice.id)
-      console.log('Url', url )
-      fetch(url, {
-        method: 'PATCH',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body),
-        Cache: 'default'  
-       })
-       .then(response => {
-        if (!response.ok) {
-          if (response.status === 400) {
-            // If status code is 400, log the error message
-            return response.text().then(error => {
-              setErrorMessage(error);
-              setIsError(true);
-              throw new Error(`Bad Request: ${error}`);
-            });
-          } 
-          // For other error status codes, throw a generic error
-          throw new Error('Network response was not ok');
+      // console.log('Body', JSON.stringify(body) )
+      // const url = getInvoiceEditUrl(departmentId, currentInvoice.id)
+
+      const editResponse = await editInvoice(currentInvoice.id, departmentId, body);
+
+      if (editResponse) {
+        setErrorMessage(editResponse);
+        setIsError(true);
+      } else {
+        setDidUpdate(true)  
+        loadingSend.onFalse();
+        router.replace(redirectUrl);
+      }
+
+      // fetch(url, {
+      //   method: 'PATCH',
+      //   headers: {
+      //     'Accept': 'application/json',
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(body),
+      //   Cache: 'default'  
+      //  })
+      //  .then(response => {
+      //   if (!response.ok) {
+      //     if (response.status === 400) {
+      //       // If status code is 400, log the error message
+      //       return response.text().then(error => {
+      //         setErrorMessage(error);
+      //         setIsError(true);
+      //         throw new Error(`Bad Request: ${error}`);
+      //       });
+      //     } 
+      //     // For other error status codes, throw a generic error
+      //     throw new Error('Network response was not ok');
            
-        }
-        return response.text(); // Use text() instead of json()
+      //   }
+      //   return response.text(); // Use text() instead of json()
          
-       })
-       .then(res => {
-         setDidUpdate(true)  
-         loadingSend.onFalse();
-         router.replace(redirectUrl);
-         // Handle the non-JSON error message
-         console.log('res:', res);
-       })
-       .catch(error => {
-         console.error('Fetch Error:', error);
-       });
+      //  })
+      //  .then(res => {
+      //    setDidUpdate(true)  
+      //    loadingSend.onFalse();
+      //    router.replace(redirectUrl);
+      //    // Handle the non-JSON error message
+      //    console.log('res:', res);
+      //  })
+      //  .catch(error => {
+      //    console.error('Fetch Error:', error);
+      //  });
 
     } catch (error) {
       console.error('Error:', error);

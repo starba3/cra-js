@@ -83,7 +83,7 @@ export async  function getInvoicesById(id) {
     
 }
 
-export function getInvoiceEditUrl(departmentId, invoiceId) {
+function getInvoiceEditUrl(departmentId, invoiceId) {
 
     let url = ''
     switch (departmentId) {
@@ -225,44 +225,35 @@ export async function createInvoice(body) {
     return success;
 }
 
-export async function editInvoice(url, body) {
-    let result = "";
+export async function editInvoice(id, departmentId, body) {
 
-    axios.patch(url, body)
-    .then(response => {
-        if (response.status >= 200 && response.status < 300) {
-          // Successful response
-          return response.data;
-        } 
-        console.log("error")
-        // Unsuccessful response
-        throw new Error(response.statusText);
-        
-      })
-    .then(data => {
-    // Handle successful response data
-        console.log('Response data:', data);
-    })
-    .catch(error => {
-        console.log("Error: ", error);
-        if (axios.isAxiosError(error)) {
-            // Axios error (HTTP error)
-            if (error.response) {
-              console.error('HTTP error details:', error.response.data);
-              result = error.response.data;
+    try {
+        const url = getInvoiceEditUrl(departmentId, id);
 
-            } else {
-              console.error('Request failed:', error.message);
-              result = error.message;
+        const response = await axios.patch(url, body);
+        console.log(response);
+        if (!response.ok) {
+            if (response.status === 400) {
+                // If status code is 400, return the error message
+                
+                const error = await response.data;
+                throw new Error(error);
             }
-        } else {
-            // Non-Axios error
-            console.error('Non-Axios error:', error.message);
-            result = error.message;
+            // For other error status codes, throw a generic error
+            // throw new Error('Network response was not ok');
         }
-    });
 
-    return result;
+        // Return null if there is no error
+        return null;
+    } catch (error) {
+        console.log(error);
+        
+        if(axios.isAxiosError(error))
+            return error.response.data
+        // Return the error message
+        
+        return error.message;
+    }
 }
 
 export async function addAttachment(url, formData) {
