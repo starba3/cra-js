@@ -8,6 +8,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
+// data access
+import { createProduct, editProduct } from 'src/data-access/products';
 // routes
 import { useNavigate } from 'react-router-dom';
 import { paths } from 'src/routes/paths';
@@ -20,6 +22,35 @@ import ProductEditInputs from './productEditInputs';
 
 
 // ----------------------------------------------------------------------
+
+const createPostBody = (code, nameEn, nameAr, descriptionEn, descriptionAr) => ({code, nameEn, nameAr, descriptionEn, descriptionAr});
+const createPatchBody = (code, nameEn, nameAr, descriptionEn, descriptionAr) => [
+  { 
+    "op": "replace", 
+    "path": "/Code",
+    "value": code
+  },
+  { 
+    "op": "replace", 
+    "path": "/NameEn",
+    "value": nameEn
+  },
+  { 
+    "op": "replace",
+    "path": "/NameAr", 
+    "value": nameAr
+  },
+  { 
+    "op": "replace", 
+    "path": "/DescriptionEn",
+    "value": descriptionEn
+  },
+  { 
+    "op": "replace", 
+    "path": "/DescriptionAr",
+    "value": descriptionAr
+  },
+];
 
 export default function ProductEditForm({ currentProduct }) {
   const router = useRouter();
@@ -71,84 +102,26 @@ export default function ProductEditForm({ currentProduct }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       
-      const {code ,nameEn ,nameAr, descriptionEn, descriptionAr} = watch()
-
-      const url = currentProduct 
-        ? `https://invoicecollectionsystemapi.azurewebsites.net/Product/${currentProduct.id}`
-        : 'https://invoicecollectionsystemapi.azurewebsites.net/Product';
-      
-      const method = currentProduct 
-        ? 'PATCH'
-        : 'POST';
-
-      const patchBody = [
-        { 
-          "op": "replace", 
-          "path": "/Code",
-          "value": code
-        },
-        { 
-          "op": "replace", 
-          "path": "/NameEn",
-          "value": nameEn
-        },
-        { 
-          "op": "replace",
-          "path": "/NameAr", 
-          "value": nameAr
-        },
-        { 
-          "op": "replace", 
-          "path": "/DescriptionEn",
-          "value": descriptionEn
-        },
-        { 
-          "op": "replace", 
-          "path": "/DescriptionAr",
-          "value": descriptionAr
-        },
-      ];
-      
-      const postBody = { code, nameEn, nameAr, descriptionEn, descriptionAr }
-
-      const body = currentProduct 
-        ? patchBody
-        : postBody;
-
-      
-
-      
+      const {code ,nameEn ,nameAr, descriptionEn, descriptionAr} = watch();
 
       reset();
       loadingSend.onFalse();
 
-      let redirectUrl = paths.products.list;
+      const redirectUrl = paths.products.list;
       // Send create invoice request
-      
-      console.log(body)
-      fetch(url, {
-        method,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body),
-        Cache: 'default'
-      })
-      .then(res => res.json())
-      .then(res => {
-        console.log(res)
-        
-      })
-      .catch(error => {
-        console.log(error)
-        redirectUrl = ''
-      })
 
-      if(redirectUrl) {
-        navigate(redirectUrl);
+      if(currentProduct) {
+        const body = createPatchBody(code, nameEn, nameAr, descriptionEn, descriptionAr);
+        const response = await editProduct(currentProduct.id, body);
+        if(!response.errorMessage) {
+          navigate(redirectUrl);
+        }
+      } else {
+        const body = createPostBody(code, nameEn, nameAr, descriptionEn, descriptionAr);
+        const response = await createProduct(body);
+        if(!response.errorMessage)
+          navigate(redirectUrl);
       }
-
       
       // console.info('DATA', JSON.stringify(data, null, 2));
     } catch (error) {
