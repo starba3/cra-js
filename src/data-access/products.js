@@ -1,14 +1,10 @@
-import axios from "axios";
 import { sendGet, sendDelete, sendPost, sendPatch } from "src/helpers/requestHelper";
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
 
 export async function getAllProducts() {
-    let list = [];
     const url = `${baseUrl}/Product`;
-
-    list = await sendGet(url, list);
-    return list;
+    return  sendGet(url, []);
 }
 
 export async function deleteProduct(id) {
@@ -17,35 +13,24 @@ export async function deleteProduct(id) {
 }
 
 export async  function getProductById(id) {
-    let product = {};
     const url = `${baseUrl}/Product/${id}`;
-
-    product = await sendGet(url, {}, product);
-    return product; 
+    return  sendGet(url, {}); 
 }
 
-export async function createProduct(body) {
-    const url = `${baseUrl}/Product`;
+export async function createEditProduct(body, method = "post", id) {
+    const url =  method === "post" 
+        ? `${baseUrl}/Product`
+        : `${baseUrl}/Product/${id}`; // Patch
+
     const responseObj = {
         success: true,
         errorMessage: ""
-    }
+    };
 
-    const response = await sendPost(url, body);
-    responseObj.errorMessage = response;
-    responseObj.success = !response;
+    const response = method === "post" 
+        ? await sendPost(url, body)
+        : await sendPatch(url, body);
 
-    return responseObj;
-}
-
-export async function editProduct(id, body) {
-    const url = `${baseUrl}/Product/${id}`;
-    const responseObj = {
-        success: true,
-        errorMessage: ""
-    }
-
-    const response = await sendPatch(url, body);
     responseObj.errorMessage = response;
     responseObj.success = !response;
 

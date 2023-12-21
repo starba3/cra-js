@@ -9,7 +9,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 // data access
-import { createProduct, editProduct } from 'src/data-access/products';
+import { createEditProduct } from 'src/data-access/products';
 // routes
 import { useNavigate } from 'react-router-dom';
 import { paths } from 'src/routes/paths';
@@ -23,34 +23,7 @@ import ProductEditInputs from './productEditInputs';
 
 // ----------------------------------------------------------------------
 
-const createPostBody = (code, nameEn, nameAr, descriptionEn, descriptionAr) => ({code, nameEn, nameAr, descriptionEn, descriptionAr});
-const createPatchBody = (code, nameEn, nameAr, descriptionEn, descriptionAr) => [
-  { 
-    "op": "replace", 
-    "path": "/Code",
-    "value": code
-  },
-  { 
-    "op": "replace", 
-    "path": "/NameEn",
-    "value": nameEn
-  },
-  { 
-    "op": "replace",
-    "path": "/NameAr", 
-    "value": nameAr
-  },
-  { 
-    "op": "replace", 
-    "path": "/DescriptionEn",
-    "value": descriptionEn
-  },
-  { 
-    "op": "replace", 
-    "path": "/DescriptionAr",
-    "value": descriptionAr
-  },
-];
+
 
 export default function ProductEditForm({ currentProduct }) {
   const router = useRouter();
@@ -96,6 +69,36 @@ export default function ProductEditForm({ currentProduct }) {
 
   const Translate = (text) => t(text);
 
+  const createPostBody = (code, nameEn, nameAr, descriptionEn, descriptionAr) => ({code, nameEn, nameAr, descriptionEn, descriptionAr});
+
+  const createPatchBody = (code, nameEn, nameAr, descriptionEn, descriptionAr) => [
+    { 
+      "op": "replace", 
+      "path": "/Code",
+      "value": code
+    },
+    { 
+      "op": "replace", 
+      "path": "/NameEn",
+      "value": nameEn
+    },
+    { 
+      "op": "replace",
+      "path": "/NameAr", 
+      "value": nameAr
+    },
+    { 
+      "op": "replace", 
+      "path": "/DescriptionEn",
+      "value": descriptionEn
+    },
+    { 
+      "op": "replace", 
+      "path": "/DescriptionAr",
+      "value": descriptionAr
+    },
+  ];
+
   const handleCreateAndSend = handleSubmit(async (data) => {
     loadingSend.onTrue(); 
     
@@ -108,19 +111,18 @@ export default function ProductEditForm({ currentProduct }) {
       loadingSend.onFalse();
 
       const redirectUrl = paths.products.list;
+
+      const body = currentProduct
+        ? createPatchBody(code, nameEn, nameAr, descriptionEn, descriptionAr)
+        : createPostBody(code, nameEn, nameAr, descriptionEn, descriptionAr);
+      
+      const method = currentProduct ? "patch" : "post";
+      const id = currentProduct && currentProduct.id;
       // Send create invoice request
 
-      if(currentProduct) {
-        const body = createPatchBody(code, nameEn, nameAr, descriptionEn, descriptionAr);
-        const response = await editProduct(currentProduct.id, body);
-        if(!response.errorMessage) {
-          navigate(redirectUrl);
-        }
-      } else {
-        const body = createPostBody(code, nameEn, nameAr, descriptionEn, descriptionAr);
-        const response = await createProduct(body);
-        if(!response.errorMessage)
-          navigate(redirectUrl);
+      const response = await createEditProduct(body, method, id);
+      if(!response.errorMessage) {
+        navigate(redirectUrl);
       }
       
       // console.info('DATA', JSON.stringify(data, null, 2));

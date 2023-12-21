@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 // Data access
-import { createCustomer, editCustomer } from 'src/data-access/customers';
+import { createEditCustomer } from 'src/data-access/customers';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
@@ -23,24 +23,7 @@ import CustomerEditInputs from './customerEditInputs';
 
 // ----------------------------------------------------------------------
 
-const createPostBody = (customerCode, customerNameEn, customerNameAr) => ({ customerCode, customerNameEn, customerNameAr });
-const createPatchBody = (customerCode, customerNameEn, customerNameAr) =>  [
-  { 
-    "op": "replace", 
-    "path": "/CustomerNameEn",
-    "value": customerNameEn
-  },
-  { 
-    "op": "replace", 
-    "path": "/CustomerNameAr",
-    "value": customerNameAr 
-  },
-  { 
-    "op": "replace",
-    "path": "/CustomerCode", 
-    "value": customerCode
-  }
-];
+
 
 export default function CustomerEditForm({ currentCustomer }) {
   const router = useRouter();
@@ -80,13 +63,31 @@ export default function CustomerEditForm({ currentCustomer }) {
 
   const Translate = (text) => t(text);
 
+  const createPostBody = (customerCode, customerNameEn, customerNameAr) => ({ customerCode, customerNameEn, customerNameAr });
+  const createPatchBody = (customerCode, customerNameEn, customerNameAr) =>  [
+    { 
+      "op": "replace", 
+      "path": "/CustomerNameEn",
+      "value": customerNameEn
+    },
+    { 
+      "op": "replace", 
+      "path": "/CustomerNameAr",
+      "value": customerNameAr 
+    },
+    { 
+      "op": "replace",
+      "path": "/CustomerCode", 
+      "value": customerCode
+    }
+  ];
+
   const handleCreateAndSend = handleSubmit(async (data) => {
     loadingSend.onTrue(); 
     
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      let requestSuccess = true;
       const {customerCode ,customerNameEn ,customerNameAr} = watch()
 
       reset();
@@ -95,18 +96,15 @@ export default function CustomerEditForm({ currentCustomer }) {
       const redirectUrl = paths.customers.list;
       // Send create invoice request
 
-      if (currentCustomer) {
-        const body = createPatchBody(customerCode, customerNameEn, customerNameAr);
-        const responseError = await editCustomer(currentCustomer.id, body);
-        if(responseError) {
-          requestSuccess = false;
-        }
-      } else {
-        const body = createPostBody(customerCode, customerNameEn, customerNameAr)
-        requestSuccess = await createCustomer(body);
-      }
+      const body = currentCustomer
+        ? createPatchBody(customerCode ,customerNameEn ,customerNameAr)
+        : createPostBody(customerCode ,customerNameEn ,customerNameAr);
       
-      if(requestSuccess) {
+      const method = currentCustomer ? "patch" : "post";
+      const id = currentCustomer && currentCustomer.id;
+
+      const response = await createEditCustomer(body, method, id);
+      if(!response.errorMessage) {
         navigate(redirectUrl);
       }
 

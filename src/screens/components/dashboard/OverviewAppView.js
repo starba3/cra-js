@@ -53,14 +53,14 @@ export default function OverviewAppView() {
 
       try {
         const res = await getDashboardData();
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>', res.data);
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>', res);
 
-        setUnpaidInvoicesCount(res.data.unpaidInvoicesCount);
-        setPaidInvoicesCount(res.data.paidInvoicesCount);
-        setUnpaidInvoicesTotalAmmount(res.data.unpaidInvoicesTotalAmmount);
-        setPaidInvoicesTotalAmmount(res.data.paidInvoicesTotalAmmount);
-        setDepartmentInvoicesCount(res.data.departmentInvoicesCount);
-        setLastestCreatedInvoices(res.data.lastestCreatedInvoices);
+        setUnpaidInvoicesCount(res.unpaidInvoicesCount);
+        setPaidInvoicesCount(res.paidInvoicesCount);
+        setUnpaidInvoicesTotalAmmount(res.unpaidInvoicesTotalAmmount);
+        setPaidInvoicesTotalAmmount(res.paidInvoicesTotalAmmount);
+        setDepartmentInvoicesCount(res.departmentInvoicesCount);
+        setLastestCreatedInvoices(res.lastestCreatedInvoices);
 
       } catch (error) {
         console.error('Error fetching chart Data:', error); 
@@ -95,7 +95,7 @@ export default function OverviewAppView() {
         <Grid item="true" xs={12} md={6} lg={3}>
           <AppWidgetSummary
             title= {Translate("unpaidInvoicesCount")}
-            percent={unpaidInvoicesCountPrecentage}
+            percent={Number(unpaidInvoicesCountPrecentage)}
             total={unpaidInvoicesCount}
             chart={{
               series: [5, 18, 12, 51, 68, 11, 39, 37, 27, 20],
@@ -106,7 +106,7 @@ export default function OverviewAppView() {
         <Grid item="true" xs={12} md={6} lg={3}>
           <AppWidgetSummary
             title={Translate("paidInvoicesCount")}
-            percent={paidInvoicesCountPrecentage}
+            percent={Number(paidInvoicesCountPrecentage)}
             total={paidInvoicesCount}
             chart={{
               colors: [theme.palette.info.light, theme.palette.info.main],
@@ -118,7 +118,7 @@ export default function OverviewAppView() {
         <Grid item="true" xs={12} md={6} lg={3}>
           <AppWidgetSummary
             title={Translate("unpaidInvoicesTotal")}
-            percent={unpaidInvoicesTotalAmmountPrecentage}
+            percent={Number(unpaidInvoicesTotalAmmountPrecentage)}
             total={unpaidInvoicesTotalAmmount}
             chart={{
               colors: [theme.palette.warning.light, theme.palette.warning.main],
@@ -130,7 +130,7 @@ export default function OverviewAppView() {
         <Grid item="true" xs={12} md={6} lg={3}>
           <AppWidgetSummary
             title={Translate("paidInvoicesTotal")}
-            percent={paidInvoicesTotalAmmountPrecentage}
+            percent={Number(paidInvoicesTotalAmmountPrecentage)}
             total={paidInvoicesTotalAmmount}
             chart={{
               colors: [theme.palette.warning.light, theme.palette.warning.main],

@@ -240,8 +240,8 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
       const editResponse = await editInvoice(currentInvoice.id, departmentId, body);
 
-      if (editResponse) {
-        setErrorMessage(editResponse);
+      if (editResponse.errorMessage) {
+        setErrorMessage(editResponse.errorMessage);
         setIsError(true);
       } else {
         setDidUpdate(true)  
@@ -264,9 +264,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     
     if(fileInput) {
       formData.append('file', fileInput);
-      const url = getAddAttachmentUrl(currentInvoice.id);
-
-      const addResult = await addAttachment(url, formData);
+      const addResult = await addAttachment(currentInvoice.id, formData);
     }
   }
 

@@ -33,7 +33,7 @@ export async function sendPost(url, body, headers = {}) {
         const response = await axios.post(url, body, { headers });
         // console.log(response);
         if (!response.ok) {
-            if (response.status === 400) {
+            if (response.status >= 400) {
                 // If status code is 400, return the error message
                 
                 const error = await response.data;
@@ -59,7 +59,7 @@ export async function sendPatch(url, body = {}, headers = {}) {
         const response = await axios.patch(url, body, { headers });
         // console.log(response);
         if (!response.ok) {
-            if (response.status === 400) {
+            if (response.status >= 400) {
                 // If status code is 400, return the error message
                 
                 const error = await response.data;

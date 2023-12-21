@@ -1,58 +1,32 @@
-import axios from "axios";
+import { sendGet } from "src/helpers/requestHelper";
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
 
 export async function getUsersByRole(role) {
-    let users = [];
-
-    try {
-        const response = await axios.get(`${baseUrl}/api/User/UsersNameByRole/${role}`);
-        users = response.data;
-    } catch (error) {
-        console.log("Fetching error: ", error);
-    }
-
-    return users;
+    const url = `${baseUrl}/api/User/UsersNameByRole/${role}`;
+    return  sendGet(url, []);
 }
 
 export async function getAllUsers() {
-    let users = [];
-
-    try {
-        const response = await axios.get(`${baseUrl}/api/User`);
-        users = response.data;
-    } catch (error) {
-        console.log("Fetching error: ", error);
-    }
-
-    return users;
+    const url = `${baseUrl}/api/User`;
+    return  sendGet(url, []);
 }
 
 export async function getInvoicesForUser(id) {
-    let users = [];
-
-    try {
-        const response = await axios.get(`${baseUrl}/api/Invoices/GetInvoicesForUser?User=${id}`);
-        users = response.data;
-    } catch (error) {
-        console.log("Fetching error: ", error);
-    }
-
-    return users;
+    const url = `${baseUrl}/api/Invoices/GetInvoicesForUser?User=${id}`;
+    return  sendGet(url, []);
 }
 
 export async function getUsersRoles() {
+    const url = `${baseUrl}/api/User/roles`;
+
     const roles = [{
         "id": "0",
         "name": "All",
     }];
-    
-    try {
-        const response = await axios.get(`${baseUrl}/api/User/roles`);
-        roles.push(...response.data);
-    } catch (error) {
-        console.log("Fetching error: ", error);
-    }
+
+    const data = await sendGet(url, []);
+    roles.push(...data);
 
     return roles;
 }

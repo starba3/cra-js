@@ -211,16 +211,11 @@ export default function InvoiceListView() {
     [table]
   );
 
-  const handleDeleteRow = (id) => {
-      let success = true;
+  const handleDeleteRow = async (id) => {
       const deleteData = async () => {
-        try {
-          success = await deleteInvoice(id);          
-        } catch (error) {
-          console.error('Error fetching invoices:', error);
-        } 
-        console.log("Success status: ", success);
-        if (success) {
+        const errorMessage = await deleteInvoice(id);  // Default value null(no error)
+
+        if (!errorMessage) {
           // Fetch data only if deletion was successful
           try {
             const result = await getAllInvoices();
@@ -285,6 +280,7 @@ export default function InvoiceListView() {
   const handleCloseInquiry = () => {
     setInquiryId(0);
     setOpenInquiry(false);
+    setInquiryData({});
   }
 
   const handleClose = () => {
@@ -534,7 +530,7 @@ export default function InvoiceListView() {
                         onSelectRow={() => table.onSelectRow(row.id)}
                         onViewRow={() => handleViewRow(row.id)}
                         onEditRow={() => handleEditRow(row.id)}
-                        onDeleteRow={() => handleDeleteRow(row.id)}
+                        onDeleteRow={() =>  handleDeleteRow(row.id)}
                         handleOpenInquiry={() => handleOpenInquiry(row.id)}
                       />
                     ))}
@@ -641,7 +637,7 @@ export default function InvoiceListView() {
         color="#ef5350"
         // TransitionComponent={Transition}
         keepMounted
-        onClose={handleClose}
+        onClose={handleCloseInquiry}
 
       >
         <DialogTitle>{Translate("invoiceInquiry")}</DialogTitle>
