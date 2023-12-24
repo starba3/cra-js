@@ -1,5 +1,4 @@
 import React, { useMemo, useState, useCallback } from 'react'
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useLocales } from 'src/locales';
 import * as Yup from 'yup';
@@ -10,6 +9,11 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Fade from "@mui/material/Fade";
+import Alert from "@mui/material/Alert";
+import IconButton from "@mui/material/IconButton";
+import Typography from '@mui/material/Typography';
 // @mui Dialog
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -25,8 +29,11 @@ import { _departments_withoutAll } from 'src/lists/departments';
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
 import FormProvider from 'src/components/hook-form';
+import Iconify from 'src/components/iconify';
 import InvoiceNewEditAddress from './invoice-new-edit-address';
 import InvoiceNewEditStatusDate from './invoice-new-edit-status-date';
+
+
 
 // ----------------------------------------------------------------------
 
@@ -237,8 +244,6 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       const redirectUrl = getInvoiceRedirectUrl(departmentId);
 
       // Send Edit invoice request      
-      // console.log('Body', JSON.stringify(body) )
-      // const url = getInvoiceEditUrl(departmentId, currentInvoice.id)
 
       const editResponse = await editInvoice(currentInvoice.id, departmentId, body);
 
@@ -252,42 +257,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         router.replace(redirectUrl);
       }
 
-      // fetch(url, {
-      //   method: 'PATCH',
-      //   headers: {
-      //     'Accept': 'application/json',
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(body),
-      //   Cache: 'default'  
-      //  })
-      //  .then(response => {
-      //   if (!response.ok) {
-      //     if (response.status === 400) {
-      //       // If status code is 400, log the error message
-      //       return response.text().then(error => {
-      //         setErrorMessage(error);
-      //         setIsError(true);
-      //         throw new Error(`Bad Request: ${error}`);
-      //       });
-      //     } 
-      //     // For other error status codes, throw a generic error
-      //     throw new Error('Network response was not ok');
-           
-      //   }
-      //   return response.text(); // Use text() instead of json()
-         
-      //  })
-      //  .then(res => {
-      //    setDidUpdate(true)  
-      //    loadingSend.onFalse();
-      //    router.replace(redirectUrl);
-      //    // Handle the non-JSON error message
-      //    console.log('res:', res);
-      //  })
-      //  .catch(error => {
-      //    console.error('Fetch Error:', error);
-      //  });
+      
 
     } catch (error) {
       console.error('Error:', error);
@@ -315,7 +285,8 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
 
   return (
-    <FormProvider methods={methods} onSubmit={handleCreateAndSend} >
+    <>
+      <FormProvider methods={methods} onSubmit={handleCreateAndSend} >
         <Card>
           <InvoiceNewEditAddress currentInvoice={currentInvoice}/>
 
@@ -331,15 +302,6 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         </Card>
 
         <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
-          {/* <LoadingButton
-            color="inherit"
-            size="large"
-            variant="outlined"
-            loading={loadingSave.value && isSubmitting}
-            onClick={handleSaveAsDraft}
-          >
-            Save as Draft
-          </LoadingButton> */}
 
           <LoadingButton
             size="large"
@@ -351,27 +313,35 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
             {currentInvoice ? 'Update' : 'Create'} & Send
           </LoadingButton>
         </Stack>
-        <Dialog
-          open={isError}
-          color="#ef5350"
-          // TransitionComponent={Transition}
-          keepMounted
-          onClose={handleClose}
-          aria-describedby="alert-dialog-slide-description"
-          className="dialog-error"
-        >
-          <DialogTitle>Error</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              { String(errorMessage)} 
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Ok</Button>
-            {/* <Button onClick={handleClose}>Agree</Button> */}
-          </DialogActions>
-        </Dialog>
+        
+        
       </FormProvider>
+
+      <Box sx={{ position:"fixed", bottom:"1rem", right:"1rem", zIndex: "2"}}>
+        <Fade in={isError}>
+          <Alert
+            severity='error'
+            sx={{ m: 1 }}
+            action= {
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={handleClose}
+                
+              >
+                <Iconify icon="ic:round-close"  />
+                
+              </IconButton>
+            }
+          >
+            
+              { String(errorMessage)}
+          </Alert>
+        </Fade>
+        
+      </Box>
+    </>
     
   );
 
