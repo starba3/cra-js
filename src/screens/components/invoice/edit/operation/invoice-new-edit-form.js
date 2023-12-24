@@ -231,7 +231,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         }
       });
       
-       reset();
+       
       // loadingSend.onFalse();
 
       const redirectUrl = getInvoiceRedirectUrl(departmentId);
@@ -246,6 +246,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         setErrorMessage(editResponse);
         setIsError(true);
       } else {
+        reset();
         setDidUpdate(true)  
         loadingSend.onFalse();
         router.replace(redirectUrl);
