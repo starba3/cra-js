@@ -64,6 +64,7 @@ import { _statusList } from 'src/lists/paidStatus'
 import { exportToExcel } from 'src/utils/export';
 //
 import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
+import { sendPost } from 'src/helpers/requestHelper';
 import InvoiceTableFiltersResult from './InvoiceTableFiltersResult';
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
@@ -296,7 +297,7 @@ export default function InvoiceListView() {
     setOpenErrorList(false);
   };
   
-  const handleFileUpload = () => {
+  const handleFileUpload = async () => {
 
     
     console.log('Loading:', loading);
@@ -310,49 +311,17 @@ export default function InvoiceListView() {
       formData.append('file', fileInput); 
       
       try {
-        // Send create invoice request
-        console.log('Loading', loading)
+        // Send File uplaod invoice request
+        const errorMessage = await sendPost(formData);
 
-        const url = getInvoiceImportUrl()
-        console.log('Url', url )
-        fetch(url, {
-          mode: 'cors',
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-          },
-          body: formData,
-          Cache: 'default'  
-        })
-        .then(async response => {
-          await new Promise(resolve => setTimeout(resolve, 3000));
-          
-          if (!response.ok) {
-            if (response.status === 400 || response.status === 415) {
-
-              const error = await response.text();
-
-              throw new Error(`Bad Request: ${error}`);
-            } 
-            // For other error status codes, throw a generic error
-            throw new Error('Network response was not ok');
-            
-          }
-          return response.text(); // Use text() instead of json()
-          
-        })
-        .then(res => {
-          setIsEmportError(false)
-          setAlertMessage(res)
-        })
-        .catch(error => {
-          console.error('Fetch Error:', error);
-          
-          setAlertMessage("Invalid Data, check the file and try again")
-
-          setIsEmportError(true)
-        })
-         
+        if(!errorMessage) {
+          setIsEmportError(false);
+          setAlertMessage(Translate("success"));
+        } else {
+          setAlertMessage("Invalid Data, check the file and try again");
+          setIsEmportError(true);
+        }
+        
       } catch (error) {
         // Empty
       } finally {
