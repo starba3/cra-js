@@ -1,7 +1,8 @@
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, Controller } from 'react-hook-form';
 import { useLocales } from 'src/locales';
 // @mui
 import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 // components
 import { RHFTextField } from 'src/components/hook-form';
 
@@ -19,27 +20,40 @@ export default function CustomerEditInputs() {
       spacing={2}
       direction={{ xs: 'column', sm: 'row' }}
       sx={{ p: 3 }}
-      >
-        
-        <RHFTextField
-          name="customerCode"
-          label={Translate("customerCode")}
-          value={values.customerCode}
-        />
+    >
+      <Controller
+        name="customerCode"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label={Translate("customerCode")}
+          />
+        )}
+      />
 
-        <RHFTextField
-          name="customerNameEn"
-          label={Translate("customerNameEn")}
-          value={values.customerNameEn}
-        />
+      <Controller
+        name="customerNameEn"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label={Translate("customerNameEn")}
+          />
+        )}
+      />
 
-        <RHFTextField
-          name="customerNameAr"
-          label={Translate("customerNameAr")}
-          value={values.customerNameAr}
-        />
-
-      </Stack>
+      <Controller
+        name="customerNameAr"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label={Translate("customerNameAr")}
+          />
+        )}
+      />
+    </Stack>
 
     
   );

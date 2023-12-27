@@ -318,7 +318,7 @@ export default function InvoicePDF({ invoice }) {
 
           <View>
             {notes.map((item, index) => (
-              <View style={styles.tableRow} key={item.id}>
+              <View style={styles.tableRow} key={index}>
                 <View style={styles.tableCell_1}>
                   <Text>{index + 1}</Text>
                 </View>
@@ -368,7 +368,7 @@ export default function InvoicePDF({ invoice }) {
 
           <View>
             {attachments.map((item, index) => (
-              <View style={styles.tableRow} key={item.id}>
+              <View style={styles.tableRow} key={index}>
                 <View style={styles.tableCell_1}>
                   <Text>{index + 1}</Text>
                 </View>
