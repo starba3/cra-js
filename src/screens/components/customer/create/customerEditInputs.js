@@ -24,10 +24,12 @@ export default function CustomerEditInputs() {
       <Controller
         name="customerCode"
         control={control}
+        defaultValue= {values.customerCode || ''}
         render={({ field }) => (
           <TextField
             {...field}
             label={Translate("customerCode")}
+            fullWidth
           />
         )}
       />
@@ -35,10 +37,12 @@ export default function CustomerEditInputs() {
       <Controller
         name="customerNameEn"
         control={control}
+        defaultValue = {values.customerNameEn || ''}
         render={({ field }) => (
           <TextField
             {...field}
             label={Translate("customerNameEn")}
+            fullWidth
           />
         )}
       />
@@ -46,10 +50,12 @@ export default function CustomerEditInputs() {
       <Controller
         name="customerNameAr"
         control={control}
+        defaultValue = {values.customerNameAr || ''}
         render={({ field }) => (
           <TextField
             {...field}
             label={Translate("customerNameAr")}
+            fullWidth
           />
         )}
       />

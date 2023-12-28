@@ -628,31 +628,34 @@ export default function InvoiceListView() {
               </Stack>
           }
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
-            <TableHead>
-              <TableRow>
-                <TableCell>{Translate("property")}</TableCell>
-                <TableCell align="right">{Translate("oldValue")}</TableCell>
-                <TableCell align="right">{Translate("newValue")}</TableCell>
-                <TableCell align="right">{Translate("lastUpdated")}</TableCell>
-                <TableCell align="right">{Translate("updatedBy")}</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-            {Object.prototype.hasOwnProperty.call(inquiryData, 'logs') && inquiryData.logs.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                {row.propertyName}
-                </TableCell>
-                <TableCell align="right">{row.oldValue}</TableCell>
-                <TableCell align="right">{row.newValue}</TableCell>
-                <TableCell align="right">{row.dateModified.substring(0, row.dateModified.indexOf('T'))}</TableCell>
-                <TableCell align="right">{row.modifiedBy}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>{Translate("property")}</TableCell>
+                  <TableCell align="right">{Translate("oldValue")}</TableCell>
+                  <TableCell align="right">{Translate("newValue")}</TableCell>
+                  <TableCell align="right">{Translate("lastUpdated")}</TableCell>
+                  <TableCell align="right">{Translate("updatedBy")}</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+              {Object.prototype.hasOwnProperty.call(inquiryData, 'logs') && inquiryData.logs.map((row) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                    {row.propertyName}
+                    </TableCell>
+                    <TableCell align="right">{row.oldValue}</TableCell>
+                    <TableCell align="right">{row.newValue}</TableCell>
+                    <TableCell align="right">{row.dateModified.substring(0, row.dateModified.indexOf('T'))}</TableCell>
+                    <TableCell align="right">{row.modifiedBy}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            
           </TableContainer>
         </DialogContent>
         <DialogActions>

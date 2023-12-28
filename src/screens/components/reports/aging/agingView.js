@@ -49,7 +49,10 @@ export default function AgingView() {
 
   const settings = useSettingsContext();
 
-  const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
+  const { t, currentLang } = useLocales()
+  const Translate = (text) => t(text);
+
+  const table = useTable({ defaultOrderBy: "customerName" });
 
   const [tableData, setTableData] = useState([]);
 
@@ -72,17 +75,23 @@ export default function AgingView() {
 
   const [filters, setFilters] = useState(defaultFilters);
 
-  const { t, currentLang } = useLocales()
-  const Translate = (text) => t(text);
+  
 
   const dateError =
     filters.startDate && filters.endDate
       ? filters.startDate.getTime() > filters.endDate.getTime()
       : false;
 
+  const orderByCustomerName = (orderBy) => {
+    if(orderBy !== "customerName") {
+      return orderBy;
+    } 
+    
+    return currentLang.value === "ar" ? "customerNameAr" : "customerNameEn";   
+  }
   const dataFiltered = applyFilter({
     inputData: tableData,
-    comparator: getComparator(table.order, table.orderBy),
+    comparator: getComparator(table.order, orderByCustomerName(table.orderBy)),
     filters,
     dateError,
   });
@@ -224,19 +233,19 @@ export default function AgingView() {
                     )
                     .map((row, index) => (
                       <TableRowNew
-                        key={index.id}
+                        key={index}
                         row={row}
                         selected={table.selected.includes(row.id)}
                       />
                     ))}
                     <TableRowNew
-                      key={999}
+                      key={999999}
                       row={totalsRow}
                       selected={table.selected.includes(999)}
                     />
 
                     <TableRowNew
-                      key={999}
+                      key={1000000}
                       row={PercentageRow}
                       selected={table.selected.includes(999)}
                       isPercentage
@@ -275,5 +284,15 @@ export default function AgingView() {
 }
 
 function applyFilter({ inputData, comparator, filters, dateError }) {
+  const stabilizedThis = inputData.map((el, index) => [el, index]);
+
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+
+  inputData = stabilizedThis.map((el) => el[0]);
+
   return inputData;
 }
