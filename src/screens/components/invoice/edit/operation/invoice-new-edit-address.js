@@ -32,9 +32,19 @@ export default function InvoiceNewEditAddress({currentInvoice}) {
   // const { customerId, customerCode, salesPerson, customerObj, salesPersonObj } = values;
 
 
+  const width95Left = {
+    width: 'calc(95% - 10px)',
+    marginLeft: "5%"
+  };
+
+  const width95Right = {
+    width: 'calc(95% - 10px)',
+    marginRight: "5%"
+  };
+
   return (
       <Stack
-        spacing={{ xs: 3, md: 5 }}
+        spacing={{ xs: 3, md: 3 }}
         direction={{ xs: 'column', md: 'row' }}
         divider={
           <Divider
@@ -47,7 +57,7 @@ export default function InvoiceNewEditAddress({currentInvoice}) {
       >
         <Stack sx={{ width: 1 }}>
           <Stack direction="row" alignItems="center" sx={{ mb: 1}}>
-            <Typography variant="h6" sx={{ color: 'text.disabled', flexGrow: 1 }}>
+            <Typography style={width95Left} variant="h6" sx={{ color: 'text.disabled', flexGrow: 1 }}>
               {Translate("attachment")}:
             </Typography>
           </Stack>
@@ -57,6 +67,7 @@ export default function InvoiceNewEditAddress({currentInvoice}) {
             id='file'
             variant="outlined"
             inputProps={{ accept: '.xls, .xlsx' }}
+            style={width95Left}
             // onChange={handleFileChange}
           />
 
@@ -64,7 +75,7 @@ export default function InvoiceNewEditAddress({currentInvoice}) {
 
         <Stack sx={{ width: 1 }}>
           <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
-            <Typography variant="h6" sx={{ color: 'text.disabled', flexGrow: 1 }}>
+            <Typography variant="h6" sx={{ color: 'text.disabled', flexGrow: 1 }} >
               {Translate("newNote")}:
             </Typography>
           </Stack>
@@ -79,6 +90,7 @@ export default function InvoiceNewEditAddress({currentInvoice}) {
                   onChange={(newValue) => {
                     field.onChange(newValue);
                   }}
+                  style={width95Right}
                   placeholder={Translate("newNotePlaceHolder")}
                   InputProps={{
                     startAdornment: (
