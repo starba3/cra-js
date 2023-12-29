@@ -1,7 +1,8 @@
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, Controller } from 'react-hook-form';
 import { useLocales } from 'src/locales';
 // @mui
 import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 // components
 import { RHFTextField } from 'src/components/hook-form';
 
@@ -22,35 +23,69 @@ export default function ProductEditInputs() {
       direction={{ xs: 'column', sm: 'row' }}
       sx={{ p: 3 }}
       >
-        
-        <RHFTextField
+        <Controller
           name="code"
-          label={Translate("code")}
-          value={values.code}
+          control={control}
+          defaultValue= {values.code || ''}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label={Translate("code")}
+              fullWidth
+            />
+          )}
         />
 
-        <RHFTextField
+        <Controller
           name="nameEn"
-          label={Translate("nameEnglish")}
-          value={values.nameEn}
+          control={control}
+          defaultValue= {values.nameEn || ''}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label={Translate("nameEnglish")}
+              fullWidth
+            />
+          )}
         />
 
-        <RHFTextField
+        <Controller
           name="nameAr"
-          label={Translate("nameArabic")}
-          value={values.nameAr}
+          control={control}
+          defaultValue= {values.nameAr || ''}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label={Translate("nameArabic")}
+              fullWidth
+            />
+          )}
         />
 
-        <RHFTextField
+        <Controller
           name="descriptionEn"
-          label={Translate("descriptionEnglish")}
-          value={values.descriptionEn}
+          control={control}
+          defaultValue= {values.descriptionEn || ''}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label={Translate("descriptionEnglish")}
+              fullWidth
+            />
+          )}
         />
 
-        <RHFTextField
+        <Controller
           name="descriptionAr"
-          label={Translate("descriptionArabic")}
-          value={values.descriptionAr}
+          control={control}
+          defaultValue= {values.descriptionAr || ''}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label={Translate("descriptionArabic")}
+              fullWidth
+            />
+          )}
         />
 
       </Stack>

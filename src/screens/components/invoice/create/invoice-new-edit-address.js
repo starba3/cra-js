@@ -76,21 +76,7 @@ export default function InvoiceNewEditAddress() {
   const selectedCustomer = {};
   const selectedSalesPerson = {};
 
-  // const updateCustomer = (customer) => {
-  //   console.log(customer)
-  //   selectedCustomer.customerCode = customer.customerCode
-  //   selectedCustomer.customerNameAr = customer.customerNameAr
-  //   selectedCustomer.customerNameEn = customer.customerNameEn
-  //   console.log('selectedCustomer', customer)
-  // }
 
-  // const updateSalesPerson = (person) => {
-  //   getSalesPersonList.username = person.salesPeople
-  // }
-
-  // const updateProduct = (product) => {
-  //   selectedSalesPerson.username = person.salesPeople
-  // }
 
 
   const mdUp = useResponsive('up', 'md');

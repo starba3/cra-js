@@ -112,9 +112,9 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
       const redirectUrl = paths.dashboard.invoice.root
       // Send create invoice request
-      const createResult = await createInvoice(body);
+      const { success, errorMessage } = await createInvoice(body);
 
-      if(createResult) {
+      if(success) {
         router.replace(redirectUrl);
       }
       

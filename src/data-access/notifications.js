@@ -1,29 +1,14 @@
-import { paths } from "src/routes/paths"
-
+import { sendGet } from "src/helpers/requestHelper";
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
 const STORAGE_KEY = 'accessToken';
 
 export async function getAllNotifications() {
-
-    // localStorage.clear();
-    const accessToken = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    // console.log('accessToken: ', accessToken.value)
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", `Bearer ${accessToken.value}`);
-
-    let list = []
-    await fetch(`${baseUrl}/api/Notifications`, {
-        mode:'cors',
-        headers: myHeaders
-    })
-    .then(result => result.json())
-    .then(notifications => {
-        list = notifications;
-    })
-    .catch(error => console.log())
-    
-    return list;
+    const url = `${baseUrl}/api/Notifications`;
+    const token = localStorage.getItem(STORAGE_KEY) && JSON.parse(localStorage.getItem(STORAGE_KEY)).value;
+    const headers = {
+        "Authorization": `Bearer ${token}`
+    };
+    return sendGet(url, [], headers);    
 }
 

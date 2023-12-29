@@ -1,7 +1,8 @@
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, Controller } from 'react-hook-form';
 import { useLocales } from 'src/locales';
 // @mui
 import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 // components
 import { RHFTextField } from 'src/components/hook-form';
 
@@ -19,27 +20,46 @@ export default function CustomerEditInputs() {
       spacing={2}
       direction={{ xs: 'column', sm: 'row' }}
       sx={{ p: 3 }}
-      >
-        
-        <RHFTextField
-          name="customerCode"
-          label={Translate("customerCode")}
-          value={values.customerCode}
-        />
+    >
+      <Controller
+        name="customerCode"
+        control={control}
+        defaultValue= {values.customerCode || ''}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label={Translate("customerCode")}
+            fullWidth
+          />
+        )}
+      />
 
-        <RHFTextField
-          name="customerNameEn"
-          label={Translate("customerNameEn")}
-          value={values.customerNameEn}
-        />
+      <Controller
+        name="customerNameEn"
+        control={control}
+        defaultValue = {values.customerNameEn || ''}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label={Translate("customerNameEn")}
+            fullWidth
+          />
+        )}
+      />
 
-        <RHFTextField
-          name="customerNameAr"
-          label={Translate("customerNameAr")}
-          value={values.customerNameAr}
-        />
-
-      </Stack>
+      <Controller
+        name="customerNameAr"
+        control={control}
+        defaultValue = {values.customerNameAr || ''}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label={Translate("customerNameAr")}
+            fullWidth
+          />
+        )}
+      />
+    </Stack>
 
     
   );

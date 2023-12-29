@@ -3,6 +3,7 @@ import { useLocales } from 'src/locales';
 // @mui
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField'
 // components
 import { RHFSelect, RHFTextField } from 'src/components/hook-form';
 
@@ -23,10 +24,17 @@ export default function InvoiceNewEditStatusDate() {
         direction={{ xs: 'column', sm: 'row' }}
         sx={{ p: 3 }}
       >
-        <RHFTextField
+        <Controller
           name="invoiceNumber"
-          label={Translate("invoiceNumber")}
-          value={values.invoiceNumber}
+          control={control}
+          defaultValue= {values.invoiceNumber || ''}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label={Translate("invoiceNumber")}
+              fullWidth
+            />
+          )}
         />
         
         <Controller
@@ -71,16 +79,18 @@ export default function InvoiceNewEditStatusDate() {
           )}
         />
 
-        <RHFTextField
+        <Controller
           name="invoiceAmount"
-          label={Translate("invoiceAmount")}
-          value={values.invoiceAmount}
-          type="number"
+          control={control}
+          defaultValue= {values.invoiceAmount || ''}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label={Translate("invoiceAmount")}
+              fullWidth
+            />
+          )}
         />
-
-
-        
-        
         
       </Stack>
 
@@ -89,36 +99,71 @@ export default function InvoiceNewEditStatusDate() {
       direction={{ xs: 'column', sm: 'row' }}
       sx={{ p: 3 }}
       >
-        <RHFTextField
+        <Controller
           name="currency"
-          label={Translate("currency")}
-          value={values.currency}
+          control={control}
+          defaultValue= {values.currency || ''}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label={Translate("currency")}
+              fullWidth
+            />
+          )}
         />
 
-        <RHFTextField
+        <Controller
           name="region"
-          label={Translate("region")}
-          value={values.region}
+          control={control}
+          defaultValue= {values.region || ''}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label={Translate("region")}
+              fullWidth
+            />
+          )}
         />
 
-        <RHFTextField
+        <Controller
           name="customerPO"
-          label={Translate("PoNumber")}
-          value={values.customerPO}
+          control={control}
+          defaultValue= {values.customerPO || ''}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label={Translate("PoNumber")}
+              fullWidth
+            />
+          )}
         />
 
-        <RHFTextField
+        <Controller
           name="poValue"
-          label={Translate("POValue")}
-          value={values.poValue}
-          type="number"
+          control={control}
+          defaultValue= {values.poValue || ''}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label={Translate("poValue")}
+              fullWidth
+            />
+          )}
         />
 
-        <RHFTextField
+        <Controller
           name="contractNo"
-          label={Translate("contract")}
-          value={values.contractNo}
+          control={control}
+          defaultValue= {values.contractNo || ''}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label={Translate("contract")}
+              fullWidth
+            />
+          )}
         />
+
       </Stack>
 
     </>

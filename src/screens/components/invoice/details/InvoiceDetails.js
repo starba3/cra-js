@@ -14,6 +14,7 @@ import TableBody from '@mui/material/TableBody';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
+import Link from '@mui/material/Link';
 // components
 import Label from 'src/components/label';
 import Scrollbar from 'src/components/scrollbar';
@@ -39,29 +40,43 @@ export default function InvoiceDetails({ invoice }) {
             <TableHead>
               <TableRow>
 
-                <TableCell width={40}>#</TableCell>
+                <TableCell width={40}>
+                    <Typography width={40}>#</Typography>
+                </TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("note")}</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>
+                  <Typography>{Translate("note")}</Typography>
+                </TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("user")}</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>
+                  <Typography>{Translate("user")}</Typography>
+                </TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("createDate")}</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>
+                  <Typography>{Translate("createDate")}</Typography>
+                </TableCell>
 
               </TableRow>
             </TableHead>
 
             <TableBody>
-              {currentInvoice?.notes.map((row, index) => (
+              {currentInvoice?.notes.map((row, index) => ( 
                 <TableRow key={index}>
-                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>
+                    <Typography>{index + 1}</Typography>
+                  </TableCell>
 
                   <TableCell>
                       <Typography variant="subtitle2">{row.noteText}</Typography>
                   </TableCell>
 
-                  <TableCell>{row.createdBy}</TableCell>
+                  <TableCell>
+                    <Typography>{row.createdBy}</Typography>
+                  </TableCell>
 
-                  <TableCell>{row.createdDate.substring(0, row.createdDate.indexOf('T'))}</TableCell>
+                  <TableCell>
+                    <Typography>{row.createdDate.substring(0, row.createdDate.indexOf('T'))}</Typography>
+                  </TableCell>
 
                   
                 </TableRow>
@@ -77,21 +92,28 @@ export default function InvoiceDetails({ invoice }) {
   const renderAttachments = (
     <>
       <Typography variant="h6" gutterBottom>
-      {Translate("attachments")}
+        {Translate("attachments")}
       </Typography>
       <TableContainer sx={{ overflow: 'unset', mt: 5, mb: 7 }}>
         <Scrollbar>
           <Table sx={{ minWidth: 960 }}>
             <TableHead>
               <TableRow>
+                <TableCell>
+                    <Typography width={40}>#</Typography>
+                </TableCell>
 
-                <TableCell width={40}>#</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>
+                  <Typography>{Translate("name")}</Typography>
+                </TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("name")}</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>
+                  <Typography>{Translate("user")}</Typography>
+                </TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("user")}</TableCell>
-
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("createDate")}</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>
+                  <Typography>{Translate("createDate")}</Typography>
+                </TableCell>
 
               </TableRow>
             </TableHead>
@@ -99,15 +121,21 @@ export default function InvoiceDetails({ invoice }) {
             <TableBody>
               {currentInvoice?.attachments.map((row, index) => (
                 <TableRow key={index}>
-                  <TableCell>{index + 1}</TableCell>
-
                   <TableCell>
-                      <Typography variant="subtitle2"> <a target='_blank' rel="noreferrer" href={row.attachmentPath}>{row.fileName}</a> </Typography>
+                    <Typography>{index + 1}</Typography>
                   </TableCell>
 
-                  <TableCell>{row.createdBy}</TableCell>
+                  <TableCell>
+                    <Link href={row.attachmentPath} target="_blank" variant='subtitle2' rel="noreferrer">{row.fileName}</Link>  
+                  </TableCell>
 
-                  <TableCell>{row.createdDate.substring(0, row.createdDate.indexOf('T'))}</TableCell>
+                  <TableCell>
+                    <Typography>{row.createdBy}</Typography>
+                  </TableCell>
+
+                  <TableCell>
+                    <Typography>{row.createdDate.substring(0, row.createdDate.indexOf('T'))}</Typography>
+                  </TableCell>
 
                   
                 </TableRow>
@@ -168,7 +196,7 @@ export default function InvoiceDetails({ invoice }) {
               variant="soft"
               color= 'default'
             >
-              {currentInvoice.department}
+              <Typography>{currentInvoice.department}</Typography> 
             </Label>
 
           </Stack> 
@@ -177,182 +205,182 @@ export default function InvoiceDetails({ invoice }) {
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("issueDate")} 
             </Typography>
-              {currentInvoice?.issueInvoiceDate }
+              <Typography>{currentInvoice?.issueInvoiceDate }</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("amount")}
             </Typography>
-            {currentInvoice?.invoiceAmount}
+            <Typography>{currentInvoice?.invoiceAmount}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("currency")}
             </Typography>
-            {currentInvoice?.currency}
+            <Typography>{currentInvoice?.currency}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("customerCode")}
             </Typography>
-            {currentInvoice?.customerCode}
+            <Typography>{currentInvoice?.customerCode}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("nameEnglish")}
             </Typography>
-            {currentInvoice?.customerNameEn}
+            <Typography>{currentInvoice?.customerNameEn}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("nameArabic")}
             </Typography>
-            {currentInvoice?.customerNameAr}
+            <Typography>{currentInvoice?.customerNameAr}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("productNameEn")}
             </Typography>
-            {currentInvoice?.productNameEn}
+            <Typography>{currentInvoice?.productNameEn}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("productNameAr")}
             </Typography>
-            {currentInvoice?.productNameAr}
+            <Typography>{currentInvoice?.productNameAr}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("PoNumber")}
             </Typography>
-            {currentInvoice?.customerPO}
+            <Typography>{currentInvoice?.customerPO}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("POValue")}
             </Typography>
-              {currentInvoice?.poValue}
+              <Typography>{currentInvoice?.poValue}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("region")}
             </Typography>
-            {currentInvoice?.region}
+            <Typography>{currentInvoice?.region}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("contractNumber")}
             </Typography>
-            {currentInvoice?.contractNo}
+            <Typography>{currentInvoice?.contractNo}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("deliveryDate")}
             </Typography>
-            {currentInvoice?.deliveryDate}
+            <Typography>{currentInvoice?.deliveryDate}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("installationDate")}
             </Typography>
-            {currentInvoice?.installationDate && currentInvoice?.installationDate.substring(0, currentInvoice?.installationDate.indexOf("T"))}
+            <Typography>{currentInvoice?.installationDate && currentInvoice?.installationDate.substring(0, currentInvoice?.installationDate.indexOf("T"))}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("department")}
             </Typography>
-            {currentInvoice?.department}
+            <Typography>{currentInvoice?.department}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("installationStatus")}
             </Typography>
-            {currentInvoice?.installationStatus}
+            <Typography>{currentInvoice?.installationStatus}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("daysToCollected")}
             </Typography>
-            {currentInvoice?.daysToCollected}
+            <Typography>{currentInvoice?.daysToCollected}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("acknowledgeStatus")}
             </Typography>
-            {currentInvoice?.acknowledgeStatus}
+            <Typography>{currentInvoice?.acknowledgeStatus}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("collectionSource")}
             </Typography>
-            {currentInvoice?.collectionSource}
+            <Typography>{currentInvoice?.collectionSource}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("claimStatus")}
             </Typography>
-            {currentInvoice?.claimStatus}
+            <Typography>{currentInvoice?.claimStatus}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("claimsDetailStatus")}
             </Typography>
-            {currentInvoice?.claimsDetailStatus}
+            <Typography>{currentInvoice?.claimsDetailStatus}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("salesConfirm")}
             </Typography>
-            {currentInvoice?.salesConfirm}
+            <Typography>{currentInvoice?.salesConfirm}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("createdBy")}
             </Typography>
-            {currentInvoice?.createdBy}
+            <Typography>{currentInvoice?.createdBy}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("salesTaker")}
             </Typography>
-            {currentInvoice?.salesTakerName}
+            <Typography>{currentInvoice?.salesTakerName}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2' }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("collectorName")}
             </Typography>
-            {currentInvoice?.collectorName}
+            <Typography>{currentInvoice?.collectorName}</Typography> 
           </Stack>
 
           <Stack sx={{ typography: 'body2', mb: 3}}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               {Translate("responsibleEngineerName")}
             </Typography>
-            {currentInvoice?.responsibleEngineerName}
+            <Typography>{currentInvoice?.responsibleEngineerName}</Typography> 
           </Stack>
         </Box>
 
@@ -368,9 +396,6 @@ export default function InvoiceDetails({ invoice }) {
   );
 }
 
-const formateDate = (date) => {
-   date.substring(0, date.indexOf('T'))
-}
 
 InvoiceDetails.propTypes = {
   invoice: PropTypes.object,

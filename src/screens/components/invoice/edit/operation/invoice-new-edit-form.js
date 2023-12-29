@@ -247,17 +247,15 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
       const editResponse = await editInvoice(currentInvoice.id, departmentId, body);
 
-      if (editResponse) {
-        setErrorMessage(editResponse);
+      if (editResponse.errorMessage) {
+        setErrorMessage(editResponse.errorMessage);
         setIsError(true);
       } else {
         reset();
-        setDidUpdate(true)  
+        setDidUpdate(true);
         loadingSend.onFalse();
         router.replace(redirectUrl);
       }
-
-      
 
     } catch (error) {
       console.error('Error:', error);
@@ -274,9 +272,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     
     if(fileInput) {
       formData.append('file', fileInput);
-      const url = getAddAttachmentUrl(currentInvoice.id);
-
-      const addResult = await addAttachment(url, formData);
+      const addResult = await addAttachment(currentInvoice.id, formData);
     }
   }
 
@@ -298,11 +294,9 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
             department={currentInvoice.department}
           />
 
-          {/* <InvoiceNewEditDetails /> */}
         </Card>
 
         <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
-
           <LoadingButton
             size="large"
             variant="contained"
