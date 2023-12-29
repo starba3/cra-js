@@ -46,11 +46,11 @@ export default function InvoiceToolbar({ invoice }) {
         sx={{ mb: { xs: 3, md: 5 } }}
       >
         <Stack direction="row" spacing={1} flexGrow={1} sx={{ width: 1 }}>
-          <Tooltip title="Edit">
+          {/* <Tooltip title="Edit">
             <IconButton onClick={handleEdit}>
               <Iconify icon="solar:pen-bold" />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
 
           <Tooltip title="View">
             <IconButton onClick={view.onTrue}>
