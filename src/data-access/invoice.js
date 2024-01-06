@@ -106,9 +106,8 @@ export async function getInvoiceInquiryData(id) {
 export async function getInvoiceForCustomers(customers) {
     if(!customers)
         return [];
-
-    const queryData = customers.reduce((acc, customer) => `${acc}customerIds=${customer}&`, '');
-    const url = `${baseUrl}/api/Invoices/GetInvoicesForCustomers?${queryData}`;
+    const queryData = customers.reduce((acc, customer) => `${acc},${customer}`, '') || "";
+    const url = `${baseUrl}/api/Invoices/GetInvoicesForCustomers?customerIds=${queryData.substring(1)}`;
     return sendGet(url, []); 
 }
 
