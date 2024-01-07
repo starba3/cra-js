@@ -29,6 +29,13 @@ export default function InvoiceTableToolbar({
   const { t, currentLang } = useLocales()
   const Translate = (text) => t(text);
 
+  const getSelectRenderValue = (list) => {
+    let renderValue = (list.length && list[0] === 0 ) ? `,${Translate("all")} ` : "";
+    renderValue += customers.filter((item) => list.includes(item.id))
+      .reduce((acc, item) => `${acc}, ${item.customerNameAr}`, "")
+    return renderValue && renderValue.substring(1);
+  }
+
   return (
     <Stack
       spacing={2}
@@ -83,7 +90,7 @@ export default function InvoiceTableToolbar({
             }
           }}  // Use event.target.value to get the selected value
           input={<OutlinedInput label={Translate("customersList")} />}
-          renderValue={(selected) => selected}
+          renderValue={(selected) => getSelectRenderValue(selected)}
           sx={{ textTransform: 'capitalize' }}
         >
           {customers.map((option, index) => (
