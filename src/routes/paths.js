@@ -248,7 +248,7 @@ export const paths = {
     invoiceForCustomers: `${ROOTS.REPORTS}/invoiceForCustomers`,
     invoiceByUsers: `${ROOTS.REPORTS}/invoiceByUsers`,
     gmReport: `${ROOTS.REPORTS}/GmReport`,
-    
+    deliveryDate: `${ROOTS.REPORTS}/deliveryDate`,
   },
   // Customers
   customers: {
@@ -266,7 +266,18 @@ export const paths = {
     editUrl:`${ROOTS.PRODUCT}/:id/edit`,
     edit: (id) => `${ROOTS.PRODUCT}/${id}/edit`
   },
-
+  // Need To Action
+  needToAction: {
+    list: `/needToAction`
+  },
+  // Reject By Sales To Action
+  rejectBySales: {
+    list: `/rejectBySales`
+  },
+  // acknowledgment
+  acknowledgment: {
+    list: `/acknowledgment`
+  },
   // Users
   users: {
     root: ROOTS.USER,

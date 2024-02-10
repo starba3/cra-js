@@ -178,6 +178,10 @@ export const mainRoutes = [
         element: <GmReasonReportView />  
       },
       { 
+        path: paths.reports.deliveryDate,
+        element: <GmReasonReportView />  
+      },
+      { 
         path: paths.customers.list,
         element: <CustomerListViewMain />  
       },
@@ -209,6 +213,18 @@ export const mainRoutes = [
       },
       { 
         path: paths.reports.invoiceByUsers,
+        element: <InvoiceByUsersViewMain />  
+      },
+      { 
+        path: paths.needToAction.list,
+        element: <InvoiceByUsersViewMain />  
+      },
+      { 
+        path: paths.rejectBySales.list,
+        element: <InvoiceByUsersViewMain />  
+      },
+      { 
+        path: paths.acknowledgment.list,
         element: <InvoiceByUsersViewMain />  
       },
       

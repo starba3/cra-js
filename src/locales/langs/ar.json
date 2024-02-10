@@ -205,7 +205,9 @@
   "cash": "دفع نقدي",
   "private": "زبون خاص",
   "descriptionEnglish" : "الوصف بالانجليزي",
-  "descriptionArabic" : "الوصف بالعربي"
+  "descriptionArabic" : "الوصف بالعربي",
 
-  
+  "needToAction": "Need To Action",
+  "rejectedBySales": "Rejected By Sales",
+  "acknowledgment": "Acknowledgment"
 }

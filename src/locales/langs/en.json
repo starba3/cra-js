@@ -231,9 +231,11 @@
   "nupco": "Nupco",
   "etimad": "Etimad",
   "cash": "Cash",
-  "private": "Private"
+  "private": "Private",
 
-  
+  "needToAction": "Need To Action",
+  "rejectedBySales": "Rejected By Sales",
+  "acknowledgment": "Acknowledgment"
   
 
 }
