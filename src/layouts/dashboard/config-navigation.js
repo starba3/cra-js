@@ -50,7 +50,7 @@ export function useNavData() {
   
   const role = useMemo(() => {
     const roleItem = localStorage.getItem("role");
-    return roleItem ? JSON.parse(roleItem).value : "Sales";
+    return roleItem ? JSON.parse(roleItem).value : "OM";
   }, []);
   
   // Initialize an array to hold items for the Reports section

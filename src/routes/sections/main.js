@@ -26,13 +26,18 @@ const ComingSoonPage = lazy(() => import('src/pages/coming-soon'));
 const MaintenancePage = lazy(() => import('src/pages/maintenance'));
 
 // Invoices
+const AcknowledgmentViewMain = lazy(() => import('src/screens/acknowledgment/acknowledgmentView'));
+const NeedToActionViewMain = lazy(() => import('src/screens/needToAction/needToActionView'));
+const RejectedBySalesViewMain = lazy(() => import('src/screens/rejectedBySales/rejectedBySalesView'));
 const InvoiceEditPage = lazy(() => import('src/screens/invoice/edit/InvoiceEditPage'));
+const InvoiceListViewByDepartment = lazy(() => import ("src/screens/invoice/departments/InvoiceListViewByDepartment"))
 // Reports
 const AgingViewMain = lazy(() => import('src/screens/reports/aging'));
 const InvoiceForCustomersViewMain = lazy(() => import('src/screens/reports/invoiceForCustomers'));
 const GmReportView = lazy(() => import('src/screens/reports/gmReportView'));
 const GmReasonReportView = lazy(() => import('src/screens/reports/GmReasonReportView'));
 const InvoiceByUsersViewMain = lazy(() => import('src/screens/reports/invoiceByUsers'));
+const ForDeliveryDataViewMain = lazy(() => import('src/screens/reports/forDeliveryData'))
 // Products
 const ProductListViewMain = lazy(() => import('src/screens/products/all/ProductListView'));
 const ProductCreateViewMain = lazy(() => import('src/screens/products/create/ProductCreateView'));
@@ -48,7 +53,7 @@ const PostDetailsPage = lazy(() => import('src/pages/post/details'));
 
 
 
-const InvoiceListViewByDepartment = lazy(() => import ("src/screens/invoice/departments/InvoiceListViewByDepartment"))
+
 // ----------------------------------------------------------------------
 
 export const mainRoutes = [
@@ -179,7 +184,7 @@ export const mainRoutes = [
       },
       { 
         path: paths.reports.deliveryDate,
-        element: <GmReasonReportView />  
+        element: <ForDeliveryDataViewMain />  
       },
       { 
         path: paths.customers.list,
@@ -217,15 +222,15 @@ export const mainRoutes = [
       },
       { 
         path: paths.needToAction.list,
-        element: <InvoiceByUsersViewMain />  
+        element: <NeedToActionViewMain />  
       },
       { 
         path: paths.rejectBySales.list,
-        element: <InvoiceByUsersViewMain />  
+        element: <RejectedBySalesViewMain />  
       },
       { 
         path: paths.acknowledgment.list,
-        element: <InvoiceByUsersViewMain />  
+        element: <AcknowledgmentViewMain />  
       },
       
     ]

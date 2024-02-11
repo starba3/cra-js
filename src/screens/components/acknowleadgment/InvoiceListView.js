@@ -339,7 +339,7 @@ export default function InvoiceListView() {
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading={Translate("list")}
+          heading={Translate("acknowledgment")}
           links={[
             // {
             //   name: Translate("app"),
