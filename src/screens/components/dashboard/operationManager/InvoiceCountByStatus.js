@@ -10,7 +10,7 @@ import { fShortenNumber } from 'src/utils/format-number';
 
 // ----------------------------------------------------------------------
 
-export default function AppCountByStatus({ title, subheader, list, ...other }) {
+export default function InvoiceCountByStatus({ title, subheader, list, ...other }) {
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />

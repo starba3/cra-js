@@ -17,15 +17,15 @@ import { getDashboardData } from 'src/data-access/dashboard';
 import { useSettingsContext } from 'src/components/settings';
 import AppWidgetSummary from 'src/sections/overview/app/app-widget-summary';
 import AppCurrentDownload from 'src/sections/overview/app/app-current-download';
-import ChartRadialBar from 'src/screens/components/dashboard/chart-radial-bar';
-import AppNewInvoice from 'src/screens/components/dashboard/AppNewInvoice';
-import AppCountByStatus from 'src/screens/components/dashboard/operationManager/AppCountByStatus'
+import ChartRadialBar from 'src/screens/components/dashboard/admin/chart-radial-bar';
+import AppNewInvoice from 'src/screens/components/dashboard/admin/AppNewInvoice';
+import InvoiceCountByStatus from 'src/screens/components/dashboard/operationManager/InvoiceCountByStatus'
 // 
 
 
 // ----------------------------------------------------------------------
 
-export default function OverviewAppView() {
+export default function OMDashboardView() {
   const { user } = useMockedUser();
 
   const [unpaidInvoicesCount, setUnpaidInvoicesCount] = useState(0);
@@ -75,8 +75,9 @@ export default function OverviewAppView() {
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
       <Grid container spacing={3}>
 
-      <AppCountByStatus 
-        title={Translate("Total Acknowleadged")}
+      <InvoiceCountByStatus 
+        title="Title"
+        subheader="Subheader"
         list={[
           {
             status: "Acknowleadged",

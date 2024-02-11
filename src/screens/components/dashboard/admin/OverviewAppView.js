@@ -17,8 +17,8 @@ import { getDashboardData } from 'src/data-access/dashboard';
 import { useSettingsContext } from 'src/components/settings';
 import AppWidgetSummary from 'src/sections/overview/app/app-widget-summary';
 import AppCurrentDownload from 'src/sections/overview/app/app-current-download';
-import ChartRadialBar from 'src/screens/components/dashboard/chart-radial-bar';
-import AppNewInvoice from 'src/screens/components/dashboard/AppNewInvoice';
+import ChartRadialBar from 'src/screens/components/dashboard/admin/chart-radial-bar';
+import AppNewInvoice from 'src/screens/components/dashboard/admin/AppNewInvoice';
 // 
 
 
