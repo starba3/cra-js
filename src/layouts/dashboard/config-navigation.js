@@ -50,7 +50,7 @@ export function useNavData() {
   
   const role = useMemo(() => {
     const roleItem = localStorage.getItem("role");
-    return roleItem ? JSON.parse(roleItem).value : "Admin";
+    return roleItem ? JSON.parse(roleItem).value : "sales";
   }, []);
   
   // Initialize an array to hold items for the Reports section
@@ -218,7 +218,7 @@ export function useNavData() {
         },
       ]
       
-      if (role === "OM" || role === "OM") {
+      if (role === "OM") {
         items[0].items.push(
           
           { 
@@ -242,6 +242,31 @@ export function useNavData() {
           title: t('deliveryDate'),
           path: paths.reports.deliveryDate,
         },)
+      }
+
+      if (role.toLowerCase() === "sales") {
+        items[0].items.push(
+          { 
+            title: t('acknowleded'),
+            icon: ICONS.file,
+            path: paths.acknowledgment.acknowleded,
+          },
+          { 
+            title: t('notAcknowledged'),
+            icon: ICONS.file,
+            path: paths.acknowledgment.notAcknowleded,
+          },
+          { 
+            title: t('needToAction'),
+            icon: ICONS.file,
+            path: paths.needToAction.list,
+          },
+          { 
+            title: t('rejectBySales'),
+            icon: ICONS.file,
+            path: paths.rejectBySales.list,
+          }
+        );
       }
 
       return items

@@ -78,9 +78,6 @@ export default function OverviewAppView() {
   const unpaidInvoicesCountPrecentage = (unpaidInvoicesCount / (unpaidInvoicesCount + paidInvoicesCount)) * 100;
   const paidInvoicesCountPrecentage = (paidInvoicesCount / (unpaidInvoicesCount + paidInvoicesCount)) * 100;
 
-  const paidToUnpaidInvoicesCountPrecentage = (paidInvoicesCount / unpaidInvoicesCount) * 100;
-  const unpaidToPaidInvoicesCountPrecentage = (unpaidInvoicesCount / paidInvoicesCount) * 100;
-
   const sum = paidInvoicesTotalAmmount + unpaidInvoicesTotalAmmount;
   console.log(sum);
 

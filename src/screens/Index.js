@@ -1,25 +1,31 @@
+import { lazy, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { json } from 'react-router';
 // sections
-import  OverviewAppView from 'src/screens/components/dashboard/admin/OverviewAppView';
-import  OMDashboardView from  'src/screens/components/dashboard/operationManager/dashboardView';
+const OverviewAppView = lazy(() => import('src/screens/components/dashboard/admin/OverviewAppView'));
+const OMDashboardView = lazy(() => import('src/screens/components/dashboard/operationManager/dashboardView')) ;
+const SalesDashboardView = lazy(() => import('src/screens/components/dashboard/sales/dashboardView')) ;
 
 // ----------------------------------------------------------------------
 
 const getDashaboard = (role) => {
-  if (role == "OM") {
+  
+  if (role === "OM") {
     return <OMDashboardView /> 
-  } else {
-    return <OverviewAppView />
   }
-}
+
+  if (role === "Sales") {
+    return <SalesDashboardView /> 
+  }
+
+  return <OverviewAppView />
+} 
 
 export default function OverviewAppPage() {
-  const ROLE = localStorage.getItem("role") 
-    ? JSON.parse(localStorage.getItem("role")).value
-    : "Admin"
-  const Dashboard = getDashaboard(ROLE)
-
+  const ROLE = useMemo(() => localStorage.getItem("role") 
+  ? JSON.parse(localStorage.getItem("role")).value
+  : "OM", [])
+  
 
   return (
     <>
@@ -27,7 +33,7 @@ export default function OverviewAppPage() {
         <title> Dashboard: App</title>
       </Helmet>
       
-      <Dashboard />
+      {getDashaboard(ROLE)}
       
     </>
   );

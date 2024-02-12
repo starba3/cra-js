@@ -28,7 +28,7 @@ const BarChart = lazy(() => import('./barchart'));
 
 // ----------------------------------------------------------------------
 
-export default function OMDashboardView() {
+export default function SalesDashboardView() {
   const { user } = useMockedUser();
 
   const [data, setData] = useState([

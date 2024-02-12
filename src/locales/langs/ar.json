@@ -209,5 +209,7 @@
 
   "needToAction": "Need To Action",
   "rejectedBySales": "Rejected By Sales",
-  "acknowledgment": "Acknowledgment"
+  "acknowledgment": "Acknowledgment",
+  "acknowleded": "Acknowleded",
+  "notAcknowledged": "Not Acknowleded"
 }

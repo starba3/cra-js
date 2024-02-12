@@ -1,6 +1,7 @@
 // utils
 import { paramCase } from 'src/utils/change-case';
 import { _id, _postTitles } from 'src/_mock/assets';
+import { Root } from 'yet-another-react-lightbox';
 
 // ----------------------------------------------------------------------
 
@@ -17,6 +18,7 @@ const ROOTS = {
   REPORTS: '/reports',
   CUSTOMER: '/customer',
   PRODUCT: '/product',
+  ACKNOWLEADGMENT: "/acknowledgment",
   DEPARTMENT: {
     main: '/department',
     operation: 'operation',
@@ -276,7 +278,9 @@ export const paths = {
   },
   // acknowledgment
   acknowledgment: {
-    list: `/acknowledgment`
+    list: `${ROOTS.ACKNOWLEADGMENT}/all`,
+    acknowleded: `${ROOTS.ACKNOWLEADGMENT}/acknowleded`,
+    notAcknowleded: `${ROOTS.ACKNOWLEADGMENT}/notAcknowleded`
   },
   // Users
   users: {

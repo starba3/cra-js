@@ -26,7 +26,7 @@ const ComingSoonPage = lazy(() => import('src/pages/coming-soon'));
 const MaintenancePage = lazy(() => import('src/pages/maintenance'));
 
 // Invoices
-const AcknowledgmentViewMain = lazy(() => import('src/screens/acknowledgment/acknowledgmentView'));
+const AcknowledgmentViewMain = lazy(() => import('src/screens/acknowledgment/all/acknowledgmentView'));
 const NeedToActionViewMain = lazy(() => import('src/screens/needToAction/needToActionView'));
 const RejectedBySalesViewMain = lazy(() => import('src/screens/rejectedBySales/rejectedBySalesView'));
 const InvoiceEditPage = lazy(() => import('src/screens/invoice/edit/InvoiceEditPage'));
@@ -230,7 +230,15 @@ export const mainRoutes = [
       },
       { 
         path: paths.acknowledgment.list,
-        element: <AcknowledgmentViewMain />  
+        element: <AcknowledgmentViewMain title ="acknowledgment"/>  
+      },
+      { 
+        path: paths.acknowledgment.acknowleded,
+        element: <AcknowledgmentViewMain title ="acknowleded"/>  
+      },
+      { 
+        path: paths.acknowledgment.notAcknowleded,
+        element: <AcknowledgmentViewMain title ="notAcknowledged"/>  
       },
       
     ]
