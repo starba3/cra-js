@@ -1,14 +1,14 @@
 import { Helmet } from 'react-helmet-async';
-import InvoiceListView from 'src/screens/components/rejecetedBySales/InvoiceListView';
+import InvoiceListView from 'src/screens/components/invoiceAcceptence/InvoiceListView';
 
 // ----------------------------------------------------------------------
 
-export default function RejectedBySalesViewMain() {
+export default function InvoiceAcceptenceViewMain() {
 
   return (
     <>
         <Helmet>
-            <title> Rejected By Sales Report</title>
+            <title> Invoice Acceptence Report</title>
         </Helmet>
         <InvoiceListView />
     </>

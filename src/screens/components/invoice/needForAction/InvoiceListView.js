@@ -1,6 +1,6 @@
 import * as React from 'react';
 import sumBy from 'lodash/sumBy';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useLocales } from 'src/locales';
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -57,7 +57,7 @@ import {
 } from 'src/components/table';
 
 // DATA ACCESS
-import { getAllInvoices, getInvoiceImportUrl, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
+import { getNeedToAction, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
 // Utility
@@ -90,6 +90,11 @@ export default function InvoiceListView() {
 
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 
+  const role = useMemo(() => {
+    const roleItem = localStorage.getItem("role");
+    return roleItem ? JSON.parse(roleItem).value : "operation";
+  }, []);
+
   const confirm = useBoolean();
 
   const { t, currentLang } = useLocales();
@@ -113,7 +118,7 @@ export default function InvoiceListView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getAllInvoices();
+        const result = await getNeedToAction();
         setTableData(result);
       } catch (error) {
         console.error('Error fetching invoices:', error);
@@ -174,8 +179,9 @@ export default function InvoiceListView() {
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
     { id: 'daysToCollected', label: Translate("daysToCollected") },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
+    { id: 'productName', label: Translate("productName"), align: 'center' },
     { id: 'paidStatus', label: Translate("paidStatus"), align: 'center' },
-    { id: 'department', label: Translate("department"), align: 'center' },
+    // { id: 'department', label: Translate("department"), align: 'center' },
     { id: '' },
   ];
 
@@ -219,7 +225,7 @@ export default function InvoiceListView() {
         if (!errorMessage) {
           // Fetch data only if deletion was successful
           try {
-            const result = await getAllInvoices();
+            const result = await getNeedToAction();
             setTableData(result);
           } catch (error) {
             console.error('Error fetching invoices:', error);
@@ -339,7 +345,7 @@ export default function InvoiceListView() {
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading={Translate("rejectedBySales")}
+          heading={Translate("needToAction")}
           links={[
             // {
             //   name: Translate("app"),
@@ -358,46 +364,6 @@ export default function InvoiceListView() {
           }}
         />
 
-        <Card
-          sx={{
-            mb: { xs: 3, md: 5 },
-          }}
-        >
-          <Scrollbar>
-            <Stack
-              direction="row"
-              divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
-              sx={{ py: 2 }}
-            >
-              <InvoiceAnalytic
-                title={Translate("total")}
-                total={tableData.length}
-                percent={100}
-                price={sumBy(tableData, 'invoiceAmount')}
-                icon="solar:bill-list-bold-duotone"
-                color={theme.palette.info.main}
-              />
-
-               <InvoiceAnalytic
-                title={Translate("paid")}
-                total={getInvoiceLength('paid')}
-                percent={getPercentByStatus('paid')}
-                price={getTotalAmount('paid')}
-                icon="solar:file-check-bold-duotone"
-                color={theme.palette.success.main}
-              />
-
-              <InvoiceAnalytic
-                title={Translate("unpaid")}
-                total={getInvoiceLength('unpaid')}
-                percent={getPercentByStatus('unpaid')}
-                price={getTotalAmount('unpaid')}
-                icon="solar:sort-by-time-bold-duotone"
-                color={theme.palette.warning.main}
-              />
-            </Stack>
-          </Scrollbar>
-        </Card>
         <Stack
           direction="row"
           // justifyContent="flex-end"
@@ -406,30 +372,7 @@ export default function InvoiceListView() {
             py: 2
             }}
         >
-          <Button
-            component={RouterLink}
-            href={paths.dashboard.invoice.new}
-            variant="contained"
-            startIcon={<Iconify icon="mingcute:add-line" />}
-            sx={{
-              margin: 0.5
-            }}
-          >
-            {Translate("newInvoice")}
-          </Button>
-
-          <Button
-            component={RouterLink}
-            variant="contained"
-            color='primary'
-            onClick={handleClickOpen}
-            startIcon={<Iconify icon="solar:import-bold" />}
-            sx={{
-              margin: 0.5
-            }}
-          >
-            {Translate("import")}
-          </Button>
+          
           
           <Button
             variant="contained"
@@ -501,6 +444,7 @@ export default function InvoiceListView() {
                         onEditRow={() => handleEditRow(row.id)}
                         onDeleteRow={() =>  handleDeleteRow(row.id)}
                         handleOpenInquiry={() => handleOpenInquiry(row.id)}
+                        userRole={role}
                       />
                     ))}
 

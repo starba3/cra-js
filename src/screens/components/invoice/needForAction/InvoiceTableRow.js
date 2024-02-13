@@ -31,16 +31,45 @@ export default function InvoiceTableRow({
   onEditRow,
   onDeleteRow,
   handleOpenInquiry,
+  userRole,
 }) {
-  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameAr, customerNameEn, paidStatus, department } = row;
+
+  const sample = {
+    id: 64,
+    invoiceNo: "INV03323",
+    issueInvoiceDate: "2023-09-09T00:00:00",
+    invoiceAmount: 3333,
+    daysToCollected: 0,
+    customerNameEn: "Dmmam Hospital",
+    customerNameAr: "مستشفى الدمام",
+    productNameEn: "ًMedical Device",
+    productNameAr: "جهاز طبي",
+    department: "Operation",
+    paidStatus: "unpaid"
+  }
+  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameAr, customerNameEn, productNameEn, productNameAr, paidStatus, department } = row;
   
   const { t, currentLang } = useLocales()
   const customerName = currentLang.value === 'ar' ? customerNameAr : customerNameEn;
+  const productName = currentLang.value === 'ar' ? productNameAr : productNameEn;
   
   const Translate = (text) => t(text);
   const confirm = useBoolean();
 
   const popover = usePopover();
+
+  const editMenuItem = userRole === "operation" ?
+       <MenuItem
+          onClick={() => {
+            onEditRow();
+            popover.onClose();
+          }}
+        >
+          <Iconify icon="solar:pen-bold" />
+          {Translate("edit")}
+        </MenuItem>
+    :  null;
+
 
   return (
     <>
@@ -91,9 +120,11 @@ export default function InvoiceTableRow({
         
         <TableCell >{`${invoiceAmount.toLocaleString()} ${Translate('currencyShortcut')}`}</TableCell>
 
+        <TableCell align="center" >{productName}</TableCell>
+
         <TableCell align="center" >{paidStatus}</TableCell>
 
-        <TableCell align="center" >{department}</TableCell>
+        {/* <TableCell align="center" >{department}</TableCell> */}
 
         <TableCell align="right" sx={{ px: 1 }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
@@ -131,9 +162,11 @@ export default function InvoiceTableRow({
           {Translate("inquiry")}
         </MenuItem>
 
-        <Divider sx={{ borderStyle: 'solid' }} />
+        {editMenuItem}
+
+        {/* <Divider sx={{ borderStyle: 'solid' }} /> */}
         
-        <MenuItem
+        {/* <MenuItem
           onClick={() => {
             confirm.onTrue();
             popover.onClose();
@@ -142,7 +175,7 @@ export default function InvoiceTableRow({
         >
           <Iconify icon="solar:trash-bin-trash-bold" />
           {Translate("delete")}
-        </MenuItem>
+        </MenuItem> */}
       </CustomPopover>
 
       <ConfirmDialog
@@ -172,4 +205,5 @@ InvoiceTableRow.propTypes = {
   handleOpenInquiry: PropTypes.func,
   row: PropTypes.object,
   selected: PropTypes.bool,
+  userRole: PropTypes.string,
 };

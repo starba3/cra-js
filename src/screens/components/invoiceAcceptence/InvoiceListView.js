@@ -339,7 +339,7 @@ export default function InvoiceListView() {
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading={Translate("needToAction")}
+          heading={Translate("invoiceAcceptence")}
           links={[
             // {
             //   name: Translate("app"),
@@ -358,46 +358,7 @@ export default function InvoiceListView() {
           }}
         />
 
-        <Card
-          sx={{
-            mb: { xs: 3, md: 5 },
-          }}
-        >
-          <Scrollbar>
-            <Stack
-              direction="row"
-              divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
-              sx={{ py: 2 }}
-            >
-              <InvoiceAnalytic
-                title={Translate("total")}
-                total={tableData.length}
-                percent={100}
-                price={sumBy(tableData, 'invoiceAmount')}
-                icon="solar:bill-list-bold-duotone"
-                color={theme.palette.info.main}
-              />
 
-               <InvoiceAnalytic
-                title={Translate("paid")}
-                total={getInvoiceLength('paid')}
-                percent={getPercentByStatus('paid')}
-                price={getTotalAmount('paid')}
-                icon="solar:file-check-bold-duotone"
-                color={theme.palette.success.main}
-              />
-
-              <InvoiceAnalytic
-                title={Translate("unpaid")}
-                total={getInvoiceLength('unpaid')}
-                percent={getPercentByStatus('unpaid')}
-                price={getTotalAmount('unpaid')}
-                icon="solar:sort-by-time-bold-duotone"
-                color={theme.palette.warning.main}
-              />
-            </Stack>
-          </Scrollbar>
-        </Card>
         <Stack
           direction="row"
           // justifyContent="flex-end"

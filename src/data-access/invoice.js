@@ -12,6 +12,16 @@ export async function getAllInvoices() {
     return sendGet(url, []);
 }
 
+export async function getNeedToAction() {
+    const url = `${baseUrl}/Invoices/need-to-action`;
+    return sendGet(url, []);
+}
+
+export async function getRejectBySales() {
+    const url = `${baseUrl}/Invoices/reject-by-sales`;
+    return sendGet(url, []);
+}
+
 export async function getInvoicesByDepartment(id) {
     const url = `${baseUrl}/api/Invoices/Department/${id}`;
     return sendGet(url, []);

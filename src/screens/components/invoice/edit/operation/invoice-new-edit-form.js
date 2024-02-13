@@ -96,6 +96,10 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     daysToCollect: Yup.string(),
     claimStatus: Yup.string(),
     claimsDetailStatus: Yup.string(),
+    invoiceAmount: Yup.number(),
+    poValue: Yup.number(),
+    contractNo: Yup.string(),
+    SalesTakerUsername: Yup.string(),
 
   });
 
@@ -106,7 +110,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     () => ({
       CreateNote: currentInvoice?.CreateNote || '',
       department: currentInvoice?.department || '',
-      acknowledgeStatus: currentInvoice?.acknowledgeStatus || '',
+      acknowledgeStatus: currentInvoice?.acknowledgeStatus || '', 
       DeliveryDate: currentInvoice ? new Date(currentInvoice?.DeliveryDate ) : new Date(),
       installationStatus: currentInvoice?.installationStatus || '',
       installationDate: currentInvoice ? new Date(currentInvoice?.installationDate ) : new Date(), 
@@ -114,6 +118,10 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       claimStatus: currentInvoice?.ClaimStatus || '',
       daysToCollect: currentInvoice?.daysToCollected || 0,
       claimsDetailStatus: currentInvoice?.ClaimsDetailStatus || '',
+      invoiceAmount: currentInvoice?.invoiceAmount || 0,
+      poValue: currentInvoice?.poValue || 0,
+      contractNo: currentInvoice?.contractNo || '',
+      SalesTakerUsername: currentInvoice?.SalesTakerUsername || '',
     }),
     [currentInvoice]
   );

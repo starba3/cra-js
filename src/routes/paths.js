@@ -19,6 +19,7 @@ const ROOTS = {
   CUSTOMER: '/customer',
   PRODUCT: '/product',
   ACKNOWLEADGMENT: "/acknowledgment",
+  INVOICEACCEPTENCE: "/invoiceAcceptence",
   DEPARTMENT: {
     main: '/department',
     operation: 'operation',
@@ -239,6 +240,8 @@ export const paths = {
   // INVOICES
   invoices: {
     list: `${ROOTS.INVOICES}/list`,
+    needToAction: `${ROOTS.INVOICES}/needToAction`,
+    rejectedBySales: `${ROOTS.INVOICES}/rejectedBySales`,
     editUrl: `${ROOTS.INVOICES}/:id/edit`,
     edit: (id) => `${ROOTS.INVOICES}/${id}/edit`,
   },
@@ -248,6 +251,7 @@ export const paths = {
     aging: `${ROOTS.REPORTS}/aging`,
     gmReasoneReport: `${ROOTS.REPORTS}/gmReasonReport`,
     invoiceForCustomers: `${ROOTS.REPORTS}/invoiceForCustomers`,
+    acknowledgment: `${ROOTS.REPORTS}/acknowledgment`,
     invoiceByUsers: `${ROOTS.REPORTS}/invoiceByUsers`,
     gmReport: `${ROOTS.REPORTS}/GmReport`,
     deliveryDate: `${ROOTS.REPORTS}/deliveryDate`,
@@ -271,6 +275,10 @@ export const paths = {
   // Need To Action
   needToAction: {
     list: `/needToAction`
+  },
+  // Need To Action
+  invoiceAcceptence: {
+    list: `${ROOTS.INVOICEACCEPTENCE}/list`
   },
   // Reject By Sales To Action
   rejectBySales: {

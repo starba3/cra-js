@@ -27,8 +27,9 @@ const MaintenancePage = lazy(() => import('src/pages/maintenance'));
 
 // Invoices
 const AcknowledgmentViewMain = lazy(() => import('src/screens/acknowledgment/all/acknowledgmentView'));
-const NeedToActionViewMain = lazy(() => import('src/screens/needToAction/needToActionView'));
-const RejectedBySalesViewMain = lazy(() => import('src/screens/rejectedBySales/rejectedBySalesView'));
+const InvoiceAcceptenceViewMain = lazy(() => import('src/screens/invoiceAcceptence/invoiceAcceptenceView'));
+const NeedToActionViewMain = lazy(() => import('src/screens/invoice/needToAction/needToActionView'));
+const RejectedBySalesViewMain = lazy(() => import('src/screens/invoice/rejectedBySales/rejectedBySalesView'));
 const InvoiceEditPage = lazy(() => import('src/screens/invoice/edit/InvoiceEditPage'));
 const InvoiceListViewByDepartment = lazy(() => import ("src/screens/invoice/departments/InvoiceListViewByDepartment"))
 // Reports
@@ -229,7 +230,19 @@ export const mainRoutes = [
         element: <RejectedBySalesViewMain />  
       },
       { 
-        path: paths.acknowledgment.list,
+        path: paths.invoices.needToAction,
+        element: <NeedToActionViewMain />  
+      },
+      { 
+        path: paths.invoices.rejectedBySales,
+        element: <RejectedBySalesViewMain />  
+      },
+      { 
+        path: paths.invoiceAcceptence.list,
+        element: <InvoiceAcceptenceViewMain />  
+      },
+      { 
+        path: paths.reports.acknowledgment,
         element: <AcknowledgmentViewMain title ="acknowledgment"/>  
       },
       { 

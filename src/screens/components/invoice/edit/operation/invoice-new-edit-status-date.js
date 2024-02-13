@@ -130,6 +130,9 @@ export default function InvoiceNewEditStatusDate({
   const arrays = {
     daysToCollect: ['collection'],
     deliveryDate: ['operation'],
+    invoiceAmount: ['operation'],
+    poValue: ['operation'],
+    contractNo: ['operation'],
     department: ['operation', 'sales', 'collection', 'tenderandcontracts'],
     acknowledgeStatuses: ['operation', 'sales'],
     installationStatus: ['installation'],
@@ -201,6 +204,101 @@ export default function InvoiceNewEditStatusDate({
   // Components
 
   
+  const invoiceAmount = arrays.invoiceAmount.includes(department.toLowerCase()) ? 
+  <FormControl
+      sx={{
+        flex: 1,
+        flexShrink: 0,
+        width: { xs: 3 },
+      }}
+      style={width80}
+    >
+    {/* <InputLabel  > {Translate("invoiceAmount")} </InputLabel> */}
+    <Controller
+      
+      name="invoiceAmount"
+      control={control}
+      render={({ field }) => (
+        <TextField
+          {...field}
+          label={Translate("invoiceAmount")}
+          value={field.value}
+          fullWidth
+        />
+      )}
+    />
+    </FormControl> : 
+  <TextField
+    label={Translate("amount")}
+    value={currentInvoice?.invoiceAmount}
+    style={width80}
+    disabled
+  />
+
+  const poValue = arrays.poValue.includes(department.toLowerCase()) ? 
+  <FormControl
+      sx={{
+        flex: 1,
+        flexShrink: 0,
+        width: { xs: 3 },
+      }}
+      style={width80}
+    >
+    {/* <InputLabel  > {Translate("invoiceAmount")} </InputLabel> */}
+    <Controller
+      
+      name="poValue"
+      control={control}
+      render={({ field }) => (
+        <TextField
+          {...field}
+          label={Translate("poValue")}
+          value={field.value}
+          fullWidth
+        />
+      )}
+    />
+    </FormControl> : 
+  <TextField
+    label={Translate("poValue")}
+    value={currentInvoice?.poValue}
+    style={width80}
+    disabled
+  />
+
+  const contractNo = arrays.contractNo.includes(department.toLowerCase()) ? 
+  <FormControl
+      sx={{
+        flex: 1,
+        flexShrink: 0,
+        width: { xs: 3 },
+      }}
+      style={width80}
+    >
+    {/* <InputLabel  > {Translate("invoiceAmount")} </InputLabel> */}
+    <Controller
+      
+      name="contractNo"
+      control={control}
+      render={({ field }) => (
+        <TextField
+          {...field}
+          label={Translate("contractNo")}
+          value={field.value}
+          fullWidth
+        />
+      )}
+    />
+    </FormControl> : 
+  <TextField
+    label={Translate("contractNo")}
+    value={currentInvoice?.contractNo}
+    style={width80}
+    disabled
+  />
+
+  
+
   const deliveryDate = arrays.deliveryDate.includes(department.toLowerCase()) ? 
   <Controller
     name="DeliveryDate"
@@ -680,12 +778,7 @@ export default function InvoiceNewEditStatusDate({
           disabled
         />
 
-        <TextField
-          label={Translate("amount")}
-          value={currentInvoice?.invoiceAmount}
-          style={width80}
-          disabled
-        />
+        {invoiceAmount}
 
         <TextField
           label={Translate("currency")}
@@ -722,12 +815,7 @@ export default function InvoiceNewEditStatusDate({
           disabled
         />
 
-        <TextField
-          label={Translate("POValue")}
-          value={currentInvoice?.poValue}
-          style={width80}
-          disabled
-        />    
+        {poValue} 
 
         <TextField
           label={Translate("region")}
@@ -736,12 +824,7 @@ export default function InvoiceNewEditStatusDate({
           disabled
         />        
 
-        <TextField
-          label={Translate("contractNumber")}
-          value={currentInvoice?.contractNo}
-          style={width80}
-          disabled
-        />
+        {contractNo}
 
         {deliveryDate}
 
