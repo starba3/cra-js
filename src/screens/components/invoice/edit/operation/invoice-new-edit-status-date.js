@@ -29,6 +29,7 @@ import TextField from '@mui/material/TextField';
 // components
 import Scrollbar from 'src/components/scrollbar';
 import { Input } from '@mui/material';
+import { getSalesPersonList } from 'src/data-access/customers'
 
 
 
@@ -44,6 +45,7 @@ export default function InvoiceNewEditStatusDate({
   const disabledTextColor = 'Crimson';
 
   const [loading, setLoading] = useState(true)
+  const [salesList, setSalesList] = useState([])
   const [collectionData, setCollectionData] = useState([])
   const [collectionSource, setCollectionSource] = useState([])
   const [claimsStatus, setClaimsStatus] = useState([])
@@ -74,6 +76,11 @@ export default function InvoiceNewEditStatusDate({
     const fetchData = async () => {
       try {
         const data = await getCollectionData();
+        const salesList = await getSalesPersonList()
+
+        setSalesList(salesList)
+
+        console.log(salesList)
         setCollectionData(data);
         setCollectionSource(data.filter(option => option.entityType === 'Collection Source'))
         
@@ -133,6 +140,7 @@ export default function InvoiceNewEditStatusDate({
     invoiceAmount: ['operation'],
     poValue: ['operation'],
     contractNo: ['operation'],
+    salesTakerName: ['operation'],
     department: ['operation', 'sales', 'collection', 'tenderandcontracts'],
     acknowledgeStatuses: ['operation', 'sales'],
     installationStatus: ['installation'],
@@ -645,6 +653,46 @@ export default function InvoiceNewEditStatusDate({
           style={width80}
           disabled
         /> 
+    
+    const salesTakerSelect = arrays.salesTakerName.includes(department.toLowerCase()) ? 
+    <FormControl
+      sx={{
+        flex: 1,
+        flexShrink: 0,
+        width: { xs: 3, md: '80%' },
+      }}
+      style={width80}
+    >
+      <InputLabel> {Translate("salesTakerName")} </InputLabel>
+      <Controller
+        name="salesTakerName"
+        control={control}
+        render={({ field }) => (
+          <Select
+            style={outlinedStyle}
+            value={field.value}
+            onChange={(newValue) => {
+              field.onChange(newValue);
+            }}
+            
+            input={<OutlinedInput label={Translate("salesTakerName")} />}
+            renderValue={(selected) => selected}
+            sx={{ textTransform: 'capitalize', fullWidth: true }}
+          >
+            {claimsDetailStatus.map((option, index) => (
+              <MenuItem key={index} value={option.value}>
+                {option.value}
+              </MenuItem>
+            ))}
+          </Select>
+        )}
+      />
+    </FormControl> : <TextField
+      label={Translate("salesTakerName")}
+      value={currentInvoice?.salesTakerName}
+      style={width80}
+      disabled
+    />   
           
   const renderNotes = (
     <>
@@ -858,12 +906,7 @@ export default function InvoiceNewEditStatusDate({
           disabled
         />
 
-        <TextField
-          label={Translate("salesTaker")}
-          value={currentInvoice?.salesTakerName}
-          style={width80}
-          disabled
-        />
+        {salesTakerSelect}
 
         <TextField
           label={Translate("collectorName")}

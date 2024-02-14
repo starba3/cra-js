@@ -99,7 +99,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     invoiceAmount: Yup.number(),
     poValue: Yup.number(),
     contractNo: Yup.string(),
-    SalesTakerUsername: Yup.string(),
+    SalesTaker: Yup.string(),
 
   });
 
@@ -121,7 +121,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       invoiceAmount: currentInvoice?.invoiceAmount || 0,
       poValue: currentInvoice?.poValue || 0,
       contractNo: currentInvoice?.contractNo || '',
-      SalesTakerUsername: currentInvoice?.SalesTakerUsername || '',
+      SalesTaker: currentInvoice?.SalesTaker || '',
     }),
     [currentInvoice]
   );
