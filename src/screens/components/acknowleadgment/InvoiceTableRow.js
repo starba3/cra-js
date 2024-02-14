@@ -28,8 +28,6 @@ export default function InvoiceTableRow({
   selected,
   onSelectRow,
   onViewRow,
-  onEditRow,
-  onDeleteRow,
   handleOpenInquiry,
 }) {
   const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameAr, customerNameEn, paidStatus, department } = row;
@@ -45,9 +43,9 @@ export default function InvoiceTableRow({
   return (
     <>
       <TableRow hover selected={selected}>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox checked={selected} onClick={onSelectRow} />
-        </TableCell>
+        </TableCell> */}
 
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
           <Avatar alt={customerName} sx={{ mr: 2 }}>
@@ -131,42 +129,15 @@ export default function InvoiceTableRow({
           {Translate("inquiry")}
         </MenuItem>
 
-        <Divider sx={{ borderStyle: 'solid' }} />
-        
-        <MenuItem
-          onClick={() => {
-            confirm.onTrue();
-            popover.onClose();
-          }}
-          sx={{ color: 'error.main' }}
-        >
-          <Iconify icon="solar:trash-bin-trash-bold" />
-          {Translate("delete")}
-        </MenuItem>
+        {/* <Divider sx={{ borderStyle: 'solid' }} /> */}
+
       </CustomPopover>
 
-      <ConfirmDialog
-        open={confirm.value}
-        onClose={confirm.onFalse}
-        title={Translate("delete")}
-        content={Translate("deleteComfirmationMessage")}
-        action={
-          <Button variant="contained" color="error" onClick={() => {
-            console.log("Delete clicked");
-            onDeleteRow();
-            confirm.onFalse()
-          }}>
-            {Translate("delete")}
-          </Button>
-        }
-      />
     </>
   );
 }
 
 InvoiceTableRow.propTypes = {
-  onDeleteRow: PropTypes.func,
-  onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,
   onViewRow: PropTypes.func,
   handleOpenInquiry: PropTypes.func,

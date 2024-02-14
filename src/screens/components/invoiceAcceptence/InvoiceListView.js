@@ -1,5 +1,4 @@
 import * as React from 'react';
-import sumBy from 'lodash/sumBy';
 import { useState, useCallback, useEffect } from 'react';
 import { useLocales } from 'src/locales';
 // @mui
@@ -9,7 +8,6 @@ import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
@@ -19,7 +17,6 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
 // @mui Dialog
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 
 import DialogActions from '@mui/material/DialogActions';
@@ -27,8 +24,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import Alert from '@mui/material/Alert';
-import { Icon } from '@iconify/react';
-import Collapse from '@mui/material/Collapse';
 import CircularProgress from '@mui/material/CircularProgress';
 
 // routes
@@ -63,8 +58,6 @@ import { _statusList } from 'src/lists/paidStatus'
 // Utility
 import { exportToExcel } from 'src/utils/export';
 //
-import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
-import { sendPost } from 'src/helpers/requestHelper';
 import InvoiceTableFiltersResult from './InvoiceTableFiltersResult';
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
@@ -90,8 +83,6 @@ export default function InvoiceListView() {
 
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 
-  const confirm = useBoolean();
-
   const { t, currentLang } = useLocales();
   const Translate = (text) => t(text);
 
@@ -99,11 +90,6 @@ export default function InvoiceListView() {
   const [refresh, setRefresh] = useState(false);
   const [filters, setFilters] = useState(defaultFilters);
 
-  const [open, setOpen] = React.useState(false);
-  const [openErrorList, setOpenErrorList] = useState(false);
-  const [errorList, setErrorList] = useState(['']);
-  const [isEmportError, setIsEmportError] = useState(false);
-  const [isUploadComplete, setIsUploadComplete] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [openInquiry, setOpenInquiry] = useState(false);
@@ -191,16 +177,6 @@ export default function InvoiceListView() {
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
-  const getInvoiceLength = (status) => tableData.filter((item) => item.paidStatus === status).length;
-
-  const getTotalAmount = (status) =>
-    sumBy(
-      tableData.filter((item) => item.paidStatus === status),
-      'invoiceAmount'
-    );
-
-  const getPercentByStatus = (status) => (getInvoiceLength(status) / tableData.length) * 100;
-
   const handleFilters = useCallback(
     (name, value) => {
       table.onResetPage();
@@ -233,24 +209,6 @@ export default function InvoiceListView() {
       deleteData();
   };
 
-  const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
-    setTableData(deleteRows);
-
-    table.onUpdatePageDeleteRows({
-      totalRows: tableData.length,
-      totalRowsInPage: dataInPage.length,
-      totalRowsFiltered: dataFiltered.length,
-    });
-  }, [dataFiltered.length, dataInPage.length, table, tableData]);
-
-  const handleEditRow = useCallback(
-    (id) => {
-      router.push(paths.dashboard.invoice.edit(id));
-    },
-    [router]
-  );
-
   const handleViewRow = useCallback(
     (id) => {
       router.push(paths.dashboard.invoice.details(id));
@@ -258,20 +216,9 @@ export default function InvoiceListView() {
     [router]
   );
 
-  const handleFilterStatus = useCallback(
-    (event, newValue) => {
-      handleFilters('paidStatus', newValue);
-    },
-    [handleFilters]
-  );
-
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleOpenInquiry = (id) => {
     setInquiryId(id);
@@ -282,57 +229,6 @@ export default function InvoiceListView() {
     setInquiryId(0);
     setOpenInquiry(false);
     setInquiryData({});
-  }
-
-  const handleClose = () => {
-    setOpen(false);
-    setIsUploadComplete(false);
-  };
-
-  const handleClickOpenErrorList = () => {
-    setOpenErrorList(true);
-  };
-
-  const handleCloseErrorList = () => {
-    setOpenErrorList(false);
-  };
-  
-  const handleFileUpload = async () => {
-
-    
-    console.log('Loading:', loading);
-
-    const formData = new FormData();
-    
-    const fileInput = document.querySelector("#file").files[0];      
-    
-    if(fileInput) {
-      setLoading(true);
-      formData.append('file', fileInput); 
-      
-      try {
-        // Send File uplaod invoice request
-        const errorMessage = await sendPost(formData);
-
-        if(!errorMessage) {
-          setIsEmportError(false);
-          setAlertMessage(Translate("success"));
-        } else {
-          setAlertMessage("Invalid Data, check the file and try again");
-          setIsEmportError(true);
-        }
-        
-      } catch (error) {
-        // Empty
-      } finally {
-        setLoading(false)
-      }
-    }
-    else {
-      setIsEmportError(true)
-      setAlertMessage('No file selecetd.')
-    }
-    setIsUploadComplete(true)
   }
 
   return (
@@ -367,31 +263,6 @@ export default function InvoiceListView() {
             py: 2
             }}
         >
-          <Button
-            component={RouterLink}
-            href={paths.dashboard.invoice.new}
-            variant="contained"
-            startIcon={<Iconify icon="mingcute:add-line" />}
-            sx={{
-              margin: 0.5
-            }}
-          >
-            {Translate("newInvoice")}
-          </Button>
-
-          <Button
-            component={RouterLink}
-            variant="contained"
-            color='primary'
-            onClick={handleClickOpen}
-            startIcon={<Iconify icon="solar:import-bold" />}
-            sx={{
-              margin: 0.5
-            }}
-          >
-            {Translate("import")}
-          </Button>
-          
           <Button
             variant="contained"
             color='primary'
@@ -444,6 +315,7 @@ export default function InvoiceListView() {
                       tableData.map((row) => row.id)
                     )
                   }
+                  checkboxEnabled={false}
                 />
 
                 <TableBody>
@@ -459,8 +331,6 @@ export default function InvoiceListView() {
                         selected={table.selected.includes(row.id)}
                         onSelectRow={() => table.onSelectRow(row.id)}
                         onViewRow={() => handleViewRow(row.id)}
-                        onEditRow={() => handleEditRow(row.id)}
-                        onDeleteRow={() =>  handleDeleteRow(row.id)}
                         handleOpenInquiry={() => handleOpenInquiry(row.id)}
                       />
                     ))}
@@ -488,78 +358,6 @@ export default function InvoiceListView() {
           />
         </Card>
       </Container>
-
-      <ConfirmDialog
-        open={confirm.value}
-        onClose={confirm.onFalse}
-        title={Translate("delete")}
-        content={
-          <>
-            Are you sure want to delete <strong> {table.selected.length} </strong> items?
-          </>
-        }
-        action={
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => {
-              handleDeleteRows();
-              confirm.onFalse();
-            }}
-          >
-            Delete
-          </Button>
-        }
-      />
-
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>File upload</DialogTitle>
-        <DialogContent >
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="file"
-            label={Translate("importFile")}
-            type="file"
-            fullWidth
-            variant="standard"
-            inputProps={{ accept: '.xls, .xlsx' }}
-          />
-            <Collapse in={isUploadComplete}>
-              <Alert
-                severity={isEmportError ? "error" : "success"}
-                action={
-                  <IconButton
-                    aria-label="close"
-                    color="inherit"
-                    size="small"
-                    onClick={() => {
-                      setIsUploadComplete(false);
-                    }}
-                    
-                  >
-                    <Icon icon="ic:baseline-close" />
-
-                  </IconButton>
-                }
-                sx={{ mb: 2 }}
-              >
-                {alertMessage}
-              </Alert>
-              
-            </Collapse>
-          
-            {loading && <CircularProgress />}
-          
-        </DialogContent>
-        
-        <DialogActions>
-          <Button onClick={handleClose}>{Translate("cancel")}</Button>
-          <Button onClick={handleFileUpload}>{Translate("import")}</Button>
-        </DialogActions>
-      </Dialog> 
-
 
       <Dialog
         open={openInquiry}

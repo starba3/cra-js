@@ -304,6 +304,7 @@ export default function UserListView() {
                   rowCount={tableData.length}
                   numSelected={table.selected.length}
                   onSort={table.onSort}
+                  checkboxEnabled={false}
                   // onSelectAllRows={(checked) =>
                   //   table.onSelectAllRows(
                   //     checked,

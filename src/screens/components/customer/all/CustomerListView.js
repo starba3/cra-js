@@ -320,6 +320,7 @@ export default function CustomerListView() {
                   //     tableData.map((row) => row.id)
                   //   )
                   // }
+                  checkboxEnabled={false}
                 />
 
                 <TableBody>

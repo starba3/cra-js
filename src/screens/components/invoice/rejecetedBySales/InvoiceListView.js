@@ -197,15 +197,6 @@ export default function InvoiceListView() {
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
-  const getInvoiceLength = (status) => tableData.filter((item) => item.paidStatus === status).length;
-
-  const getTotalAmount = (status) =>
-    sumBy(
-      tableData.filter((item) => item.paidStatus === status),
-      'invoiceAmount'
-    );
-
-  const getPercentByStatus = (status) => (getInvoiceLength(status) / tableData.length) * 100;
 
   const handleFilters = useCallback(
     (name, value) => {
@@ -295,14 +286,7 @@ export default function InvoiceListView() {
     setIsUploadComplete(false);
   };
 
-  const handleClickOpenErrorList = () => {
-    setOpenErrorList(true);
-  };
 
-  const handleCloseErrorList = () => {
-    setOpenErrorList(false);
-  };
-  
   const handleFileUpload = async () => {
 
     
@@ -426,6 +410,7 @@ export default function InvoiceListView() {
                       tableData.map((row) => row.id)
                     )
                   }
+                  checkboxEnabled={false}
                 />
 
                 <TableBody>

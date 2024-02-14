@@ -11,11 +11,11 @@ const SalesDashboardView = lazy(() => import('src/screens/components/dashboard/s
 
 const getDashaboard = (role) => {
   
-  if (role === "operation") {
+  if (role.toLowerCase() === "operation") {
     return <OperationDashboardView /> 
   }
 
-  if (role === "Sales") {
+  if (role.toLowerCase() === "sales") {
     return <SalesDashboardView /> 
   }
 

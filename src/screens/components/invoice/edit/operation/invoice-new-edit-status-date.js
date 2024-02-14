@@ -76,11 +76,11 @@ export default function InvoiceNewEditStatusDate({
     const fetchData = async () => {
       try {
         const data = await getCollectionData();
-        const salesList = await getSalesPersonList()
+        const salesTakerList = await getSalesPersonList()
 
-        setSalesList(salesList)
+        setSalesList(salesTakerList)
 
-        console.log(salesList)
+        console.log(salesTakerList)
         setCollectionData(data);
         setCollectionSource(data.filter(option => option.entityType === 'Collection Source'))
         
@@ -679,9 +679,9 @@ export default function InvoiceNewEditStatusDate({
             renderValue={(selected) => selected}
             sx={{ textTransform: 'capitalize', fullWidth: true }}
           >
-            {claimsDetailStatus.map((option, index) => (
-              <MenuItem key={index} value={option.value}>
-                {option.value}
+            {salesList.map((option, index) => (
+              <MenuItem key={index} value={option.username}>
+                {option.username}
               </MenuItem>
             ))}
           </Select>

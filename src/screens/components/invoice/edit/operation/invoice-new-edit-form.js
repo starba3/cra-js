@@ -25,6 +25,7 @@ import { useRouter } from 'src/routes/hooks';
 // _mock
 import { getInvoiceRedirectUrl, getAddAttachmentUrl, addAttachment, editInvoice } from 'src/data-access/invoice';
 import { _departments_withoutAll } from 'src/lists/departments';
+import { getUserRole } from 'src/helpers/roleHelper'
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
@@ -76,6 +77,10 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
   const arrays = {
     daysToCollect: ['collection'],
     deliveryDate: ['operation'],
+    invoiceAmount: ['operation'],
+    poValue: ['operation'],
+    contractNo: ['operation'],
+    salesTakerName: ['operation'],
     department: ['operation', 'sales', 'tenderandcontracts', 'collection'],
     acknowledgeStatuses: ['operation', 'sales'],
     installationStatus: ['installation'],
@@ -99,7 +104,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     invoiceAmount: Yup.number(),
     poValue: Yup.number(),
     contractNo: Yup.string(),
-    SalesTaker: Yup.string(),
+    salesTakerName: Yup.string(),
 
   });
 
@@ -111,7 +116,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       CreateNote: currentInvoice?.CreateNote || '',
       department: currentInvoice?.department || '',
       acknowledgeStatus: currentInvoice?.acknowledgeStatus || '', 
-      DeliveryDate: currentInvoice ? new Date(currentInvoice?.DeliveryDate ) : new Date(),
+      DeliveryDate: currentInvoice ? new Date(currentInvoice?.deliveryDate) : new Date(),
       installationStatus: currentInvoice?.installationStatus || '',
       installationDate: currentInvoice ? new Date(currentInvoice?.installationDate ) : new Date(), 
       collectionSource: currentInvoice?.CollectionSource || '',
@@ -121,7 +126,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       invoiceAmount: currentInvoice?.invoiceAmount || 0,
       poValue: currentInvoice?.poValue || 0,
       contractNo: currentInvoice?.contractNo || '',
-      SalesTaker: currentInvoice?.SalesTaker || '',
+      salesTakerName: currentInvoice?.salesTakerName || '',
     }),
     [currentInvoice]
   );
@@ -162,7 +167,22 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       
-      const {CreateNote,department,acknowledgeStatus,DeliveryDate, installationDate, installationStatus, collectionSource, daysToCollect, claimStatus, claimsDetailStatus} = watch();
+      const {
+        CreateNote,
+        department,
+        acknowledgeStatus,
+        DeliveryDate,
+        installationDate,
+        installationStatus,
+        collectionSource,
+        daysToCollect,
+        claimStatus,
+        claimsDetailStatus,
+        invoiceAmount,
+        poValue,
+        contractNo,
+        salesTakerName
+      } = watch();
 
       const body = [];
 
@@ -171,6 +191,38 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
           op : "replace",
           path : "/department",
           value : `${department}`
+        });
+      }
+
+      if(invoiceAmount && arrays.invoiceAmount.includes(currentInvoice.department.toLowerCase())) {
+        body.push({
+          op : "replace",
+          path : "/InvoiceAmount",
+          value : `${invoiceAmount}`
+        });
+      }
+
+      if(arrays.poValue.includes(currentInvoice.department.toLowerCase())) {
+        body.push({
+          op : "replace",
+          path : "/PoValue",
+          value : `${poValue}`
+        });
+      }
+
+      if(contractNo && arrays.contractNo.includes(currentInvoice.department.toLowerCase())) {
+        body.push({
+          op : "replace",
+          path : "/ContractNo",
+          value : `${contractNo}`
+        });
+      }
+
+      if(salesTakerName && arrays.salesTakerName.includes(currentInvoice.department.toLowerCase())) {
+        body.push({
+          op : "replace",
+          path : "/SalesTakerUsername",
+          value : `${salesTakerName}`
         });
       }
 
@@ -190,7 +242,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         });
       }
 
-      if(DeliveryDate&& arrays.deliveryDate.includes(currentInvoice.department.toLowerCase())) {
+      if(DeliveryDate && arrays.deliveryDate.includes(currentInvoice.department.toLowerCase())) {
         body.push({
           op : "replace",
           path : "/DeliveryDate",
@@ -262,7 +314,8 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         reset();
         setDidUpdate(true);
         loadingSend.onFalse();
-        router.replace(redirectUrl);
+        // router.replace(redirectUrl);
+        router.back()
       }
 
     } catch (error) {

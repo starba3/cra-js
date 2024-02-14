@@ -426,6 +426,7 @@ export default function InvoiceListView() {
                       tableData.map((row) => row.id)
                     )
                   }
+                  checkboxEnabled={false}
                 />
 
                 <TableBody>

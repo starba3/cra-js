@@ -345,6 +345,7 @@ export default function ProductListView() {
                   rowCount={tableData.length}
                   numSelected={table.selected.length}
                   onSort={table.onSort}
+                  checkboxEnabled={false}
                   // onSelectAllRows={(checked) =>
                   //   table.onSelectAllRows(
                   //     checked,

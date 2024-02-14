@@ -267,13 +267,6 @@ export default function InvoiceListView() {
     [router]
   );
 
-  const handleFilterStatus = useCallback(
-    (event, newValue) => {
-      handleFilters('paidStatus', newValue);
-    },
-    [handleFilters]
-  );
-
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
@@ -492,6 +485,7 @@ export default function InvoiceListView() {
                       tableData.map((row) => row.id)
                     )
                   }
+                  checkboxEnabled={false}
                 />
 
                 <TableBody>

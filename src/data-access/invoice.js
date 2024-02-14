@@ -12,8 +12,23 @@ export async function getAllInvoices() {
     return sendGet(url, []);
 }
 
-export async function getAllOperationInvoices() {
-    const url = `${baseUrl}/Invoices`;
+export async function getAllOperationInvoices(role) {
+    let url = ''
+    switch(role.toLowerCase()) {
+        case 'operation':
+            url = `${baseUrl}/Invoices`
+            break
+        case 'sales':
+            url = `${baseUrl}/Invoices`
+            break
+        case 'engineer':
+            url = `${baseUrl}/Invoices`
+            break
+        default:
+            url = `${baseUrl}/Invoices`
+            break
+    }
+    // const url = `${baseUrl}/Invoices`;
     return sendGet(url, []);
 }
 
@@ -50,7 +65,7 @@ function getInvoiceEditUrl(departmentId, invoiceId) {
     switch (departmentId) {
         case -1:
         case 0:
-            url = `${baseUrl}/api/Invoices/${invoiceId}/Edit/Operation`
+            url = `${baseUrl}/Invoice/${invoiceId}` // Operation
             break;
         case 1:
             url = `${baseUrl}/api/Invoices/${invoiceId}/Edit/installation`
