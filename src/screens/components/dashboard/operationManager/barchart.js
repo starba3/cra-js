@@ -9,9 +9,9 @@ const BarChart = ({ data }) => {
     const { t } = useLocales()
     const translate = (text) => t(text)
     console.log("Data: ", data)
-    // Assuming data is an array of objects with properties { name, count }
-    const categories = data.map(item => item.status);
-    const counts = data.map(item => item.count);
+    // Assuming data is an array of objects with properties { status, count }
+    const categories = data.slice(1).map(item => item.status);
+    const counts = data.slice(1).map(item => item.count);
 
     const options = {
         chart: {

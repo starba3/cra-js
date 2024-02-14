@@ -57,11 +57,12 @@ import {
 } from 'src/components/table';
 
 // DATA ACCESS
-import { getAllInvoices, getInvoiceImportUrl, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
+import { getAllInvoices, getAllOperationInvoices, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
 // Utility
 import { exportToExcel } from 'src/utils/export';
+import { getUserRole } from 'src/helpers/roleHelper'
 //
 import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
 import { sendPost } from 'src/helpers/requestHelper';
@@ -113,7 +114,11 @@ export default function InvoiceListView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getAllInvoices();
+        let result = []
+
+        if(getUserRole() === "operation") result = await getAllOperationInvoices()
+        else result = await getAllInvoices() 
+
         setTableData(result);
       } catch (error) {
         console.error('Error fetching invoices:', error);
@@ -219,7 +224,11 @@ export default function InvoiceListView() {
         if (!errorMessage) {
           // Fetch data only if deletion was successful
           try {
-            const result = await getAllInvoices();
+            let result = []
+        
+            if(getUserRole() === "operation") result = await getAllOperationInvoices()
+            else result = await getAllInvoices() 
+          
             setTableData(result);
           } catch (error) {
             console.error('Error fetching invoices:', error);

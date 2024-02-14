@@ -12,6 +12,11 @@ export async function getAllInvoices() {
     return sendGet(url, []);
 }
 
+export async function getAllOperationInvoices() {
+    const url = `${baseUrl}/Invoices`;
+    return sendGet(url, []);
+}
+
 export async function getNeedToAction() {
     const url = `${baseUrl}/Invoices/need-to-action`;
     return sendGet(url, []);

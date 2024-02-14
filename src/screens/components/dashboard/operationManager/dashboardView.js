@@ -12,7 +12,7 @@ import CardHeader from '@mui/material/CardHeader';
 // hooks
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 // Data access
-import { getDashboardData } from 'src/data-access/dashboard';
+import { getOperationDashboardData } from 'src/data-access/dashboard';
 // components
 import { useSettingsContext } from 'src/components/settings';
 // import AppWidgetSummary from 'src/sections/overview/app/app-widget-summary';
@@ -31,24 +31,7 @@ const BarChart = lazy(() => import('./barchart'));
 export default function OMDashboardView() {
   const { user } = useMockedUser();
 
-  const [data, setData] = useState([
-    {
-      status: "Acknowleadged",
-      count: 5
-    },
-    {
-      status: "Not Acknowleadged",
-      count: 5
-    },
-    {
-      status: "Rejected",
-      count: 5
-    },
-    {
-      status: "Temporary Acknowleadgment",
-      count: 5
-    }
-  ])
+  const [data, setData] = useState([])
   
   // const { t, currentLang } = useLocales();
   // const translate = (text) => t(text);
@@ -81,9 +64,17 @@ export default function OMDashboardView() {
   //   }
   // };
 
-  // useEffect(() => {
-  //   getInvoices();
-  // }, []);
+  useEffect(() => {
+    const getNewData = async () => {
+      try {
+        const newData = await getOperationDashboardData();
+        setData(newData);
+      } catch (error) {
+        console.error('Error fetching invoice:', error);
+      } 
+    }
+    getNewData()
+  }, []);
 
 
   return (
