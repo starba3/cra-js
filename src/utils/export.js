@@ -34,6 +34,12 @@ export const exportToExcel = (data, headers, language, currency, reportName, fil
 
   if(reportName.toLowerCase() === 'gmreasonreport') 
     filteredData = prepareDataForGMReasonReport(data, headers, currency);
+
+  if(reportName.toLowerCase() === 'needtoaction') 
+    filteredData = prepareDataForNeedToAction(data, headers, language, currency);
+
+  if(reportName.toLowerCase() === 'rejectedbysales') 
+    filteredData = prepareDataForRejectedBySales(data, headers, language, currency);
   // console.log("Headers: ", headers);
   // console.log("filteredData: ", filteredData);
 
@@ -205,6 +211,38 @@ const prepareDataForInvoicesByCustomer = (data, headers, language, currency) => 
     [headers[4]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
     [headers[5]]: invoice.paidStatus,
     [headers[6]]: invoice.department,
+  }
+  return list;
+});
+
+const prepareDataForNeedToAction = (data, headers, language, currency) => data.map((invoice) => {
+  const customerName = language === 'ar' ? invoice.customerNameAr : invoice.customerNameEn;
+  const productName = language === 'ar' ? invoice.productNameAr : invoice.productNameEn;
+
+  const list = {
+    [headers[0]]: invoice.invoiceNo,
+    [headers[1]]: customerName,
+    [headers[2]]: new Date(invoice.issueInvoiceDate).toLocaleDateString(),
+    [headers[3]]: invoice.daysToCollected,
+    [headers[4]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
+    [headers[5]]: productName,
+    [headers[6]]: invoice.paidStatus,
+  }
+  return list;
+});
+
+const prepareDataForRejectedBySales = (data, headers, language, currency) => data.map((invoice) => {
+  const customerName = language === 'ar' ? invoice.customerNameAr : invoice.customerNameEn;
+  const productName = language === 'ar' ? invoice.productNameAr : invoice.productNameEn;
+
+  const list = {
+    [headers[0]]: invoice.invoiceNo,
+    [headers[1]]: customerName,
+    [headers[2]]: new Date(invoice.issueInvoiceDate).toLocaleDateString(),
+    [headers[3]]: invoice.daysToCollected,
+    [headers[4]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
+    [headers[5]]: productName,
+    [headers[6]]: invoice.paidStatus,
   }
   return list;
 });

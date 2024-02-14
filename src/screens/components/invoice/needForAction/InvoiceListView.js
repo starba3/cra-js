@@ -191,8 +191,8 @@ export default function InvoiceListView() {
     Translate("issueInvoiceDate"),
     Translate("daysToCollected"),
     Translate("invoiceAmount"),
-    Translate("paidStatus"),
-    Translate("department")
+    Translate("productName"),
+    Translate("paidStatus")
   ];
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
@@ -377,7 +377,7 @@ export default function InvoiceListView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'AllInvoices', `${Translate("invoices")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'NeedToAction', `${Translate("needToAction")}-${new Date().toLocaleDateString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5
