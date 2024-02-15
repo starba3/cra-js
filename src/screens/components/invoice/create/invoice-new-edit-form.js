@@ -115,7 +115,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       const { success, errorMessage } = await createInvoice(body);
 
       if(success) {
-        router.replace(redirectUrl);
+        router.back();
       }
       
     } catch (error) {

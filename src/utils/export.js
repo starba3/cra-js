@@ -1,4 +1,4 @@
-import React from 'react';
+
 import ExcelJS from 'exceljs';
 
 export const exportToExcel = (data, headers, language, currency, reportName, fileName) => {
@@ -9,7 +9,7 @@ export const exportToExcel = (data, headers, language, currency, reportName, fil
     filteredData = prepareDataForInvoiceByDepartment(data, headers, language);
 
   if(reportName.toLowerCase() === 'allinvoices')
-    filteredData = prepareDataForAllInvoices(data, headers, language);
+    filteredData = prepareDataForAllInvoices(data, headers, language, currency);
 
   if(reportName.toLowerCase() === 'customers')
     filteredData = prepareDataForCustomers(data, headers);
@@ -40,6 +40,13 @@ export const exportToExcel = (data, headers, language, currency, reportName, fil
 
   if(reportName.toLowerCase() === 'rejectedbysales') 
     filteredData = prepareDataForRejectedBySales(data, headers, language, currency);
+
+  if(reportName.toLowerCase() === 'deliverydate') 
+    filteredData = prepareDataForDeliveryDate(data, headers, language, currency);
+
+  if(reportName.toLowerCase() === 'acknowledgment') 
+    filteredData = prepareDataForAcknowleadgment(data, headers, language, currency);
+
   // console.log("Headers: ", headers);
   // console.log("filteredData: ", filteredData);
 
@@ -92,13 +99,14 @@ const prepareDataForInvoiceByDepartment = (data, headers, language) => data.map(
   return list;
 });
 
-const prepareDataForAllInvoices = (data, headers, language) => data.map((invoice) => {
+const prepareDataForAllInvoices = (data, headers, language, currency) => data.map((invoice) => {
   const list = {
     [headers[0]]: invoice.invoiceNo,
     [headers[1]]: language === 'ar' ? invoice.customerNameAr : invoice.customerNameEn,
     [headers[2]]: invoice.issueInvoiceDate,
-    [headers[3]]: invoice.daysToCollected,
-    [headers[4]]: invoice.invoiceAmount,
+    // [headers[3]]: invoice.daysToCollected,
+    [headers[3]]: `${invoice.invoiceAmount} ${currency}`,
+    [headers[4]]: language === 'ar' ? invoice.productNameAr : invoice.productNameEn, 
     [headers[5]]: invoice.paidStatus,
     [headers[6]]: invoice.department
   }
@@ -223,10 +231,11 @@ const prepareDataForNeedToAction = (data, headers, language, currency) => data.m
     [headers[0]]: invoice.invoiceNo,
     [headers[1]]: customerName,
     [headers[2]]: new Date(invoice.issueInvoiceDate).toLocaleDateString(),
-    [headers[3]]: invoice.daysToCollected,
-    [headers[4]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
-    [headers[5]]: productName,
-    [headers[6]]: invoice.paidStatus,
+    // [headers[3]]: invoice.daysToCollected,
+    [headers[3]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
+    [headers[4]]: productName,
+    [headers[5]]: invoice.paidStatus,
+    [headers[6]]: invoice.department,
   }
   return list;
 });
@@ -239,10 +248,45 @@ const prepareDataForRejectedBySales = (data, headers, language, currency) => dat
     [headers[0]]: invoice.invoiceNo,
     [headers[1]]: customerName,
     [headers[2]]: new Date(invoice.issueInvoiceDate).toLocaleDateString(),
-    [headers[3]]: invoice.daysToCollected,
+    // [headers[3]]: invoice.daysToCollected,
+    [headers[3]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
+    [headers[4]]: productName,
+    [headers[5]]: invoice.paidStatus,
+    [headers[6]]: invoice.department,
+  }
+  return list;
+});
+
+const prepareDataForDeliveryDate = (data, headers, language, currency) => data.map((invoice) => {
+  const customerName = language === 'ar' ? invoice.customerNameAr : invoice.customerNameEn;
+  const productName = language === 'ar' ? invoice.productNameAr : invoice.productNameEn;
+
+  const list = {
+    [headers[0]]: invoice.invoiceNo,
+    [headers[1]]: customerName,
+    [headers[2]]: new Date(invoice.issueInvoiceDate).toLocaleDateString(),
+    [headers[3]]: new Date(invoice.deliveryDate).toLocaleDateString(),
     [headers[4]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
     [headers[5]]: productName,
     [headers[6]]: invoice.paidStatus,
+    [headers[7]]: invoice.department,
+  }
+  return list;
+});
+
+const prepareDataForAcknowleadgment = (data, headers, language, currency) => data.map((invoice) => {
+  const customerName = language === 'ar' ? invoice.customerNameAr : invoice.customerNameEn;
+  const productName = language === 'ar' ? invoice.productNameAr : invoice.productNameEn;
+
+  const list = {
+    [headers[0]]: invoice.invoiceNo,
+    [headers[1]]: customerName,
+    [headers[2]]: new Date(invoice.issueInvoiceDate).toLocaleDateString(),
+    [headers[3]]: invoice.acknowledgeStatus,
+    [headers[4]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
+    [headers[5]]: productName,
+    [headers[6]]: invoice.paidStatus,
+    [headers[7]]: invoice.department,
   }
   return list;
 });

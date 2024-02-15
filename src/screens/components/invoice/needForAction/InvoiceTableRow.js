@@ -116,7 +116,7 @@ export default function InvoiceTableRow({
           />
         </TableCell>
 
-        <TableCell >{daysToCollected}</TableCell>
+        {/* <TableCell >{daysToCollected}</TableCell> */}
         
         <TableCell >{`${invoiceAmount.toLocaleString()} ${Translate('currencyShortcut')}`}</TableCell>
 
@@ -124,7 +124,7 @@ export default function InvoiceTableRow({
 
         <TableCell align="center" >{paidStatus}</TableCell>
 
-        {/* <TableCell align="center" >{department}</TableCell> */}
+        <TableCell align="center" >{department}</TableCell>
 
         <TableCell align="right" sx={{ px: 1 }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>

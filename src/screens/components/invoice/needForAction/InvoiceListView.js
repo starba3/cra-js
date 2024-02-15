@@ -177,11 +177,10 @@ export default function InvoiceListView() {
   const TABLE_HEAD = [
     { id: 'invoiceNumber', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
-    { id: 'daysToCollected', label: Translate("daysToCollected") },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName"), align: 'center' },
     { id: 'paidStatus', label: Translate("paidStatus"), align: 'center' },
-    // { id: 'department', label: Translate("department"), align: 'center' },
+    { id: 'department', label: Translate("department"), align: 'center' },
     { id: '' },
   ];
 
@@ -189,23 +188,12 @@ export default function InvoiceListView() {
     Translate("invoiceNumber"),
     Translate("customerName"),
     Translate("issueInvoiceDate"),
-    Translate("daysToCollected"),
     Translate("invoiceAmount"),
     Translate("productName"),
     Translate("paidStatus")
   ];
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
-
-  const getInvoiceLength = (status) => tableData.filter((item) => item.paidStatus === status).length;
-
-  const getTotalAmount = (status) =>
-    sumBy(
-      tableData.filter((item) => item.paidStatus === status),
-      'invoiceAmount'
-    );
-
-  const getPercentByStatus = (status) => (getInvoiceLength(status) / tableData.length) * 100;
 
   const handleFilters = useCallback(
     (name, value) => {

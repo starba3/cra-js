@@ -23,18 +23,10 @@ export default function InvoiceTableFiltersResult({
   const shortLabel = shortDateLabel(filters.startDate, filters.endDate);
 
   const handleRemoveService = (inputValue) => {
-    const newValue = filters.departments.filter((item) => item !== inputValue);
-    onFilters('departments', newValue);
+    const newValue = filters.acknowleadgmentStatus.filter((item) => item !== inputValue);
+    onFilters('acknowleadgmentStatus', newValue);
   };
 
-  const handleRemoveStatus = () => {
-    onFilters('status', 'all');
-  };
-
-  const handleRemoveDate = () => {
-    onFilters('startDate', null);
-    onFilters('endDate', null);
-  };
 
   return (
     <Stack spacing={1.5} {...other}>
@@ -46,9 +38,9 @@ export default function InvoiceTableFiltersResult({
       </Box>
 
       <Stack flexGrow={1} spacing={1} direction="row" flexWrap="wrap" alignItems="center">
-        {!!filters.departments.length && (
-          <Block label="Departments:">
-            {filters.departments.map((item) => (
+        {!!filters.acknowleadgmentStatus.length && (
+          <Block label="Statuses:">
+            {filters.acknowleadgmentStatus.map((item) => (
               <Chip
                 key={item}
                 label={item}
@@ -56,18 +48,6 @@ export default function InvoiceTableFiltersResult({
                 onDelete={() => handleRemoveService(item)}
               />
             ))}
-          </Block>
-        )}
-
-        {filters.status !== 'all' && (
-          <Block label="Status:">
-            <Chip size="small" label={filters.status} onDelete={handleRemoveStatus} />
-          </Block>
-        )}
-
-        {filters.startDate && filters.endDate && (
-          <Block label="Date:">
-            <Chip size="small" label={shortLabel} onDelete={handleRemoveDate} />
           </Block>
         )}
 

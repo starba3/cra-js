@@ -12,7 +12,7 @@ export async function getAllInvoices() {
     return sendGet(url, []);
 }
 
-export async function getAllOperationInvoices(role) {
+export async function getAllOperationInvoices(role = "operation") {
     let url = ''
     switch(role.toLowerCase()) {
         case 'operation':

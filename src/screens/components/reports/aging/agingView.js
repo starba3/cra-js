@@ -223,6 +223,7 @@ export default function AgingView() {
                   //     tableData.map((row) => row.id)
                   //   )
                   // }
+                  checkboxEnabled={false}
                 />
 
                 <TableBody>

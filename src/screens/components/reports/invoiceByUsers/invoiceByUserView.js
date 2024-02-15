@@ -221,6 +221,7 @@ export default function InvoiceByUserView() {
                   //     tableData.map((row) => row.id)
                   //   )
                   // }
+                  checkboxEnabled={false}
                 />
 
                 <TableBody>

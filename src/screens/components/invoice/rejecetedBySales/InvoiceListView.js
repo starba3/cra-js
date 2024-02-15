@@ -174,22 +174,20 @@ export default function InvoiceListView() {
     filters.status !== 'all' ||
     (!!filters.startDate && !!filters.endDate);
 
-    const TABLE_HEAD = [
-      { id: 'invoiceNumber', label: Translate("invoiceNumber") },
-      { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
-      { id: 'daysToCollected', label: Translate("daysToCollected") },
-      { id: 'invoiceAmount', label: Translate("invoiceAmount") },
-      { id: 'productName', label: Translate("productName"), align: 'center' },
-      { id: 'paidStatus', label: Translate("paidStatus"), align: 'center' },
-      // { id: 'department', label: Translate("department"), align: 'center' },
-      { id: '' },
-    ];
+  const TABLE_HEAD = [
+    { id: 'invoiceNumber', label: Translate("invoiceNumber") },
+    { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
+    { id: 'invoiceAmount', label: Translate("invoiceAmount") },
+    { id: 'productName', label: Translate("productName"), align: 'center' },
+    { id: 'paidStatus', label: Translate("paidStatus"), align: 'center' },
+    { id: 'department', label: Translate("department"), align: 'center' },
+    { id: '' },
+  ];
 
   const exportHeaderRow = [
     Translate("invoiceNumber"),
     Translate("customerName"),
     Translate("issueInvoiceDate"),
-    Translate("daysToCollected"),
     Translate("invoiceAmount"),
     Translate("productName"),
     Translate("paidStatus")
@@ -255,20 +253,9 @@ export default function InvoiceListView() {
     [router]
   );
 
-  const handleFilterStatus = useCallback(
-    (event, newValue) => {
-      handleFilters('paidStatus', newValue);
-    },
-    [handleFilters]
-  );
-
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleOpenInquiry = (id) => {
     setInquiryId(id);

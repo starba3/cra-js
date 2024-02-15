@@ -50,9 +50,10 @@ import {
 } from 'src/components/table';
 
 // DATA ACCESS
-import { getAllInvoices, getInvoiceImportUrl, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
+import { getAllOperationInvoices, getInvoiceImportUrl, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
+import { _acknowledgmentReport } from  'src/lists/acknowledgeStatus'
 // Utility
 import { exportToExcel } from 'src/utils/export';
 //
@@ -60,15 +61,16 @@ import InvoiceTableFiltersResult from './InvoiceTableFiltersResult';
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
 
+
 // ----------------------------------------------------------------------
 
 const defaultFilters = {
-  name: '',
-  departments: [],
-  paidStatus: [],
-  status: 'all',
-  startDate: null,
-  endDate: null,
+  // name: '',
+  // departments: [],
+  acknowleadgmentStatus: [],
+  // status: 'all',
+  // startDate: null,
+  // endDate: null,
 };
 
 // ----------------------------------------------------------------------
@@ -96,7 +98,7 @@ export default function InvoiceListView({ title }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getAllInvoices();
+        const result = await getAllOperationInvoices();
         setTableData(result);
       } catch (error) {
         console.error('Error fetching invoices:', error);
@@ -147,16 +149,14 @@ export default function InvoiceListView({ title }) {
   const denseHeight = table.dense ? 56 : 76;
 
   const canReset =
-    !!filters.name ||
-    !!filters.departments.length ||
-    filters.status !== 'all' ||
-    (!!filters.startDate && !!filters.endDate);
+    !!filters.acknowleadgmentStatus.length 
 
   const TABLE_HEAD = [
     { id: 'invoiceNumber', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
-    { id: 'daysToCollected', label: Translate("daysToCollected") },
+    { id: 'acknowledgeStatus', label: Translate("acknowledgeStatus") },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
+    { id: 'productName', label: Translate("productName"), align: 'center' },
     { id: 'paidStatus', label: Translate("paidStatus"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
     { id: '' },
@@ -166,8 +166,9 @@ export default function InvoiceListView({ title }) {
     Translate("invoiceNumber"),
     Translate("customerName"),
     Translate("issueInvoiceDate"),
-    Translate("daysToCollected"),
+    Translate("acknowledgeStatus"),
     Translate("invoiceAmount"),
+    Translate("productName"),
     Translate("paidStatus"),
     Translate("department")
   ];
@@ -243,7 +244,7 @@ export default function InvoiceListView({ title }) {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'AllInvoices', `${Translate("invoices")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'Acknowledgment', `${Translate("acknowledgment")}-${new Date().toLocaleDateString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5
@@ -260,8 +261,8 @@ export default function InvoiceListView({ title }) {
             filters={filters}
             onFilters={handleFilters}
             dateError={dateError}
-            serviceOptions={_departments().map((option) => option)}
-            paidStatusOptions={_statusList().map((option) => option)}
+            acknowleadgmentOptions={_acknowledgmentReport()}
+            // paidStatusOptions={_statusList().map((option) => option)}
           />
 
           {canReset && (
@@ -406,8 +407,8 @@ export default function InvoiceListView({ title }) {
 }
 
 function applyFilter({ inputData, comparator, filters, dateError }) {
-    const { name, status, departments, startDate, paidStatus, endDate } = filters;
-  
+    // const { name, status, departments, startDate, paidStatus, endDate } = filters;
+    const { acknowleadgmentStatus } = filters
     const stabilizedThis = inputData.map((el, index) => [el, index]);
   
     stabilizedThis.sort((a, b) => {
@@ -417,42 +418,12 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
     });
   
     inputData = stabilizedThis.map((el) => el[0]);
-  
-    if (name) {
-      inputData = inputData.filter(
-        (invoice) =>
-          invoice.customerNameEn.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-          invoice.invoiceNo.toLowerCase().indexOf(name.toLowerCase()) !== -1
-          
-          // invoice.invoiceTo.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
-      );
-    }
-  
-    if (status !== 'all') {
-      inputData = inputData.filter((invoice) => invoice.status === status);
-    }
-  
-    if (departments.length) {
-      inputData = inputData.filter((invoice) =>
-        // service.map((serviceName) => serviceName.toLowerCase()).includes(invoice.department)
-        departments.includes('All') || departments.includes(invoice.department)
-      );
-    }
-    
-    if (paidStatus.length) {
-      inputData = inputData.filter((invoice) =>
-        paidStatus.includes('All') || paidStatus.map((option) => option.toLowerCase()).includes(invoice.paidStatus)
-      );
-    }
+    console.log("data in filter ", acknowleadgmentStatus)
 
-    if (!dateError) {
-      if (startDate && endDate) {
-        inputData = inputData.filter(
-          (invoice) =>
-            fTimestamp(invoice.issueInvoiceDate) >= fTimestamp(startDate) &&
-            fTimestamp(invoice.issueInvoiceDate) <= fTimestamp(endDate)
-        );
-      }
+    if (acknowleadgmentStatus.length) {
+      inputData = inputData.filter((invoice) =>
+        acknowleadgmentStatus.includes('All') || acknowleadgmentStatus.map((option) => option).includes(invoice.acknowledgeStatus)
+      );
     }
   
     return inputData;

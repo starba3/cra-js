@@ -32,10 +32,11 @@ export default function InvoiceTableRow({
   onDeleteRow,
   handleOpenInquiry,
 }) {
-  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameAr, customerNameEn, paidStatus, department } = row;
+  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameAr, customerNameEn, productNameAr, productNameEn, paidStatus, department } = row;
   
   const { t, currentLang } = useLocales()
   const customerName = currentLang.value === 'ar' ? customerNameAr : customerNameEn;
+  const productName = currentLang.value === 'ar' ? productNameAr : productNameEn;
   
   const Translate = (text) => t(text);
   const confirm = useBoolean();
@@ -86,11 +87,11 @@ export default function InvoiceTableRow({
             }}
           />
         </TableCell>
-
-        <TableCell >{daysToCollected}</TableCell>
         
         <TableCell >{`${invoiceAmount.toLocaleString()} ${Translate('currencyShortcut')}`}</TableCell>
 
+        <TableCell align="center" >{productName}</TableCell>
+        
         <TableCell align="center" >{paidStatus}</TableCell>
 
         <TableCell align="center" >{department}</TableCell>

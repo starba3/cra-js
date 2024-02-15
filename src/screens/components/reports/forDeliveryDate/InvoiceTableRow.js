@@ -32,10 +32,11 @@ export default function InvoiceTableRow({
   onDeleteRow,
   handleOpenInquiry,
 }) {
-  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameAr, customerNameEn, paidStatus, department } = row;
+  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameAr, customerNameEn, productNameAr, productNameEn, deliveryDate, paidStatus, department } = row;
   
   const { t, currentLang } = useLocales()
   const customerName = currentLang.value === 'ar' ? customerNameAr : customerNameEn;
+  const productName = currentLang.value === 'ar' ? productNameAr : productNameEn;
   
   const Translate = (text) => t(text);
   const confirm = useBoolean();
@@ -45,9 +46,9 @@ export default function InvoiceTableRow({
   return (
     <>
       <TableRow hover selected={selected}>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox checked={selected} onClick={onSelectRow} />
-        </TableCell>
+        </TableCell> */}
 
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
           <Avatar alt={customerName} sx={{ mr: 2 }}>
@@ -87,9 +88,22 @@ export default function InvoiceTableRow({
           />
         </TableCell>
 
-        <TableCell >{daysToCollected}</TableCell>
+        <TableCell >
+          <ListItemText
+            primary={format(new Date(deliveryDate || new Date().toLocaleString()), 'dd MMM yyyy')}
+            secondary={format(new Date(deliveryDate || new Date().toLocaleString()), 'p')}
+            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
+            secondaryTypographyProps={{
+              mt: 0.5,
+              component: 'span',
+              typography: 'caption',
+            }}
+          />
+        </TableCell>
         
         <TableCell >{`${invoiceAmount.toLocaleString()} ${Translate('currencyShortcut')}`}</TableCell>
+
+        <TableCell align="center" >{productName}</TableCell>
 
         <TableCell align="center" >{paidStatus}</TableCell>
 
