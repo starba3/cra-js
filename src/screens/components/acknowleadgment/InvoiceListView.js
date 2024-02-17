@@ -50,12 +50,13 @@ import {
 } from 'src/components/table';
 
 // DATA ACCESS
-import { getAllOperationInvoices, getInvoiceImportUrl, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
+import { getAllInvoices, getInvoiceImportUrl, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
 import { _acknowledgmentReport } from  'src/lists/acknowledgeStatus'
 // Utility
 import { exportToExcel } from 'src/utils/export';
+import { getUserRole } from 'src/helpers/roleHelper';
 //
 import InvoiceTableFiltersResult from './InvoiceTableFiltersResult';
 import InvoiceTableRow from './InvoiceTableRow';
@@ -78,9 +79,9 @@ const defaultFilters = {
 export default function InvoiceListView({ title }) {
   const theme = useTheme();
   const settings = useSettingsContext();
+  
 
   const router = useRouter();
-  console.log("title: ", title)
 
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 
@@ -98,7 +99,8 @@ export default function InvoiceListView({ title }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getAllOperationInvoices();
+        const ROLE = getUserRole()
+        const result = await getAllInvoices(ROLE);
         setTableData(result);
       } catch (error) {
         console.error('Error fetching invoices:', error);

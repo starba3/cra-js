@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'src/routes/hooks';
 import PropTypes from 'prop-types';
 // sections
-import  InvoiceEditView  from 'src/screens/components/invoice/edit/operation/InvoiceEditView';
+import  InvoiceEditView  from 'src/screens/components/invoice/edit/InvoiceEditView';
 
 // ----------------------------------------------------------------------
 

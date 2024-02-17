@@ -2,43 +2,50 @@
 // import { result } from "lodash";
 import axios from "axios";
 import { paths } from "src/routes/paths"
-import { sendGet, sendDelete, sendPost, sendPatch } from "src/helpers/requestHelper";
+import { sendGet, sendDelete, sendPost, sendPatch, createBaseUrlWithRole, createHeaders } from "src/helpers/requestHelper";
 
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
+const STORAGE_KEY = 'accessToken';
 
-export async function getAllInvoices() {
-    const url = `${baseUrl}/api/invoices`;
-    return sendGet(url, []);
+
+export async function getAllInvoices(role = "Operation") {
+    const url = `${createBaseUrlWithRole(role)}/Invoices`;
+    const headers = createHeaders(role)
+
+    return sendGet(url, [], headers);
 }
 
-export async function getAllOperationInvoices(role = "operation") {
-    let url = ''
-    switch(role.toLowerCase()) {
-        case 'operation':
-            url = `${baseUrl}/Invoices`
-            break
-        case 'sales':
-            url = `${baseUrl}/Invoices`
-            break
-        case 'engineer':
-            url = `${baseUrl}/Invoices`
-            break
-        default:
-            url = `${baseUrl}/Invoices`
-            break
-    }
-    // const url = `${baseUrl}/Invoices`;
-    return sendGet(url, []);
+export async function getNeedToAction(role) {
+    const url = `${createBaseUrlWithRole(role)}/Invoices/need-to-action`
+    const headers = createHeaders(role)
+
+    return sendGet(url, [], headers);
 }
 
-export async function getNeedToAction() {
-    const url = `${baseUrl}/Invoices/need-to-action`;
-    return sendGet(url, []);
+export async function getInvoiceAcceptence(role) {
+    const url = `${createBaseUrlWithRole(role)}/Invoices/confirm-reject-invoices`
+    const headers = createHeaders(role)
+
+    return sendGet(url, [], headers);
 }
 
-export async function getRejectBySales() {
-    const url = `${baseUrl}/Invoices/reject-by-sales`;
+export async function confirmRejectInvoice(body, role) {
+    const url = `${createBaseUrlWithRole(role)}/Confirmation/Invoices`
+    const headers = createHeaders(role)
+
+    const response = await sendPatch(url, body, headers);
+
+    const responseObj = {
+        success: !response,
+        errorMessage: response // Empty in successful request
+    };
+
+    return responseObj;
+}
+
+export async function getRejectBySales(role) {
+    const url = `${createBaseUrlWithRole(role)}/Invoices/reject-by-sales`;
     return sendGet(url, []);
 }
 
@@ -54,33 +61,24 @@ export async function getInvoicesBySalesConfirmation(confirmStatus) {
     return sendGet(url, []);
 }
 
-export async  function getInvoicesById(id) {
-    const url = `${baseUrl}/api/invoices/${id}`;
+export async  function getInvoicesById(id, role) {
+    // const url = `${createBaseUrlWithRole(role)}/Invoices/${id}`;
+    const url = `${baseUrl}/api/Operation/Invoices/${id}`;
+    // const headers = createHeaders(role)
+
     return sendGet(url, {});    
 }
 
-function getInvoiceEditUrl(departmentId, invoiceId) {
+function getInvoiceEditUrl(departmentId, invoiceId, role) {
 
     let url = ''
-    switch (departmentId) {
-        case -1:
-        case 0:
-            url = `${baseUrl}/Invoice/${invoiceId}` // Operation
-            break;
-        case 1:
-            url = `${baseUrl}/api/Invoices/${invoiceId}/Edit/installation`
-            break;
-        case 2:
-            url = `${baseUrl}/api/Invoices/${invoiceId}/Edit/Sales`
-            break;
-        case 3:
-            url = `${baseUrl}/api/Invoices/${invoiceId}/Edit/Collection`
-            break;   
-        case 4:
-            url = `${baseUrl}/api/Invoices/${invoiceId}/Edit/TenderAndContracts`
-            break;     
-        default:
-            break;
+    if (departmentId === 0) {
+        // Operation
+        url = `${createBaseUrlWithRole(role)}/Invoice/${invoiceId}` 
+    }
+    else {
+        // Other departments
+        url = `${createBaseUrlWithRole(role)}/Invoices/${invoiceId}` 
     }
 
     return url; // Return an empty object by default or handle errors as needed.
@@ -146,8 +144,8 @@ export async function deleteInvoice(id) {
     return sendPatch(url); 
 }
 
-export async function createInvoice(body) {
-    const url = `${baseUrl}/api/Invoices`;
+export async function createInvoice(body, role = "Operation") {
+    const url = `${createBaseUrlWithRole(role)}/Invoices`;
 
     const responseObj = {
         success: true,
@@ -162,9 +160,9 @@ export async function createInvoice(body) {
     return responseObj;
 }
 
-export async function editInvoice(id, departmentId, body) {
+export async function editInvoice(id, departmentId, body, role) {
 
-    const url = getInvoiceEditUrl(departmentId, id);
+    const url = getInvoiceEditUrl(departmentId, id, role);
 
     const responseObj = {
         success: true,

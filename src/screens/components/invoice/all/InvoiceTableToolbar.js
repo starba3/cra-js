@@ -137,7 +137,7 @@ export default function InvoiceTableToolbar({
         </Select>
       </FormControl>
 
-        <FormControl
+        {/* <FormControl
           sx={{
             flexShrink: 0,
             width: { xs: 1, md: 180 },
@@ -182,7 +182,7 @@ export default function InvoiceTableToolbar({
               </MenuItem>
             ))}
           </Select>
-        </FormControl>
+        </FormControl> */}
 
         <DatePicker
           label={Translate("startDate")}

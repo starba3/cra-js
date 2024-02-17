@@ -25,18 +25,18 @@ export default function InvoiceCountByStatus({ title, subheader, list, ...other 
           gridTemplateColumns: 'repeat(2, 1fr)',
         }}
       >
-        {list.map((site) => (
+        {list.map((item) => (
           <Paper
-            key={site.name}
+            key={item.name}
             variant="outlined"
             sx={{ py: 2.5, textAlign: 'center', borderStyle: 'solid' }}
           >
-            <Box sx={{ mb: 0.5 }}>{site.icon}</Box>
+            <Box sx={{ mb: 0.5 }}>{item.icon}</Box>
 
-            <Typography variant="h6">{fShortenNumber(site.count)}</Typography>
+            <Typography variant="h6">{fShortenNumber(item.count)}</Typography>
 
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {site.status}
+              {item.status}
             </Typography>
           </Paper>
         ))}

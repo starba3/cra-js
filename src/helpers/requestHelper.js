@@ -2,6 +2,9 @@ import axios from "axios";
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
 
+const STORAGE_KEY = 'accessToken';
+
+
 export async function sendGet(url, defaultValue, headers = {}) {
     let data = defaultValue;
 
@@ -77,4 +80,36 @@ export async function sendPatch(url, body = {}, headers = {}) {
             
         return error.message;
     }
+}
+
+export function createBaseUrlWithRole(role) {
+    let url = ''
+    switch(role.toLowerCase()) {
+        case 'operation':
+            url = `${baseUrl}/api/Operation`
+            break
+        case 'sales':
+            url = `${baseUrl}/api/SalesTaker`
+            break
+        case 'engineer':
+            url = `${baseUrl}/api/Engineer`
+            break
+        default:
+            url = `${baseUrl}`
+            break
+    }
+    return url
+}
+
+export function createHeaders(role) {
+    let headers = {}
+    
+    if (['sales'].includes(role.toLowerCase())) {
+        const token = localStorage.getItem(STORAGE_KEY) && JSON.parse(localStorage.getItem(STORAGE_KEY)).value;
+        headers = {
+            "Authorization": `Bearer ${token}`
+        };
+    }
+
+    return headers
 }

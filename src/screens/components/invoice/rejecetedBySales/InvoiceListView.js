@@ -95,7 +95,7 @@ export default function InvoiceListView() {
   const { t, currentLang } = useLocales();
   const Translate = (text) => t(text);
 
-  const role = useMemo(() => {
+  const ROLE = useMemo(() => {
     const roleItem = localStorage.getItem("role");
     return roleItem ? JSON.parse(roleItem).value : "operation";
   }, []);
@@ -118,7 +118,7 @@ export default function InvoiceListView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getRejectBySales();
+        const result = await getRejectBySales(ROLE);
         setTableData(result);
       } catch (error) {
         console.error('Error fetching invoices:', error);
@@ -127,7 +127,7 @@ export default function InvoiceListView() {
 
     
     fetchData();
-  }, [refresh]);
+  }, [refresh, ROLE]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -416,7 +416,7 @@ export default function InvoiceListView() {
                         onEditRow={() => handleEditRow(row.id)}
                         onDeleteRow={() =>  handleDeleteRow(row.id)}
                         handleOpenInquiry={() => handleOpenInquiry(row.id)}
-                        userRole={role}
+                        userRole={ROLE}
                       />
                     ))}
 

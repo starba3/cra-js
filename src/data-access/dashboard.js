@@ -1,13 +1,8 @@
-import { sendGet } from "src/helpers/requestHelper";
+import { sendGet, createBaseUrlWithRole, createHeaders } from "src/helpers/requestHelper";
 
-const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
+export async function getDashboardData(role) {
+    const url = `${createBaseUrlWithRole(role)}/Dashboard`;
+    const headers = createHeaders(role);
 
-export async function getDashboardData() {
-    const url = `${baseUrl}/api/Dashboard`;
-    return  sendGet(url, {});
-}
-
-export async function getOperationDashboardData() {
-    const url = `${baseUrl}/Dashboard`;
-    return  sendGet(url, {});
+    return  sendGet(url, {}, headers);
 }

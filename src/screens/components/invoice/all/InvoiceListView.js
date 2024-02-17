@@ -57,7 +57,7 @@ import {
 } from 'src/components/table';
 
 // DATA ACCESS
-import { getAllInvoices, getAllOperationInvoices, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
+import { getAllInvoices, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
 // Utility
@@ -95,6 +95,7 @@ export default function InvoiceListView() {
 
   const { t, currentLang } = useLocales();
   const Translate = (text) => t(text);
+  const ROLE = getUserRole()
 
   const [tableData, setTableData] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -114,10 +115,7 @@ export default function InvoiceListView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let result = []
-
-        if(getUserRole() === "operation") result = await getAllOperationInvoices()
-        else result = await getAllInvoices() 
+        const result = await getAllInvoices(ROLE)
 
         setTableData(result);
       } catch (error) {
@@ -127,7 +125,7 @@ export default function InvoiceListView() {
 
     
     fetchData();
-  }, [refresh]);
+  }, [refresh, ROLE]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -177,9 +175,9 @@ export default function InvoiceListView() {
   const TABLE_HEAD = [
     { id: 'invoiceNumber', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
+    { id: 'acknowledgeStatus', label: Translate("acknowledgeStatus"), align: 'center' },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName"), align: 'center' },
-    { id: 'paidStatus', label: Translate("paidStatus"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
     { id: '' },
   ];
@@ -224,10 +222,7 @@ export default function InvoiceListView() {
         if (!errorMessage) {
           // Fetch data only if deletion was successful
           try {
-            let result = []
-        
-            if(getUserRole() === "operation") result = await getAllOperationInvoices()
-            else result = await getAllInvoices() 
+            const result = await getAllInvoices(ROLE)
           
             setTableData(result);
           } catch (error) {
@@ -408,30 +403,37 @@ export default function InvoiceListView() {
             py: 2
             }}
         >
-          <Button
-            component={RouterLink}
-            href={paths.dashboard.invoice.new}
-            variant="contained"
-            startIcon={<Iconify icon="mingcute:add-line" />}
-            sx={{
-              margin: 0.5
-            }}
-          >
-            {Translate("newInvoice")}
-          </Button>
-
-          <Button
-            component={RouterLink}
-            variant="contained"
-            color='primary'
-            onClick={handleClickOpen}
-            startIcon={<Iconify icon="solar:import-bold" />}
-            sx={{
-              margin: 0.5
-            }}
-          >
-            {Translate("import")}
-          </Button>
+          {
+            ROLE.toLowerCase() === "operation" &&
+              <Button
+                component={RouterLink}
+                href={paths.dashboard.invoice.new}
+                variant="contained"
+                startIcon={<Iconify icon="mingcute:add-line" />}
+                sx={{
+                  margin: 0.5
+                }}
+              >
+                {Translate("newInvoice")}
+              </Button>
+          }
+         
+         {
+            ROLE.toLowerCase() === "operation" &&
+              <Button
+                component={RouterLink}
+                variant="contained"
+                color='primary'
+                onClick={handleClickOpen}
+                startIcon={<Iconify icon="solar:import-bold" />}
+                sx={{
+                  margin: 0.5
+                }}
+              >
+                {Translate("import")}
+              </Button>
+          }
+          
           
           <Button
             variant="contained"
@@ -504,6 +506,7 @@ export default function InvoiceListView() {
                         onEditRow={() => handleEditRow(row.id)}
                         onDeleteRow={() =>  handleDeleteRow(row.id)}
                         handleOpenInquiry={() => handleOpenInquiry(row.id)}
+                        role={ROLE}
                       />
                     ))}
 

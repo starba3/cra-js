@@ -133,7 +133,7 @@ export function AuthProvider({ children }) {
     //   },
     // });
 
-      const { token, id, userName } = response.data;
+      const { token, id, userName, role } = response.data;
 
       // sessionStorage.setItem(STORAGE_KEY, token);
       // sessionStorage.setItem("id", id);
@@ -144,6 +144,7 @@ export function AuthProvider({ children }) {
       setWithExpiration("id", id, 10);
       setWithExpiration("userName", userName, 10);
       setWithExpiration("email", email, 10);
+      setWithExpiration("role", role, 10);
       
       dispatch({
         type: 'LOGIN',

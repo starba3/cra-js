@@ -282,13 +282,8 @@ export function useNavData() {
       if(role.toLowerCase() === 'sales') {
         items[0].items.push(
             {
-                title: t('acknowleded'),
-                path: paths.acknowledgment.acknowleded,
-                icon: ICONS.file,
-            },
-            {
-                title: t('notAcknowledged'),
-                path: paths.acknowledgment.notAcknowleded,
+                title: t('invoices'),
+                path: paths.dashboard.invoice.root,
                 icon: ICONS.file,
             },
             {

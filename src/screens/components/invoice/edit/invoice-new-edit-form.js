@@ -23,7 +23,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 // routes
 import { useRouter } from 'src/routes/hooks';
 // _mock
-import { getInvoiceRedirectUrl, getAddAttachmentUrl, addAttachment, editInvoice } from 'src/data-access/invoice';
+import { addAttachment, editInvoice } from 'src/data-access/invoice';
 import { _departments_withoutAll } from 'src/lists/departments';
 import { getUserRole } from 'src/helpers/roleHelper'
 // hooks
@@ -56,6 +56,8 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
   
   const { t } = useLocales();
   const Translate = (text) => t(text);
+
+  const ROLE = getUserRole()
 
   const[didUpdate, setDidUpdate] = useState(false);
   const[isError, setIsError] = useState(false);
@@ -301,11 +303,10 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
        
       // loadingSend.onFalse();
 
-      const redirectUrl = getInvoiceRedirectUrl(departmentId);
 
       // Send Edit invoice request      
 
-      const editResponse = await editInvoice(currentInvoice.id, departmentId, body);
+      const editResponse = await editInvoice(currentInvoice.id, departmentId, body, ROLE);
 
       if (editResponse.errorMessage) {
         setErrorMessage(editResponse.errorMessage);

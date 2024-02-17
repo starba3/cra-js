@@ -13,6 +13,7 @@ import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
 import InvoiceDetails from 'src/screens/components/invoice/details/InvoiceDetails';
+import { getUserRole } from 'src/helpers/roleHelper';
 
 // ----------------------------------------------------------------------
 
@@ -21,14 +22,15 @@ export default function InvoiceDetailsView({ id }) {
 
   const { t } = useLocales();
   const Translate = (text) => t(text);
-  
+  const ROLE = getUserRole()
+
   const [currentInvoice, setCurrentInvoice] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const invoice = await getInvoicesById(id);
+        const invoice = await getInvoicesById(id, ROLE);
         setCurrentInvoice(invoice);
       } catch (error) {
         console.error('Error fetching invoice:', error);
@@ -38,7 +40,7 @@ export default function InvoiceDetailsView({ id }) {
     };
 
     fetchData();
-  }, [id]);
+  }, [id, ROLE]);
 
   if(loading || !currentInvoice) {
     return (

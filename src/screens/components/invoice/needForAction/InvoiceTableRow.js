@@ -47,7 +47,7 @@ export default function InvoiceTableRow({
     department: "Operation",
     paidStatus: "unpaid"
   }
-  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameAr, customerNameEn, productNameEn, productNameAr, paidStatus, department } = row;
+  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, acknowledgeStatus, customerNameAr, customerNameEn, productNameEn, productNameAr, paidStatus, department } = row;
   
   const { t, currentLang } = useLocales()
   const customerName = currentLang.value === 'ar' ? customerNameAr : customerNameEn;
@@ -122,9 +122,9 @@ export default function InvoiceTableRow({
 
         <TableCell align="center" >{productName}</TableCell>
 
-        <TableCell align="center" >{paidStatus}</TableCell>
+        <TableCell align="center" >{acknowledgeStatus}</TableCell>
 
-        <TableCell align="center" >{department}</TableCell>
+        {/* <TableCell align="center" >{department}</TableCell> */}
 
         <TableCell align="right" sx={{ px: 1 }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>

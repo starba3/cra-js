@@ -62,6 +62,7 @@ import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
 // Utility
 import { exportToExcel } from 'src/utils/export';
+import { getUserRole } from 'src/helpers/roleHelper'
 //
 import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
 import { sendPost } from 'src/helpers/requestHelper';
@@ -90,10 +91,7 @@ export default function InvoiceListView() {
 
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 
-  const role = useMemo(() => {
-    const roleItem = localStorage.getItem("role");
-    return roleItem ? JSON.parse(roleItem).value : "operation";
-  }, []);
+  const ROLE = getUserRole()
 
   const confirm = useBoolean();
 
@@ -105,10 +103,6 @@ export default function InvoiceListView() {
   const [filters, setFilters] = useState(defaultFilters);
 
   const [open, setOpen] = React.useState(false);
-  const [openErrorList, setOpenErrorList] = useState(false);
-  const [errorList, setErrorList] = useState(['']);
-  const [isEmportError, setIsEmportError] = useState(false);
-  const [isUploadComplete, setIsUploadComplete] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [openInquiry, setOpenInquiry] = useState(false);
@@ -118,7 +112,7 @@ export default function InvoiceListView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getNeedToAction();
+        const result = await getNeedToAction(ROLE);
         setTableData(result);
       } catch (error) {
         console.error('Error fetching invoices:', error);
@@ -127,7 +121,7 @@ export default function InvoiceListView() {
 
     
     fetchData();
-  }, [refresh]);
+  }, [refresh, ROLE]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -179,8 +173,7 @@ export default function InvoiceListView() {
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName"), align: 'center' },
-    { id: 'paidStatus', label: Translate("paidStatus"), align: 'center' },
-    { id: 'department', label: Translate("department"), align: 'center' },
+    { id: 'acknowledgeStatus', label: Translate("acknowledgeStatus"), align: 'center' },
     { id: '' },
   ];
 
@@ -190,7 +183,7 @@ export default function InvoiceListView() {
     Translate("issueInvoiceDate"),
     Translate("invoiceAmount"),
     Translate("productName"),
-    Translate("paidStatus")
+    Translate("acknowledgeStatus")
   ];
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
@@ -278,56 +271,6 @@ export default function InvoiceListView() {
     setInquiryData({});
   }
 
-  const handleClose = () => {
-    setOpen(false);
-    setIsUploadComplete(false);
-  };
-
-  const handleClickOpenErrorList = () => {
-    setOpenErrorList(true);
-  };
-
-  const handleCloseErrorList = () => {
-    setOpenErrorList(false);
-  };
-  
-  const handleFileUpload = async () => {
-
-    
-    console.log('Loading:', loading);
-
-    const formData = new FormData();
-    
-    const fileInput = document.querySelector("#file").files[0];      
-    
-    if(fileInput) {
-      setLoading(true);
-      formData.append('file', fileInput); 
-      
-      try {
-        // Send File uplaod invoice request
-        const errorMessage = await sendPost(formData);
-
-        if(!errorMessage) {
-          setIsEmportError(false);
-          setAlertMessage(Translate("success"));
-        } else {
-          setAlertMessage("Invalid Data, check the file and try again");
-          setIsEmportError(true);
-        }
-        
-      } catch (error) {
-        // Empty
-      } finally {
-        setLoading(false)
-      }
-    }
-    else {
-      setIsEmportError(true)
-      setAlertMessage('No file selecetd.')
-    }
-    setIsUploadComplete(true)
-  }
 
   return (
     <>
@@ -433,7 +376,7 @@ export default function InvoiceListView() {
                         onEditRow={() => handleEditRow(row.id)}
                         onDeleteRow={() =>  handleDeleteRow(row.id)}
                         handleOpenInquiry={() => handleOpenInquiry(row.id)}
-                        userRole={role}
+                        userRole={ROLE}
                       />
                     ))}
 
@@ -460,78 +403,6 @@ export default function InvoiceListView() {
           />
         </Card>
       </Container>
-
-      <ConfirmDialog
-        open={confirm.value}
-        onClose={confirm.onFalse}
-        title={Translate("delete")}
-        content={
-          <>
-            Are you sure want to delete <strong> {table.selected.length} </strong> items?
-          </>
-        }
-        action={
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => {
-              handleDeleteRows();
-              confirm.onFalse();
-            }}
-          >
-            Delete
-          </Button>
-        }
-      />
-
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>File upload</DialogTitle>
-        <DialogContent >
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="file"
-            label={Translate("importFile")}
-            type="file"
-            fullWidth
-            variant="standard"
-            inputProps={{ accept: '.xls, .xlsx' }}
-          />
-            <Collapse in={isUploadComplete}>
-              <Alert
-                severity={isEmportError ? "error" : "success"}
-                action={
-                  <IconButton
-                    aria-label="close"
-                    color="inherit"
-                    size="small"
-                    onClick={() => {
-                      setIsUploadComplete(false);
-                    }}
-                    
-                  >
-                    <Icon icon="ic:baseline-close" />
-
-                  </IconButton>
-                }
-                sx={{ mb: 2 }}
-              >
-                {alertMessage}
-              </Alert>
-              
-            </Collapse>
-          
-            {loading && <CircularProgress />}
-          
-        </DialogContent>
-        
-        <DialogActions>
-          <Button onClick={handleClose}>{Translate("cancel")}</Button>
-          <Button onClick={handleFileUpload}>{Translate("import")}</Button>
-        </DialogActions>
-      </Dialog> 
-
 
       <Dialog
         open={openInquiry}

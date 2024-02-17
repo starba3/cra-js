@@ -234,8 +234,7 @@ const prepareDataForNeedToAction = (data, headers, language, currency) => data.m
     // [headers[3]]: invoice.daysToCollected,
     [headers[3]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
     [headers[4]]: productName,
-    [headers[5]]: invoice.paidStatus,
-    [headers[6]]: invoice.department,
+    [headers[5]]: invoice.acknowledgeStatus,
   }
   return list;
 });

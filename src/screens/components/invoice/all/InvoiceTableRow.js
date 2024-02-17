@@ -31,8 +31,9 @@ export default function InvoiceTableRow({
   onEditRow,
   onDeleteRow,
   handleOpenInquiry,
+  role
 }) {
-  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameAr, customerNameEn, productNameAr, productNameEn, paidStatus, department } = row;
+  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameAr, customerNameEn, productNameAr, productNameEn, paidStatus, acknowledgeStatus, department } = row;
   
   const { t, currentLang } = useLocales()
   const customerName = currentLang.value === 'ar' ? customerNameAr : customerNameEn;
@@ -88,11 +89,11 @@ export default function InvoiceTableRow({
           />
         </TableCell>
         
-        <TableCell >{`${invoiceAmount.toLocaleString()} ${Translate('currencyShortcut')}`}</TableCell>
+        <TableCell align="center" >{acknowledgeStatus}</TableCell>
 
-        <TableCell align="center" >{productName}</TableCell>
+        <TableCell >{`${invoiceAmount.toLocaleString()} ${Translate('currencyShortcut')}`}</TableCell>
         
-        <TableCell align="center" >{paidStatus}</TableCell>
+        <TableCell align="center" >{productName}</TableCell>
 
         <TableCell align="center" >{department}</TableCell>
 
@@ -132,18 +133,23 @@ export default function InvoiceTableRow({
           {Translate("inquiry")}
         </MenuItem>
 
-        <Divider sx={{ borderStyle: 'solid' }} />
-        
-        <MenuItem
-          onClick={() => {
-            confirm.onTrue();
-            popover.onClose();
-          }}
-          sx={{ color: 'error.main' }}
-        >
-          <Iconify icon="solar:trash-bin-trash-bold" />
-          {Translate("delete")}
-        </MenuItem>
+        {
+          role.toLowerCase() === "operation" && 
+          <>
+            <Divider sx={{ borderStyle: 'solid' }} />
+          
+            <MenuItem
+              onClick={() => {
+                confirm.onTrue();
+                popover.onClose();
+              }}
+              sx={{ color: 'error.main' }}
+            >
+              <Iconify icon="solar:trash-bin-trash-bold" />
+              {Translate("delete")}
+            </MenuItem>
+          </>
+        }
       </CustomPopover>
 
       <ConfirmDialog
@@ -173,4 +179,5 @@ InvoiceTableRow.propTypes = {
   handleOpenInquiry: PropTypes.func,
   row: PropTypes.object,
   selected: PropTypes.bool,
+  role: PropTypes.string
 };

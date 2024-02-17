@@ -20,6 +20,7 @@ import { useSettingsContext } from 'src/components/settings';
 // import ChartRadialBar from 'src/screens/components/dashboard/admin/chart-radial-bar';
 // import AppNewInvoice from 'src/screens/components/dashboard/admin/AppNewInvoice';
 import InvoiceCountByStatus from 'src/screens/components/dashboard/operationManager/InvoiceCountByStatus'
+import { getUserRole } from 'src/helpers/roleHelper';
 import { Box } from '@mui/material';
 
 const BarChart = lazy(() => import('./barchart'));
@@ -31,59 +32,26 @@ const BarChart = lazy(() => import('./barchart'));
 export default function SalesDashboardView() {
   const { user } = useMockedUser();
 
-  const [data, setData] = useState([
-    {
-      status: "Acknowleadged",
-      count: 5
-    },
-    {
-      status: "Not Acknowleadged",
-      count: 5
-    },
-    {
-      status: "Rejected",
-      count: 5
-    },
-    {
-      status: "Temporary Acknowleadgment",
-      count: 5
-    }
-  ])
+  const [data, setData] = useState([])
   
   // const { t, currentLang } = useLocales();
   // const translate = (text) => t(text);
+  const ROLE = getUserRole()
 
   const theme = useTheme();
   const settings = useSettingsContext();
 
-  // hit the route
-  // const getInvoices = async () => {
-  //   // Fetching the token from the session storage
-  //   const token = localStorage.getItem('accessToken') && JSON.parse(localStorage.getItem('accessToken')).value ;
-  //   if (token) {
-  //     const config = {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`, // Set the token in the "Authorization" header
-  //       },
-  //     };
-
-  //     try {
-  //       const res = await getDashboardData();
-  //       console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>', res);
-
-
-
-  //     } catch (error) {
-  //       console.error('Error fetching chart Data:', error); 
-  //     }
-  //   } else {
-  //     console.error('Token not found in session storage');
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getInvoices();
-  // }, []);
+  useEffect(() => {
+    const getNewData = async () => {
+      try {
+        const newData = await getDashboardData(ROLE);
+        setData(newData);
+      } catch (error) {
+        console.error('Error fetching invoice:', error);
+      } 
+    }
+    getNewData()
+  }, [ROLE]);
 
 
   return (

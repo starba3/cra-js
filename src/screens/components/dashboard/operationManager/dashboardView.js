@@ -12,7 +12,7 @@ import CardHeader from '@mui/material/CardHeader';
 // hooks
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 // Data access
-import { getOperationDashboardData } from 'src/data-access/dashboard';
+import { getDashboardData } from 'src/data-access/dashboard';
 // components
 import { useSettingsContext } from 'src/components/settings';
 // import AppWidgetSummary from 'src/sections/overview/app/app-widget-summary';
@@ -21,6 +21,7 @@ import { useSettingsContext } from 'src/components/settings';
 // import AppNewInvoice from 'src/screens/components/dashboard/admin/AppNewInvoice';
 import InvoiceCountByStatus from 'src/screens/components/dashboard/operationManager/InvoiceCountByStatus'
 import { Box } from '@mui/material';
+import { getUserRole } from 'src/helpers/roleHelper';
 
 const BarChart = lazy(() => import('./barchart'));
 // 
@@ -38,6 +39,7 @@ export default function OMDashboardView() {
 
   const theme = useTheme();
   const settings = useSettingsContext();
+  const ROLE = getUserRole()
 
   // hit the route
   // const getInvoices = async () => {
@@ -67,14 +69,14 @@ export default function OMDashboardView() {
   useEffect(() => {
     const getNewData = async () => {
       try {
-        const newData = await getOperationDashboardData();
+        const newData = await getDashboardData(ROLE);
         setData(newData);
       } catch (error) {
         console.error('Error fetching invoice:', error);
       } 
     }
     getNewData()
-  }, []);
+  }, [ROLE]);
 
 
   return (
