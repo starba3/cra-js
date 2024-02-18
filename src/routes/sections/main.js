@@ -14,6 +14,7 @@ import { paths } from '../paths';
 // ----------------------------------------------------------------------
 
 export const HomePage = lazy(() => import('src/pages/home'));
+const IndexPage = lazy(() => import('src/screens/Index'));
 const Page500 = lazy(() => import('src/pages/500'));
 const Page403 = lazy(() => import('src/pages/403'));
 const Page404 = lazy(() => import('src/pages/404'));
@@ -61,6 +62,7 @@ export const mainRoutes = [
   { path: 'cra-js', element: <Navigate to="/dashboard" /> },
   { path: '', element: <Navigate to="/dashboard" /> },
   {
+    path: 'dashboard',
     element: (
       <MainLayout>
         <Suspense fallback={<SplashScreen />}>
@@ -69,6 +71,7 @@ export const mainRoutes = [
       </MainLayout>
     ),
     children: [
+      { Element: <IndexPage />, index: true},
       { path: 'about-us', element: <AboutPage /> },
       { path: 'contact-us', element: <ContactPage /> },
       { path: 'faqs', element: <FaqsPage /> },
@@ -89,6 +92,7 @@ export const mainRoutes = [
           { path: ':title', element: <PostDetailsPage /> },
         ],
       },
+      
     ],
   },
   {
@@ -131,128 +135,36 @@ export const mainRoutes = [
     ),
     children: [
       // Invoice Edit
-      { 
-        path: paths.invoices.editUrl, 
-        element: <InvoiceEditPage /> 
-      },
-      { 
-        path: paths.departments.operation.list, 
-        element: <InvoiceListViewByDepartment id={-1} /> 
-      },
-      { 
-        path: paths.departments.sales.list,
-        element: <InvoiceListViewByDepartment id={2} />  
-      },
-      { 
-        path: paths.departments.installation.list,
-        element: <InvoiceListViewByDepartment id={1} />  
-      },
-      { 
-        path: paths.departments.collection.list,
-        element: <InvoiceListViewByDepartment id={3} />  
-      },
-      { 
-        path: paths.departments.tenderAndConract.list,
-        element: <InvoiceListViewByDepartment id={4} />  
-      },
-      { 
-        path: paths.departments.sales.confirm_invoices,
-        element: <InvoiceListViewByDepartment salesStatus={0}  />  
-      },
-      { 
-        path: paths.departments.installation.assign_engineer,
-        element: <InvoiceListViewByDepartment salesStatus={1}  />  
-      },
-      { 
-        path: paths.departments.collection.assign_collector,
-        element: <InvoiceListViewByDepartment salesStatus={3}  />  
-      },
-      { 
-        path: paths.reports.aging,
-        element: <AgingViewMain />  
-      },
-      { 
-        path: paths.reports.invoiceForCustomers,
-        element: <InvoiceForCustomersViewMain />  
-      },
-      { 
-        path: paths.reports.gmReport,
-        element: <GmReportView />  
-      },
-      { 
-        path: paths.reports.gmReasoneReport,
-        element: <GmReasonReportView />  
-      },
-      { 
-        path: paths.reports.deliveryDate,
-        element: <ForDeliveryDataViewMain />  
-      },
-      { 
-        path: paths.customers.list,
-        element: <CustomerListViewMain />  
-      },
-      { 
-        path: paths.customers.create,
-        element: <CustomerCreateViewMain />  
-      },
-      { 
-        path: paths.customers.editUrl,
-        element: <CustomerCreateViewMain />  
-      },
-      
-      { 
-        path: paths.products.list,
-        element: <ProductListViewMain />  
-      },
-      { 
-        path: paths.products.create,
-        element: <ProductCreateViewMain />  
-      },
-      { 
-        path: paths.products.editUrl,
-        element: <ProductCreateViewMain />  
-      },
-
-      { 
-        path: paths.users.list,
-        element: <UserListViewMain />  
-      },
-      { 
-        path: paths.reports.invoiceByUsers,
-        element: <InvoiceByUsersViewMain />  
-      },
-      { 
-        path: paths.needToAction.list,
-        element: <NeedToActionViewMain />  
-      },
-      { 
-        path: paths.rejectBySales.list,
-        element: <RejectedBySalesViewMain />  
-      },
-      { 
-        path: paths.invoices.needToAction,
-        element: <NeedToActionViewMain />  
-      },
-      { 
-        path: paths.invoices.rejectedBySales,
-        element: <RejectedBySalesViewMain />  
-      },
-      { 
-        path: paths.invoiceAcceptence.list,
-        element: <InvoiceAcceptenceViewMain />  
-      },
-      { 
-        path: paths.reports.acknowledgment,
-        element: <AcknowledgmentViewMain title ="acknowledgment"/>  
-      },
-      { 
-        path: paths.acknowledgment.acknowleded,
-        element: <AcknowledgmentViewMain title ="acknowleded"/>  
-      },
-      { 
-        path: paths.acknowledgment.notAcknowleded,
-        element: <AcknowledgmentViewMain title ="notAcknowledged"/>  
-      },
+      { path: paths.invoices.editUrl,  element: <InvoiceEditPage /> },
+      { path: paths.departments.operation.list,  element: <InvoiceListViewByDepartment id={-1} /> },
+      { path: paths.departments.sales.list, element: <InvoiceListViewByDepartment id={2} />  },
+      { path: paths.departments.installation.list, element: <InvoiceListViewByDepartment id={1} />  },
+      { path: paths.departments.collection.list, element: <InvoiceListViewByDepartment id={3} />  },
+      { path: paths.departments.tenderAndConract.list, element: <InvoiceListViewByDepartment id={4} />  },
+      { path: paths.departments.sales.confirm_invoices, element: <InvoiceListViewByDepartment salesStatus={0}  />  },
+      { path: paths.departments.installation.assign_engineer, element: <InvoiceListViewByDepartment salesStatus={1}  />  },
+      { path: paths.departments.collection.assign_collector, element: <InvoiceListViewByDepartment salesStatus={3}  />  },
+      // { path: paths.reports.aging, element: <AgingViewMain />  },
+      // { path: paths.reports.invoiceForCustomers, element: <InvoiceForCustomersViewMain />  },
+      // { path: paths.reports.gmReport, element: <GmReportView />  },
+      // { path: paths.reports.gmReasoneReport, element: <GmReasonReportView />  },
+      // { path: paths.reports.deliveryDate, element: <ForDeliveryDataViewMain />  },
+      // { path: paths.customers.list, element: <CustomerListViewMain />  },
+      // { path: paths.customers.create, element: <CustomerCreateViewMain />  },
+      // { path: paths.customers.editUrl, element: <CustomerCreateViewMain />  },
+      // { path: paths.products.list, element: <ProductListViewMain />  },
+      // { path: paths.products.create, element: <ProductCreateViewMain />  },
+      // { path: paths.products.editUrl, element: <ProductCreateViewMain />  },
+      { path: paths.users.list, element: <UserListViewMain />  },
+      { path: paths.reports.invoiceByUsers, element: <InvoiceByUsersViewMain />  },
+      { path: paths.needToAction.list, element: <NeedToActionViewMain />  },
+      { path: paths.rejectBySales.list, element: <RejectedBySalesViewMain />  },
+      { path: paths.invoices.needToAction, element: <NeedToActionViewMain />  },
+      { path: paths.invoices.rejectedBySales, element: <RejectedBySalesViewMain />  },
+      { path: paths.invoiceAcceptence.list, element: <InvoiceAcceptenceViewMain />  },
+      // { path: paths.reports.acknowledgment, element: <AcknowledgmentViewMain title ="acknowledgment"/>  },
+      // { path: paths.acknowledgment.acknowleded, element: <AcknowledgmentViewMain title ="acknowleded"/>  },
+      // { path: paths.acknowledgment.notAcknowleded, element: <AcknowledgmentViewMain title ="notAcknowledged"/>  },
       
     ]
   },

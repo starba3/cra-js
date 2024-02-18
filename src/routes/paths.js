@@ -160,6 +160,35 @@ export const paths = {
         details: `${ROOTS.DASHBOARD}/invoice/${MOCK_ID}`,
         edit: `${ROOTS.DASHBOARD}/invoice/${MOCK_ID}/edit`,
       },
+      list: `${ROOTS.DASHBOARD}/invoice/list`,
+      needToAction: `${ROOTS.DASHBOARD}/invoice/needToAction`,
+      rejectedBySales: `${ROOTS.DASHBOARD}/invoice/rejectedBySales`,
+      editUrl: `${ROOTS.DASHBOARD}/invoice/:id/edit`,
+      // edit: (id) => `${ROOTS.DASHBOARD}/invoice/${id}/edit`,
+    },
+    customers: {
+      root: `${ROOTS.DASHBOARD}/customer`,
+      list: `${ROOTS.DASHBOARD}/customer/list`,
+      create: `${ROOTS.DASHBOARD}/customer/create`,
+      editUrl:`${ROOTS.DASHBOARD}/customer/:id/edit`,
+      edit: (id) => `${ROOTS.DASHBOARD}/customer/${id}/edit`
+    },
+    products: {
+      root: `${ROOTS.DASHBOARD}/product`,
+      list: `${ROOTS.DASHBOARD}/product/list`,
+      create: `${ROOTS.DASHBOARD}/product/create`,
+      editUrl:`${ROOTS.DASHBOARD}/product/:id/edit`,
+      edit: (id) => `${ROOTS.DASHBOARD}/product/${id}/edit`
+    },
+    reports: {
+      root: `${ROOTS.DASHBOARD}/reports`,
+      aging: `${ROOTS.DASHBOARD}/reports/aging`,
+      gmReasonReport: `${ROOTS.DASHBOARD}/reports/gmReasonReport`,
+      invoiceForCustomers:`${ROOTS.DASHBOARD}/reports/invoiceForCustomers`,
+      acknowledgment: `${ROOTS.DASHBOARD}/reports/acknowledgment`,
+      invoiceByUsers: `${ROOTS.DASHBOARD}/reports/invoiceByUsers`,
+      GmReport:`${ROOTS.DASHBOARD}/reports/GmReport`,
+      deliveryDate:`${ROOTS.DASHBOARD}/reports/deliveryDate`,
     },
     post: {
       root: `${ROOTS.DASHBOARD}/post`,
@@ -221,7 +250,7 @@ export const paths = {
       root: ROOTS.DEPARTMENT.sales,
       list: `${ROOTS.DEPARTMENT.main}/${ROOTS.DEPARTMENT.sales}/list`,
       confirm_invoices: `${ROOTS.DEPARTMENT.main}/${ROOTS.DEPARTMENT.sales}/confirm_invoices`,
-    } ,
+    },
     installation: {
       root: ROOTS.DEPARTMENT.installation,
       list: `${ROOTS.DEPARTMENT.main}/${ROOTS.DEPARTMENT.installation}/list`,

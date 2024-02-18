@@ -260,7 +260,7 @@ export default function CustomerListView() {
             {Translate("import")}
           </Button> */}
           <Button
-            onClick={() => navigate(paths.customers.create)}
+            onClick={() => navigate(paths.dashboard.customers.create)}
             variant="contained"
             startIcon={<Iconify icon="mingcute:add-line" />}
             sx={{

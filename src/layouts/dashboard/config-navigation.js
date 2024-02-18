@@ -78,63 +78,40 @@ export function useNavData() {
                 path: paths.dashboard.invoice.root,
                 icon: ICONS.invoice,
                 children: [
-                { title: t('list'), path: paths.dashboard.invoice.root },
-                { title: t('create'), path: paths.dashboard.invoice.new },
-                { title: t('needToAction'), path: paths.invoices.needToAction },
-                { title: t('rejectedBySales'), path: paths.invoices.rejectedBySales },
+                    { title: t('list'), path: paths.dashboard.invoice.list },
+                    { title: t('create'), path: paths.dashboard.invoice.new },
+                    { title: t('needToAction'), path: paths.dashboard.invoice.needToAction },
+                    { title: t('rejectedBySales'), path: paths.dashboard.invoice.rejectedBySales },
                 ],
             },
             // Customer
             {
                 title: t('customers'),
-                path: paths.customers.list,
+                path: paths.dashboard.customers.root,
                 icon: ICONS.user,
                 children: [
-                { 
-                    title: t('list'),
-                    path: paths.customers.list,
-        
-                },
-                { 
-                    title: t('create'),
-                    path: paths.customers.create,
-        
-                },
+                    { title: t('list'), path: paths.dashboard.customers.list },
+                    { title: t('create'), path: paths.dashboard.customers.create },
                 ],
             },
             // Product
             {
                 title: t('products'),
-                path: paths.products.list,
+                path: paths.dashboard.products.root,
                 icon: ICONS.user,
                 children: [
-                    { 
-                        title: t('list'),
-                        path: paths.products.list,
-            
-                    },
-                    { 
-                        title: t('create'),
-                        path: paths.products.create,
-            
-                    },
+                    { title: t('list'), path: paths.dashboard.products.list },
+                    { title: t('create'), path: paths.dashboard.products.create }
                 ],
             },
           // Reports
           {
-              title: t('reports'),
-              path: paths.reports.root,
-              icon: ICONS.user,
-              children: [
-              { 
-                  title: t('deliveryDate'),
-                  path: paths.reports.deliveryDate,
-              },
-              { 
-                  title: t('acknowledgment'),
-                  path: paths.reports.acknowledgment,
-              }
-      
+            title: t('reports'),
+            path: paths.dashboard.reports.root,
+            icon: ICONS.user,
+            children: [
+                { title: t('deliveryDate'), path: paths.dashboard.reports.deliveryDate },
+                { title: t('acknowledgment'), path: paths.dashboard.reports.acknowledgment }
             ],
           },
         ) 
@@ -147,8 +124,8 @@ export function useNavData() {
                 path: paths.dashboard.invoice.root,
                 icon: ICONS.invoice,
                 children: [
-                { title: t('list'), path: paths.dashboard.invoice.root },
-                { title: t('create'), path: paths.dashboard.invoice.new },
+                    { title: t('list'), path: paths.dashboard.invoice.root },
+                    { title: t('create'), path: paths.dashboard.invoice.new },
                 ],
             },
             // Customer
@@ -157,16 +134,8 @@ export function useNavData() {
                 path: paths.customers.list,
                 icon: ICONS.user,
                 children: [
-                { 
-                    title: t('list'),
-                    path: paths.customers.list,
-        
-                },
-                { 
-                    title: t('create'),
-                    path: paths.customers.create,
-        
-                },
+                    { title: t('list'), path: paths.customers.list },
+                    { title: t('create'), path: paths.customers.create }
                 ],
             },
             // USER
@@ -175,7 +144,7 @@ export function useNavData() {
                 path: paths.users.list,
                 icon: ICONS.user,
                 children: [
-                { title: t('list'), path: paths.users.list },
+                    { title: t('list'), path: paths.users.list },
                 ],
             },
             // Product
@@ -184,16 +153,8 @@ export function useNavData() {
                 path: paths.products.list,
                 icon: ICONS.user,
                 children: [
-                { 
-                    title: t('list'),
-                    path: paths.products.list,
-        
-                },
-                { 
-                    title: t('create'),
-                    path: paths.products.create,
-        
-                },
+                    { title: t('list'), path: paths.dashboard.products.list },
+                    { title: t('create'), path: paths.dashboard.products.create }
                 ],
             },
             // USER
@@ -202,44 +163,44 @@ export function useNavData() {
                 path: paths.departments.operation.list,
                 icon: ICONS.user,
                 children: [
-                { 
-                    title: t('operation'),
-                    path: paths.departments.operation.list,
-                    children: [
-                    { title: t('list'), path: paths.departments.operation.list },
-                    ]
-                },
-                { 
-                    title: t('sales'), 
-                    path: paths.departments.sales.list,
-                    children: [
-                    { title: t('confirm_invoices'), path: paths.departments.sales.confirm_invoices },
-                    { title: t('list'), path: paths.departments.sales.list }, 
-                    ]
-                },
-                { 
-                    title: t('installation'), 
-                    path: paths.departments.installation.list,
-                    children: [
-                    { title: t('assign_engineer'), path: paths.departments.installation.assign_engineer },
-                    { title: t('list'), path: paths.departments.installation.list }, 
-                    ]
-                },
-                { 
-                    title: t('collection'), 
-                    path: paths.departments.collection.list,
-                    children: [
-                    { title: t('assign_collector'), path: paths.departments.collection.assign_collector },
-                    { title: t('list'), path: paths.departments.collection.list }, 
-                    ]
-                },
-                { 
-                    title: t('tender_and_contract'), 
-                    path: paths.departments.tenderAndConract.list,
-                    children: [
-                    { title: t('list'), path: paths.departments.tenderAndConract.list }, 
-                    ]
-                },
+                    { 
+                        title: t('operation'),
+                        path: paths.departments.operation.list,
+                        children: [
+                            { title: t('list'), path: paths.departments.operation.list },
+                        ]
+                    },
+                    { 
+                        title: t('sales'), 
+                        path: paths.departments.sales.list,
+                        children: [
+                        { title: t('confirm_invoices'), path: paths.departments.sales.confirm_invoices },
+                        { title: t('list'), path: paths.departments.sales.list }, 
+                        ]
+                    },
+                    { 
+                        title: t('installation'), 
+                        path: paths.departments.installation.list,
+                        children: [
+                            { title: t('assign_engineer'), path: paths.departments.installation.assign_engineer },
+                            { title: t('list'), path: paths.departments.installation.list }, 
+                        ]
+                    },
+                    { 
+                        title: t('collection'), 
+                        path: paths.departments.collection.list,
+                        children: [
+                            { title: t('assign_collector'), path: paths.departments.collection.assign_collector },
+                            { title: t('list'), path: paths.departments.collection.list }, 
+                        ]
+                    },
+                    { 
+                        title: t('tender_and_contract'), 
+                        path: paths.departments.tenderAndConract.list,
+                        children: [
+                            { title: t('list'), path: paths.departments.tenderAndConract.list }, 
+                        ]
+                    },
                 ],
             },
             // Reports
@@ -248,64 +209,27 @@ export function useNavData() {
                 path: paths.reports.root,
                 icon: ICONS.user,
                 children: [
-                { 
-                    title: t('agingReport'),
-                    path: paths.reports.aging,
-        
-                },
-                { 
-                    title: t('invoicesForCustomer'),
-                    path: paths.reports.invoiceForCustomers,
-        
-                },
-                { 
-                    title: t('gmReport'),
-                    path: paths.reports.gmReport,
-        
-                },
-                { 
-                    title: t('gmReasonReport'),
-                    path: paths.reports.gmReasoneReport,
-        
-                },
-                { 
-                    title: t('invoiceByUser'),
-                    path: paths.reports.invoiceByUsers,
-                },
-        
-                ],
-                
+                    { title: t('agingReport'), path: paths.reports.aging },
+                    { title: t('invoicesForCustomer'), path: paths.reports.invoiceForCustomers },
+                    { title: t('gmReport'), path: paths.reports.gmReport },
+                    { title: t('gmReasonReport'), path: paths.reports.gmReasoneReport },
+                    { title: t('invoiceByUser'), path: paths.reports.invoiceByUsers },
+                ], 
             }
           ) 
       }
 
       if(role.toLowerCase() === 'sales') {
         items[0].items.push(
-            {
-                title: t('invoices'),
-                path: paths.dashboard.invoice.root,
-                icon: ICONS.file,
-            },
-            {
-                title: t('needToAction'),
-                path: paths.invoices.needToAction,
-                icon: ICONS.file,
-            },
-            {
-                title: t('invoiceAcceptence'),
-                path: paths.invoiceAcceptence.list,
-                icon: ICONS.file,
-            },     
+            { title: t('invoices'), path: paths.dashboard.invoice.root, icon: ICONS.file },
+            { title: t('needToAction'), path: paths.invoices.needToAction, icon: ICONS.file },
+            { title: t('invoiceAcceptence'), path: paths.invoiceAcceptence.list, icon: ICONS.file },     
         ) 
       }
 
       if(role.toLowerCase() === 'engineer') {
         items[0].items.push(
-            {
-                title: t('needToAction'),
-                path: paths.invoices.needToAction,
-                icon: ICONS.file,
-            }
+            { title: t('needToAction'), path: paths.invoices.needToAction, icon: ICONS.file },
         ) 
       }
 

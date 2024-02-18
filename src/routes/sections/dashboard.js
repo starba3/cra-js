@@ -6,8 +6,6 @@ import { AuthGuard } from 'src/auth/guard';
 import DashboardLayout from 'src/layouts/dashboard';
 // components
 import { LoadingScreen } from 'src/components/loading-screen';
-// Customers
-const CustomerCreateViewMain = lazy(() => import('src/screens/customer/create/CustomerCreateView'));
 
 
 // ----------------------------------------------------------------------
@@ -21,13 +19,28 @@ const OverviewBookingPage = lazy(() => import('src/pages/dashboard/booking'));
 const OverviewFilePage = lazy(() => import('src/pages/dashboard/file'));
 // PRODUCT
 const ProductDetailsPage = lazy(() => import('src/pages/dashboard/product/details'));
-const ProductListPage = lazy(() => import('src/pages/dashboard/product/list'));
+// const ProductListPage = lazy(() => import('src/pages/dashboard/product/list'));
 const ProductCreatePage = lazy(() => import('src/pages/dashboard/product/new'));
-const ProductEditPage = lazy(() => import('src/pages/dashboard/product/edit'));
+// const ProductEditPage = lazy(() => import('src/pages/dashboard/product/edit'));
+const ProductListPage = lazy(() => import('src/screens/products/all/ProductListView'));
+const ProductEditPage = lazy(() => import('src/screens/products/create/ProductCreateView'));
+// CUSTOMER
+const CustomerListViewMain = lazy(() => import('src/screens/customer/all/CustomerListView'));
+const CustomerCreateViewMain = lazy(() => import('src/screens/customer/create/CustomerCreateView'));
 // ORDER
 const OrderListPage = lazy(() => import('src/pages/dashboard/order/list'));
 const OrderDetailsPage = lazy(() => import('src/pages/dashboard/order/details'));
 // INVOICE
+const NeedToActionViewMain = lazy(() => import('src/screens/invoice/needToAction/needToActionView'));
+const RejectedBySalesViewMain = lazy(() => import('src/screens/invoice/rejectedBySales/rejectedBySalesView'));
+// Reports
+const AgingViewMain = lazy(() => import('src/screens/reports/aging'));
+const InvoiceForCustomersViewMain = lazy(() => import('src/screens/reports/invoiceForCustomers'));
+const GmReportView = lazy(() => import('src/screens/reports/gmReportView'));
+const GmReasonReportView = lazy(() => import('src/screens/reports/GmReasonReportView'));
+const InvoiceByUsersViewMain = lazy(() => import('src/screens/reports/invoiceByUsers'));
+const ForDeliveryDataViewMain = lazy(() => import('src/screens/reports/forDeliveryData'))
+const AcknowledgmentViewMain = lazy(() => import('src/screens/acknowledgment/all/acknowledgmentView'));
 // const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoice/list'));
 const InvoiceDetailsPage = lazy(() => import('src/screens/invoice/InvoiceDetailsPage'));
 const InvoiceCreatePage = lazy(() => import('src/screens/invoice/InvoiceCreatePage'));
@@ -103,22 +116,36 @@ export const dashboardRoutes = [
           { path: 'account', element: <UserAccountPage /> },
         ],
       },
-      // {
-      //   path: 'customer',
-      //   children: [
-      //     { path: ':id/edit', element: <CustomerCreateViewMain /> },
-      //   ],
-      // },
-      // {
-      //   path: 'product',
-      //   children: [
-      //     { element: <ProductListPage />, index: true },
-      //     { path: 'list', element: <ProductListPage /> },
-      //     { path: ':id', element: <ProductDetailsPage /> },
-      //     { path: 'new', element: <ProductCreatePage /> },
-      //     { path: ':id/edit', element: <ProductEditPage /> },
-      //   ],
-      // },
+      {
+        path: 'customer',
+        children: [
+          { element: <CustomerListViewMain />, index: true },
+          { path: 'list', element: <CustomerListViewMain /> },
+          { path: 'create', element: <CustomerCreateViewMain /> },
+          { path: ':id/edit', element: <CustomerCreateViewMain /> },
+        ],
+      },
+      {
+        path: 'product',
+        children: [
+          { element: <ProductListPage />, index: true },
+          { path: 'list', element: <ProductListPage />  },
+          { path: 'create', element: <ProductEditPage />  },
+          { path: ':id/edit', element: <ProductEditPage />  },
+        ],
+      },
+      {
+        path: 'reports',
+        children: [
+          { path: 'aging', element: <AgingViewMain /> },
+          { path: 'gmReasonReport', element: <GmReasonReportView />  },
+          { path: 'invoiceForCustomers', element: <InvoiceForCustomersViewMain />  },
+          { path: 'invoiceByUsers', element: <InvoiceByUsersViewMain /> },
+          { path: 'GmReport', element: <GmReportView />  },
+          { path: 'deliveryDate', element: <ForDeliveryDataViewMain />  },
+          { path: 'acknowledgment', element: <AcknowledgmentViewMain title ="acknowledgment"/>  },
+        ],
+      },
       {
         path: 'order',
         children: [
@@ -135,6 +162,8 @@ export const dashboardRoutes = [
           { path: ':id', element: <InvoiceDetailsPage /> },
           { path: ':id/edit', element: <InvoiceEditPage /> },
           { path: ':id/edit/operation', element: <InvoiceEditPage /> },
+          { path: 'needToAction', element: <NeedToActionViewMain /> },
+          { path: 'rejectedBySales', element: <RejectedBySalesViewMain /> },
           { path: 'new', element: <InvoiceCreatePage /> },
         ],
       },

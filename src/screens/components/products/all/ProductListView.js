@@ -292,7 +292,7 @@ export default function ProductListView() {
             {Translate("import")}
           </Button> */}
           <Button
-            onClick={() => navigate(paths.products.create)}
+            onClick={() => navigate(paths.dashboard.products.create)}
             variant="contained"
             startIcon={<Iconify icon="mingcute:add-line" />}
             sx={{

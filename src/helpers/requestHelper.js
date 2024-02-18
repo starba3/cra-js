@@ -85,6 +85,7 @@ export async function sendPatch(url, body = {}, headers = {}) {
 export function createBaseUrlWithRole(role) {
     let url = ''
     switch(role.toLowerCase()) {
+        case 'admin':
         case 'operation':
             url = `${baseUrl}/api/Operation`
             break
