@@ -238,7 +238,10 @@
   "acknowledgment": "Acknowledgment",
   "acknowleded": "Acknowleded",
   "invoiceAcceptence": "Invoice Acceptence",
-  "notAcknowledged": "Not Acknowleded"
+  "notAcknowledged": "Not Acknowleded",
+  "performance": "Performance",
+  "invoiceByEngineer": "Not Acknowleded",
+  "allEngineers": "Not Acknowleded"
   
 
 }

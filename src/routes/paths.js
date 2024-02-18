@@ -189,6 +189,24 @@ export const paths = {
       invoiceByUsers: `${ROOTS.DASHBOARD}/reports/invoiceByUsers`,
       GmReport:`${ROOTS.DASHBOARD}/reports/GmReport`,
       deliveryDate:`${ROOTS.DASHBOARD}/reports/deliveryDate`,
+      performance:`${ROOTS.DASHBOARD}/reports/performance`,
+      invoiceByEngineer:`${ROOTS.DASHBOARD}/reports/invoiceByEngineer`,
+    },
+    headEngineer: {
+      root: `${ROOTS.DASHBOARD}/headEngineer`,
+      aging: `${ROOTS.DASHBOARD}/reports/aging`,
+      gmReasonReport: `${ROOTS.DASHBOARD}/reports/gmReasonReport`,
+      invoiceForCustomers:`${ROOTS.DASHBOARD}/reports/invoiceForCustomers`,
+      acknowledgment: `${ROOTS.DASHBOARD}/reports/acknowledgment`,
+      invoiceByUsers: `${ROOTS.DASHBOARD}/reports/invoiceByUsers`,
+      GmReport:`${ROOTS.DASHBOARD}/reports/GmReport`,
+      deliveryDate:`${ROOTS.DASHBOARD}/reports/deliveryDate`,
+    },
+
+    engineers: {
+      root: `${ROOTS.DASHBOARD}/engineers`,
+      list: `${ROOTS.DASHBOARD}/engineers/list`,
+      assignEngineer: `${ROOTS.DASHBOARD}/engineers/assignEngineer`,
     },
     post: {
       root: `${ROOTS.DASHBOARD}/post`,
