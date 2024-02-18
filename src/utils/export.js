@@ -29,6 +29,9 @@ export const exportToExcel = (data, headers, language, currency, reportName, fil
   if(reportName.toLowerCase() === 'invoicesbyuser') 
     filteredData = prepareDataForInvoicesByUser(data, headers, language, currency);
 
+  if(reportName.toLowerCase() === 'invoicesbyengineer') 
+    filteredData = prepareDataForInvoicesByEngineer(data, headers, language, currency);
+
   if(reportName.toLowerCase() === 'gmreport') 
     filteredData = prepareDataForGMReport(data, headers, currency);
 
@@ -46,7 +49,9 @@ export const exportToExcel = (data, headers, language, currency, reportName, fil
 
   if(reportName.toLowerCase() === 'acknowledgment') 
     filteredData = prepareDataForAcknowleadgment(data, headers, language, currency);
-
+    
+  if(reportName.toLowerCase() === 'engineerslist') 
+    filteredData = prepareDataForEngineers(data, headers);
   // console.log("Headers: ", headers);
   // console.log("filteredData: ", filteredData);
 
@@ -118,6 +123,16 @@ const prepareDataForCustomers = (data, headers) => data.map((customer) => {
     [headers[0]]: customer.customerCode,
     [headers[1]]: customer.customerNameEn,
     [headers[2]]: customer.customerNameAr
+  }
+  return list;
+});
+
+const prepareDataForEngineers = (data, headers) => data.map((engineer) => {
+  const list = {
+    [headers[0]]: engineer.firstName,
+    [headers[1]]: engineer.lastName,
+    [headers[2]]: engineer.email,
+    [headers[3]]: engineer.username
   }
   return list;
 });
@@ -300,6 +315,22 @@ const prepareDataForInvoicesByUser = (data, headers, language, currency) => data
     [headers[3]]: invoice.daysToCollected,
     [headers[4]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
     [headers[5]]: invoice.paidStatus,
+    [headers[6]]: invoice.department,
+  }
+  return list;
+});
+
+const prepareDataForInvoicesByEngineer = (data, headers, language, currency) => data.map((invoice) => {
+  const customerName = language === 'ar' ? invoice.customerNameAr : invoice.customerNameEn;
+  const productName = language === 'ar' ? invoice.productNameAr : invoice.productNameEn;
+
+  const list = {
+    [headers[0]]: invoice.invoiceNo,
+    [headers[1]]: customerName,
+    [headers[2]]: new Date(invoice.issueInvoiceDate).toLocaleDateString(),
+    [headers[3]]: invoice.installationStatus,
+    [headers[4]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
+    [headers[5]]: productName,
     [headers[6]]: invoice.department,
   }
   return list;

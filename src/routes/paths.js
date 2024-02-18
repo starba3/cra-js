@@ -163,6 +163,7 @@ export const paths = {
       list: `${ROOTS.DASHBOARD}/invoice/list`,
       needToAction: `${ROOTS.DASHBOARD}/invoice/needToAction`,
       rejectedBySales: `${ROOTS.DASHBOARD}/invoice/rejectedBySales`,
+      needToAssign: `${ROOTS.DASHBOARD}/invoice/needToAssign`,
       editUrl: `${ROOTS.DASHBOARD}/invoice/:id/edit`,
       // edit: (id) => `${ROOTS.DASHBOARD}/invoice/${id}/edit`,
     },
@@ -207,6 +208,9 @@ export const paths = {
       root: `${ROOTS.DASHBOARD}/engineers`,
       list: `${ROOTS.DASHBOARD}/engineers/list`,
       assignEngineer: `${ROOTS.DASHBOARD}/engineers/assignEngineer`,
+      create: `${ROOTS.DASHBOARD}/engineers/create`,
+      editUrl:`${ROOTS.DASHBOARD}/engineers/:id/edit`,
+      edit: (id) => `${ROOTS.DASHBOARD}/engineers/${id}/edit`
     },
     post: {
       root: `${ROOTS.DASHBOARD}/post`,

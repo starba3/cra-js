@@ -19,6 +19,9 @@ const OverviewBookingPage = lazy(() => import('src/pages/dashboard/booking'));
 const OverviewFilePage = lazy(() => import('src/pages/dashboard/file'));
 // PRODUCT
 const ProductDetailsPage = lazy(() => import('src/pages/dashboard/product/details'));
+// Engineers
+const EngineersListViewMain = lazy(() => import('src/screens/engineers/all/EngineersListView'));
+const EngineersCreateViewMain = lazy(() => import('src/screens/engineers/create/EngineersCreateView'));
 // const ProductListPage = lazy(() => import('src/pages/dashboard/product/list'));
 const ProductCreatePage = lazy(() => import('src/pages/dashboard/product/new'));
 // const ProductEditPage = lazy(() => import('src/pages/dashboard/product/edit'));
@@ -39,6 +42,7 @@ const InvoiceForCustomersViewMain = lazy(() => import('src/screens/reports/invoi
 const GmReportView = lazy(() => import('src/screens/reports/gmReportView'));
 const GmReasonReportView = lazy(() => import('src/screens/reports/GmReasonReportView'));
 const InvoiceByUsersViewMain = lazy(() => import('src/screens/reports/invoiceByUsers'));
+const InvoiceByEngineerViewMain = lazy(() => import('src/screens/reports/InvoiceByEngineerView'));
 const ForDeliveryDataViewMain = lazy(() => import('src/screens/reports/forDeliveryData'))
 const AcknowledgmentViewMain = lazy(() => import('src/screens/acknowledgment/all/acknowledgmentView'));
 // const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoice/list'));
@@ -117,6 +121,15 @@ export const dashboardRoutes = [
         ],
       },
       {
+        path: 'engineers',
+        children: [
+          { element: <EngineersListViewMain />, index: true },
+          { path: 'list', element: <EngineersListViewMain /> },
+          { path: 'create', element: <EngineersCreateViewMain /> },
+          { path: ':id/edit', element: <EngineersCreateViewMain /> },
+        ],
+      },
+      {
         path: 'customer',
         children: [
           { element: <CustomerListViewMain />, index: true },
@@ -141,6 +154,7 @@ export const dashboardRoutes = [
           { path: 'gmReasonReport', element: <GmReasonReportView />  },
           { path: 'invoiceForCustomers', element: <InvoiceForCustomersViewMain />  },
           { path: 'invoiceByUsers', element: <InvoiceByUsersViewMain /> },
+          { path: 'invoiceByEngineer', element: <InvoiceByEngineerViewMain /> },
           { path: 'GmReport', element: <GmReportView />  },
           { path: 'deliveryDate', element: <ForDeliveryDataViewMain />  },
           { path: 'acknowledgment', element: <AcknowledgmentViewMain title ="acknowledgment"/>  },
@@ -163,6 +177,7 @@ export const dashboardRoutes = [
           { path: ':id/edit', element: <InvoiceEditPage /> },
           { path: ':id/edit/operation', element: <InvoiceEditPage /> },
           { path: 'needToAction', element: <NeedToActionViewMain /> },
+          { path: 'needToAssign', element: <NeedToActionViewMain /> },
           { path: 'rejectedBySales', element: <RejectedBySalesViewMain /> },
           { path: 'new', element: <InvoiceCreatePage /> },
         ],

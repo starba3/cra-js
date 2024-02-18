@@ -227,11 +227,19 @@ export function useNavData() {
         ) 
       }
 
-      if(role.toLowerCase() === 'headengineer') {
+      if(role.toLowerCase() === 'head of engineer') {
         items[0].items.push(
-            { title: t('needToAction'), path: paths.dashboard.invoice.needToAction, icon: ICONS.file },
-            { title: t('assign_engineer'), path: paths.dashboard.engineers.assignEngineer, icon: ICONS.file },
-            { title: t('assign_engineer'), path: paths.dashboard.engineers.assignEngineer, icon: ICONS.file },
+            // Invoice
+            {
+                title: t('invoices'),
+                path: paths.dashboard.invoice.root,
+                icon: ICONS.invoice,
+                children: [
+                    { title: t('list'), path: paths.dashboard.invoice.list },
+                    { title: t('needToAction'), path: paths.dashboard.invoice.needToAction },
+                    { title: t('needToAssign'), path: paths.dashboard.invoice.needToAssign },
+                ],
+            },
             // Reports
             {
                 title: t('reports'),
@@ -242,7 +250,8 @@ export function useNavData() {
                     { title: t('invoiceByEngineer'), path: paths.dashboard.reports.invoiceByEngineer }
                 ],
             },
-            { title: t('allEngineers'), path: paths.dashboard.engineers.list, icon: ICONS.file },
+            // 
+            { title: t('engineersList'), path: paths.dashboard.engineers.list, icon: ICONS.file },
         ) 
       }
 

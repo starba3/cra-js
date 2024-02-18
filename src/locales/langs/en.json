@@ -237,11 +237,15 @@
   "rejectedBySales": "Rejected By Sales",
   "acknowledgment": "Acknowledgment",
   "acknowleded": "Acknowleded",
+  "searchEngineers": "Search Engineers",
   "invoiceAcceptence": "Invoice Acceptence",
   "notAcknowledged": "Not Acknowleded",
   "performance": "Performance",
-  "invoiceByEngineer": "Not Acknowleded",
-  "allEngineers": "Not Acknowleded"
+  "invoiceByEngineer": "Invoices By Engineer",
+  "needToAssign": "Need to Assign",
+  "engineersList": "Engineers List",
+  "createNewEngineer": "Create New Engineer",
+  "newEngineer": "New Engineer"
   
 
 }

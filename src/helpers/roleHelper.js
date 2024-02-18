@@ -3,10 +3,10 @@ import React from "react"
 export const getUserRole = () => {
     let ROLE = localStorage.getItem("role") 
     ? JSON.parse(localStorage.getItem("role")).value 
-    : "operation"
+    : "Head of Engineer"
 
     if (ROLE === "Admin") {
-        ROLE = "operation"
+        ROLE = "Head of Engineer"
     }
 
     

@@ -95,6 +95,9 @@ export function createBaseUrlWithRole(role) {
         case 'engineer':
             url = `${baseUrl}/api/Engineer`
             break
+        case 'head of engineer':
+            url = `${baseUrl}/api/HeadOfEngineer`
+            break
         default:
             url = `${baseUrl}`
             break
