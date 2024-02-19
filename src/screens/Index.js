@@ -6,6 +6,8 @@ import { getUserRole } from 'src/helpers/roleHelper';
 const OverviewAppView = lazy(() => import('src/screens/components/dashboard/admin/OverviewAppView'));
 const OperationDashboardView = lazy(() => import('src/screens/components/dashboard/operationManager/dashboardView')) ;
 const SalesDashboardView = lazy(() => import('src/screens/components/dashboard/sales/dashboardView')) ;
+const HOEDashboardView = lazy(() => import('src/screens/components/dashboard/headOfEngineer/dashboardView'));
+
 
 // ----------------------------------------------------------------------
 
@@ -17,6 +19,10 @@ const getDashaboard = (role) => {
 
   if (role.toLowerCase() === "sales") {
     return <SalesDashboardView /> 
+  }
+
+  if(role.toLowerCase() === "head of engineer") {
+    return <HOEDashboardView />
   }
 
   return <OverviewAppView />

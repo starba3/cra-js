@@ -1,4 +1,3 @@
-import sumBy from 'lodash/sumBy';
 import React, { useState, useCallback, useEffect, useMemo  } from 'react';
 import { useNavigate  } from 'react-router-dom';
 import { useLocales } from 'src/locales';
@@ -20,7 +19,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { Icon } from '@iconify/react';
 import Collapse from '@mui/material/Collapse';
-import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+
+import CircularProgress from '@mui/material/CircularProgress';
+import Backdrop from '@mui/material/Backdrop';
 // @mui Dialog
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -55,14 +60,17 @@ import {
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
 import { getUsersByRole } from 'src/data-access/users';
+import { getUserRole } from 'src/helpers/roleHelper';
+import { getAllEngineers } from 'src/data-access/engineers';
 // Utility
 import { exportToExcel } from 'src/utils/export';
 // COMPONENTS
 import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
 import InvoiceTableFiltersResult from 'src/screens/components/invoice/departments/InvoiceTableFiltersResult';
-import { getInvoicesByDepartment, getInvoicesBySalesConfirmation, getInvoiceInquiryData  } from 'src/data-access/invoice'
+import { getNeedToAssignEngineer, setInvoiceEnginneer, getInvoiceInquiryData  } from 'src/data-access/invoice'
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
+
 
 
 
@@ -90,23 +98,26 @@ export default function InvoiceListView({department, salesStatus}) {
   const { t, currentLang } = useLocales()
   const currentLanguage = currentLang.value;
   const Translate = (text) => t(text);
+
+  const ROLE = getUserRole()
   
+  const [loading, setLoading] = useState(false);
   const [assignedUsers, setAssignedUsers] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [dataUpdated, setDataUpdated] = useState(false);
   const [openInquiry, setOpenInquiry] = useState(false);
   const [inquiryId, setInquiryId] = useState(0);
   const [inquiryData, setInquiryData] = useState({});
-
+  const [filters, setFilters] = useState(defaultFilters);
+  const [isConfirmReport, setIsConfirmReport] = useState(department === undefined);
+  const [openAssignUser, setOpenAssignUser] = useState(false);
+  const [assignEngineer, setAssignEngineer] = useState('');
+  const [invoiceId, setInvoiceId] = useState(0);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('Success');
   
 
-  useEffect(() => {
-    let role = '';
-    if (salesStatus === 1) {
-      role = 'installation';
-    } else if (salesStatus === 3) {
-      role = 'collection';
-    } 
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,7 +127,7 @@ export default function InvoiceListView({department, salesStatus}) {
           const result = await getInvoiceInquiryData(inquiryId);
           setInquiryData(result);
         } else {
-          setInquiryData(null);
+          setInquiryData({});
         }
         
       } catch (error) {
@@ -127,31 +138,15 @@ export default function InvoiceListView({department, salesStatus}) {
     fetchData();
   }, [inquiryId]);
     
-
-    const fetchData = async () => {
-      try {
-
-        if (department !== undefined) {
-          const departmentId = department === -1 ? 0 : department
-          const result = await getInvoicesByDepartment(departmentId);
-          setTableData(result);
-        } else {
-          const result = await getInvoicesBySalesConfirmation(Boolean(salesStatus));
-          setTableData(result);
-        }
-        
-      } catch (error) {
-        console.error('Error fetching invoices:', error);
-      }
-    };
-
+  useEffect(() => {
+    
     const fetchUsers = async () => {
       try {
 
-        if (role) {
-          const result = await getUsersByRole(role);
+        if (ROLE) {
+          const result = await getAllEngineers(ROLE);
           console.log(result);
-          setAssignUser(result.length ? result[0].username : '') ;
+          setAssignEngineer(result.length ? result[0].username : '') ;
           setAssignedUsers(result);
         } 
         
@@ -160,17 +155,28 @@ export default function InvoiceListView({department, salesStatus}) {
       }
     };
 
-    fetchData();
-    fetchUsers();
-  }, [ department, salesStatus]);
+    fetchUsers()
+  }, [ROLE]);
 
-  const [filters, setFilters] = useState(defaultFilters);
-  const [isConfirmReport, setIsConfirmReport] = useState(department === undefined);
-  const [openAssignUser, setOpenAssignUser] = useState(false);
-  const [assignUser, setAssignUser] = useState('');
-  const [invoiceId, setInvoiceId] = useState(0);
-  const [openAlert, setOpenAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('Success');
+  useEffect(() => {
+    
+    
+    const fetchData = async () => {
+
+      try {
+
+        const result = await getNeedToAssignEngineer(ROLE);
+        setTableData(result);
+        
+      } catch (error) {
+        console.error('Error fetching invoices:', error);
+      }
+    };
+
+    fetchData()
+  }, [ROLE, dataUpdated]);
+
+  
 
   const dateError =
     filters.startDate && filters.endDate
@@ -222,7 +228,7 @@ export default function InvoiceListView({department, salesStatus}) {
   const TABLE_HEAD = [
     { id: 'invoiceNumber', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
-    { id: 'installationStatus', label: Translate("installationStatus"), align: 'center' },
+    // { id: 'installationStatus', label: Translate("installationStatus"), align: 'center' },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
@@ -234,7 +240,6 @@ export default function InvoiceListView({department, salesStatus}) {
     Translate("invoiceNumber"),
     Translate("customerName"),
     Translate("issueDate"),
-    Translate("installationStatus"),
     Translate("amount"),
     Translate("productName")
   ];
@@ -251,22 +256,6 @@ export default function InvoiceListView({department, salesStatus}) {
   );
 
   // Fetch data
-  const handleDeleteRow = useCallback(
-    (id) => {
-      const deleteRow = tableData.filter((row) => row.id !== id);
-      setTableData(deleteRow);
-
-      table.onUpdatePageDeleteRow(dataInPage.length);
-    },
-    [dataInPage.length, table, tableData]
-  );
-
-  const handleEditRow = useCallback(
-    (id) => {
-      router.push(paths.invoices.edit(id));
-    },
-    [router]
-  );
 
   const handleViewRow = useCallback(
     (id) => {
@@ -285,115 +274,50 @@ export default function InvoiceListView({department, salesStatus}) {
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
-  
-
-  const handleConfirmAndReject = async (id, state) => {    
-    try {
-      console.log(`https://invoicecollectionsystemapi.azurewebsites.net/api/Invoices/${id}/${state}BySales`)
-      const redirectUrl = paths.departments.sales.confirm_invoices;
-      // Send create invoice request
-      
-      fetch(`https://invoicecollectionsystemapi.azurewebsites.net/api/Invoices/${id}/${state}BySales`, {
-        method: 'PATCH',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        // body: JSON.stringify(body),
-        Cache: 'default'
-      })
-      .then(res => {
-        // Check if the status code is 200 or 204
-        if (res.ok) {
-          setDataUpdated(!dataUpdated);
-          // Check if the status code is 200 or 204
-          if (res.status === 204) {
-            return null; // Handle 204 No Content
-          }  if (res.status === 200) {
-            return res.json(); // Parse JSON for other successful responses
-          } 
-          throw new Error(`Unexpected status code: ${res.status}`);
-          
-        } 
-        throw new Error('Network response was not ok');
-      })
-      .then(res => {
-        setAlertMessage(Translate("success"));
-      })
-      .catch(error => {
-        console.log(error);
-        setAlertMessage(error)
-      })
-
-
-      
-      // console.info('DATA', JSON.stringify(data, null, 2));
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setOpenAlert(true);
-    }
-  };
 
   const handleAssignUser = async () => {    
+
+    let timer;
+    
+    const startLoading = () => {
+      setLoading(true);
+      timer = setTimeout(() => setLoading(false), 1500); // Set loading to false after 1.5 seconds
+    };
+
     try {
-      const endpoint = salesStatus === 1 ? 'setResponsibleEngineerByUsername' : 'setCollectorByUsername';
-      const url = `https://invoicecollectionsystemapi.azurewebsites.net/api/Invoices/${invoiceId}/${endpoint}`;
-      console.log(url);
-
+      
+      startLoading()
       const body= {
-        userName: assignUser
-      };
-
-      console.log(body);
-
+        invoiceId,
+        engineerName: assignEngineer
+      }
+      
       // Send create invoice request
       setOpenAssignUser(false);
       
+      
 
-      fetch(url, {
-        method: 'PATCH',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body),
-        Cache: 'default'
-      })
-      .then(res => {
-        // Check if the status code is 200 or 204
-        if (res.ok) {
-          // Check if the status code is 200 or 204
-          if (res.status === 204) {
-            return null; // Handle 204 No Content
-          }  if (res.status === 200) {
-            return res.json(); // Parse JSON for other successful responses
-          } 
-
-          throw new Error(`Unexpected status code: ${res.status}`);
-          
-        } 
-
-        throw new Error('Network response was not ok');
-      })
-      .then(res => {
-        setAlertMessage(Translate("success"));
-      })
-      .catch(error => {
-        console.log(error)
-        setAlertMessage(error);
-      });
-
+      const response = await setInvoiceEnginneer(body, ROLE)
+      if(response.success) {
+        setAlertMessage(Translate("success"))
+      }
+      else {
+        setAlertMessage(response.errorMessage)
+      }
 
     } catch (error) {
       console.error('Error:', error);
     } finally {
       setOpenAlert(true);
+      setDataUpdated((prev) => !prev)
     }
   };
 
   return (
     <>
+      <Backdrop open={loading} style={{ zIndex: 9999 }}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
           heading={Translate("assignEngineer")}
@@ -408,30 +332,6 @@ export default function InvoiceListView({department, salesStatus}) {
           }}
         />
 
-        <Card
-          sx={{
-            mb: { xs: 3, md: 5 },
-          }}
-        >
-          <Scrollbar>
-            <Stack
-              direction="row"
-              divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
-              sx={{ py: 2 }}
-            >
-              <InvoiceAnalytic
-                title={Translate("total")}
-                total={tableData.length}
-                percent={100}
-                price={sumBy(tableData, 'invoiceAmount')}
-                icon="solar:bill-list-bold-duotone"
-                color={theme.palette.info.main}
-              />
-
-              
-            </Stack>
-          </Scrollbar>
-        </Card>
         <Stack
           direction="row"
           // justifyContent="flex-end"
@@ -495,11 +395,12 @@ export default function InvoiceListView({department, salesStatus}) {
                     )
                     .map((row) => (
                       <InvoiceTableRow
-                        key={row.id}
+                        key={`invoice-${row.id}`}
                         row={row}
                         selected={table.selected.includes(row.id)}
                         onViewRow={() => handleViewRow(row.id)}
                         handleOpenInquiry={() => handleOpenInquiry(row.id)}
+                        handleOpenAssign={() => handleOpen(row.id)}
                       />
                     ))}
 
@@ -558,21 +459,22 @@ export default function InvoiceListView({department, salesStatus}) {
         keepMounted
         onClose={handleClose}
 
+
       >
-        <DialogTitle>{Translate("assignUser")}</DialogTitle>
+        <DialogTitle>{Translate("assignEngineer")}</DialogTitle>
         <DialogContent>
           <Select
-            value={assignUser}
+            value={assignEngineer}
             onChange={(newValue) => {
               console.log(newValue.target.value);
-              setAssignUser(newValue.target.value);
+              setAssignEngineer(newValue.target.value);
             }}
             input={<OutlinedInput label="" />}
             renderValue={(selected) => selected}
-            sx={{ textTransform: 'capitalize', fullWidth: true }}
+            sx={{ textTransform: 'capitalize', fullWidth: true, width:"100%" }}
           >
-            {assignedUsers.map((option) => (
-              <MenuItem key={option.id} value={option.username}>
+            {assignedUsers.map((option, index) => (
+              <MenuItem key={`engineer-${index}`} value={option.username}>
                 {option.username}
               </MenuItem>
             ))}

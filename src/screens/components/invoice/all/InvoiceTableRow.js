@@ -33,7 +33,7 @@ export default function InvoiceTableRow({
   handleOpenInquiry,
   role
 }) {
-  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, daysToCollected, customerNameAr, customerNameEn, productNameAr, productNameEn, paidStatus, acknowledgeStatus, department } = row;
+  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, installationStatus, customerNameAr, customerNameEn, productNameAr, productNameEn, paidStatus, acknowledgeStatus, department } = row;
   
   const { t, currentLang } = useLocales()
   const customerName = currentLang.value === 'ar' ? customerNameAr : customerNameEn;
@@ -89,7 +89,7 @@ export default function InvoiceTableRow({
           />
         </TableCell>
         
-        <TableCell align="center" >{acknowledgeStatus}</TableCell>
+        <TableCell  >{role.toLowerCase() === "head of engineer" ? installationStatus : acknowledgeStatus}</TableCell>
 
         <TableCell >{`${invoiceAmount.toLocaleString()} ${Translate('currencyShortcut')}`}</TableCell>
         

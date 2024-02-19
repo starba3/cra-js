@@ -36,6 +36,8 @@ const OrderDetailsPage = lazy(() => import('src/pages/dashboard/order/details'))
 // INVOICE
 const NeedToActionViewMain = lazy(() => import('src/screens/invoice/needToAction/needToActionView'));
 const RejectedBySalesViewMain = lazy(() => import('src/screens/invoice/rejectedBySales/rejectedBySalesView'));
+const NeedToAssignViewMain = lazy(() => import('src/screens/invoice/needToAssign/needToAssignView'));
+
 // Reports
 const AgingViewMain = lazy(() => import('src/screens/reports/aging'));
 const InvoiceForCustomersViewMain = lazy(() => import('src/screens/reports/invoiceForCustomers'));
@@ -179,7 +181,7 @@ export const dashboardRoutes = [
           { path: ':id/edit', element: <InvoiceEditPage /> },
           { path: ':id/edit/operation', element: <InvoiceEditPage /> },
           { path: 'needToAction', element: <NeedToActionViewMain /> },
-          { path: 'needToAssign', element: <NeedToActionViewMain /> },
+          { path: 'needToAssign', element: <NeedToAssignViewMain /> },
           { path: 'rejectedBySales', element: <RejectedBySalesViewMain /> },
           { path: 'new', element: <InvoiceCreatePage /> },
         ],

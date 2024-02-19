@@ -82,14 +82,14 @@ export default function AppCurrentDownload({ title, subheader, chart, ...other }
 
   return (
     <Card {...other}>
-      <CardHeader title={title} subheader={subheader} sx={{ mb: 5 }} />
+      <CardHeader title={title} subheader={subheader} sx={{ mb: 5, textAlign:"center" }}  />
 
       <StyledChart
         dir="ltr"
         type="donut"
         series={chartSeries}
         options={chartOptions}
-        height={280}
+        height={260}
       />
     </Card>
   );

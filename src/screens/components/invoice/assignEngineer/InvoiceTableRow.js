@@ -26,6 +26,7 @@ export default function InvoiceTableRow({
   row,
   selected,
   onViewRow,
+  handleOpenAssign,
   handleOpenInquiry,
 }) {
   const { id, invoiceNo, issueInvoiceDate, invoiceAmount, installationStatus, customerNameEn, customerNameAr, productNameEn, productNameAr, department } = row;
@@ -83,7 +84,7 @@ export default function InvoiceTableRow({
           />
         </TableCell>
         
-        <TableCell align="center" >{installationStatus}</TableCell>
+        {/* <TableCell align="center" >{installationStatus}</TableCell> */}
 
         <TableCell >{`${invoiceAmount.toLocaleString()} ${Translate('currencyShortcut')}`}</TableCell>
 
@@ -95,7 +96,7 @@ export default function InvoiceTableRow({
           <Button 
             variant='contained' 
             color='success'
-            onClick={() => handleOpen(id)}
+            onClick={() => handleOpenAssign(id)}
           >
             {`${Translate("assign")} ${Translate("engineer")}`} 
           </Button>
@@ -148,6 +149,7 @@ export default function InvoiceTableRow({
 InvoiceTableRow.propTypes = {
 
   onViewRow: PropTypes.func,
+  handleOpenAssign: PropTypes.func,
   handleOpenInquiry: PropTypes.func,
   row: PropTypes.object,
   selected: PropTypes.bool,

@@ -60,6 +60,7 @@ import {
 import { getAllInvoices, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
+import { _installationStatus_objects } from 'src/lists/installation'
 // Utility
 import { exportToExcel } from 'src/utils/export';
 import { getUserRole } from 'src/helpers/roleHelper'
@@ -75,6 +76,7 @@ import InvoiceTableToolbar from './InvoiceTableToolbar';
 const defaultFilters = {
   name: '',
   departments: [],
+  installationStatus: [],
   paidStatus: [],
   status: 'all',
   startDate: null,
@@ -175,7 +177,7 @@ export default function InvoiceListView() {
   const TABLE_HEAD = [
     { id: 'invoiceNumber', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
-    { id: 'acknowledgeStatus', label: Translate("acknowledgeStatus"), align: 'center' },
+    { id: 'acknowledgeStatus', label: Translate("acknowledgeStatus") },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
@@ -186,11 +188,16 @@ export default function InvoiceListView() {
     Translate("invoiceNumber"),
     Translate("customerName"),
     Translate("issueInvoiceDate"),
+    Translate("acknowledgeStatus"),
     Translate("invoiceAmount"),
     Translate("productName"),
-    Translate("paidStatus"),
     Translate("department")
   ];
+
+  if(ROLE.toLowerCase() === "head of engineer") {
+    TABLE_HEAD[2] = { id: 'installationStatus', label: Translate("installationStatus") }
+    exportHeaderRow[3] = Translate("installationStatus")
+  }
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
@@ -456,7 +463,9 @@ export default function InvoiceListView() {
             onFilters={handleFilters}
             dateError={dateError}
             serviceOptions={_departments().map((option) => option)}
-            paidStatusOptions={_statusList().map((option) => option)}
+            // paidStatusOptions={_statusList().map((option) => option)}
+            role={ROLE}
+            installationStatusOptions={_installationStatus_objects()}
           />
 
           {canReset && (
@@ -676,7 +685,7 @@ export default function InvoiceListView() {
 }
 
 function applyFilter({ inputData, comparator, filters, dateError }) {
-    const { name, status, departments, startDate, paidStatus, endDate } = filters;
+    const { name, status, departments, startDate, paidStatus, installationStatus, endDate } = filters;
   
     const stabilizedThis = inputData.map((el, index) => [el, index]);
   
@@ -706,6 +715,13 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
       inputData = inputData.filter((invoice) =>
         // service.map((serviceName) => serviceName.toLowerCase()).includes(invoice.department)
         departments.includes('All') || departments.includes(invoice.department)
+      );
+    }
+
+    if (installationStatus.length) {
+      inputData = inputData.filter((invoice) =>
+        // service.map((serviceName) => serviceName.toLowerCase()).includes(invoice.department)
+        installationStatus.includes('All') || installationStatus.includes(invoice.installationStatus)
       );
     }
     

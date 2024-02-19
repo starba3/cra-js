@@ -24,11 +24,12 @@ export default function InvoiceTableToolbar({
   onFilters,
   dateError,
   serviceOptions,
-  paidStatusOptions,
+  installationStatusOptions,
+  role
 }) {
   const popover = usePopover();
 
-  const prevSelectedPaidStatus = useRef([]);
+  const prevSelectedInstallationStatus = useRef([]);
   const prevSelectedDepartment = useRef([]);
 
   const { t } = useLocales()
@@ -52,10 +53,10 @@ export default function InvoiceTableToolbar({
     [onFilters]
   );
 
-  const handleFilterPaidStatus = useCallback(
+  const handleFilterInstallationStatus = useCallback(
     (value) => {
       onFilters(
-        'paidStatus',
+        'installationStatus',
         typeof value === 'string' ? value.split(',') : value
       );
     },
@@ -75,6 +76,55 @@ export default function InvoiceTableToolbar({
     },
     [onFilters]
   );
+
+  const installationStatusSelect = role.toLowerCase() === "head of engineer"
+  ? <FormControl
+      sx={{
+        flexShrink: 0,
+        width: { xs: 1, md: 180 },
+      }}
+    >
+      <InputLabel>{Translate("installationStatus")}</InputLabel>
+      
+      <Select
+        multiple
+        value={filters.installationStatus}
+        onChange={(event) => {
+          const allItems = installationStatusOptions;
+          const selected = event.target.value;
+          const lastIndex = selected.length - 1;
+
+          console.log("selected", selected);
+          
+
+          if (selected[lastIndex] === "All") { // Selected All option
+            handleFilterInstallationStatus(allItems.map(item => item.value));
+            prevSelectedInstallationStatus.current = allItems;
+          } else if(selected[0] === "All"){ // Selected All option then deslected another option
+            handleFilterInstallationStatus(selected.slice(1));
+            prevSelectedInstallationStatus.current = selected.slice(1);
+          } else if(prevSelectedInstallationStatus.current.length && prevSelectedInstallationStatus.current.slice()[0] === "All")  { // Selected All option then deslected All
+            handleFilterInstallationStatus([]);
+            prevSelectedInstallationStatus.current = [];
+          } else { // Selected any option other than all
+            handleFilterInstallationStatus(selected);
+            prevSelectedInstallationStatus.current = selected;
+          }
+
+        }}
+        input={<OutlinedInput label={Translate("installationStatus")} />}
+        renderValue={(selected) => selected.map((value) => value).join(', ')}
+        sx={{ textTransform: 'capitalize' }}
+      >
+        {installationStatusOptions.map((option, index) => (
+          <MenuItem key={index} value={option.value}>
+            <Checkbox disableRipple size="small" checked={filters.installationStatus.includes(option.value)} />
+            {option.text}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  : null
 
   return (
     <>
@@ -137,77 +187,32 @@ export default function InvoiceTableToolbar({
         </Select>
       </FormControl>
 
-        {/* <FormControl
-          sx={{
-            flexShrink: 0,
-            width: { xs: 1, md: 180 },
-          }}
-        >
-          <InputLabel>{Translate("paidStatus")}</InputLabel>
-          
-          <Select
-            multiple
-            value={filters.paidStatus}
-            onChange={(event) => {
-              const allItems = paidStatusOptions;
-              const selected = event.target.value;
-              const lastIndex = selected.length - 1;
+      {installationStatusSelect}
 
-              console.log(selected);
-              
+      <DatePicker
+        label={Translate("startDate")}
+        value={filters.startDate}
+        onChange={handleFilterStartDate}
+        slotProps={{ textField: { fullWidth: true } }}
+        sx={{
+          maxWidth: { md: 180 },
+        }}
+      />
 
-              if (selected[lastIndex] === "All") { // Selected All option
-                handleFilterPaidStatus(allItems);
-                prevSelectedPaidStatus.current = allItems;
-              } else if(selected[0] === "All"){ // Selected All option then deslected another option
-                handleFilterPaidStatus(selected.slice(1));
-                prevSelectedPaidStatus.current = selected.slice(1);
-              } else if(prevSelectedPaidStatus.current.length && prevSelectedPaidStatus.current.slice()[0] === "All")  { // Selected All option then deslected All
-                handleFilterPaidStatus([]);
-                prevSelectedPaidStatus.current = [];
-              } else { // Selected any option other than all
-                handleFilterPaidStatus(selected);
-                prevSelectedPaidStatus.current = selected;
-              }
-
-            }}
-            input={<OutlinedInput label={Translate("paidStatus")} />}
-            renderValue={(selected) => selected.map((value) => value).join(', ')}
-            sx={{ textTransform: 'capitalize' }}
-          >
-            {paidStatusOptions.map((option) => (
-              <MenuItem key={option} value={option}>
-                <Checkbox disableRipple size="small" checked={filters.paidStatus.includes(option)} />
-                {option}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl> */}
-
-        <DatePicker
-          label={Translate("startDate")}
-          value={filters.startDate}
-          onChange={handleFilterStartDate}
-          slotProps={{ textField: { fullWidth: true } }}
-          sx={{
-            maxWidth: { md: 180 },
-          }}
-        />
-
-        <DatePicker
-          label={Translate("endDate")}
-          value={filters.endDate}
-          onChange={handleFilterEndDate}
-          slotProps={{
-            textField: {
-              fullWidth: true,
-              error: dateError,
-            },
-          }}
-          sx={{
-            maxWidth: { md: 180 },
-          }}
-        />
+      <DatePicker
+        label={Translate("endDate")}
+        value={filters.endDate}
+        onChange={handleFilterEndDate}
+        slotProps={{
+          textField: {
+            fullWidth: true,
+            error: dateError,
+          },
+        }}
+        sx={{
+          maxWidth: { md: 180 },
+        }}
+      />
 
         <Stack direction="row" alignItems="center" spacing={2} flexGrow={1} sx={{ width: 1 }}>
           <TextField
@@ -272,5 +277,6 @@ InvoiceTableToolbar.propTypes = {
   filters: PropTypes.object,
   onFilters: PropTypes.func,
   serviceOptions: PropTypes.array,
-  paidStatusOptions: PropTypes.array,
+  installationStatusOptions: PropTypes.array,
+  role: PropTypes.string
 };

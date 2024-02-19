@@ -64,7 +64,7 @@ export default function InvoiceTableToolbar({
             width: { xs: 1, md: 180 },
           }}
         >
-          <InputLabel>{Translate("paidStatus")}</InputLabel>
+          <InputLabel>{Translate("acknowledgment")}</InputLabel>
           
           <Select
             multiple
@@ -92,7 +92,7 @@ export default function InvoiceTableToolbar({
               }
 
             }}
-            input={<OutlinedInput label={Translate("paidStatus")} />}
+            input={<OutlinedInput label={Translate("acknowledgment")} />}
             renderValue={(selected) => selected.map((value) => value).join(', ')}
             sx={{ textTransform: 'capitalize' }}
           >

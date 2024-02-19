@@ -331,10 +331,9 @@ const prepareDataForInvoicesByEngineer = (data, headers, language, currency) => 
     [headers[0]]: invoice.invoiceNo,
     [headers[1]]: customerName,
     [headers[2]]: new Date(invoice.issueInvoiceDate).toLocaleDateString(),
-    [headers[3]]: invoice.installationStatus,
-    [headers[4]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
-    [headers[5]]: productName,
-    [headers[6]]: invoice.department,
+    [headers[3]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
+    [headers[4]]: productName,
+    [headers[5]]: invoice.department,
   }
   return list;
 });

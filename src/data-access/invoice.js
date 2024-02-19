@@ -23,6 +23,13 @@ export async function getNeedToAction(role) {
     return sendGet(url, [], headers);
 }
 
+export async function getNeedToAssignEngineer(role) {
+    const url = `${createBaseUrlWithRole(role)}/Invoices/need-to-assign`
+    const headers = createHeaders(role)
+
+    return sendGet(url, [], headers);
+}
+
 export async function getInvoiceAcceptence(role) {
     const url = `${createBaseUrlWithRole(role)}/Invoices/confirm-reject-invoices`
     const headers = createHeaders(role)
@@ -32,6 +39,20 @@ export async function getInvoiceAcceptence(role) {
 
 export async function confirmRejectInvoice(body, role) {
     const url = `${createBaseUrlWithRole(role)}/Confirmation/Invoices`
+    const headers = createHeaders(role)
+
+    const response = await sendPatch(url, body, headers);
+
+    const responseObj = {
+        success: !response,
+        errorMessage: response // Empty in successful request
+    };
+
+    return responseObj;
+}
+
+export async function setInvoiceEnginneer(body, role) {
+    const url = `${createBaseUrlWithRole(role)}/Invoices/set-engineer`
     const headers = createHeaders(role)
 
     const response = await sendPatch(url, body, headers);

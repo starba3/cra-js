@@ -251,6 +251,11 @@
   "inProgressCount" : "InProgress Count",
   "notStartedCount" : "Not Started Count",
   "delayedCount" : "Delayed Count",
-  "searchPerformanceReportPlaceHolder": "Search Name or Email"
-
+  "searchPerformanceReportPlaceHolder": "Search Name or Email",
+  "notStarted": "Not Started",
+  "inProgress": "InProgress",
+  "delayed": "Delayed",
+  "installed": "Installed",
+  "installtionStatusCount": "Installtion Status Count",
+  "needToActionCount": "Need To Action Count"
 }
