@@ -1,9 +1,14 @@
-import { sendGet } from "src/helpers/requestHelper";
+import { sendGet, createBaseUrlWithRole } from "src/helpers/requestHelper";
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
 
 export async function getAgingReport() {
     const url = `${baseUrl}/api/Reports/aging`;
+    return  sendGet(url, []);
+}
+
+export async function getPerformanceReport(role = "Head of engineer") {
+    const url = `${createBaseUrlWithRole(role)}/Reports/engineer-performance`;
     return  sendGet(url, []);
 }
 

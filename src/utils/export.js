@@ -52,6 +52,9 @@ export const exportToExcel = (data, headers, language, currency, reportName, fil
     
   if(reportName.toLowerCase() === 'engineerslist') 
     filteredData = prepareDataForEngineers(data, headers);
+
+  if(reportName.toLowerCase() === 'performance') 
+    filteredData = prepareDataForPerformanceReport(data, headers); 
   // console.log("Headers: ", headers);
   // console.log("filteredData: ", filteredData);
 
@@ -332,6 +335,18 @@ const prepareDataForInvoicesByEngineer = (data, headers, language, currency) => 
     [headers[4]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
     [headers[5]]: productName,
     [headers[6]]: invoice.department,
+  }
+  return list;
+});
+
+const prepareDataForPerformanceReport = (data, headers) => data.map((record) => {
+  const list = {
+    [headers[0]]: record.name,
+    [headers[1]]: record.email,
+    [headers[2]]: record.installedCount,
+    [headers[3]]: record.inProgressCount,
+    [headers[4]]: record.notStartedCount,
+    [headers[5]]: record.delayedCount
   }
   return list;
 });

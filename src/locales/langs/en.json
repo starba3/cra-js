@@ -245,7 +245,11 @@
   "needToAssign": "Need to Assign",
   "engineersList": "Engineers List",
   "createNewEngineer": "Create New Engineer",
-  "newEngineer": "New Engineer"
-  
+  "newEngineer": "New Engineer",
+  "installedCount" : "Installed Count",
+  "inProgressCount" : "InProgress Count",
+  "notStartedCount" : "Not Started Count",
+  "delayedCount" : "Delayed Count",
+  "searchPerformanceReportPlaceHolder": "Search Name or Email"
 
 }

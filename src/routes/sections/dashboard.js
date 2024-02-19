@@ -45,6 +45,7 @@ const InvoiceByUsersViewMain = lazy(() => import('src/screens/reports/invoiceByU
 const InvoiceByEngineerViewMain = lazy(() => import('src/screens/reports/InvoiceByEngineerView'));
 const ForDeliveryDataViewMain = lazy(() => import('src/screens/reports/forDeliveryData'))
 const AcknowledgmentViewMain = lazy(() => import('src/screens/acknowledgment/all/acknowledgmentView'));
+const PerformanceViewMain = lazy(() => import('src/screens/reports/performanceView'));
 // const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoice/list'));
 const InvoiceDetailsPage = lazy(() => import('src/screens/invoice/InvoiceDetailsPage'));
 const InvoiceCreatePage = lazy(() => import('src/screens/invoice/InvoiceCreatePage'));
@@ -158,6 +159,7 @@ export const dashboardRoutes = [
           { path: 'GmReport', element: <GmReportView />  },
           { path: 'deliveryDate', element: <ForDeliveryDataViewMain />  },
           { path: 'acknowledgment', element: <AcknowledgmentViewMain title ="acknowledgment"/>  },
+          { path: 'performance', element: <PerformanceViewMain />  },
         ],
       },
       {
