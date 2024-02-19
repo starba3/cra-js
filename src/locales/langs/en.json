@@ -241,6 +241,7 @@
   "invoiceAcceptence": "Invoice Acceptence",
   "notAcknowledged": "Not Acknowleded",
   "performance": "Performance",
+  "assignEngineer": "Assign Engineer",
   "invoiceByEngineer": "Invoices By Engineer",
   "needToAssign": "Need to Assign",
   "engineersList": "Engineers List",
