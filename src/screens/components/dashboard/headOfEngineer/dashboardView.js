@@ -68,27 +68,16 @@ export default function HOEDashboardView() {
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
       <Grid container spacing={3}>
 
-      <InvoiceCountByStatus 
-        title="Title"
-        subheader="Subheader"
-        list={statusCount} 
-        
-      />
-
-      {/* <Box
-        sx={{ 
-          width: "100%"
-         }}
-      > */}
-        {/* <BarChart data={data}/> */}
-      {/* </Box> */}
-      <Grid item="true" xs={12} 
-      //   sx={{ 
-      //   display: "grid",
-      //   gap: 2,
-      //   gridTemplateColumns:"repeat(auto-fill, minmax(320px, 2fr))"
-      //  }}
-      >
+        <Grid item="true" xs={12}>
+          <InvoiceCountByStatus 
+            title="Title"
+            subheader="Subheader"
+            list={statusCount} 
+            
+          />
+        </Grid>
+      
+        <Grid item="true" xs={12}>
           <FlexBox>
             <Grid item="true" xs={12} md={6} lg={4} sx={{  }}>
               <AppCurrentDownload
@@ -134,7 +123,7 @@ export default function HOEDashboardView() {
 
 // Define a FlexBox component with prop validation
 const FlexBox = ({ children }) => (
-  <Stack direction="row" spacing={3} sx={{ flexWrap: 'wrap', justifyContent: 'space between' }}>
+  <Stack direction="row" spacing={3} sx={{ flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
     {children}
   </Stack>
 );

@@ -14,6 +14,7 @@ import Fade from "@mui/material/Fade";
 import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
 // @mui Dialog
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -29,6 +30,8 @@ import { getUserRole } from 'src/helpers/roleHelper'
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import { useSettingsContext } from 'src/components/settings';
 import FormProvider from 'src/components/hook-form';
 import Iconify from 'src/components/iconify';
 import InvoiceNewEditAddress from './invoice-new-edit-address';
@@ -50,6 +53,7 @@ const formatDate = (date) => {
 
 export default function InvoiceNewEditForm({ currentInvoice }) {
 
+  const settings = useSettingsContext();
   const router = useRouter();
   const loadingSave = useBoolean();
   const loadingSend = useBoolean();
@@ -344,34 +348,65 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
   return (
     <>
-      <FormProvider methods={methods} onSubmit={handleCreateAndSend} >
-        <Card>
-          <InvoiceNewEditAddress currentInvoice={currentInvoice}/>
-
-          <InvoiceNewEditStatusDate 
-            currentInvoice={currentInvoice}
-            filters={filters}
-            onFilters={handleFilters}
-            departmentOptions={_departments_withoutAll().map((option) => option)}
-            department={currentInvoice.department}
-          />
-
-        </Card>
-
-        <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
-          <LoadingButton
-            size="large"
-            variant="contained"
-            loading={loadingSend.value && isSubmitting}
-            type='submit'
-            // onClick={ handleSubmit(handleCreateAndSend)} 
+      <Container maxWidth={settings.themeStretch ? false : 'lg'}>
+        <CustomBreadcrumbs
+          heading="Edit invoice"
+          links={[
+            // {
+            //   name: Translate("app"),
+            //   href: paths.dashboard.root,
+            // },
+            // {
+            //   name: Translate("invoice"),
+            //   href: paths.dashboard.invoice.root,
+            // },
+            // {
+            //   name: Translate("newInvoice"),
+            // },
+          ]}
+          sx={{
+            mb: { xs: 3, md: 5 },
+          }}
+          action={
+          <Button 
+            variant='contained' 
+            color='success'
+            onClick={() => console.log(currentInvoice)}
           >
-            {currentInvoice ? 'Update' : 'Create'} & Send
-          </LoadingButton>
-        </Stack>
-        
-        
-      </FormProvider>
+            {Translate("sendAlert")}
+          </Button>
+          }
+        />
+        <FormProvider methods={methods} onSubmit={handleCreateAndSend} >
+          <Card>
+            <InvoiceNewEditAddress currentInvoice={currentInvoice}/>
+
+            <InvoiceNewEditStatusDate 
+              currentInvoice={currentInvoice}
+              filters={filters}
+              onFilters={handleFilters}
+              departmentOptions={_departments_withoutAll().map((option) => option)}
+              department={currentInvoice.department}
+            />
+
+          </Card>
+
+          <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
+            <LoadingButton
+              size="large"
+              variant="contained"
+              loading={loadingSend.value && isSubmitting}
+              type='submit'
+              // onClick={ handleSubmit(handleCreateAndSend)} 
+            >
+              {currentInvoice ? 'Update' : 'Create'} & Send
+            </LoadingButton>
+          </Stack>
+          
+          
+        </FormProvider>
+      </Container>
+      
 
       <Box sx={{ position:"fixed", bottom:"1rem", right:"1rem", zIndex: "2"}}>
         <Fade in={isError}>

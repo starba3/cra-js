@@ -58,17 +58,15 @@ export default function InvoiceTableRow({
 
   const popover = usePopover();
 
-  const editMenuItem = userRole === "operation" ?
-       <MenuItem
-          onClick={() => {
-            onEditRow();
-            popover.onClose();
-          }}
-        >
-          <Iconify icon="solar:pen-bold" />
-          {Translate("edit")}
-        </MenuItem>
-    :  null;
+  const editMenuItem = <MenuItem
+    onClick={() => {
+      onEditRow();
+      popover.onClose();
+    }}
+  >
+    <Iconify icon="solar:pen-bold" />
+    {Translate("edit")}
+  </MenuItem>
 
 
   return (

@@ -55,28 +55,7 @@ export default function InvoiceEditView({ id }) {
   }
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : 'lg'}>
-      <CustomBreadcrumbs
-        heading="Edit invoice"
-        links={[
-          // {
-          //   name: Translate("app"),
-          //   href: paths.dashboard.root,
-          // },
-          // {
-          //   name: Translate("invoice"),
-          //   href: paths.dashboard.invoice.root,
-          // },
-          // {
-          //   name: Translate("newInvoice"),
-          // },
-        ]}
-        sx={{
-          mb: { xs: 3, md: 5 },
-        }}
-      />
-      <InvoiceNewEditForm currentInvoice={currentInvoice} />
-    </Container>
+    <InvoiceNewEditForm currentInvoice={currentInvoice} />
   );
 }
 

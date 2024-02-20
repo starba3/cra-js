@@ -257,5 +257,6 @@
   "delayed": "Delayed",
   "installed": "Installed",
   "installtionStatusCount": "Installtion Status Count",
-  "needToActionCount": "Need To Action Count"
+  "needToActionCount": "Need To Action Count",
+  "sendAlert": "Send Alert"
 }
