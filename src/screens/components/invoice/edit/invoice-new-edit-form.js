@@ -13,29 +13,26 @@ import Box from "@mui/material/Box";
 import Fade from "@mui/material/Fade";
 import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
-import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 // @mui Dialog
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 // routes
 import { useRouter } from 'src/routes/hooks';
 // _mock
-import { addAttachment, editInvoice } from 'src/data-access/invoice';
+import { addAttachment, editInvoice, sendInvoiceAlert } from 'src/data-access/invoice';
 import { _departments_withoutAll } from 'src/lists/departments';
 import { getUserRole } from 'src/helpers/roleHelper'
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
+import LoadingAnimation from 'src/screens/components/utility/loadingAnimation';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { useSettingsContext } from 'src/components/settings';
 import FormProvider from 'src/components/hook-form';
 import Iconify from 'src/components/iconify';
 import InvoiceNewEditAddress from './invoice-new-edit-address';
 import InvoiceNewEditStatusDate from './invoice-new-edit-status-date';
+import SendAlertDialog from './sendAlertDialog';
+
 
 
 
@@ -55,46 +52,14 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
   const settings = useSettingsContext();
   const router = useRouter();
-  const loadingSave = useBoolean();
+  const showSendAlertDialog = useBoolean();
+  const showAlertBox = useBoolean();    
   const loadingSend = useBoolean();
   
   const { t } = useLocales();
   const Translate = (text) => t(text);
 
   const ROLE = getUserRole()
-
-  const[didUpdate, setDidUpdate] = useState(false);
-  const[isError, setIsError] = useState(false);
-  const[errorMessage, setErrorMessage] = useState('');
-
-
-  const departmentId = _departments_withoutAll()
-                          .map(item => item.toLocaleLowerCase())
-                          .indexOf(currentInvoice?.department.toLowerCase())
-
-  const handleClickOpen = () => {
-    setIsError(true);
-  };
-
-  const handleClose = () => {
-    setIsError(false);
-  };
-  
-  const arrays = {
-    daysToCollect: ['collection'],
-    deliveryDate: ['operation'],
-    invoiceAmount: ['operation'],
-    poValue: ['operation'],
-    contractNo: ['operation'],
-    salesTakerName: ['operation'],
-    department: ['operation', 'sales', 'tenderandcontracts', 'collection'],
-    acknowledgeStatuses: ['operation', 'sales'],
-    installationStatus: ['installation'],
-    installationDate: ['installation'],
-    collectionSource: ['collection'],
-    claimStatus: ['collection'],
-    claimsDetailStatus: ['collection'],
-  }
 
   const NewInvoiceSchema = Yup.object().shape({
     CreateNote: Yup.string(),
@@ -115,8 +80,6 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
   });
 
   // Default lists values
-  
-
   const defaultValues = useMemo(
     () => ({
       CreateNote: currentInvoice?.CreateNote || '',
@@ -137,9 +100,46 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     [currentInvoice]
   );
 
-  // const {notes} = currentInvoice;
 
-  const [filters, setFilters] = useState(defaultValues);
+  const[didUpdate, setDidUpdate] = useState(false);
+  const[isError, setIsError] = useState(false);
+  const[errorMessage, setErrorMessage] = useState('');
+  const[filters, setFilters] = useState(defaultValues);
+  const[loading, setLoading] = useState(false);
+
+
+  const departmentId = _departments_withoutAll()
+                          .map(item => item.toLocaleLowerCase())
+                          .indexOf(currentInvoice?.department.toLowerCase())
+
+  const handleClickOpen = () => {
+    setIsError(true);
+  };
+
+  const handleClose = () => {
+    showAlertBox.onFalse();
+  };
+  
+  const arrays = {
+    daysToCollect: ['collection'],
+    deliveryDate: ['operation'],
+    invoiceAmount: ['operation'],
+    poValue: ['operation'],
+    contractNo: ['operation'],
+    salesTakerName: ['operation'],
+    department: ['operation', 'sales', 'tenderandcontracts', 'collection'],
+    acknowledgeStatuses: ['operation', 'sales'],
+    installationStatus: ['installation'],
+    installationDate: ['installation'],
+    collectionSource: ['collection'],
+    claimStatus: ['collection'],
+    claimsDetailStatus: ['collection'],
+    headOfDepartments: ['head of engineer', 'head of sales', 'head of collector',]
+  }
+
+ 
+
+  
 
   const methods = useForm({
     resolver: yupResolver(NewInvoiceSchema),
@@ -303,18 +303,13 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
           NoteText : `${CreateNote}`
         }
       });
-      
-       
-      // loadingSend.onFalse();
-
 
       // Send Edit invoice request      
-
       const editResponse = await editInvoice(currentInvoice.id, departmentId, body, ROLE);
-
+      
       if (editResponse.errorMessage) {
         setErrorMessage(editResponse.errorMessage);
-        setIsError(true);
+        showAlertBox.onToggle();
       } else {
         reset();
         setDidUpdate(true);
@@ -325,9 +320,50 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
     } catch (error) {
       console.error('Error:', error);
+    } finally {
       loadingSend.onFalse();
     }
   });
+
+  const handleSendAlert = async (alertText) => {
+    
+    let timer;
+    
+    const startLoading = () => {
+      setLoading(true);
+      timer = setTimeout(() => setLoading(false), 1500); // Set loading to false after 1.5 seconds
+    };
+
+    try {
+      // Start loading animation
+      startLoading()
+      
+      const body = {
+        invoiceId: currentInvoice.id,
+        note: alertText
+      }
+
+      console.log(body)
+      const response = await sendInvoiceAlert(body, ROLE);
+
+      if(response.success) {
+        setErrorMessage(Translate("success"))
+        clearTimeout(timer)
+        
+      } else {
+        setErrorMessage(response.errorMessage)
+      }
+
+      setLoading(false)
+      showAlertBox.onTrue()
+      showSendAlertDialog.onFalse()
+
+
+    } catch (error) {
+      console.error('Error:', error);
+      loadingSend.onFalse();
+    }
+  };
 
   const handleFileUpload = async () => {
 
@@ -348,6 +384,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
   return (
     <>
+      <LoadingAnimation loading={loading} />
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
           heading="Edit invoice"
@@ -356,27 +393,34 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
             //   name: Translate("app"),
             //   href: paths.dashboard.root,
             // },
-            // {
-            //   name: Translate("invoice"),
-            //   href: paths.dashboard.invoice.root,
-            // },
-            // {
-            //   name: Translate("newInvoice"),
-            // },
           ]}
           sx={{
             mb: { xs: 3, md: 5 },
           }}
-          action={
-          <Button 
-            variant='contained' 
-            color='success'
-            onClick={() => console.log(currentInvoice)}
-          >
-            {Translate("sendAlert")}
-          </Button>
-          }
+
         />
+
+        {
+          ROLE.toLowerCase() === "head of engineer"
+          ? <Stack
+              direction="row"
+              // justifyContent="flex-end"
+              // divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+              sx={{ py: 2 }}
+            >
+              <Button 
+                variant='contained' 
+                color='success'
+                onClick={() => showSendAlertDialog.onTrue()}
+              >
+                {Translate("sendAlert")}
+              </Button>
+            </Stack>
+          : null
+        }
+        
+
+          
         <FormProvider methods={methods} onSubmit={handleCreateAndSend} >
           <Card>
             <InvoiceNewEditAddress currentInvoice={currentInvoice}/>
@@ -387,6 +431,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
               onFilters={handleFilters}
               departmentOptions={_departments_withoutAll().map((option) => option)}
               department={currentInvoice.department}
+              userRole={ROLE}
             />
 
           </Card>
@@ -409,9 +454,9 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       
 
       <Box sx={{ position:"fixed", bottom:"1rem", right:"1rem", zIndex: "2"}}>
-        <Fade in={isError}>
+        <Fade in={showAlertBox.value}>
           <Alert
-            severity='error'
+            severity={errorMessage === Translate("success") ? "success" : "error"}
             sx={{ m: 1 }}
             action= {
               <IconButton
@@ -432,6 +477,19 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         </Fade>
         
       </Box>
+      
+      {
+        ROLE.toLowerCase() === "head of engineer"
+        ? <SendAlertDialog
+            title={Translate("sendAlertTo")}
+            open={showSendAlertDialog.value}
+            onClose={() => showSendAlertDialog.onFalse()}
+            salesTaker={currentInvoice?.salesTakerName}
+            sendAlert={(alertMessage) => handleSendAlert(alertMessage)}
+          />
+        : null
+      }
+      
     </>
     
   );

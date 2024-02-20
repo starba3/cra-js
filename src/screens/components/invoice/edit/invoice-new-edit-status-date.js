@@ -41,6 +41,7 @@ export default function InvoiceNewEditStatusDate({
   onFilters,
   departmentOptions,
   currentInvoice,
+  userRole,
   }) {
   const disabledTextColor = 'Crimson';
 
@@ -148,6 +149,7 @@ export default function InvoiceNewEditStatusDate({
     collectionSource: ['collection'],
     claimStatus: ['collection'],
     claimsDetailStatus: ['collection'],
+    headOfDepartments: ['head of engineer', 'head of sales', 'head of collector',]
   }
   // Collection data changes handlers
   const handleCollectionSourceChange = (newValue) => {
@@ -212,8 +214,9 @@ export default function InvoiceNewEditStatusDate({
   // Components
 
   
-  const invoiceAmount = arrays.invoiceAmount.includes(department.toLowerCase()) ? 
-  <FormControl
+  const invoiceAmount = arrays.invoiceAmount.includes(department.toLowerCase()) 
+    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ? 
+    <FormControl
       sx={{
         flex: 1,
         flexShrink: 0,
@@ -243,8 +246,9 @@ export default function InvoiceNewEditStatusDate({
     disabled
   />
 
-  const poValue = arrays.poValue.includes(department.toLowerCase()) ? 
-  <FormControl
+  const poValue = arrays.poValue.includes(department.toLowerCase()) 
+    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ? 
+    <FormControl
       sx={{
         flex: 1,
         flexShrink: 0,
@@ -252,20 +256,20 @@ export default function InvoiceNewEditStatusDate({
       }}
       style={width80}
     >
-    {/* <InputLabel  > {Translate("invoiceAmount")} </InputLabel> */}
-    <Controller
+      {/* <InputLabel  > {Translate("invoiceAmount")} </InputLabel> */}
+      <Controller
       
-      name="poValue"
-      control={control}
-      render={({ field }) => (
-        <TextField
-          {...field}
-          label={Translate("poValue")}
-          value={field.value}
-          fullWidth
-        />
-      )}
-    />
+        name="poValue"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label={Translate("poValue")}
+            value={field.value}
+            fullWidth
+          />
+        )}
+      />
     </FormControl> : 
   <TextField
     label={Translate("poValue")}
@@ -274,8 +278,9 @@ export default function InvoiceNewEditStatusDate({
     disabled
   />
 
-  const contractNo = arrays.contractNo.includes(department.toLowerCase()) ? 
-  <FormControl
+  const contractNo = arrays.contractNo.includes(department.toLowerCase()) 
+    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
+    <FormControl
       sx={{
         flex: 1,
         flexShrink: 0,
@@ -307,7 +312,8 @@ export default function InvoiceNewEditStatusDate({
 
   
 
-  const deliveryDate = arrays.deliveryDate.includes(department.toLowerCase()) ? 
+  const deliveryDate = arrays.deliveryDate.includes(department.toLowerCase()) 
+    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
   <Controller
     name="DeliveryDate"
     control={control}
@@ -330,7 +336,8 @@ export default function InvoiceNewEditStatusDate({
     disabled
     style={width80}      
   />
-  const daysToCollect = arrays.daysToCollect.includes(department.toLowerCase()) ? 
+  const daysToCollect = arrays.daysToCollect.includes(department.toLowerCase()) 
+    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
   <FormControl
       sx={{
         flex: 1,
@@ -377,7 +384,8 @@ export default function InvoiceNewEditStatusDate({
     style={width80}      
   />
 
-  const departmentSelect = arrays.department.includes(department.toLowerCase()) ? 
+  const departmentSelect = arrays.department.includes(department.toLowerCase()) 
+    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
     <FormControl
       sx={{
         flex: 1,
@@ -424,7 +432,8 @@ export default function InvoiceNewEditStatusDate({
       disabled
     />
 
-  const acknowledgeStatus = arrays.acknowledgeStatuses.includes(department.toLowerCase()) ? 
+  const acknowledgeStatus = arrays.acknowledgeStatuses.includes(department.toLowerCase()) 
+    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
     <FormControl
       sx={{
         flex: 1,
@@ -464,7 +473,8 @@ export default function InvoiceNewEditStatusDate({
       disabled
     /> 
 
-  const installationDate = arrays.installationDate.includes(department.toLowerCase()) ? 
+  const installationDate = arrays.installationDate.includes(department.toLowerCase()) 
+    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
   <Controller
   name="installationDate"
   control={control}
@@ -488,7 +498,8 @@ export default function InvoiceNewEditStatusDate({
       disabled
     /> 
   
-    const installationStatus = arrays.installationStatus.includes(department.toLowerCase()) ? 
+    const installationStatus = arrays.installationStatus.includes(department.toLowerCase()) 
+      && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
     <FormControl
       sx={{
         flex: 1,
@@ -528,7 +539,8 @@ export default function InvoiceNewEditStatusDate({
       disabled
     /> 
 
-  const collectionSourceSelect = arrays.collectionSource.includes(department.toLowerCase()) ? 
+  const collectionSourceSelect = arrays.collectionSource.includes(department.toLowerCase()) 
+    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
     <FormControl
       sx={{
         flex: 1,
@@ -572,7 +584,8 @@ export default function InvoiceNewEditStatusDate({
         disabled
     /> 
   
-  const ClaimStatusSelect = arrays.claimStatus.includes(department.toLowerCase()) ? 
+  const ClaimStatusSelect = arrays.claimStatus.includes(department.toLowerCase()) 
+    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
     <FormControl
       sx={{
         flex: 1,
@@ -613,7 +626,8 @@ export default function InvoiceNewEditStatusDate({
           disabled
       /> 
 
-  const ClaimsDetailStatusSelect = arrays.claimsDetailStatus.includes(department.toLowerCase()) ? 
+  const ClaimsDetailStatusSelect = arrays.claimsDetailStatus.includes(department.toLowerCase()) 
+    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
     <FormControl
       sx={{
         flex: 1,
@@ -654,7 +668,8 @@ export default function InvoiceNewEditStatusDate({
           disabled
         /> 
     
-    const salesTakerSelect = arrays.salesTakerName.includes(department.toLowerCase()) ? 
+    const salesTakerSelect = arrays.salesTakerName.includes(department.toLowerCase()) 
+      && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
     <FormControl
       sx={{
         flex: 1,
@@ -941,5 +956,6 @@ InvoiceNewEditStatusDate.propTypes = {
   filters: PropTypes.object,
   onFilters: PropTypes.func,
   departmentOptions: PropTypes.array.isRequired,
-  currentInvoice: PropTypes.object.isRequired
+  currentInvoice: PropTypes.object.isRequired,
+  userRole: PropTypes.string,
 } 

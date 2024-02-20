@@ -8,7 +8,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
-import IconButton from '@mui/material/IconButton';
 import FormControl from '@mui/material/FormControl';
 import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -24,12 +23,14 @@ export default function InvoiceTableToolbar({
   onFilters,
   dateError,
   serviceOptions,
-  paidStatusOptions,
+  installationStatusOptions,
+  role,
 }) {
   const popover = usePopover();
 
-  const prevSelectedPaidStatus = useRef([]);
-  const prevSelectedDepartment = useRef([]);
+  // const prevSelectedPaidStatus = useRef([]);
+  // const prevSelectedDepartment = useRef([]);
+  const prevSelectedInstallationStatus = useRef([]);
 
   const { t } = useLocales()
 
@@ -52,10 +53,10 @@ export default function InvoiceTableToolbar({
     [onFilters]
   );
 
-  const handleFilterPaidStatus = useCallback(
+  const handleFilterInstallationStatus = useCallback(
     (value) => {
       onFilters(
-        'paidStatus',
+        'installationStatus',
         typeof value === 'string' ? value.split(',') : value
       );
     },
@@ -76,6 +77,56 @@ export default function InvoiceTableToolbar({
     [onFilters]
   );
 
+  const installationStatusSelect = (role.toLowerCase() === "head of engineer" || role.toLowerCase() === "installation")
+  ? <FormControl
+      sx={{
+        flexShrink: 0,
+        width: { xs: 1, md: 180 },
+      }}
+    >
+      <InputLabel>{Translate("installationStatus")}</InputLabel>
+      
+      <Select
+        multiple
+        value={filters.installationStatus}
+        onChange={(event) => {
+          const allItems = installationStatusOptions;
+          const selected = event.target.value;
+          const lastIndex = selected.length - 1;
+
+          console.log("selected", selected);
+          
+
+          if (selected[lastIndex] === "All") { // Selected All option
+            handleFilterInstallationStatus(allItems.map(item => item.value));
+            prevSelectedInstallationStatus.current = allItems;
+          } else if(selected[0] === "All"){ // Selected All option then deslected another option
+            handleFilterInstallationStatus(selected.slice(1));
+            prevSelectedInstallationStatus.current = selected.slice(1);
+          } else if(prevSelectedInstallationStatus.current.length && prevSelectedInstallationStatus.current.slice()[0] === "All")  { // Selected All option then deslected All
+            handleFilterInstallationStatus([]);
+            prevSelectedInstallationStatus.current = [];
+          } else { // Selected any option other than all
+            handleFilterInstallationStatus(selected);
+            prevSelectedInstallationStatus.current = selected;
+          }
+
+        }}
+        input={<OutlinedInput label={Translate("installationStatus")} />}
+        renderValue={(selected) => selected.map((value) => value).join(', ')}
+        sx={{ textTransform: 'capitalize' }}
+      >
+        {installationStatusOptions.map((option, index) => (
+          <MenuItem key={index} value={option.value}>
+            <Checkbox disableRipple size="small" checked={filters.installationStatus.includes(option.value)} />
+            {option.text}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  : null
+
+
   return (
     <>
       <Stack
@@ -90,7 +141,8 @@ export default function InvoiceTableToolbar({
           pr: { xs: 2.5, md: 1 },
         }}
       >
-
+      
+      {installationStatusSelect}
 
       <DatePicker
         label={Translate("startDate")}
@@ -180,5 +232,6 @@ InvoiceTableToolbar.propTypes = {
   filters: PropTypes.object,
   onFilters: PropTypes.func,
   serviceOptions: PropTypes.array,
-  paidStatusOptions: PropTypes.array,
+  installationStatusOptions: PropTypes.array,
+  role: PropTypes.string
 };

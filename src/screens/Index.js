@@ -7,6 +7,7 @@ const OverviewAppView = lazy(() => import('src/screens/components/dashboard/admi
 const OperationDashboardView = lazy(() => import('src/screens/components/dashboard/operationManager/dashboardView')) ;
 const SalesDashboardView = lazy(() => import('src/screens/components/dashboard/sales/dashboardView')) ;
 const HOEDashboardView = lazy(() => import('src/screens/components/dashboard/headOfEngineer/dashboardView'));
+const InstallationDashboardView = lazy(() => import('src/screens/components/dashboard/installation/dashboardView'));
 
 
 // ----------------------------------------------------------------------
@@ -23,6 +24,10 @@ const getDashaboard = (role) => {
 
   if(role.toLowerCase() === "head of engineer") {
     return <HOEDashboardView />
+  }
+
+  if(role.toLowerCase() === "installation") {
+    return <InstallationDashboardView />
   }
 
   return <OverviewAppView />

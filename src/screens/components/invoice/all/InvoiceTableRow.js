@@ -38,6 +38,8 @@ export default function InvoiceTableRow({
   const { t, currentLang } = useLocales()
   const customerName = currentLang.value === 'ar' ? customerNameAr : customerNameEn;
   const productName = currentLang.value === 'ar' ? productNameAr : productNameEn;
+
+  const cellValue = ["installation", "head of engineer"].includes(role.toLowerCase())  ? installationStatus : acknowledgeStatus
   
   const Translate = (text) => t(text);
   const confirm = useBoolean();
@@ -89,7 +91,7 @@ export default function InvoiceTableRow({
           />
         </TableCell>
         
-        <TableCell  >{role.toLowerCase() === "head of engineer" ? installationStatus : acknowledgeStatus}</TableCell>
+        <TableCell  >{cellValue}</TableCell>
 
         <TableCell >{`${invoiceAmount.toLocaleString()} ${Translate('currencyShortcut')}`}</TableCell>
         

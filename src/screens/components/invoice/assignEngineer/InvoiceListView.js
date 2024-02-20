@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo  } from 'react';
+import React, { useState, useCallback, useEffect  } from 'react';
 import { useNavigate  } from 'react-router-dom';
 import { useLocales } from 'src/locales';
 // @mui
@@ -24,8 +24,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
-import CircularProgress from '@mui/material/CircularProgress';
-import Backdrop from '@mui/material/Backdrop';
 // @mui Dialog
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -42,7 +40,6 @@ import { fTimestamp } from 'src/utils/format-time';
 import PropTypes from 'prop-types';
 // components
 import Scrollbar from 'src/components/scrollbar';
-import { ConfirmDialog } from 'src/components/custom-dialog';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import Iconify from 'src/components/iconify';
@@ -54,19 +51,17 @@ import {
   TableEmptyRows,
   TableHeadCustom,
   TablePaginationCustom,
-  TableSelectedAction,
 } from 'src/components/table';
 // DATA ACCESS
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
-import { getUsersByRole } from 'src/data-access/users';
 import { getUserRole } from 'src/helpers/roleHelper';
 import { getAllEngineers } from 'src/data-access/engineers';
 // Utility
 import { exportToExcel } from 'src/utils/export';
 // COMPONENTS
-import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
 import InvoiceTableFiltersResult from 'src/screens/components/invoice/departments/InvoiceTableFiltersResult';
+import LoadingAnimation from 'src/screens/components/utility/loadingAnimation';
 import { getNeedToAssignEngineer, setInvoiceEnginneer, getInvoiceInquiryData  } from 'src/data-access/invoice'
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
@@ -315,9 +310,8 @@ export default function InvoiceListView({department, salesStatus}) {
 
   return (
     <>
-      <Backdrop open={loading} style={{ zIndex: 9999 }}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <LoadingAnimation loading={loading} />
+      
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
           heading={Translate("assignEngineer")}

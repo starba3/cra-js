@@ -258,5 +258,6 @@
   "installed": "Installed",
   "installtionStatusCount": "Installtion Status Count",
   "needToActionCount": "Need To Action Count",
+  "sendAlertTo": "Send Alert To ",
   "sendAlert": "Send Alert"
 }

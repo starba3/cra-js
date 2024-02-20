@@ -3,15 +3,13 @@ import PropTypes from 'prop-types';
 import { useLocales } from 'src/locales';
 // @mui
 import Container from '@mui/material/Container';
-import CircularProgress from '@mui/material/CircularProgress';  
 // routes
-import { paths } from 'src/routes/paths';
 // _mock
 import { getInvoicesById } from 'src/data-access/invoice'
 // components
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-//
+import LoadingAnimation from 'src/screens/components/utility/loadingAnimation';
 import InvoiceDetails from 'src/screens/components/invoice/details/InvoiceDetails';
 import { getUserRole } from 'src/helpers/roleHelper';
 
@@ -44,7 +42,7 @@ export default function InvoiceDetailsView({ id }) {
 
   if(loading || !currentInvoice) {
     return (
-      <CircularProgress />
+      <LoadingAnimation loading={loading || !currentInvoice} />
     )
   }
 

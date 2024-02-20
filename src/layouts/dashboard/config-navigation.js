@@ -219,43 +219,60 @@ export function useNavData() {
           ) 
       }
 
-      if(role.toLowerCase() === 'sales') {
-        items[0].items.push(
-            { title: t('invoices'), path: paths.dashboard.invoice.root, icon: ICONS.file },
-            { title: t('needToAction'), path: paths.invoices.needToAction, icon: ICONS.file },
-            { title: t('invoiceAcceptence'), path: paths.invoiceAcceptence.list, icon: ICONS.file },     
-        ) 
-      }
+        if(role.toLowerCase() === 'sales') {
+            items[0].items.push(
+                { title: t('invoices'), path: paths.dashboard.invoice.root, icon: ICONS.file },
+                { title: t('needToAction'), path: paths.invoices.needToAction, icon: ICONS.file },
+                { title: t('invoiceAcceptence'), path: paths.invoiceAcceptence.list, icon: ICONS.file },     
+            ) 
+        }
 
-      if(role.toLowerCase() === 'head of engineer') {
-        items[0].items.push(
-            // Invoice
-            {
-                title: t('invoices'),
-                path: paths.dashboard.invoice.root,
-                icon: ICONS.invoice,
-                children: [
-                    { title: t('list'), path: paths.dashboard.invoice.list },
-                    { title: t('needToAction'), path: paths.dashboard.invoice.needToAction },
-                    { title: t('needToAssign'), path: paths.dashboard.invoice.needToAssign },
-                ],
-            },
-            // Reports
-            {
-                title: t('reports'),
-                path: paths.dashboard.reports.root,
-                icon: ICONS.user,
-                children: [
-                    { title: t('performance'), path: paths.dashboard.reports.performance },
-                    { title: t('invoiceByEngineer'), path: paths.dashboard.reports.invoiceByEngineer }
-                ],
-            },
-            // 
-            { title: t('engineersList'), path: paths.dashboard.engineers.list, icon: ICONS.file },
-        ) 
-      }
+        if(role.toLowerCase() === 'head of engineer') {
+            items[0].items.push(
+                // Invoice
+                {
+                    title: t('invoices'),
+                    path: paths.dashboard.invoice.root,
+                    icon: ICONS.invoice,
+                    children: [
+                        { title: t('list'), path: paths.dashboard.invoice.list },
+                        { title: t('needToAction'), path: paths.dashboard.invoice.needToAction },
+                        { title: t('needToAssign'), path: paths.dashboard.invoice.needToAssign },
+                    ],
+                },
+                // Reports
+                {
+                    title: t('reports'),
+                    path: paths.dashboard.reports.root,
+                    icon: ICONS.user,
+                    children: [
+                        { title: t('performance'), path: paths.dashboard.reports.performance },
+                        { title: t('invoiceByEngineer'), path: paths.dashboard.reports.invoiceByEngineer }
+                    ],
+                },
+                // 
+                { title: t('engineersList'), path: paths.dashboard.engineers.list, icon: ICONS.file },
+            ) 
+        }
 
-      return items
+        if(role.toLowerCase() === 'installation') {
+            items[0].items.push(
+                // Invoice
+                {
+                    title: t('invoices'),
+                    path: paths.dashboard.invoice.list,
+                    icon: ICONS.invoice,
+                },
+                {
+                    title: t('needToAction'),
+                    path: paths.dashboard.invoice.needToAction,
+                    icon: ICONS.invoice,
+                },
+                
+            ) 
+        }
+
+        return items
     }
     ,
     [t, role]

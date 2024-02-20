@@ -1,6 +1,5 @@
 import * as React from 'react';
-import sumBy from 'lodash/sumBy';
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useLocales } from 'src/locales';
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -9,32 +8,24 @@ import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
-import IconButton from '@mui/material/IconButton';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
 // @mui Dialog
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import Alert from '@mui/material/Alert';
-import { Icon } from '@iconify/react';
-import Collapse from '@mui/material/Collapse';
-import CircularProgress from '@mui/material/CircularProgress';
 
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
-import { RouterLink } from 'src/routes/components';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // utils
@@ -43,7 +34,6 @@ import { fTimestamp } from 'src/utils/format-time';
 // components
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
-import { ConfirmDialog } from 'src/components/custom-dialog';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import {
@@ -60,12 +50,11 @@ import {
 import { getNeedToAction, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
+import { _installationStatus_objects } from 'src/lists/installation'
 // Utility
 import { exportToExcel } from 'src/utils/export';
 import { getUserRole } from 'src/helpers/roleHelper'
 //
-import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
-import { sendPost } from 'src/helpers/requestHelper';
 import InvoiceTableFiltersResult from './InvoiceTableFiltersResult';
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
@@ -76,6 +65,7 @@ const defaultFilters = {
   name: '',
   departments: [],
   paidStatus: [],
+  installationStatus: [],
   status: 'all',
   startDate: null,
   endDate: null,
@@ -165,15 +155,19 @@ export default function InvoiceListView() {
   const canReset =
     !!filters.name ||
     !!filters.departments.length ||
+    !!filters.installationStatus.length ||
     filters.status !== 'all' ||
     (!!filters.startDate && !!filters.endDate);
 
+  // Decide 3rd column based on User Role
+  const headKey = ["installation", "head of engineer"].includes(ROLE.toLowerCase())  ? "installationStatus" : "acknowledgeStatus"
   const TABLE_HEAD = [
     { id: 'invoiceNumber', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
+    { id: `${headKey}`, label: Translate(`${headKey}`) },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName"), align: 'center' },
-    { id: 'acknowledgeStatus', label: Translate("acknowledgeStatus"), align: 'center' },
+    
     { id: '' },
   ];
 
@@ -181,9 +175,10 @@ export default function InvoiceListView() {
     Translate("invoiceNumber"),
     Translate("customerName"),
     Translate("issueInvoiceDate"),
+    Translate(`${headKey}`),
     Translate("invoiceAmount"),
     Translate("productName"),
-    Translate("acknowledgeStatus")
+    
   ];
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
@@ -219,17 +214,6 @@ export default function InvoiceListView() {
       
       deleteData();
   };
-
-  const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
-    setTableData(deleteRows);
-
-    table.onUpdatePageDeleteRows({
-      totalRows: tableData.length,
-      totalRowsInPage: dataInPage.length,
-      totalRowsFiltered: dataFiltered.length,
-    });
-  }, [dataFiltered.length, dataInPage.length, table, tableData]);
 
   const handleEditRow = useCallback(
     (id) => {
@@ -308,7 +292,7 @@ export default function InvoiceListView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'NeedToAction', `${Translate("needToAction")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'NeedToAction', `${Translate("needToAction")}-${new Date().toLocaleDateString()}`, ROLE)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5
@@ -326,7 +310,9 @@ export default function InvoiceListView() {
             onFilters={handleFilters}
             dateError={dateError}
             serviceOptions={_departments().map((option) => option)}
-            paidStatusOptions={_statusList().map((option) => option)}
+            // paidStatusOptions={_statusList().map((option) => option)}
+            role={ROLE}
+            installationStatusOptions={_installationStatus_objects()}
           />
 
           {canReset && (
@@ -474,7 +460,7 @@ export default function InvoiceListView() {
 }
 
 function applyFilter({ inputData, comparator, filters, dateError }) {
-    const { name, status, departments, startDate, paidStatus, endDate } = filters;
+    const { name, status, departments, startDate, paidStatus, endDate, installationStatus } = filters;
   
     const stabilizedThis = inputData.map((el, index) => [el, index]);
   
@@ -504,6 +490,13 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
       inputData = inputData.filter((invoice) =>
         // service.map((serviceName) => serviceName.toLowerCase()).includes(invoice.department)
         departments.includes('All') || departments.includes(invoice.department)
+      );
+    }
+
+    if (installationStatus.length) {
+      inputData = inputData.filter((invoice) =>
+        // service.map((serviceName) => serviceName.toLowerCase()).includes(invoice.department)
+        installationStatus.includes('All') || installationStatus.includes(invoice.installationStatus)
       );
     }
     

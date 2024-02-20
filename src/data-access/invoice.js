@@ -2,7 +2,7 @@
 // import { result } from "lodash";
 import axios from "axios";
 import { paths } from "src/routes/paths"
-import { sendGet, sendDelete, sendPost, sendPatch, createBaseUrlWithRole, createHeaders } from "src/helpers/requestHelper";
+import { sendGet, sendDelete, sendPost, sendPatch, createBaseUrlWithRole, createHeaders, sendPostPatchRequest } from "src/helpers/requestHelper";
 
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
@@ -179,6 +179,12 @@ export async function createInvoice(body, role = "Operation") {
     responseObj.success = !response;
 
     return responseObj;
+}
+
+export async function sendInvoiceAlert(body, role = "Operation") {
+    const url = `${createBaseUrlWithRole(role)}/Invoices/alert-others`;
+    
+    return sendPostPatchRequest("patch", url, body)
 }
 
 export async function editInvoice(id, departmentId, body, role) {

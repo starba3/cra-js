@@ -1,17 +1,17 @@
 import React from "react"
 
 export const getUserRole = () => {
-    let ROLE = localStorage.getItem("role") 
+    let role = localStorage.getItem("role") 
     ? JSON.parse(localStorage.getItem("role")).value 
     : "Head of Engineer"
 
-    if (ROLE === "Admin") {
-        ROLE = "Head of Engineer"
-        // ROLE = "Sales"
-        // ROLE = "Operation"
+    if (role === "Admin") {
+        role = "Head of Engineer"
+        // role = "Sales"
+        // role = "Operation"
     }
 
-    
-    return ROLE
+    console.log("Role ",role)
+    return role
 }
 

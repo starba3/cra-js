@@ -92,7 +92,7 @@ export function createBaseUrlWithRole(role) {
         case 'sales':
             url = `${baseUrl}/api/SalesTaker`
             break
-        case 'engineer':
+        case 'installation':
             url = `${baseUrl}/api/Engineer`
             break
         case 'head of engineer':
@@ -108,7 +108,7 @@ export function createBaseUrlWithRole(role) {
 export function createHeaders(role) {
     let headers = {}
     
-    if (['sales'].includes(role.toLowerCase())) {
+    if (['sales', 'installation'].includes(role.toLowerCase())) {
         const token = localStorage.getItem(STORAGE_KEY) && JSON.parse(localStorage.getItem(STORAGE_KEY)).value;
         headers = {
             "Authorization": `Bearer ${token}`
@@ -116,4 +116,18 @@ export function createHeaders(role) {
     }
 
     return headers
+}
+
+export async function sendPostPatchRequest(method, url, body = {}, headers = {}) {
+    
+    const response = method.toLowerCase() === "patch"
+        ? await sendPatch(url, body, headers)
+        : await sendPost(url, body, headers)
+
+    const responseObj = {
+        success: !response,
+        errorMessage: response // Empty in successful request
+    }
+
+    return responseObj
 }

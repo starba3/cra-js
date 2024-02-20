@@ -77,7 +77,7 @@ export default function InvoiceTableToolbar({
     [onFilters]
   );
 
-  const installationStatusSelect = role.toLowerCase() === "head of engineer"
+  const installationStatusSelect = (role.toLowerCase() === "head of engineer" || role.toLowerCase() === "installation")
   ? <FormControl
       sx={{
         flexShrink: 0,

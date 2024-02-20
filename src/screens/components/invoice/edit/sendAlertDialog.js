@@ -7,14 +7,14 @@ import Dialog from '@mui/material/Dialog';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
-import ListItemButton, { listItemButtonClasses } from '@mui/material/ListItemButton';
+import Button from '@mui/material/Button';
 // components
 import Iconify from 'src/components/iconify';
 import SearchNotFound from 'src/components/search-not-found';
 
 // ----------------------------------------------------------------------
 
-export default function EngineersListDialog({
+export default function SendAlertDialog({
   title = 'Address Book',
   sendAlert,
   //
@@ -31,6 +31,7 @@ export default function EngineersListDialog({
 
   const handleAlertMessage = (event) => {
     setAlertMessage(event.target.value)
+    console.log("AlertMessage ", event.target.value)
   }
 
 
@@ -53,15 +54,8 @@ export default function EngineersListDialog({
       <Stack sx={{ p: 2, pt: 0 }}>
         <TextField
           value={alertMessage}
-          onChange={handleAlertMessage}
+          onChange={(newValue) => handleAlertMessage(newValue)}
           placeholder={Translate("searchCustomer")}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-              </InputAdornment>
-            ),
-          }}
         />
       </Stack>
       <Stack sx={{ p: 2, pt: 0 }}>
@@ -78,26 +72,10 @@ export default function EngineersListDialog({
   );
 }
 
-EngineersListDialog.propTypes = {
+SendAlertDialog.propTypes = {
   onClose: PropTypes.func,
   salesTaker: PropTypes.string,
   open: PropTypes.bool,
   sendAlert: PropTypes.func,
   title: PropTypes.string,
 };
-
-// ----------------------------------------------------------------------
-
-function applyFilter({ inputData, query }) {
-  if (query) {
-    return inputData.filter(
-      (engineer) =>
-        engineer.firstName.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-        engineer.lastName.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-        engineer.email.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-        engineer.username.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    );
-  }
-
-  return inputData;
-}

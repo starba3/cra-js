@@ -1,7 +1,7 @@
 
 import ExcelJS from 'exceljs';
 
-export const exportToExcel = (data, headers, language, currency, reportName, fileName) => {
+export const exportToExcel = (data, headers, language, currency, reportName, fileName, role = "operation") => {
   console.log(data);
   let filteredData = [];
   
@@ -9,7 +9,7 @@ export const exportToExcel = (data, headers, language, currency, reportName, fil
     filteredData = prepareDataForInvoiceByDepartment(data, headers, language);
 
   if(reportName.toLowerCase() === 'allinvoices')
-    filteredData = prepareDataForAllInvoices(data, headers, language, currency);
+    filteredData = prepareDataForAllInvoices(data, headers, language, currency, role);
 
   if(reportName.toLowerCase() === 'customers')
     filteredData = prepareDataForCustomers(data, headers);
@@ -39,7 +39,7 @@ export const exportToExcel = (data, headers, language, currency, reportName, fil
     filteredData = prepareDataForGMReasonReport(data, headers, currency);
 
   if(reportName.toLowerCase() === 'needtoaction') 
-    filteredData = prepareDataForNeedToAction(data, headers, language, currency);
+    filteredData = prepareDataForNeedToAction(data, headers, language, currency, role);
 
   if(reportName.toLowerCase() === 'rejectedbysales') 
     filteredData = prepareDataForRejectedBySales(data, headers, language, currency);
@@ -107,15 +107,15 @@ const prepareDataForInvoiceByDepartment = (data, headers, language) => data.map(
   return list;
 });
 
-const prepareDataForAllInvoices = (data, headers, language, currency) => data.map((invoice) => {
+const prepareDataForAllInvoices = (data, headers, language, currency, role) => data.map((invoice) => {
+  const fourthCell = ["installation", "head of engineer"].includes(role.toLowerCase())  ? invoice.installationStatus : invoice.acknowledgeStatus
   const list = {
     [headers[0]]: invoice.invoiceNo,
     [headers[1]]: language === 'ar' ? invoice.customerNameAr : invoice.customerNameEn,
     [headers[2]]: invoice.issueInvoiceDate,
-    // [headers[3]]: invoice.daysToCollected,
-    [headers[3]]: `${invoice.invoiceAmount} ${currency}`,
-    [headers[4]]: language === 'ar' ? invoice.productNameAr : invoice.productNameEn, 
-    [headers[5]]: invoice.paidStatus,
+    [headers[3]]: fourthCell,
+    [headers[4]]: `${invoice.invoiceAmount} ${currency}`,
+    [headers[5]]: language === 'ar' ? invoice.productNameAr : invoice.productNameEn, 
     [headers[6]]: invoice.department
   }
   return list;
@@ -241,18 +241,19 @@ const prepareDataForInvoicesByCustomer = (data, headers, language, currency) => 
   return list;
 });
 
-const prepareDataForNeedToAction = (data, headers, language, currency) => data.map((invoice) => {
+const prepareDataForNeedToAction = (data, headers, language, currency, role) => data.map((invoice) => {
   const customerName = language === 'ar' ? invoice.customerNameAr : invoice.customerNameEn;
   const productName = language === 'ar' ? invoice.productNameAr : invoice.productNameEn;
+
+  const fourthCell = ["installation", "head of engineer"].includes(role.toLowerCase())  ? invoice.installationStatus : invoice.acknowledgeStatus
 
   const list = {
     [headers[0]]: invoice.invoiceNo,
     [headers[1]]: customerName,
     [headers[2]]: new Date(invoice.issueInvoiceDate).toLocaleDateString(),
-    // [headers[3]]: invoice.daysToCollected,
-    [headers[3]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
-    [headers[4]]: productName,
-    [headers[5]]: invoice.acknowledgeStatus,
+    [headers[3]]: fourthCell,
+    [headers[4]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
+    [headers[5]]: productName,
   }
   return list;
 });

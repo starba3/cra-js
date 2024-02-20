@@ -104,8 +104,7 @@ export default function InvoiceListView() {
   const [filters, setFilters] = useState(defaultFilters);
 
   const [open, setOpen] = React.useState(false);
-  const [openErrorList, setOpenErrorList] = useState(false);
-  const [errorList, setErrorList] = useState(['']);
+
   const [isEmportError, setIsEmportError] = useState(false);
   const [isUploadComplete, setIsUploadComplete] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -174,10 +173,12 @@ export default function InvoiceListView() {
     filters.status !== 'all' ||
     (!!filters.startDate && !!filters.endDate);
 
+  // Decide 3rd column based on User Role
+  const headKey = ["installation", "head of engineer"].includes(ROLE.toLowerCase())  ? "installationStatus" : "acknowledgeStatus"
   const TABLE_HEAD = [
     { id: 'invoiceNumber', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
-    { id: 'acknowledgeStatus', label: Translate("acknowledgeStatus") },
+    { id: `${headKey}`, label: Translate(`${headKey}`) },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
@@ -188,7 +189,7 @@ export default function InvoiceListView() {
     Translate("invoiceNumber"),
     Translate("customerName"),
     Translate("issueInvoiceDate"),
-    Translate("acknowledgeStatus"),
+    Translate(`${headKey}`),
     Translate("invoiceAmount"),
     Translate("productName"),
     Translate("department")
@@ -291,14 +292,6 @@ export default function InvoiceListView() {
   const handleClose = () => {
     setOpen(false);
     setIsUploadComplete(false);
-  };
-
-  const handleClickOpenErrorList = () => {
-    setOpenErrorList(true);
-  };
-
-  const handleCloseErrorList = () => {
-    setOpenErrorList(false);
   };
   
   const handleFileUpload = async () => {
@@ -445,7 +438,7 @@ export default function InvoiceListView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'AllInvoices', `${Translate("invoices")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'AllInvoices', `${Translate("invoices")}-${new Date().toLocaleDateString()}`, ROLE)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5
@@ -472,9 +465,7 @@ export default function InvoiceListView() {
             <InvoiceTableFiltersResult
               filters={filters}
               onFilters={handleFilters}
-              //
               onResetFilters={handleResetFilters}
-              //
               results={dataFiltered.length}
               sx={{ p: 2.5, pt: 0 }}
             />

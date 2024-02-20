@@ -5,10 +5,8 @@ import { useLocales } from 'src/locales';
 import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
-import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -47,27 +45,27 @@ export default function InvoiceTableRow({
     department: "Operation",
     paidStatus: "unpaid"
   }
-  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, acknowledgeStatus, customerNameAr, customerNameEn, productNameEn, productNameAr, paidStatus, department } = row;
+  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, acknowledgeStatus, customerNameAr, customerNameEn, productNameEn, productNameAr, installationStatus, department } = row;
   
   const { t, currentLang } = useLocales()
   const customerName = currentLang.value === 'ar' ? customerNameAr : customerNameEn;
   const productName = currentLang.value === 'ar' ? productNameAr : productNameEn;
+
+  const cellValue = ["installation", "head of engineer"].includes(userRole.toLowerCase())  ? installationStatus : acknowledgeStatus
   
   const Translate = (text) => t(text);
   const confirm = useBoolean();
-
   const popover = usePopover();
 
   const editMenuItem = <MenuItem
-    onClick={() => {
-      onEditRow();
-      popover.onClose();
-    }}
-  >
-    <Iconify icon="solar:pen-bold" />
-    {Translate("edit")}
-  </MenuItem>
-
+      onClick={() => {
+        onEditRow();
+        popover.onClose();
+      }}
+    >
+      <Iconify icon="solar:pen-bold" />
+      {Translate("edit")}
+    </MenuItem>
 
   return (
     <>
@@ -114,13 +112,11 @@ export default function InvoiceTableRow({
           />
         </TableCell>
 
-        {/* <TableCell >{daysToCollected}</TableCell> */}
+        <TableCell >{cellValue}</TableCell>
         
         <TableCell >{`${invoiceAmount.toLocaleString()} ${Translate('currencyShortcut')}`}</TableCell>
 
         <TableCell align="center" >{productName}</TableCell>
-
-        <TableCell align="center" >{acknowledgeStatus}</TableCell>
 
         {/* <TableCell align="center" >{department}</TableCell> */}
 
