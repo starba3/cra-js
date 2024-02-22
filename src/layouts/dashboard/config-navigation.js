@@ -272,6 +272,34 @@ export function useNavData() {
             ) 
         }
 
+        if(role.toLowerCase() === 'head of collectors') {
+            items[0].items.push(
+                // Invoice
+                {
+                    title: t('invoices'),
+                    path: paths.dashboard.invoice.root,
+                    icon: ICONS.invoice,
+                    children: [
+                        { title: t('list'), path: paths.dashboard.invoice.list },
+                        { title: t('needToAction'), path: paths.dashboard.invoice.needToAction },
+                        { title: t('needToAssign'), path: paths.dashboard.invoice.needToAssign },
+                    ],
+                },
+                // Reports
+                {
+                    title: t('reports'),
+                    path: paths.dashboard.reports.root,
+                    icon: ICONS.user,
+                    children: [
+                        { title: t('performance'), path: paths.dashboard.reports.performance },
+                        { title: t('invoiceByCollector'), path: paths.dashboard.reports.invoiceByEngineer }
+                    ],
+                },
+                // 
+                { title: t('collectorsList'), path: paths.dashboard.engineers.list, icon: ICONS.file },
+            ) 
+        }
+
         return items
     }
     ,
