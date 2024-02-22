@@ -62,7 +62,7 @@ import { exportToExcel } from 'src/utils/export';
 // COMPONENTS
 import InvoiceTableFiltersResult from 'src/screens/components/invoice/departments/InvoiceTableFiltersResult';
 import LoadingAnimation from 'src/screens/components/utility/loadingAnimation';
-import { getNeedToAssignEngineer, setInvoiceEnginneer, getInvoiceInquiryData  } from 'src/data-access/invoice'
+import { getNeedToAssign, setInvoiceEngineer, getInvoiceInquiryData  } from 'src/data-access/invoice'
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
 
@@ -160,7 +160,7 @@ export default function InvoiceListView({department, salesStatus}) {
 
       try {
 
-        const result = await getNeedToAssignEngineer(ROLE);
+        const result = await getNeedToAssign(ROLE);
         setTableData(result);
         
       } catch (error) {
@@ -292,7 +292,7 @@ export default function InvoiceListView({department, salesStatus}) {
       
       
 
-      const response = await setInvoiceEnginneer(body, ROLE)
+      const response = await setInvoiceEngineer(body, ROLE)
       if(response.success) {
         setAlertMessage(Translate("success"))
       }

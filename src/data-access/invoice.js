@@ -23,7 +23,7 @@ export async function getNeedToAction(role) {
     return sendGet(url, [], headers);
 }
 
-export async function getNeedToAssignEngineer(role) {
+export async function getNeedToAssign(role) {
     const url = `${createBaseUrlWithRole(role)}/Invoices/need-to-assign`
     const headers = createHeaders(role)
 
@@ -51,7 +51,7 @@ export async function confirmRejectInvoice(body, role) {
     return responseObj;
 }
 
-export async function setInvoiceEnginneer(body, role) {
+export async function setInvoiceEngineer(body, role) {
     const url = `${createBaseUrlWithRole(role)}/Invoices/set-engineer`
     const headers = createHeaders(role)
 
@@ -63,6 +63,13 @@ export async function setInvoiceEnginneer(body, role) {
     };
 
     return responseObj;
+}
+
+export async function setInvoiceCollector(body, role) {
+    const url = `${createBaseUrlWithRole(role)}/Invoices/set-collector`
+    const headers = createHeaders(role)
+
+    return sendPostPatchRequest("patch", url, body, headers)
 }
 
 export async function getRejectBySales(role) {
@@ -181,9 +188,27 @@ export async function createInvoice(body, role = "Operation") {
     return responseObj;
 }
 
-export async function sendInvoiceAlert(body, role = "Operation") {
-    const url = `${createBaseUrlWithRole(role)}/Invoices/alert-others`;
+function getSendInvoiceAlertUrl(role) {
+
+    let url = ''
+
+    switch(role.toLowerCase()) {
+        case "head of engineer":
+            url = `${createBaseUrlWithRole(role)}/Invoices/alert-others` 
+            break
+        case "head of collectors":
+            url = `${createBaseUrlWithRole(role)}/Invoices/alert-Collector` 
+            break
+        default:
+            break
+    }
+
+    return url; // Return an empty object by default or handle errors as needed.
     
+}
+
+export async function sendInvoiceAlert(body, role = "head of engineer") {
+    const url = getSendInvoiceAlertUrl(role)
     return sendPostPatchRequest("patch", url, body)
 }
 

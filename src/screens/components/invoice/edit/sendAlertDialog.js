@@ -55,7 +55,7 @@ export default function SendAlertDialog({
         <TextField
           value={alertMessage}
           onChange={(newValue) => handleAlertMessage(newValue)}
-          placeholder={Translate("searchCustomer")}
+          placeholder={Translate("alertMessagePlaceHolder")}
         />
       </Stack>
       <Stack sx={{ p: 2, pt: 0 }}>

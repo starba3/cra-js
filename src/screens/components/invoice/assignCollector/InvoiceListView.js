@@ -56,13 +56,13 @@ import {
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
 import { getUserRole } from 'src/helpers/roleHelper';
-import { getAllEngineers } from 'src/data-access/engineers';
+import { getAllCollectors } from 'src/data-access/collectors';
 // Utility
 import { exportToExcel } from 'src/utils/export';
 // COMPONENTS
 import InvoiceTableFiltersResult from 'src/screens/components/invoice/departments/InvoiceTableFiltersResult';
 import LoadingAnimation from 'src/screens/components/utility/loadingAnimation';
-import { getNeedToAssignEngineer, setInvoiceEnginneer, getInvoiceInquiryData  } from 'src/data-access/invoice'
+import { getNeedToAssign, setInvoiceCollector, getInvoiceInquiryData  } from 'src/data-access/invoice'
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
 
@@ -106,7 +106,7 @@ export default function InvoiceListView({department, salesStatus}) {
   const [filters, setFilters] = useState(defaultFilters);
   const [isConfirmReport, setIsConfirmReport] = useState(department === undefined);
   const [openAssignUser, setOpenAssignUser] = useState(false);
-  const [assignEngineer, setAssignEngineer] = useState('');
+  const [assignCollector, setAssignCollector] = useState('');
   const [invoiceId, setInvoiceId] = useState(0);
   const [openAlert, setOpenAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('Success');
@@ -139,9 +139,9 @@ export default function InvoiceListView({department, salesStatus}) {
       try {
 
         if (ROLE) {
-          const result = await getAllEngineers(ROLE);
+          const result = await getAllCollectors(ROLE);
           console.log(result);
-          setAssignEngineer(result.length ? result[0].username : '') ;
+          setAssignCollector(result.length ? result[0].username : '') ;
           setAssignedUsers(result);
         } 
         
@@ -160,7 +160,7 @@ export default function InvoiceListView({department, salesStatus}) {
 
       try {
 
-        const result = await getNeedToAssignEngineer(ROLE);
+        const result = await getNeedToAssign(ROLE);
         setTableData(result);
         
       } catch (error) {
@@ -284,7 +284,7 @@ export default function InvoiceListView({department, salesStatus}) {
       startLoading()
       const body= {
         invoiceId,
-        engineerName: assignEngineer
+        collectorName: assignCollector
       }
       
       // Send create invoice request
@@ -292,7 +292,7 @@ export default function InvoiceListView({department, salesStatus}) {
       
       
 
-      const response = await setInvoiceEnginneer(body, ROLE)
+      const response = await setInvoiceCollector(body, ROLE)
       if(response.success) {
         setAlertMessage(Translate("success"))
       }
@@ -314,7 +314,7 @@ export default function InvoiceListView({department, salesStatus}) {
       
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading={Translate("assignEngineer")}
+          heading={Translate("assignCollector")}
           links={[
             // {
             //   name: Translate("app"),
@@ -455,20 +455,20 @@ export default function InvoiceListView({department, salesStatus}) {
 
 
       >
-        <DialogTitle>{Translate("assignEngineer")}</DialogTitle>
+        <DialogTitle>{Translate("assignCollector")}</DialogTitle>
         <DialogContent>
           <Select
-            value={assignEngineer}
+            value={assignCollector}
             onChange={(newValue) => {
               console.log(newValue.target.value);
-              setAssignEngineer(newValue.target.value);
+              setAssignCollector(newValue.target.value);
             }}
             input={<OutlinedInput label="" />}
             renderValue={(selected) => selected}
             sx={{ textTransform: 'capitalize', fullWidth: true, width:"100%" }}
           >
             {assignedUsers.map((option, index) => (
-              <MenuItem key={`engineer-${index}`} value={option.username}>
+              <MenuItem key={`collector-${index}`} value={option.username}>
                 {option.username}
               </MenuItem>
             ))}

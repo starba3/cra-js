@@ -192,6 +192,8 @@ export const paths = {
       deliveryDate:`${ROOTS.DASHBOARD}/reports/deliveryDate`,
       performance:`${ROOTS.DASHBOARD}/reports/performance`,
       invoiceByEngineer:`${ROOTS.DASHBOARD}/reports/invoiceByEngineer`,
+      collectorPerformance:`${ROOTS.DASHBOARD}/reports/collectorPerformance`,
+      invoiceByCollector:`${ROOTS.DASHBOARD}/reports/invoiceByCollector`,
     },
     headEngineer: {
       root: `${ROOTS.DASHBOARD}/headEngineer`,
@@ -211,6 +213,14 @@ export const paths = {
       create: `${ROOTS.DASHBOARD}/engineers/create`,
       editUrl:`${ROOTS.DASHBOARD}/engineers/:id/edit`,
       edit: (id) => `${ROOTS.DASHBOARD}/engineers/${id}/edit`
+    },
+    collectors: {
+      root: `${ROOTS.DASHBOARD}/collectors`,
+      list: `${ROOTS.DASHBOARD}/collectors/list`,
+      assignEngineer: `${ROOTS.DASHBOARD}/collectors/assignEngineer`,
+      create: `${ROOTS.DASHBOARD}/collectors/create`,
+      editUrl:`${ROOTS.DASHBOARD}/collectors/:id/edit`,
+      edit: (id) => `${ROOTS.DASHBOARD}/collectors/${id}/edit`
     },
     post: {
       root: `${ROOTS.DASHBOARD}/post`,

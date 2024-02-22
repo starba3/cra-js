@@ -19,13 +19,13 @@ import { useBoolean } from 'src/hooks/use-boolean';
 // components
 import FormProvider from 'src/components/hook-form';
 
-import CustomerEditInputs from './EngineerEditInputs';
+import CustomerEditInputs from './CollectorEditInputs';
 
 // ----------------------------------------------------------------------
 
 
 
-export default function EngineerEditForm({ currentCustomer }) {
+export default function CollectorEditForm({ currentCustomer }) {
   const router = useRouter();
 
   const loadingSend = useBoolean();
@@ -142,6 +142,6 @@ export default function EngineerEditForm({ currentCustomer }) {
   );
 }
 
-EngineerEditForm.propTypes = {
+CollectorEditForm.propTypes = {
   currentCustomer: PropTypes.object,
 };

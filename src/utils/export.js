@@ -2,7 +2,7 @@
 import ExcelJS from 'exceljs';
 
 export const exportToExcel = (data, headers, language, currency, reportName, fileName, role = "operation") => {
-  console.log(data);
+  // console.log(data);
   let filteredData = [];
   
   if(reportName.toLowerCase() === 'invoicebydepartments')
@@ -32,6 +32,9 @@ export const exportToExcel = (data, headers, language, currency, reportName, fil
   if(reportName.toLowerCase() === 'invoicesbyengineer') 
     filteredData = prepareDataForInvoicesByEngineer(data, headers, language, currency);
 
+  if(reportName.toLowerCase() === 'invoicesbycollector') 
+  filteredData = prepareDataForInvoicesByCollector(data, headers, language, currency);
+
   if(reportName.toLowerCase() === 'gmreport') 
     filteredData = prepareDataForGMReport(data, headers, currency);
 
@@ -55,6 +58,10 @@ export const exportToExcel = (data, headers, language, currency, reportName, fil
 
   if(reportName.toLowerCase() === 'performance') 
     filteredData = prepareDataForPerformanceReport(data, headers); 
+
+  if(reportName.toLowerCase() === 'collectorperformance') 
+    filteredData = prepareDataForCollectorPerformanceReport(data, headers); 
+    
   // console.log("Headers: ", headers);
   // console.log("filteredData: ", filteredData);
 
@@ -339,6 +346,21 @@ const prepareDataForInvoicesByEngineer = (data, headers, language, currency) => 
   return list;
 });
 
+const prepareDataForInvoicesByCollector = (data, headers, language, currency) => data.map((invoice) => {
+  const customerName = language === 'ar' ? invoice.customerNameAr : invoice.customerNameEn;
+  const productName = language === 'ar' ? invoice.productNameAr : invoice.productNameEn;
+
+  const list = {
+    [headers[0]]: invoice.invoiceNo,
+    [headers[1]]: customerName,
+    [headers[2]]: new Date(invoice.issueInvoiceDate).toLocaleDateString(),
+    [headers[3]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
+    [headers[4]]: productName,
+    [headers[5]]: invoice.department,
+  }
+  return list;
+});
+
 const prepareDataForPerformanceReport = (data, headers) => data.map((record) => {
   const list = {
     [headers[0]]: record.name,
@@ -347,6 +369,16 @@ const prepareDataForPerformanceReport = (data, headers) => data.map((record) => 
     [headers[3]]: record.inProgressCount,
     [headers[4]]: record.notStartedCount,
     [headers[5]]: record.delayedCount
+  }
+  return list;
+});
+
+const prepareDataForCollectorPerformanceReport = (data, headers) => data.map((record) => {
+  const list = {
+    [headers[0]]: record.name,
+    [headers[1]]: record.email,
+    [headers[2]]: record.paidCount,
+    [headers[3]]: record.unpaidCount,
   }
   return list;
 });
@@ -381,3 +413,28 @@ const subtractDaysFromDate = (date, days) => {
   dateCopy.setDate(dateCopy.getDate() - days);
   return formatDate(dateCopy);
 }
+
+const prepareData = (data, headers) => data.map(item => {
+  const dataObject = {}
+  headers.forEach(header => {
+    if(header.localization && header.language) {
+      // header.language always in ar, en
+      const localizedKey = header.key +  header.language[0].toUpperCase() + header.language.slice(1)
+      console.log("localizedKey ", localizedKey)
+      dataObject[header.value] = item[localizedKey]
+    }
+    else if(header.isCurreny) {
+      dataObject[header.value] = `${item[header.key]} ${header.currency}`
+    }
+    else if(header.isDate) {
+      
+      dataObject[header.value] = new Date(item[header.key]).toLocaleDateString()
+    }
+    else {
+      dataObject[header.value]=  item[header.key]
+    }
+    
+  })
+
+  return dataObject
+})

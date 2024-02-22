@@ -102,7 +102,7 @@ export default function CollectorListView() {
     { id: 'firstName', label: Translate("firstName")  },
     { id: 'lastName', label: Translate("lastName")  },
     { id: 'email', label: Translate("email")  },
-    { id: 'username', label: Translate("username")  },
+    { id: 'username', label: Translate("userName")  },
     { id: '' },
   ];
 
@@ -110,7 +110,7 @@ export default function CollectorListView() {
     Translate("firstName"),
     Translate("lastName"),
     Translate("email"),
-    Translate("username"),
+    Translate("userName"),
   ];
 
   const dateError =
@@ -218,7 +218,7 @@ export default function CollectorListView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading={Translate("engineersList")}
+          heading={Translate("collectorsList")}
           links={[
             // {
             //   name: Translate("app"),
@@ -269,20 +269,20 @@ export default function CollectorListView() {
             {Translate("import")}
           </Button> */}
           <Button
-            onClick={() => navigate(paths.dashboard.engineers.create)}
+            onClick={() => navigate(paths.dashboard.collectors.create)}
             variant="contained"
             startIcon={<Iconify icon="mingcute:add-line" />}
             sx={{
               margin: 0.5
             }}
           >
-            {Translate("newEngineer")}
+            {Translate("newCollector")}
           </Button>
 
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'EngineersList', `${Translate("engineersList")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'EngineersList', `${Translate("collectorsList")}-${new Date().toLocaleDateString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5

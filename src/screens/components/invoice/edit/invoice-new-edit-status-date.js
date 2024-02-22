@@ -149,7 +149,7 @@ export default function InvoiceNewEditStatusDate({
     collectionSource: ['collection'],
     claimStatus: ['collection'],
     claimsDetailStatus: ['collection'],
-    headOfDepartments: ['head of engineer', 'head of sales', 'head of collector',]
+    headOfDepartments: ['head of engineer', 'head of sales', 'head of collectors',]
   }
   // Collection data changes handlers
   const handleCollectionSourceChange = (newValue) => {
@@ -493,7 +493,7 @@ export default function InvoiceNewEditStatusDate({
     /> : 
     <TextField
       label={Translate("installationDate")}
-      value={currentInvoice.installationDate}
+      value={currentInvoice?.installationDate ? currentInvoice?.installationDate.substring(0, currentInvoice?.issueInvoiceDate.indexOf('T')) : '' }
       style={width80}
       disabled
     /> 

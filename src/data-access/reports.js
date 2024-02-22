@@ -12,6 +12,11 @@ export async function getPerformanceReport(role = "Head of engineer") {
     return  sendGet(url, []);
 }
 
+export async function getCollectorPerformanceReport(role = "Head of collectors") {
+    const url = `${createBaseUrlWithRole(role)}/Reports/colletor-performance`;
+    return  sendGet(url, []);
+}
+
 export async function getGmReport(source) {
     const url = `${baseUrl}/api/Reports/GmReport?collection=${source}`;
     return  sendGet(url, []);
@@ -20,4 +25,9 @@ export async function getGmReport(source) {
 export async function getGmReasonReport(source, status) {
     const url = `${baseUrl}/api/Reports/GmReasonReport?collection=${source}&status=${status}`;
     return  sendGet(url, []);
+}
+
+export async function getInvoicesForCollector(id, role = "head of collectors") {
+    const url = `${createBaseUrlWithRole(role)}/Reports/invoices/colletor?CollectorId=${id}`;
+    return sendGet(url, []);
 }

@@ -61,6 +61,8 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
   const ROLE = getUserRole()
 
+  
+
   const NewInvoiceSchema = Yup.object().shape({
     CreateNote: Yup.string(),
     department: Yup.string(),
@@ -134,12 +136,19 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     collectionSource: ['collection'],
     claimStatus: ['collection'],
     claimsDetailStatus: ['collection'],
-    headOfDepartments: ['head of engineer', 'head of sales', 'head of collector',]
+    headOfDepartments: ['head of engineer', 'head of sales', 'head of collectors',]
   }
 
- 
-
   
+
+  // Get the name of who the alert will sent to
+  const getAlertTo = (role) => {
+    if(role.toLowerCase() === 'head of collectors') {
+      return currentInvoice?.collectorName
+    }
+
+    return currentInvoice?.salesTakerName
+  }
 
   const methods = useForm({
     resolver: yupResolver(NewInvoiceSchema),
@@ -401,7 +410,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         />
 
         {
-          ROLE.toLowerCase() === "head of engineer"
+          arrays.headOfDepartments.includes(ROLE.toLowerCase())  
           ? <Stack
               direction="row"
               // justifyContent="flex-end"
@@ -479,12 +488,12 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       </Box>
       
       {
-        ROLE.toLowerCase() === "head of engineer"
+        arrays.headOfDepartments.includes(ROLE.toLowerCase())
         ? <SendAlertDialog
             title={Translate("sendAlertTo")}
             open={showSendAlertDialog.value}
             onClose={() => showSendAlertDialog.onFalse()}
-            salesTaker={currentInvoice?.salesTakerName}
+            salesTaker={getAlertTo(ROLE)}
             sendAlert={(alertMessage) => handleSendAlert(alertMessage)}
           />
         : null

@@ -9,10 +9,15 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
-export default function CollectorTableToolbar({
+
+export default function PerformanceTableToolbar({
   filters,
   onFilters,
 }) {
+
+  const { t } = useLocales()
+
+  const Translate = (text) => t(text);
 
   const handleFilterName = useCallback(
     (event) => {
@@ -21,8 +26,6 @@ export default function CollectorTableToolbar({
     [onFilters]
   );
 
-  const { t } = useLocales();
-  const Translate = (text) => t(text);
 
   return (
     <Stack
@@ -37,28 +40,31 @@ export default function CollectorTableToolbar({
           pr: { xs: 2.5, md: 1 },
         }}
       >
-      
-        <Stack direction="row" alignItems="center" spacing={2} flexGrow={1} sx={{ width: 1 }}>
-          <TextField
-            fullWidth
-            value={filters.name}
-            onChange={handleFilterName}
-            placeholder={Translate("searchCustomerName")}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-                </InputAdornment>
-              ),
-            }}
-          />
 
-        </Stack>
+      <Stack direction="row" alignItems="center" spacing={2} flexGrow={1} sx={{ width: 1 }}>
+        <TextField
+          fullWidth
+          value={filters.name}
+          onChange={handleFilterName}
+          placeholder={Translate("searchPerformanceReportPlaceHolder")}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+              </InputAdornment>
+            ),
+          }}
+        />
+
+        {/* <IconButton onClick={popover.onOpen}>
+          <Iconify icon="eva:more-vertical-fill" />
+        </IconButton> */}
       </Stack>
+    </Stack>
   );
 }
 
-CollectorTableToolbar.propTypes = {
+PerformanceTableToolbar.propTypes = {
   filters: PropTypes.object,
   onFilters: PropTypes.func,
 };

@@ -13,26 +13,26 @@ import { getCustomerById } from 'src/data-access/customers';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
-import CustomerEditForm from './EngineerEditForm';
+import CollectorEditForm from './CollectorEditForm';
 
 // ----------------------------------------------------------------------
 
-export default function EngineerCreateView({ id }) {
+export default function CollectorCreateView({ id }) {
   const settings = useSettingsContext();
 
   const { t } = useLocales()
   const Translate = (text) => t(text);
 
-  const [currentCustomer, setCurrentCustomer] = useState(null);
+  const [currentCollector, setCurrentCollector] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchData = async (customerId) => {
+    const fetchData = async (collectorId) => {
       setLoading(true)
       
         try {
-          const invoice = await getCustomerById(customerId);
-          setCurrentCustomer(invoice);
+          const invoice = await getCustomerById(collectorId);
+          setCurrentCollector(invoice);
         } catch (error) {
           console.error('Error fetching invoice:', error);
         } finally {
@@ -56,31 +56,25 @@ export default function EngineerCreateView({ id }) {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading={Translate("createNewEngineer")}
+        heading={Translate("createNewCollector")}
         links={[
           // {
           //   name: Translate("app"),
           //   href: paths.dashboard.root,
           // },
-          // {
-          //   name: Translate("customer"),
-            
-          // },
-          // {
-          //   name: Translate("newCustomer"),
-          // },
+
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
         }}
       />
 
-      <CustomerEditForm currentCustomer={currentCustomer} />
+      <CollectorEditForm currentCustomer={currentCollector} />
     </Container>
   );
 }
 
-EngineerCreateView.propTypes = {
+CollectorCreateView.propTypes = {
   id: PropTypes.number
 };
 

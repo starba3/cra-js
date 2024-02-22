@@ -22,8 +22,9 @@ import Iconify from 'src/components/iconify';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 // Data Access
-import { getAllUsers, getInvoicesForUser } from 'src/data-access/users';
-import { getAllEngineers } from 'src/data-access/engineers';
+import { getAllCollectors } from 'src/data-access/collectors';
+import { getInvoicesForCollector } from 'src/data-access/reports';
+
 
 
 import {
@@ -36,7 +37,6 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 // DATA ACCESS
-import { getAgingReport } from 'src/data-access/reports';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
 // COMPONENTS
 import TableRowNew from './tableRow';
@@ -66,8 +66,8 @@ export default function InvoiceByCollectorView() {
   const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
 
   const [tableData, setTableData] = useState([]);
-  const [engineersList, setEngineersList] = useState([]);
-  const [selectedEngineer, setSelectedEngineer] = useState(null);
+  const [collectorsList, setCollectorsList] = useState([]);
+  const [selectedCollector, setSelectedCollector] = useState(null);
   const [open, setOpen] = useState(false);
 
   
@@ -75,9 +75,9 @@ export default function InvoiceByCollectorView() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const result = await getAllEngineers(ROLE);
+        const result = await getAllCollectors(ROLE);
         console.log('Result: ', result);
-        setEngineersList(result);
+        setCollectorsList(result);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -91,8 +91,8 @@ export default function InvoiceByCollectorView() {
       
       try {
 
-        if (selectedEngineer) {
-          const result = await getInvoicesForUser(selectedEngineer.id);
+        if (selectedCollector) {
+          const result = await getInvoicesForCollector(selectedCollector.id);
           setTableData(result);
         }
         
@@ -102,7 +102,7 @@ export default function InvoiceByCollectorView() {
     };
 
     fetchData();
-  }, [selectedEngineer]);
+  }, [selectedCollector]);
 
   const [filters, setFilters] = useState(defaultFilters);
 
@@ -144,26 +144,34 @@ export default function InvoiceByCollectorView() {
   const TABLE_HEAD = [
     { id: 'invoiceNumber', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
-    { id: 'installationStatus', label: Translate("installationStatus") },
+    // { id: 'installationStatus', label: Translate("installationStatus") },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName") },
     // { id: 'paidStatus', label: Translate("paidStatus"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
   ];
+  // const exportHeaderRow = [
+  //   { key: 'invoiceNo', value: Translate("invoiceNumber")},
+  //   { key: 'customerName', value: Translate("customerName"), localization: true, language: currentLang.value},
+  //   { key: 'issueInvoiceDate', value: Translate("issueInvoiceDate"), isDate: true},
+  //   // { key: 'installationStatus', value: Translate("installationStatus")},
+  //   { key: 'invoiceAmount', value: Translate("invoiceAmount"), isCurreny: true,  currency: Translate("currencyShortcut")},
+  //   { key: 'productName', value: Translate("productName"), localization: true, language: currentLang.value},
+  //   { key: 'department', value: Translate("department")},
+  // ];
   const exportHeaderRow = [
     Translate("invoiceNumber"),
     Translate("customerName"),
     Translate("issueInvoiceDate"),
-    Translate("installationStatus"),
     Translate("invoiceAmount"),
     Translate("productName"),
-    Translate("department")
+    Translate("department"),
   ];
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading={Translate("invoiceByEngineer")}
+          heading={Translate("invoiceByCollector")}
           links={[
             // {
             //   name: Translate("app"),
@@ -189,7 +197,7 @@ export default function InvoiceByCollectorView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'InvoicesByEngineer', `${Translate("invoiceByEngineer")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'invoicesbycollector', `${Translate("invoiceByCollector")}-${new Date().toLocaleDateString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5
@@ -263,12 +271,12 @@ export default function InvoiceByCollectorView() {
         </Card>     */}
 
         <CollectorsListDialog
-          title={Translate("engineersList")}
-          list={engineersList }  
+          title={Translate("collectorsList")}
+          list={collectorsList}  
           open={open}
           onClose={() => setOpen(false)}  
-          selected={(id) => selectedEngineer === id}        
-          onSelect={(value) => setSelectedEngineer(value)}
+          selected={(id) => selectedCollector === id}        
+          onSelect={(value) => setSelectedCollector(value)}
         />
       </Container>
       

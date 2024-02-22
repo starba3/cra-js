@@ -7,7 +7,7 @@ const STORAGE_KEY = 'accessToken';
 
 export async function sendGet(url, defaultValue, headers = {}) {
     let data = defaultValue;
-
+    
     try {
         const response = await axios.get(url, { headers })
         data = response.data;
@@ -97,6 +97,9 @@ export function createBaseUrlWithRole(role) {
             break
         case 'head of engineer':
             url = `${baseUrl}/api/HeadOfEngineer`
+            break
+        case 'head of collectors':
+            url = `${baseUrl}/api/HeadOfCollector`
             break
         default:
             url = `${baseUrl}`

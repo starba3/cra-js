@@ -8,7 +8,7 @@ import { RHFTextField } from 'src/components/hook-form';
 
 // ----------------------------------------------------------------------
 
-export default function EngineerEditInputs() {
+export default function CollectorEditInputs() {
   const { control, watch } = useFormContext();
   const values = watch();
 

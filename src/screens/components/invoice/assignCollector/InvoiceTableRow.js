@@ -96,7 +96,7 @@ export default function InvoiceTableRow({
             color='success'
             onClick={() => handleOpenAssign(id)}
           >
-            {`${Translate("assign")} ${Translate("engineer")}`} 
+            {`${Translate("assign")} ${Translate("collector")}`} 
           </Button>
         </TableCell>
 

@@ -22,6 +22,9 @@ const ProductDetailsPage = lazy(() => import('src/pages/dashboard/product/detail
 // Engineers
 const EngineersListViewMain = lazy(() => import('src/screens/engineers/all/EngineersListView'));
 const EngineersCreateViewMain = lazy(() => import('src/screens/engineers/create/EngineersCreateView'));
+// Collectors
+const CollectorListView = lazy(() => import('src/screens/collectors/all/CollectorListView'));
+const CollectorCreateViewMain = lazy(() => import('src/screens/collectors/create/CollectorCreateView'));
 // const ProductListPage = lazy(() => import('src/pages/dashboard/product/list'));
 const ProductCreatePage = lazy(() => import('src/pages/dashboard/product/new'));
 // const ProductEditPage = lazy(() => import('src/pages/dashboard/product/edit'));
@@ -45,9 +48,11 @@ const GmReportView = lazy(() => import('src/screens/reports/gmReportView'));
 const GmReasonReportView = lazy(() => import('src/screens/reports/GmReasonReportView'));
 const InvoiceByUsersViewMain = lazy(() => import('src/screens/reports/invoiceByUsers'));
 const InvoiceByEngineerViewMain = lazy(() => import('src/screens/reports/InvoiceByEngineerView'));
+const InvoiceByCollectorViewMain = lazy(() => import('src/screens/reports/InvoiceByCollectorView'));
 const ForDeliveryDataViewMain = lazy(() => import('src/screens/reports/forDeliveryData'))
 const AcknowledgmentViewMain = lazy(() => import('src/screens/acknowledgment/all/acknowledgmentView'));
 const PerformanceViewMain = lazy(() => import('src/screens/reports/performanceView'));
+const CollectorPerformanceViewMain = lazy(() => import('src/screens/reports/collectorPerformanceView'));
 // const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoice/list'));
 const InvoiceDetailsPage = lazy(() => import('src/screens/invoice/InvoiceDetailsPage'));
 const InvoiceCreatePage = lazy(() => import('src/screens/invoice/InvoiceCreatePage'));
@@ -133,6 +138,15 @@ export const dashboardRoutes = [
         ],
       },
       {
+        path: 'collectors',
+        children: [
+          { element: <CollectorListView />, index: true },
+          { path: 'list', element: <CollectorListView /> },
+          { path: 'create', element: <CollectorCreateViewMain /> },
+          { path: ':id/edit', element: <CollectorCreateViewMain /> },
+        ],
+      },
+      {
         path: 'customer',
         children: [
           { element: <CustomerListViewMain />, index: true },
@@ -158,6 +172,8 @@ export const dashboardRoutes = [
           { path: 'invoiceForCustomers', element: <InvoiceForCustomersViewMain />  },
           { path: 'invoiceByUsers', element: <InvoiceByUsersViewMain /> },
           { path: 'invoiceByEngineer', element: <InvoiceByEngineerViewMain /> },
+          { path: 'invoiceByCollector', element: <InvoiceByCollectorViewMain /> },
+          { path: 'collectorPerformance', element: <CollectorPerformanceViewMain /> },
           { path: 'GmReport', element: <GmReportView />  },
           { path: 'deliveryDate', element: <ForDeliveryDataViewMain />  },
           { path: 'acknowledgment', element: <AcknowledgmentViewMain title ="acknowledgment"/>  },

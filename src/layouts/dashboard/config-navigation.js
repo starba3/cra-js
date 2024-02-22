@@ -251,7 +251,7 @@ export function useNavData() {
                     ],
                 },
                 // 
-                { title: t('engineersList'), path: paths.dashboard.engineers.list, icon: ICONS.file },
+                { title: t('engineersList'), path: paths.dashboard.engineers.list, icon: ICONS.user },
             ) 
         }
 
@@ -291,12 +291,12 @@ export function useNavData() {
                     path: paths.dashboard.reports.root,
                     icon: ICONS.user,
                     children: [
-                        { title: t('performance'), path: paths.dashboard.reports.performance },
-                        { title: t('invoiceByCollector'), path: paths.dashboard.reports.invoiceByEngineer }
+                        { title: t('performance'), path: paths.dashboard.reports.collectorPerformance },
+                        { title: t('invoiceByCollector'), path: paths.dashboard.reports.invoiceByCollector }
                     ],
                 },
                 // 
-                { title: t('collectorsList'), path: paths.dashboard.engineers.list, icon: ICONS.file },
+                { title: t('collectorsList'), path: paths.dashboard.collectors.list, icon: ICONS.user },
             ) 
         }
 

@@ -6,7 +6,8 @@ export const getUserRole = () => {
     : "Head of Engineer"
 
     if (role === "Admin") {
-        role = "Head of Engineer"
+        // role = "Head of Engineer"
+        role = "Head of Collectors"
         // role = "Sales"
         // role = "Operation"
     }

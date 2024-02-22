@@ -72,7 +72,7 @@ export default function TableRowNew({
           />
         </TableCell>
 
-        <TableCell >{installationStatus}</TableCell>
+        {/* <TableCell >{installationStatus}</TableCell> */}
         
         <TableCell >{`${invoiceAmount.toLocaleString()} ${t('currencyShortcut')}`}</TableCell>
 
