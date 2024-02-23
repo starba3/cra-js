@@ -26,20 +26,19 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 export default function InvoiceTableRow({
   row,
   selected,
-  onSelectRow,
   onViewRow,
-  onEditRow,
+  thirdCellHeader,
   onDeleteRow,
   handleOpenInquiry,
   role
 }) {
-  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, installationStatus, customerNameAr, customerNameEn, productNameAr, productNameEn, paidStatus, acknowledgeStatus, department } = row;
+  const { id, invoiceNo, issueInvoiceDate, invoiceAmount, installationStatus, customerNameAr, customerNameEn, productNameAr, productNameEn, daysToCollected, paidStatus, acknowledgeStatus, department } = row;
   
   const { t, currentLang } = useLocales()
   const customerName = currentLang.value === 'ar' ? customerNameAr : customerNameEn;
   const productName = currentLang.value === 'ar' ? productNameAr : productNameEn;
 
-  const cellValue = ["installation", "head of engineer"].includes(role.toLowerCase())  ? installationStatus : acknowledgeStatus
+  const cellValue = row[thirdCellHeader]
   
   const Translate = (text) => t(text);
   const confirm = useBoolean();
@@ -91,7 +90,7 @@ export default function InvoiceTableRow({
           />
         </TableCell>
         
-        <TableCell  >{cellValue}</TableCell>
+        <TableCell  align="center" >{cellValue}</TableCell>
 
         <TableCell >{`${invoiceAmount.toLocaleString()} ${Translate('currencyShortcut')}`}</TableCell>
         
@@ -175,8 +174,7 @@ export default function InvoiceTableRow({
 
 InvoiceTableRow.propTypes = {
   onDeleteRow: PropTypes.func,
-  onEditRow: PropTypes.func,
-  onSelectRow: PropTypes.func,
+  thirdCellHeader: PropTypes.string,
   onViewRow: PropTypes.func,
   handleOpenInquiry: PropTypes.func,
   row: PropTypes.object,

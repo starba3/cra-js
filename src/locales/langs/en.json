@@ -266,6 +266,8 @@
   "alertMessagePlaceHolder": "Enter Alert Message",
   "installtionStatusCount": "Installtion Status Count",
   "needToActionCount": "Need To Action Count",
+  "actionNeededCount": "Action Needed Count",
+  "assignmentPendingCount": "Assignment Pending Count",
   "sendAlertTo": "Send Alert To ",
   "sendAlert": "Send Alert"
 }

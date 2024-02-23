@@ -115,7 +115,18 @@ const prepareDataForInvoiceByDepartment = (data, headers, language) => data.map(
 });
 
 const prepareDataForAllInvoices = (data, headers, language, currency, role) => data.map((invoice) => {
-  const fourthCell = ["installation", "head of engineer"].includes(role.toLowerCase())  ? invoice.installationStatus : invoice.acknowledgeStatus
+  let fourthCell = null;
+  
+  if(["installation", "head of engineer"].includes(role.toLowerCase())) {
+    fourthCell = invoice.installationStatus
+  } 
+  else if(["collector", "head of collectors"].includes(role.toLowerCase())) {
+    fourthCell = invoice.daysToCollected
+  }
+  else {
+    fourthCell = invoice.acknowledgeStatus
+  }  
+
   const list = {
     [headers[0]]: invoice.invoiceNo,
     [headers[1]]: language === 'ar' ? invoice.customerNameAr : invoice.customerNameEn,

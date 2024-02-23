@@ -300,6 +300,22 @@ export function useNavData() {
             ) 
         }
 
+        if(role.toLowerCase() === 'collector') {
+            items[0].items.push(
+                // Invoice
+                {
+                    title: t('invoices'),
+                    path: paths.dashboard.invoice.root,
+                    icon: ICONS.invoice,
+                    children: [
+                        { title: t('list'), path: paths.dashboard.invoice.list },
+                        { title: t('needToAction'), path: paths.dashboard.invoice.needToAction },
+                    ],
+                }
+
+            ) 
+        }
+
         return items
     }
     ,

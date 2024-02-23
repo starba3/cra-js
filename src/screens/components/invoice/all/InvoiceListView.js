@@ -174,11 +174,21 @@ export default function InvoiceListView() {
     (!!filters.startDate && !!filters.endDate);
 
   // Decide 3rd column based on User Role
-  const headKey = ["installation", "head of engineer"].includes(ROLE.toLowerCase())  ? "installationStatus" : "acknowledgeStatus"
+  const headKey = (role) => {
+    if(["installation", "head of engineer"].includes(ROLE.toLowerCase())) {
+      return "installationStatus"
+    }
+
+    if(["collector", "head of collectors"].includes(ROLE.toLowerCase())) {
+      return "daysToCollected"
+    }
+
+    return "acknowledgeStatus"
+  } 
   const TABLE_HEAD = [
     { id: 'invoiceNumber', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
-    { id: `${headKey}`, label: Translate(`${headKey}`) },
+    { id: headKey(ROLE), label: Translate(headKey(ROLE)) },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
@@ -189,7 +199,7 @@ export default function InvoiceListView() {
     Translate("invoiceNumber"),
     Translate("customerName"),
     Translate("issueInvoiceDate"),
-    Translate(`${headKey}`),
+    Translate(headKey(ROLE)),
     Translate("invoiceAmount"),
     Translate("productName"),
     Translate("department")
@@ -501,11 +511,10 @@ export default function InvoiceListView() {
                         key={row.id}
                         row={row}
                         selected={table.selected.includes(row.id)}
-                        onSelectRow={() => table.onSelectRow(row.id)}
                         onViewRow={() => handleViewRow(row.id)}
-                        onEditRow={() => handleEditRow(row.id)}
                         onDeleteRow={() =>  handleDeleteRow(row.id)}
                         handleOpenInquiry={() => handleOpenInquiry(row.id)}
+                        thirdCellHeader={headKey(ROLE)}
                         role={ROLE}
                       />
                     ))}
