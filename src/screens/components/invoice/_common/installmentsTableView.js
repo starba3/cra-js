@@ -58,7 +58,7 @@ export default function InstallmentTableView({
                   </TableCell> */}
                   <TableCell>{row.number}</TableCell>
                   <TableCell>{row.dueDate.substring(0, row.dueDate.indexOf('T'))}</TableCell>
-                  <TableCell>{row.paymentDate.substring(0, row.paymentDate.indexOf('T'))}</TableCell>
+                  <TableCell>{row.paymentDate && row.paymentDate.substring(0, row.paymentDate.indexOf('T'))}</TableCell>
                   <TableCell>{row.amount}</TableCell>
                   <TableCell>{installmentStatusList[row.installmentStatus]}</TableCell>
                   

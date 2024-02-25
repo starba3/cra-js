@@ -61,6 +61,9 @@ export const exportToExcel = (data, headers, language, currency, reportName, fil
 
   if(reportName.toLowerCase() === 'collectorperformance') 
     filteredData = prepareDataForCollectorPerformanceReport(data, headers); 
+
+  if(reportName.toLowerCase() === 'salesperformance') 
+    filteredData = prepareDataForSalesPerformanceReport(data, headers); 
     
   // console.log("Headers: ", headers);
   // console.log("filteredData: ", filteredData);
@@ -400,6 +403,17 @@ const prepareDataForCollectorPerformanceReport = (data, headers) => data.map((re
     [headers[1]]: record.email,
     [headers[2]]: record.paidCount,
     [headers[3]]: record.unpaidCount,
+  }
+  return list;
+});
+
+const prepareDataForSalesPerformanceReport = (data, headers) => data.map((record) => {
+  const list = {
+    [headers[0]]: record.name,
+    [headers[1]]: record.email,
+    [headers[2]]: record.acknowledged,
+    [headers[3]]: record.tempAcknowledged,
+    [headers[4]]: record.notAcknowledged,
   }
   return list;
 });

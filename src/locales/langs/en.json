@@ -71,7 +71,7 @@
   "tender_and_contract": "Tender And Contract",
   "None": "None",
   "Acknowledged": "Acknowledged",
-  "NotAcknowledged": "NotAcknowledged",
+  "NotAcknowledged": "Not Acknowledged",
   "TempAcknowledged": "TempAcknowledged",
   "Reject": "Reject",
   "TenderAndContracts": "TenderAndContracts",
@@ -281,5 +281,11 @@
   "customerPO": "PO Number",
   "poValue": "PO Value",
   "aged": "Aged",
+  "search": "Search",
+  "invoiceBySalesTaker": "Invoice By Sales Taker",
+  "salesTakersList": "Sales Takers List",
+  "newSalesTaker": "New Sales Takers",
+  "acknowledged": "Acknowledged",
+  "tempAcknowledged": "Temporarly Acknowledged",
   "salesTakerName" : "Sales Taker"
 }

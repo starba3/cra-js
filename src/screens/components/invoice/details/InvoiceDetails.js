@@ -14,6 +14,7 @@ import InvoiceToolbar from 'src/screens/components/invoice/exportPDF/invoice-too
 import NotesTableView from 'src/screens/components/invoice/_common/notesTableView';
 import AttachmentsTableView from 'src/screens/components/invoice/_common/attachmentsTableView';
 import DetailsItemView from 'src/screens/components/invoice/_common/detailsItemView';
+import InstallmentTableView from '../_common/installmentsTableView';
 //
 
 // ----------------------------------------------------------------------
@@ -23,6 +24,8 @@ export default function InvoiceDetails({ invoice }) {
   
   const { t } = useLocales();
   const Translate = (text) => t(text);
+
+  const renderInstallments = <InstallmentTableView data={invoice?.installments} />
 
   const renderNotes = <NotesTableView data={invoice?.notes} />
   
@@ -108,7 +111,7 @@ export default function InvoiceDetails({ invoice }) {
           <DetailsItemView invoice={currentInvoice}  properity="collectorName" />
           <DetailsItemView invoice={currentInvoice}  properity="responsibleEngineerName" marginButtom={3} />
         </Box>
-
+        {renderInstallments}
         {renderNotes}
 
         <Divider sx={{ mt: 5, borderStyle: 'dashed', mb: 3}} />

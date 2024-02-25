@@ -71,7 +71,7 @@ export function useNavData() {
       }]
       
 
-      if(role.toLowerCase() === 'operation') {
+      if(role === 'operation') {
         items[0].items.push(
             {
                 title: t('invoices'),
@@ -117,7 +117,7 @@ export function useNavData() {
         ) 
       }
 
-      if(role.toLowerCase() === 'admin') {
+      if(role === 'admin') {
         items[0].items.push(
             {
                 title: t('invoices'),
@@ -219,7 +219,7 @@ export function useNavData() {
           ) 
       }
 
-        if(role.toLowerCase() === 'sales') {
+        if(role === 'sales') {
             items[0].items.push(
                 { title: t('invoices'), path: paths.dashboard.invoice.root, icon: ICONS.file },
                 { title: t('needToAction'), path: paths.invoices.needToAction, icon: ICONS.file },
@@ -227,7 +227,7 @@ export function useNavData() {
             ) 
         }
 
-        if(role.toLowerCase() === 'head of engineer') {
+        if(role === 'head of engineer') {
             items[0].items.push(
                 // Invoice
                 {
@@ -255,7 +255,7 @@ export function useNavData() {
             ) 
         }
 
-        if(role.toLowerCase() === 'installation') {
+        if(role === 'installation') {
             items[0].items.push(
                 // Invoice
                 {
@@ -272,7 +272,7 @@ export function useNavData() {
             ) 
         }
 
-        if(role.toLowerCase() === 'head of collectors') {
+        if(role === 'head of collectors') {
             items[0].items.push(
                 // Invoice
                 {
@@ -300,7 +300,7 @@ export function useNavData() {
             ) 
         }
 
-        if(role.toLowerCase() === 'collection') {
+        if(role === 'collection') {
             items[0].items.push(
                 // Invoice
                 {
@@ -313,6 +313,33 @@ export function useNavData() {
                     ],
                 }
 
+            ) 
+        }
+
+        if(role === 'head of sales') {
+            items[0].items.push(
+                // Invoice
+                {
+                    title: t('invoices'),
+                    path: paths.dashboard.invoice.root,
+                    icon: ICONS.invoice,
+                    children: [
+                        { title: t('list'), path: paths.dashboard.invoice.list },
+                        { title: t('needToAction'), path: paths.dashboard.invoice.needToAction },
+                    ],
+                },
+                // Reports
+                {
+                    title: t('reports'),
+                    path: paths.dashboard.reports.root,
+                    icon: ICONS.user,
+                    children: [
+                        { title: t('performance'), path: paths.dashboard.reports.salesPerformance },
+                        { title: t('invoiceBySalesTaker'), path: paths.dashboard.reports.invoiceBySalesTaker }
+                    ],
+                },
+                // 
+                { title: t('salesTakersList'), path: paths.dashboard.salesTakers.list, icon: ICONS.user },
             ) 
         }
 

@@ -17,6 +17,11 @@ export async function getCollectorPerformanceReport(role = "Head of collectors")
     return  sendGet(url, []);
 }
 
+export async function getSalesPerformanceReport(role = "Head of Sales") {
+    const url = `${createBaseUrlWithRole(role)}/Reports/sales-performance`;
+    return  sendGet(url, []);
+}
+
 export async function getGmReport(source) {
     const url = `${baseUrl}/api/Reports/GmReport?collection=${source}`;
     return  sendGet(url, []);

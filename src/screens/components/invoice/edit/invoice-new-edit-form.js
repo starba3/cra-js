@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react'
+import React, { useMemo, useState, useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types';
 import { useLocales } from 'src/locales';
 import * as Yup from 'yup';
@@ -32,10 +32,6 @@ import Iconify from 'src/components/iconify';
 import InvoiceNewEditAddress from './invoice-new-edit-address';
 import InvoiceNewEditStatusDate from './invoice-new-edit-status-date';
 import SendAlertDialog from './sendAlertDialog';
-
-
-
-
 // ----------------------------------------------------------------------
 
 const formatDate = (date) => {
@@ -62,6 +58,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
   const ROLE = getUserRole()
 
   
+  
 
   const NewInvoiceSchema = Yup.object().shape({
     CreateNote: Yup.string(),
@@ -80,6 +77,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     salesTakerName: Yup.string(),
     installments: Yup.array().of(
       Yup.object().shape({
+        id: Yup.number(),
         number: Yup.string().required(),
         dueDate: Yup.date().required(),
         paymentDate: Yup.date().nullable(),
@@ -108,28 +106,46 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       poValue: currentInvoice?.poValue || 0,
       contractNo: currentInvoice?.contractNo || '',
       salesTakerName: currentInvoice?.salesTakerName || '',
-      installments: currentInvoice?.installments.length ? currentInvoice?.installments : [{
-        number:  "",
-        dueDate:  new Date(),
-        paymentDate: null,
-        amount:  0,
-        installmentStatus:  1
-      }],
+      installments: currentInvoice?.installments.length 
+        ? currentInvoice?.installments.map((installment, index) => ({
+          id: index + 1,
+          number: installment.number,
+          dueDate: new Date(installment.dueDate),
+          paymentDate: installment.paymentDate && new Date(installment.paymentDate),
+          amount: installment.amount,
+          installmentStatus: installment.installmentStatus,
+          }))
+        : [{
+          id: 1,
+          number:  "",
+          dueDate:  new Date(),
+          paymentDate: null,
+          amount:  0,
+          installmentStatus:  1
+        }],
     }),
     [currentInvoice]
   );
 
-
+  const[selectedDepartment, setSelectedDepartment] = useState('');
+  const[departments, setDepartments] = useState(_departments_withoutAll());
   const[didUpdate, setDidUpdate] = useState(false);
   const[isError, setIsError] = useState(false);
   const[errorMessage, setErrorMessage] = useState('');
   const[filters, setFilters] = useState(defaultValues);
   const[loading, setLoading] = useState(false);
+  
+  const getDepartmentId =  useCallback((department) => 
+    _departments_withoutAll()
+    .map(item => item.toLocaleLowerCase())
+    .indexOf(department)
+  , [])
 
+  useEffect(() => {
+    setSelectedDepartment(defaultValues.department)
+  }, [setSelectedDepartment, defaultValues.department])
 
-  const departmentId = _departments_withoutAll()
-                          .map(item => item.toLocaleLowerCase())
-                          .indexOf(currentInvoice?.department.toLowerCase())
+  const departmentId = getDepartmentId(currentInvoice?.department.toLowerCase()) 
 
   const handleClickOpen = () => {
     setIsError(true);
@@ -190,7 +206,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
   );
 
 
-  const handleCreateAndSend = handleSubmit(async (data) => {
+  const handleCreateAndSend = handleSubmit(async (data, ) => {
 
     handleFileUpload();
 
@@ -222,16 +238,13 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       if (ROLE.toLowerCase() === "collection") {
         body = {
           id: currentInvoice.id,
-          department,
-          createNote: {
-            noteText: `${CreateNote}`
-          },
+          department: departments.map(item => item.toLocaleLowerCase()).indexOf(department.toLocaleLowerCase()),
+          createNote: CreateNote ? { noteText: `${CreateNote}` } : null,
           collectionSource,
           claimStatus,
           claimsDetailStatus,
           daysToCollected: daysToCollect,
-          installments
-
+          installments: installments.length ? installments : null
         }
       }
       else {

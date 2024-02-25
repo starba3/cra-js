@@ -1,5 +1,5 @@
 // react
-import {  useState, useEffect } from 'react';
+import {  useState, useEffect, useCallback } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { useLocales } from 'src/locales';
@@ -62,6 +62,7 @@ export default function InvoiceNewEditStatusDate({
 
   
   const [loading, setLoading] = useState(true)
+  const [installmentKey, setInstallmentKey] = useState(installments.length + 1)
   const [salesList, setSalesList] = useState([])
   const [collectionData, setCollectionData] = useState([])
   const [collectionSource, setCollectionSource] = useState([])
@@ -78,6 +79,9 @@ export default function InvoiceNewEditStatusDate({
   console.log("Installments List: ", installmentsList);
 
 
+  const setInstallmentsListCallback = useCallback((updatedInstallments) => {
+    setInstallmentsList(updatedInstallments);
+  }, [setInstallmentsList]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -156,11 +160,12 @@ export default function InvoiceNewEditStatusDate({
     headOfDepartments: ['head of engineer', 'head of sales', 'head of collectors',]
   }
 
-  let installmentKey = 0
-  const generateKey = (number) => {
 
-    installmentKey += 1
-    return `${number}-${installmentKey}`
+  // Installments ket Generator
+  const generateId = () => {
+    const key = installmentKey
+    setInstallmentKey((prevKey) => prevKey + 1)
+    return key
   }
   // Collection data changes handlers
   const handleCollectionSourceChange = (newValue) => {
@@ -203,6 +208,7 @@ export default function InvoiceNewEditStatusDate({
     const newInstallments = [
       ...installmentsList,
       { 
+        id: generateId(),
         number: '', 
         dueDate: new Date(), 
         paymentDate: null, 
@@ -687,7 +693,7 @@ export default function InvoiceNewEditStatusDate({
       
       {installmentsList.map((installment, index) => (
         <Stack
-          key={generateKey(installment.number)}
+          key={installment.id}
           spacing={1}
           direction={{ xs: 'column', sm: 'row' }}
           sx={{ pt: 1, pb: 2 }}
@@ -700,14 +706,18 @@ export default function InvoiceNewEditStatusDate({
             render={({ field }) => (
               <TextField
                 {...field}
-                onChange={(newValue) => {
+
+                onChange={(e) => {
+                  console.log("e ", e)
+                  const newValue = e.target.value;
                   field.onChange(newValue);
-                  setInstallmentsList((prevInstallments) => {
-                    const newInstallments = prevInstallments
-                    newInstallments[index] = newValue
-                    return newInstallments
-                  })
+                  setInstallmentsListCallback((prevInstallments) => {
+                    const newInstallments = [...prevInstallments];
+                    newInstallments[index] = { ...newInstallments[index], number: newValue };
+                    return newInstallments;
+                  });
                 }}
+
                 label={Translate("number")}
                 fullWidth
               />
@@ -721,14 +731,17 @@ export default function InvoiceNewEditStatusDate({
               <DatePicker
                 label={Translate("dueDate")}
                 value={field.value}
-                onChange={(newValue) => {
+
+                onChange={(e) => {
+                  const newValue = e;
                   field.onChange(newValue);
-                  setInstallmentsList((prevInstallments) => {
-                    const newInstallments = prevInstallments
-                    newInstallments[index] = newValue
-                    return newInstallments
-                  })
+                  setInstallmentsListCallback((prevInstallments) => {
+                    const newInstallments = [...prevInstallments];
+                    newInstallments[index] = { ...newInstallments[index], dueDate: newValue };
+                    return newInstallments;
+                  });
                 }}
+
                 slotProps={{
                   textField: {
                     fullWidth: true,
@@ -747,14 +760,17 @@ export default function InvoiceNewEditStatusDate({
               <DatePicker
                 label={Translate("paymentDate")}
                 value={field.value}
-                onChange={(newValue) => {
+
+                onChange={(e) => {
+                  const newValue = e;
                   field.onChange(newValue);
-                  setInstallmentsList((prevInstallments) => {
-                    const newInstallments = prevInstallments
-                    newInstallments[index] = newValue
-                    return newInstallments
-                  })
+                  setInstallmentsListCallback((prevInstallments) => {
+                    const newInstallments = [...prevInstallments];
+                    newInstallments[index] = { ...newInstallments[index], paymentDate: newValue };
+                    return newInstallments;
+                  });
                 }}
+
                 slotProps={{
                   textField: {
                     fullWidth: true,
@@ -773,14 +789,17 @@ export default function InvoiceNewEditStatusDate({
             render={({ field }) => (
               <TextField
                 {...field}
-                onChange={(newValue) => {
+
+                onChange={(e) => {
+                  const newValue = e.target.value;
                   field.onChange(newValue);
-                  setInstallmentsList((prevInstallments) => {
-                    const newInstallments = prevInstallments
-                    newInstallments[index] = newValue
-                    return newInstallments
-                  })
+                  setInstallmentsListCallback((prevInstallments) => {
+                    const newInstallments = [...prevInstallments];
+                    newInstallments[index] = { ...newInstallments[index], amount: newValue };
+                    return newInstallments;
+                  });
                 }}
+
                 label={Translate("amount")}
                 fullWidth
               />
@@ -797,13 +816,14 @@ export default function InvoiceNewEditStatusDate({
                   {...field}
                   
                   value={field.value || 1}
-                  onChange={(newValue) => {
+                  onChange={(e) => {
+                    const newValue = e.target.value;
                     field.onChange(newValue);
-                    setInstallmentsList((prevInstallments) => {
-                      const newInstallments = prevInstallments
-                      newInstallments[index] = newValue
-                      return newInstallments
-                    })
+                    setInstallmentsListCallback((prevInstallments) => {
+                      const newInstallments = [...prevInstallments];
+                      newInstallments[index] = { ...newInstallments[index], installmentStatus: newValue };
+                      return newInstallments;
+                    });
                   }}
                   input={<OutlinedInput label={Translate("installmentStatus")} />}
                   renderValue={(selected) =>  installmentStatusList[selected]}
