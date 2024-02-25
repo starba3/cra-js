@@ -120,7 +120,7 @@ const prepareDataForAllInvoices = (data, headers, language, currency, role) => d
   if(["installation", "head of engineer"].includes(role.toLowerCase())) {
     fourthCell = invoice.installationStatus
   } 
-  else if(["collector", "head of collectors"].includes(role.toLowerCase())) {
+  else if(["collection", "head of collectors"].includes(role.toLowerCase())) {
     fourthCell = invoice.daysToCollected
   }
   else {
@@ -263,7 +263,17 @@ const prepareDataForNeedToAction = (data, headers, language, currency, role) => 
   const customerName = language === 'ar' ? invoice.customerNameAr : invoice.customerNameEn;
   const productName = language === 'ar' ? invoice.productNameAr : invoice.productNameEn;
 
-  const fourthCell = ["installation", "head of engineer"].includes(role.toLowerCase())  ? invoice.installationStatus : invoice.acknowledgeStatus
+  let fourthCell = null
+  if(["installation", "head of engineer"].includes(role.toLowerCase())) {
+    fourthCell = invoice.installationStatus
+  } 
+  else if(["collection", "head of collectors"].includes(role.toLowerCase())) {
+    fourthCell = invoice.daysToCollected
+  }
+  else {
+    fourthCell = invoice.acknowledgeStatus
+  } 
+
 
   const list = {
     [headers[0]]: invoice.invoiceNo,

@@ -2,7 +2,7 @@
 // import { result } from "lodash";
 import axios from "axios";
 import { paths } from "src/routes/paths"
-import { sendGet, sendDelete, sendPost, sendPatch, createBaseUrlWithRole, createHeaders, sendPostPatchRequest } from "src/helpers/requestHelper";
+import { sendGet, sendPut, sendPost, sendPatch, createBaseUrlWithRole, createHeaders, sendPostPatchRequest } from "src/helpers/requestHelper";
 
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
@@ -100,14 +100,17 @@ export async  function getInvoicesById(id, role) {
 function getInvoiceEditUrl(departmentId, invoiceId, role) {
 
     let url = ''
-    if (departmentId === 0) {
-        // Operation
-        url = `${createBaseUrlWithRole(role)}/Invoice/${invoiceId}` 
+    if (role === "collection") {
+        url = `${createBaseUrlWithRole(role)}/Invoices` 
+    }
+    else if (departmentId === 0) {
+        url = `${createBaseUrlWithRole(role)}/Invoice/${invoiceId}`
     }
     else {
         // Other departments
         url = `${createBaseUrlWithRole(role)}/Invoices/${invoiceId}` 
     }
+    
 
     return url; // Return an empty object by default or handle errors as needed.
     
@@ -215,13 +218,16 @@ export async function sendInvoiceAlert(body, role = "head of engineer") {
 export async function editInvoice(id, departmentId, body, role) {
 
     const url = getInvoiceEditUrl(departmentId, id, role);
+    const headers = createHeaders(role)
 
     const responseObj = {
         success: true,
         errorMessage: ""
     };
 
-    const response = await sendPatch(url, body);
+    const response = role === "collection"
+        ? await sendPut(url, body, headers)
+        : await sendPatch(url, body, headers)
 
     responseObj.errorMessage = response;
     responseObj.success = !response;

@@ -1,0 +1,84 @@
+import PropTypes from 'prop-types';
+
+import { useLocales } from 'src/locales'
+
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import CardHeader from '@mui/material/CardHeader';
+
+import { fShortenNumber } from 'src/utils/format-number';
+
+// ----------------------------------------------------------------------
+
+export default function InvoiceCountByStatus({ title, subheader, list, ...other }) {
+
+  const { t } = useLocales()
+  const translate = (text) => t(text)
+
+  const total = list.reduce((acc, item) => acc + item.count, 0)
+
+  return (
+    <Card {...other} sx={{ 
+      width: "100%"
+     }}>
+      {/* <CardHeader title={title} subheader={subheader} /> */}
+
+      <Box
+        sx={{
+          p: 3,
+          gap: 2,
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+        }}
+      >
+        {list.map((item) => (
+          <Paper
+            key={item.status}
+            variant="outlined"
+            sx={{ py: 2.5, textAlign: 'center', borderStyle: 'solid' }}
+          >
+            <Box sx={{ mb: 0.5 }}>{item.icon}</Box>
+
+            <Typography variant="h6">{fShortenNumber(item.count)}</Typography>
+
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              {translate(item.status)}
+            </Typography>
+          </Paper>
+        ))}
+      </Box>
+      <Box
+        sx={{
+          p: 3,
+          gap: 2,
+          display: 'flex',
+          justifyContent:'center',
+          alignItems:'center',
+          
+        }}
+      >
+          <Paper
+            key="total"
+            variant="outlined"
+            sx={{ py: 2.5, textAlign: 'center', borderStyle: 'solid', height: '100%', width:'100%' }}
+          >
+            <Box sx={{ mb: 0.5 }}>{}</Box>
+
+            <Typography variant="h6">{fShortenNumber(total)}</Typography>
+
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              Total
+            </Typography>
+          </Paper>
+      </Box>
+    </Card>
+  );
+}
+
+InvoiceCountByStatus.propTypes = {
+  title: PropTypes.string,
+  subheader: PropTypes.string,
+  list: PropTypes.array.isRequired,
+};

@@ -56,6 +56,31 @@ export async function sendPost(url, body, headers = {}) {
     }
 }
 
+export async function sendPut(url, body, headers = {}) {
+    try {
+        const response = await axios.put(url, body, { headers });
+        // console.log(response);
+        if (!response.ok) {
+            if (response.status >= 400) {
+                // If status code is 400, return the error message
+                
+                const error = await response.data;
+                throw new Error(error);
+            }
+        }
+
+        // Return null if there is no error
+        return null;
+    } catch (error) {
+        console.log(error);
+        // Return the error message
+        if(axios.isAxiosError(error))
+            return error.response.data
+            
+        return error.message;
+    }
+}
+
 export async function sendPatch(url, body = {}, headers = {}) {
     try {
 
@@ -92,6 +117,9 @@ export function createBaseUrlWithRole(role) {
         case 'sales':
             url = `${baseUrl}/api/SalesTaker`
             break
+        case 'collection':
+            url = `${baseUrl}/api/Collector`
+            break
         case 'installation':
             url = `${baseUrl}/api/Engineer`
             break
@@ -111,7 +139,7 @@ export function createBaseUrlWithRole(role) {
 export function createHeaders(role) {
     let headers = {}
     
-    if (['sales', 'installation'].includes(role.toLowerCase())) {
+    if (['sales', 'installation', 'collector', 'collection'].includes(role.toLowerCase())) {
         const token = localStorage.getItem(STORAGE_KEY) && JSON.parse(localStorage.getItem(STORAGE_KEY)).value;
         headers = {
             "Authorization": `Bearer ${token}`

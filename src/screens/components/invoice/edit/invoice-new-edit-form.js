@@ -67,9 +67,9 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     CreateNote: Yup.string(),
     department: Yup.string(),
     acknowledgeStatus: Yup.string(),
-    DeliveryDate: Yup.mixed().nullable(),
+    DeliveryDate: Yup.date().nullable(),
     installationStatus: Yup.string(),
-    installationDate: Yup.mixed().nullable(),
+    installationDate: Yup.date().nullable(),
     collectionSource: Yup.string(),
     daysToCollect: Yup.string(),
     claimStatus: Yup.string(),
@@ -78,8 +78,18 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     poValue: Yup.number(),
     contractNo: Yup.string(),
     salesTakerName: Yup.string(),
+    installments: Yup.array().of(
+      Yup.object().shape({
+        number: Yup.string().required(),
+        dueDate: Yup.date().required(),
+        paymentDate: Yup.date().nullable(),
+        amount: Yup.number().required(),
+        installmentStatus: Yup.number().required(),
+      })
+    ),
 
   });
+
 
   // Default lists values
   const defaultValues = useMemo(
@@ -98,6 +108,13 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       poValue: currentInvoice?.poValue || 0,
       contractNo: currentInvoice?.contractNo || '',
       salesTakerName: currentInvoice?.salesTakerName || '',
+      installments: currentInvoice?.installments.length ? currentInvoice?.installments : [{
+        number:  "",
+        dueDate:  new Date(),
+        paymentDate: null,
+        amount:  0,
+        installmentStatus:  1
+      }],
     }),
     [currentInvoice]
   );
@@ -196,122 +213,144 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         invoiceAmount,
         poValue,
         contractNo,
-        salesTakerName
+        salesTakerName,
+        installments
       } = watch();
 
-      const body = [];
+      let body = null;
 
-      if(department && arrays.department.includes(currentInvoice.department.toLowerCase())) {
-        body.push({
-          op : "replace",
-          path : "/department",
-          value : `${department}`
-        });
-      }
+      if (ROLE.toLowerCase() === "collection") {
+        body = {
+          id: currentInvoice.id,
+          department,
+          createNote: {
+            noteText: CreateNote
+          },
+          collectionSource,
+          claimStatus,
+          claimsDetailStatus,
+          daysToCollected: daysToCollect,
+          installments
 
-      if(invoiceAmount && arrays.invoiceAmount.includes(currentInvoice.department.toLowerCase())) {
-        body.push({
-          op : "replace",
-          path : "/InvoiceAmount",
-          value : `${invoiceAmount}`
-        });
-      }
-
-      if(arrays.poValue.includes(currentInvoice.department.toLowerCase())) {
-        body.push({
-          op : "replace",
-          path : "/PoValue",
-          value : `${poValue}`
-        });
-      }
-
-      if(contractNo && arrays.contractNo.includes(currentInvoice.department.toLowerCase())) {
-        body.push({
-          op : "replace",
-          path : "/ContractNo",
-          value : `${contractNo}`
-        });
-      }
-
-      if(salesTakerName && arrays.salesTakerName.includes(currentInvoice.department.toLowerCase())) {
-        body.push({
-          op : "replace",
-          path : "/SalesTakerUsername",
-          value : `${salesTakerName}`
-        });
-      }
-
-      if(daysToCollect && arrays.daysToCollect.includes(currentInvoice.department.toLowerCase())) {
-        body.push({
-          op: "replace",
-          path: "/daysToCollected",
-          value: `${daysToCollect}`
-        });
-      }
-
-      if(acknowledgeStatus && arrays.acknowledgeStatuses.includes(currentInvoice.department.toLowerCase())) {
-        body.push({
-          op : "replace",
-          path : "/acknowledgeStatus",
-          value : `${acknowledgeStatus}`
-        });
-      }
-
-      if(DeliveryDate && arrays.deliveryDate.includes(currentInvoice.department.toLowerCase())) {
-        body.push({
-          op : "replace",
-          path : "/DeliveryDate",
-          value : `${formatDate(DeliveryDate)}`
-        });
-      }
-
-      if(installationDate && arrays.installationDate.includes(currentInvoice.department.toLowerCase())) {
-        body.push({
-          op : "replace",
-          path : "/InstallationDate",
-          value : `${formatDate(installationDate)}`
-        });
-      }
-
-      if(installationStatus && arrays.installationStatus.includes(currentInvoice.department.toLowerCase())) {
-        body.push({
-          op : "replace",
-          path : "/installationStatus",
-          value : `${installationStatus}`
-        });
-      }
-
-      if(collectionSource && arrays.collectionSource.includes(currentInvoice.department.toLowerCase())) {
-        body.push({
-          op : "replace",
-          path : "/CollectionSource",
-          value : `${collectionSource}`
-        });
-      }
-
-      if(claimStatus && arrays.claimStatus.includes(currentInvoice.department.toLowerCase())) {
-        body.push({
-          op : "replace",
-          path : "/ClaimStatus",
-          value : `${claimStatus}`
-        });
-      }
-
-      if(claimsDetailStatus && arrays.claimsDetailStatus.includes(currentInvoice.department.toLowerCase())) {
-        body.push({
-          op : "replace",
-          path : "/ClaimsDetailStatus",
-          value : `${claimsDetailStatus}`
-        });
-      }
-
-      body.push({
-        op : "add",
-        path : "/CreateNote",
-        value : {
-          NoteText : `${CreateNote}`
         }
-      });
+      }
+      else {
+        body = []
+
+        if(department && arrays.department.includes(currentInvoice.department.toLowerCase())) {
+          body.push({
+            op : "replace",
+            path : "/department",
+            value : `${department}`
+          });
+        }
+  
+        if(invoiceAmount && arrays.invoiceAmount.includes(currentInvoice.department.toLowerCase())) {
+          body.push({
+            op : "replace",
+            path : "/InvoiceAmount",
+            value : `${invoiceAmount}`
+          });
+        }
+  
+        if(arrays.poValue.includes(currentInvoice.department.toLowerCase())) {
+          body.push({
+            op : "replace",
+            path : "/PoValue",
+            value : `${poValue}`
+          });
+        }
+  
+        if(contractNo && arrays.contractNo.includes(currentInvoice.department.toLowerCase())) {
+          body.push({
+            op : "replace",
+            path : "/ContractNo",
+            value : `${contractNo}`
+          });
+        }
+  
+        if(salesTakerName && arrays.salesTakerName.includes(currentInvoice.department.toLowerCase())) {
+          body.push({
+            op : "replace",
+            path : "/SalesTakerUsername",
+            value : `${salesTakerName}`
+          });
+        }
+  
+        if(daysToCollect && arrays.daysToCollect.includes(currentInvoice.department.toLowerCase())) {
+          body.push({
+            op: "replace",
+            path: "/daysToCollected",
+            value: `${daysToCollect}`
+          });
+        }
+  
+        if(acknowledgeStatus && arrays.acknowledgeStatuses.includes(currentInvoice.department.toLowerCase())) {
+          body.push({
+            op : "replace",
+            path : "/acknowledgeStatus",
+            value : `${acknowledgeStatus}`
+          });
+        }
+  
+        if(DeliveryDate && arrays.deliveryDate.includes(currentInvoice.department.toLowerCase())) {
+          body.push({
+            op : "replace",
+            path : "/DeliveryDate",
+            value : `${formatDate(DeliveryDate)}`
+          });
+        }
+  
+        if(installationDate && arrays.installationDate.includes(currentInvoice.department.toLowerCase())) {
+          body.push({
+            op : "replace",
+            path : "/InstallationDate",
+            value : `${formatDate(installationDate)}`
+          });
+        }
+  
+        if(installationStatus && arrays.installationStatus.includes(currentInvoice.department.toLowerCase())) {
+          body.push({
+            op : "replace",
+            path : "/installationStatus",
+            value : `${installationStatus}`
+          });
+        }
+  
+        if(collectionSource && arrays.collectionSource.includes(currentInvoice.department.toLowerCase())) {
+          body.push({
+            op : "replace",
+            path : "/CollectionSource",
+            value : `${collectionSource}`
+          });
+        }
+  
+        if(claimStatus && arrays.claimStatus.includes(currentInvoice.department.toLowerCase())) {
+          body.push({
+            op : "replace",
+            path : "/ClaimStatus",
+            value : `${claimStatus}`
+          });
+        }
+  
+        if(claimsDetailStatus && arrays.claimsDetailStatus.includes(currentInvoice.department.toLowerCase())) {
+          body.push({
+            op : "replace",
+            path : "/ClaimsDetailStatus",
+            value : `${claimsDetailStatus}`
+          });
+        }
+  
+        body.push({
+          op : "add",
+          path : "/CreateNote",
+          value : {
+            NoteText : `${CreateNote}`
+          }
+        });
+      }
+
+      
 
       // Send Edit invoice request      
       const editResponse = await editInvoice(currentInvoice.id, departmentId, body, ROLE);

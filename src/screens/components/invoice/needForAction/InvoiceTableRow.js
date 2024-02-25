@@ -29,6 +29,7 @@ export default function InvoiceTableRow({
   onEditRow,
   onDeleteRow,
   handleOpenInquiry,
+  thirdCellHeader,
   userRole,
 }) {
 
@@ -51,7 +52,7 @@ export default function InvoiceTableRow({
   const customerName = currentLang.value === 'ar' ? customerNameAr : customerNameEn;
   const productName = currentLang.value === 'ar' ? productNameAr : productNameEn;
 
-  const cellValue = ["installation", "head of engineer"].includes(userRole.toLowerCase())  ? installationStatus : acknowledgeStatus
+  const cellValue = row[thirdCellHeader]
   
   const Translate = (text) => t(text);
   const confirm = useBoolean();
@@ -199,5 +200,6 @@ InvoiceTableRow.propTypes = {
   handleOpenInquiry: PropTypes.func,
   row: PropTypes.object,
   selected: PropTypes.bool,
+  thirdCellHeader: PropTypes.string,
   userRole: PropTypes.string,
 };

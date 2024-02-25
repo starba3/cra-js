@@ -14,6 +14,7 @@ import { getCollectionData } from 'src/data-access/invoice';
 import { _acknowledgeStatuses as acknowledgeOptions} from 'src/lists/acknowledgeStatus';
 import { _installationStatus } from 'src/lists/installation';
 import { _daysToCollectList } from 'src/lists/collectionSource';
+import { _installmentStatus } from 'src/lists/installmentStatus';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -26,10 +27,13 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TextField from '@mui/material/TextField';
+import Button from "@mui/material/Button";
 // components
 import Scrollbar from 'src/components/scrollbar';
-import { Input } from '@mui/material';
 import { getSalesPersonList } from 'src/data-access/customers'
+import NotesTableView from 'src/screens/components/invoice/_common/notesTableView';
+import AttachmentsTableView from 'src/screens/components/invoice/_common/attachmentsTableView';
+import { Stack } from '@mui/system';
 
 
 
@@ -44,6 +48,17 @@ export default function InvoiceNewEditStatusDate({
   userRole,
   }) {
   const disabledTextColor = 'Crimson';
+  const { t } = useLocales()
+  const Translate = (text) => t(text)
+  const {
+    control,
+    watch,
+    resetField,
+    setValue,
+    formState: { errors },
+  } = useFormContext();
+
+  const values = watch();
 
   const [loading, setLoading] = useState(true)
   const [salesList, setSalesList] = useState([])
@@ -55,23 +70,13 @@ export default function InvoiceNewEditStatusDate({
   const [defaultClaimsStatus, setDefaultClaimsStatus] = useState(currentInvoice?.claimStatus)
   const [defaultClaimsDetailStatus, setDefaultClaimsDetailStatus] = useState(currentInvoice?.claimsDetailStatus)
   const [selectedCollectionSource, setSelectedCollectionSource] = useState('')
+  const [installments, setInstallments] = useState(values.installments)
   const [isFetched, setIsFetched] = useState(false)
 
-  const { t } = useLocales()
+  console.log("installments ", values)
+  console.log("Current invoice: ", currentInvoice);
 
-  const Translate = (text) => t(text)
-
-  const {
-    control,
-    watch,
-    resetField,
-    setValue,
-    formState: { errors },
-  } = useFormContext();
-
-  const values = watch();
-
-  console.log("CUrrent invoice: ", currentInvoice);
+  const installmentStatusList = _installmentStatus()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -181,16 +186,25 @@ export default function InvoiceNewEditStatusDate({
   const updateClaimsDetailStatus = (claimStatusOption) => {
     const claimStatusId = claimsStatus.filter(option => option.value === claimStatusOption)[0].id;
     setClaimsDetailStatus(collectionData.filter(data => data.parentId === claimStatusId))
-    // resetField('claimsDetailStatus');
-    // setValue('claimsDetailStatus', claimsDetailStatus[0].value);
+
   }
 
   const handleClaimsDetailStatusChange = (newValue) => {
-
-      // setValue('claimsDetailStatus', newValue.target.value)
-      console.log(values)
-    
+    console.log(values)
   }
+
+  const handleAddInstallment = () => {
+    setInstallments(prevInstallments => [
+      ...prevInstallments,
+      { 
+        number: '', 
+        dueDate: new Date(), 
+        paymentDate: null, 
+        amount: 0, 
+        installmentStatus: 1 
+      }
+    ]);
+  };
 
   // Style 
   const outlinedStyle = {
@@ -212,8 +226,6 @@ export default function InvoiceNewEditStatusDate({
   };
 
   // Components
-
-  
   const invoiceAmount = arrays.invoiceAmount.includes(department.toLowerCase()) 
     && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ? 
     <FormControl
@@ -271,6 +283,7 @@ export default function InvoiceNewEditStatusDate({
         )}
       />
     </FormControl> : 
+
   <TextField
     label={Translate("poValue")}
     value={currentInvoice?.poValue}
@@ -310,8 +323,6 @@ export default function InvoiceNewEditStatusDate({
     disabled
   />
 
-  
-
   const deliveryDate = arrays.deliveryDate.includes(department.toLowerCase()) 
     && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
   <Controller
@@ -336,6 +347,7 @@ export default function InvoiceNewEditStatusDate({
     disabled
     style={width80}      
   />
+
   const daysToCollect = arrays.daysToCollect.includes(department.toLowerCase()) 
     && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
   <FormControl
@@ -708,43 +720,164 @@ export default function InvoiceNewEditStatusDate({
       style={width80}
       disabled
     />   
-          
-  const renderNotes = (
+  
+  const renderInstallmentsEdit = userRole.toLowerCase() === "collection" ? (
     <>
       <Typography variant="h6" gutterBottom>
-      {Translate("notes")}
+        {Translate("editInstallments")}
       </Typography>
-      <TableContainer sx={{ overflow: 'unset', mt: 5 }}>
+      
+      {installments.map((installment, index) => (
+        <Stack
+          spacing={1}
+          direction={{ xs: 'column', sm: 'row' }}
+          sx={{ pt: 1, pb: 2 }}
+        >
+          <Controller
+            name={`installments[${index}].number`}
+            control={control}
+            defaultValue= {installment.number}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={Translate("number")}
+                fullWidth
+              />
+            )}
+          />
+        
+          <Controller
+            name={`installments[${index}].dueDate`}
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <DatePicker
+                label={Translate("dueDate")}
+                value={field.value}
+                onChange={(newValue) => {
+                  field.onChange(newValue);
+                }}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    error: !!error,
+                    helperText: error?.message,
+                  },
+                }}
+              />
+            )}
+          />
+
+          <Controller
+            name={`installments[${index}].paymentDate`}
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <DatePicker
+                label={Translate("paymentDate")}
+                value={field.value}
+                onChange={(newValue) => {
+                  field.onChange(newValue);
+                }}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    error: !!error,
+                    helperText: error?.message,
+                  },
+                }}
+              />
+            )}
+          />
+
+          <Controller
+            name={`installments[${index}].amount`}
+            control={control}
+            defaultValue= {installment.amount || 0}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={Translate("amount")}
+                fullWidth
+              />
+            )}
+          />
+
+          <FormControl fullWidth>
+            <InputLabel> {Translate("installmentStatus")} </InputLabel>
+            <Controller
+              name={`installments[${index}].installmentStatus`}
+              control={control}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  
+                  value={field.value}
+                  onChange={(newValue) => {
+                    field.onChange(newValue);
+                  }}
+                  input={<OutlinedInput label={Translate("installmentStatus")} />}
+                  renderValue={(selected) =>  installmentStatusList[selected]}
+                >
+                {installmentStatusList.slice(1).map((option, StatusIndex) => (
+                  <MenuItem key={StatusIndex} value={StatusIndex + 1} >
+                    {option}
+                  </MenuItem>
+                ))}
+              </Select>
+              )}
+            />
+          </FormControl>
+          
+
+        
+      </Stack>
+      ))}
+      <Stack justifyContent='flex-end' flexDirection='row'>
+        <Button 
+          variant='contained' 
+          color='success'
+          onClick={() => handleAddInstallment()}
+        >
+          {Translate("addInstallments")}
+        </Button>
+      </Stack>
+    </>  
+  ) : null;
+  
+  const renderInstallments = userRole.toLowerCase() === "collection" ? (
+    <>
+      <Typography variant="h6" gutterBottom>
+      {Translate("installments")}
+      </Typography>
+      <TableContainer sx={{ overflow: 'unset', mt: 5, mb: 7 }}>
         <Scrollbar>
-          <Table sx={{ minWidth: 960 }}>
+          <Table >
             <TableHead>
               <TableRow>
 
-                <TableCell width={40}>#</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("number")}</TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("note")}</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("dueDate")}</TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("user")}</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("paymentDate")}</TableCell>
 
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("createDate")}</TableCell>
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("amount")}</TableCell>
+
+                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("installmentStatus")}</TableCell>
 
               </TableRow>
             </TableHead>
 
             <TableBody>
-              {currentInvoice?.notes.map((row, index) => (
+              {currentInvoice?.installments.map((row, index) => (
                 <TableRow key={index}>
-                  <TableCell>{index + 1}</TableCell>
-
-                  <TableCell>
-                    {/* <Box sx={{ maxWidth: 560 }}> */}
+                  {/* <TableCell>
                       <Typography variant="subtitle2">{row.noteText}</Typography>
-                    {/* </Box> */}
-                  </TableCell>
-
-                  <TableCell>{row.createdBy}</TableCell>
-
-                  <TableCell>{row.createdDate.substring(0, row.createdDate.indexOf('T'))}</TableCell>
+                  </TableCell> */}
+                  <TableCell>{row.number}</TableCell>
+                  <TableCell>{row.dueDate.substring(0, row.dueDate.indexOf('T'))}</TableCell>
+                  <TableCell>{row.paymentDate.substring(0, row.paymentDate.indexOf('T'))}</TableCell>
+                  <TableCell>{row.amount}</TableCell>
+                  <TableCell>{installmentStatusList[row.installmentStatus]}</TableCell>
                   
                 </TableRow>
               ))} 
@@ -754,55 +887,11 @@ export default function InvoiceNewEditStatusDate({
         </Scrollbar>
       </TableContainer>
     </>  
-  );
+  ) : null;
+
+  const renderNotes = <NotesTableView data={currentInvoice?.notes} />
   
-  const renderAttachments = (
-    <>
-      <Typography variant="h6" gutterBottom>
-        {Translate("attachments")}
-      </Typography>
-      <TableContainer sx={{ overflow: 'unset', mt: 5, mb: 7 }}>
-        <Scrollbar>
-          <Table sx={{ minWidth: 960 }}>
-            <TableHead>
-              <TableRow>
-
-                <TableCell width={40}>#</TableCell>
-
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("name")}</TableCell>
-
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("user")}</TableCell>
-
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("createDate")}</TableCell>
-
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {currentInvoice?.attachments.map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell>{index + 1}</TableCell>
-
-                  <TableCell>
-                    {/* <Box sx={{ maxWidth: 560 }}> */}
-                      <Typography variant="subtitle2"> <a target='_blank' rel="noreferrer" href={row.attachmentPath}>{row.fileName}</a> </Typography>
-                    {/* </Box> */}
-                  </TableCell>
-
-                  <TableCell>{row.createdBy}</TableCell>
-
-                  <TableCell>{row.createdDate.substring(0, row.createdDate.indexOf('T'))}</TableCell>
-
-                  
-                </TableRow>
-              ))} 
-
-            </TableBody> 
-          </Table>
-        </Scrollbar>
-      </TableContainer>
-    </>
-  );
+  const renderAttachments = <AttachmentsTableView data={currentInvoice?.attachments}/>
 
   const renderFooter = (
     <Grid container>
@@ -937,7 +1026,9 @@ export default function InvoiceNewEditStatusDate({
           disabled
         />
       </Box>
-
+      
+      {renderInstallmentsEdit}
+      {/* {renderInstallments} */}
       {renderNotes}
 
       <Divider sx={{ mt: 5, borderStyle: 'dashed', mb: 3}} />

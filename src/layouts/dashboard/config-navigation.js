@@ -300,7 +300,7 @@ export function useNavData() {
             ) 
         }
 
-        if(role.toLowerCase() === 'collector') {
+        if(role.toLowerCase() === 'collection') {
             items[0].items.push(
                 // Invoice
                 {

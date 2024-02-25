@@ -269,5 +269,17 @@
   "actionNeededCount": "Action Needed Count",
   "assignmentPendingCount": "Assignment Pending Count",
   "sendAlertTo": "Send Alert To ",
-  "sendAlert": "Send Alert"
+  "sendAlert": "Send Alert",
+  "number": "Number",
+  "dueDate": "Due Date",
+  "paymentDate": "Payment Date",
+  "installmentStatus": "Installment Status",
+  "editInstallments": "Edit Installments",
+  "addInstallments": "Add Installments",
+  "installments": "Installments",
+  "contractNo": "Contract Number",
+  "customerPO": "PO Number",
+  "poValue": "PO Value",
+  "aged": "Aged",
+  "salesTakerName" : "Sales Taker"
 }

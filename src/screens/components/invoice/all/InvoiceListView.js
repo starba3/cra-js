@@ -179,12 +179,13 @@ export default function InvoiceListView() {
       return "installationStatus"
     }
 
-    if(["collector", "head of collectors"].includes(ROLE.toLowerCase())) {
+    if(["collection", "head of collectors"].includes(ROLE.toLowerCase())) {
       return "daysToCollected"
     }
 
     return "acknowledgeStatus"
   } 
+
   const TABLE_HEAD = [
     { id: 'invoiceNumber', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
@@ -265,13 +266,6 @@ export default function InvoiceListView() {
       totalRowsFiltered: dataFiltered.length,
     });
   }, [dataFiltered.length, dataInPage.length, table, tableData]);
-
-  const handleEditRow = useCallback(
-    (id) => {
-      router.push(paths.dashboard.invoice.edit(id));
-    },
-    [router]
-  );
 
   const handleViewRow = useCallback(
     (id) => {
