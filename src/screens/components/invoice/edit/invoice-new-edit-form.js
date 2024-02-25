@@ -224,7 +224,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
           id: currentInvoice.id,
           department,
           createNote: {
-            noteText: CreateNote
+            noteText: `${CreateNote}`
           },
           collectionSource,
           claimStatus,

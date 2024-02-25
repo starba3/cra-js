@@ -17,22 +17,18 @@ import { _daysToCollectList } from 'src/lists/collectionSource';
 import { _installmentStatus } from 'src/lists/installmentStatus';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
 import Divider from '@mui/material/Divider';
-import TableRow from '@mui/material/TableRow';
-import TableHead from '@mui/material/TableHead';
-import TableCell from '@mui/material/TableCell';
-import TableBody from '@mui/material/TableBody';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import TableContainer from '@mui/material/TableContainer';
 import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
+import IconButton from '@mui/material/IconButton';
 // components
-import Scrollbar from 'src/components/scrollbar';
 import { getSalesPersonList } from 'src/data-access/customers'
+import Iconify from 'src/components/iconify';
 import NotesTableView from 'src/screens/components/invoice/_common/notesTableView';
 import AttachmentsTableView from 'src/screens/components/invoice/_common/attachmentsTableView';
+import EditItemView from 'src/screens/components/invoice/_common/editViewField';
 import { Stack } from '@mui/system';
 
 
@@ -55,11 +51,16 @@ export default function InvoiceNewEditStatusDate({
     watch,
     resetField,
     setValue,
+    getValues,
     formState: { errors },
   } = useFormContext();
 
   const values = watch();
 
+  const installmentStatusList = _installmentStatus()
+  const installments = getValues("installments")
+
+  
   const [loading, setLoading] = useState(true)
   const [salesList, setSalesList] = useState([])
   const [collectionData, setCollectionData] = useState([])
@@ -70,13 +71,13 @@ export default function InvoiceNewEditStatusDate({
   const [defaultClaimsStatus, setDefaultClaimsStatus] = useState(currentInvoice?.claimStatus)
   const [defaultClaimsDetailStatus, setDefaultClaimsDetailStatus] = useState(currentInvoice?.claimsDetailStatus)
   const [selectedCollectionSource, setSelectedCollectionSource] = useState('')
-  const [installments, setInstallments] = useState(values.installments)
+  const [installmentsList, setInstallmentsList] = useState(installments)
   const [isFetched, setIsFetched] = useState(false)
 
-  console.log("installments ", values)
-  console.log("Current invoice: ", currentInvoice);
+  console.log("values ", values.installments)
+  console.log("Installments List: ", installmentsList);
 
-  const installmentStatusList = _installmentStatus()
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -138,8 +139,6 @@ export default function InvoiceNewEditStatusDate({
     handleCollectionSourceChange(collectionSource[0]);
   }
 
-  
-
   const arrays = {
     daysToCollect: ['collection'],
     deliveryDate: ['operation'],
@@ -155,6 +154,13 @@ export default function InvoiceNewEditStatusDate({
     claimStatus: ['collection'],
     claimsDetailStatus: ['collection'],
     headOfDepartments: ['head of engineer', 'head of sales', 'head of collectors',]
+  }
+
+  let installmentKey = 0
+  const generateKey = (number) => {
+
+    installmentKey += 1
+    return `${number}-${installmentKey}`
   }
   // Collection data changes handlers
   const handleCollectionSourceChange = (newValue) => {
@@ -194,8 +200,8 @@ export default function InvoiceNewEditStatusDate({
   }
 
   const handleAddInstallment = () => {
-    setInstallments(prevInstallments => [
-      ...prevInstallments,
+    const newInstallments = [
+      ...installmentsList,
       { 
         number: '', 
         dueDate: new Date(), 
@@ -203,7 +209,25 @@ export default function InvoiceNewEditStatusDate({
         amount: 0, 
         installmentStatus: 1 
       }
-    ]);
+    ]
+    setValue("installments", newInstallments)
+    setInstallmentsList(newInstallments)
+    // setInstallments(prevInstallments => [
+    //   ...prevInstallments,
+    //   { 
+    //     number: '', 
+    //     dueDate: new Date(), 
+    //     paymentDate: null, 
+    //     amount: 0, 
+    //     installmentStatus: 1 
+    //   }
+    // ]);
+  };
+
+  const handleAddRemoveInstallment = (index) => {
+    const newInstallments = installmentsList.toSpliced(index, 1)
+    setValue("installments", newInstallments) 
+    setInstallmentsList( newInstallments)
   };
 
   // Style 
@@ -237,26 +261,20 @@ export default function InvoiceNewEditStatusDate({
       style={width80}
     >
     {/* <InputLabel  > {Translate("invoiceAmount")} </InputLabel> */}
-    <Controller
-      
-      name="invoiceAmount"
-      control={control}
-      render={({ field }) => (
-        <TextField
-          {...field}
-          label={Translate("invoiceAmount")}
-          value={field.value}
-          fullWidth
-        />
-      )}
-    />
+      <Controller
+        name="invoiceAmount"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label={Translate("invoiceAmount")}
+            value={field.value}
+            fullWidth
+          />
+        )}
+      />
     </FormControl> : 
-  <TextField
-    label={Translate("amount")}
-    value={currentInvoice?.invoiceAmount}
-    style={width80}
-    disabled
-  />
+    <EditItemView invoice={currentInvoice} properity="invoiceAmount" />
 
   const poValue = arrays.poValue.includes(department.toLowerCase()) 
     && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ? 
@@ -283,13 +301,7 @@ export default function InvoiceNewEditStatusDate({
         )}
       />
     </FormControl> : 
-
-  <TextField
-    label={Translate("poValue")}
-    value={currentInvoice?.poValue}
-    style={width80}
-    disabled
-  />
+    <EditItemView invoice={currentInvoice} properity="poValue" />
 
   const contractNo = arrays.contractNo.includes(department.toLowerCase()) 
     && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
@@ -301,9 +313,7 @@ export default function InvoiceNewEditStatusDate({
       }}
       style={width80}
     >
-    {/* <InputLabel  > {Translate("invoiceAmount")} </InputLabel> */}
     <Controller
-      
       name="contractNo"
       control={control}
       render={({ field }) => (
@@ -316,19 +326,13 @@ export default function InvoiceNewEditStatusDate({
       )}
     />
     </FormControl> : 
-  <TextField
-    label={Translate("contractNo")}
-    value={currentInvoice?.contractNo}
-    style={width80}
-    disabled
-  />
+    <EditItemView invoice={currentInvoice} properity="contractNo" />
 
   const deliveryDate = arrays.deliveryDate.includes(department.toLowerCase()) 
     && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
   <Controller
     name="DeliveryDate"
     control={control}
-    
     render={({ field, fieldState: { error } }) => (
         <DatePicker
           
@@ -341,12 +345,8 @@ export default function InvoiceNewEditStatusDate({
         />
     )}
   /> : 
-  <TextField
-    label={Translate("deliveryDate")}
-    value={currentInvoice.deliveryDate && currentInvoice.deliveryDate.substring(0, currentInvoice?.deliveryDate.indexOf('T'))  }
-    disabled
-    style={width80}      
-  />
+  <EditItemView invoice={currentInvoice} properity="deliveryDate" isDate />
+  
 
   const daysToCollect = arrays.daysToCollect.includes(department.toLowerCase()) 
     && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
@@ -389,12 +389,7 @@ export default function InvoiceNewEditStatusDate({
       )}
     />
     </FormControl> : 
-  <TextField
-    label={Translate("daysToCollected")}
-    value={currentInvoice.daysToCollected }
-    disabled
-    style={width80}      
-  />
+    <EditItemView invoice={currentInvoice} properity="daysToCollected" />
 
   const departmentSelect = arrays.department.includes(department.toLowerCase()) 
     && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
@@ -437,12 +432,7 @@ export default function InvoiceNewEditStatusDate({
       )}
     />
     </FormControl> : 
-    <TextField
-      label={Translate("department")}
-      value={currentInvoice?.department }
-      style={width80}
-      disabled
-    />
+    <EditItemView invoice={currentInvoice} properity="department" />
 
   const acknowledgeStatus = arrays.acknowledgeStatuses.includes(department.toLowerCase()) 
     && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
@@ -478,37 +468,27 @@ export default function InvoiceNewEditStatusDate({
         )}
       />
     </FormControl> :
-    <TextField
-      label={Translate("acknowledgeStatus")}
-      value={currentInvoice?.acknowledgeStatus }
-      style={width80}
-      disabled
-    /> 
+    <EditItemView invoice={currentInvoice} properity="acknowledgeStatus" />
 
   const installationDate = arrays.installationDate.includes(department.toLowerCase()) 
     && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
-  <Controller
-  name="installationDate"
-  control={control}
-  
-  render={({ field, fieldState: { error } }) => (
-      <DatePicker
-        
-        label={Translate("installationDate")}
-        value={field.value}
-        onChange={(newValue) => {
-          field.onChange(newValue);
-        }}
-        sx={grayBgStyle}
-      />
-    )}
+    <Controller
+    name="installationDate"
+    control={control}
+    
+    render={({ field, fieldState: { error } }) => (
+        <DatePicker
+          
+          label={Translate("installationDate")}
+          value={field.value}
+          onChange={(newValue) => {
+            field.onChange(newValue);
+          }}
+          sx={grayBgStyle}
+        />
+      )}
     /> : 
-    <TextField
-      label={Translate("installationDate")}
-      value={currentInvoice?.installationDate ? currentInvoice?.installationDate.substring(0, currentInvoice?.issueInvoiceDate.indexOf('T')) : '' }
-      style={width80}
-      disabled
-    /> 
+    <EditItemView invoice={currentInvoice} properity="installationDate" isDate />
   
     const installationStatus = arrays.installationStatus.includes(department.toLowerCase()) 
       && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
@@ -544,12 +524,7 @@ export default function InvoiceNewEditStatusDate({
         )}
       />
     </FormControl> :
-    <TextField
-      label={Translate("installationStatus")}
-      value={currentInvoice.installationStatus}
-      style={width80}
-      disabled
-    /> 
+    <EditItemView invoice={currentInvoice} properity="installationStatus" />
 
   const collectionSourceSelect = arrays.collectionSource.includes(department.toLowerCase()) 
     && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
@@ -589,12 +564,7 @@ export default function InvoiceNewEditStatusDate({
         )}
       />
     </FormControl> : 
-    <TextField
-        label={Translate("collectionSource")}
-        value={currentInvoice.collectionSource}
-        style={width80}
-        disabled
-    /> 
+    <EditItemView invoice={currentInvoice} properity="collectionSource" />
   
   const ClaimStatusSelect = arrays.claimStatus.includes(department.toLowerCase()) 
     && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
@@ -631,12 +601,7 @@ export default function InvoiceNewEditStatusDate({
         )}
       />
     </FormControl> : 
-    <TextField
-          label={Translate("claimStatus")}
-          value={currentInvoice.claimStatus}
-          style={width80}
-          disabled
-      /> 
+    <EditItemView invoice={currentInvoice} properity="claimStatus" />
 
   const ClaimsDetailStatusSelect = arrays.claimsDetailStatus.includes(department.toLowerCase()) 
     && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
@@ -673,12 +638,8 @@ export default function InvoiceNewEditStatusDate({
           </Select>
         )}
       />
-    </FormControl> : <TextField
-          label={Translate("claimsDetailStatus")}
-          value={currentInvoice.claimsDetailStatus}
-          style={width80}
-          disabled
-        /> 
+    </FormControl> : 
+    <EditItemView invoice={currentInvoice} properity="claimsDetailStatus" />
     
     const salesTakerSelect = arrays.salesTakerName.includes(department.toLowerCase()) 
       && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
@@ -714,12 +675,9 @@ export default function InvoiceNewEditStatusDate({
           </Select>
         )}
       />
-    </FormControl> : <TextField
-      label={Translate("salesTakerName")}
-      value={currentInvoice?.salesTakerName}
-      style={width80}
-      disabled
-    />   
+    </FormControl> : 
+    <EditItemView invoice={currentInvoice} properity="salesTakerName" />
+  
   
   const renderInstallmentsEdit = userRole.toLowerCase() === "collection" ? (
     <>
@@ -727,8 +685,9 @@ export default function InvoiceNewEditStatusDate({
         {Translate("editInstallments")}
       </Typography>
       
-      {installments.map((installment, index) => (
+      {installmentsList.map((installment, index) => (
         <Stack
+          key={generateKey(installment.number)}
           spacing={1}
           direction={{ xs: 'column', sm: 'row' }}
           sx={{ pt: 1, pb: 2 }}
@@ -737,9 +696,18 @@ export default function InvoiceNewEditStatusDate({
             name={`installments[${index}].number`}
             control={control}
             defaultValue= {installment.number}
+            
             render={({ field }) => (
               <TextField
                 {...field}
+                onChange={(newValue) => {
+                  field.onChange(newValue);
+                  setInstallmentsList((prevInstallments) => {
+                    const newInstallments = prevInstallments
+                    newInstallments[index] = newValue
+                    return newInstallments
+                  })
+                }}
                 label={Translate("number")}
                 fullWidth
               />
@@ -755,6 +723,11 @@ export default function InvoiceNewEditStatusDate({
                 value={field.value}
                 onChange={(newValue) => {
                   field.onChange(newValue);
+                  setInstallmentsList((prevInstallments) => {
+                    const newInstallments = prevInstallments
+                    newInstallments[index] = newValue
+                    return newInstallments
+                  })
                 }}
                 slotProps={{
                   textField: {
@@ -776,6 +749,11 @@ export default function InvoiceNewEditStatusDate({
                 value={field.value}
                 onChange={(newValue) => {
                   field.onChange(newValue);
+                  setInstallmentsList((prevInstallments) => {
+                    const newInstallments = prevInstallments
+                    newInstallments[index] = newValue
+                    return newInstallments
+                  })
                 }}
                 slotProps={{
                   textField: {
@@ -795,6 +773,14 @@ export default function InvoiceNewEditStatusDate({
             render={({ field }) => (
               <TextField
                 {...field}
+                onChange={(newValue) => {
+                  field.onChange(newValue);
+                  setInstallmentsList((prevInstallments) => {
+                    const newInstallments = prevInstallments
+                    newInstallments[index] = newValue
+                    return newInstallments
+                  })
+                }}
                 label={Translate("amount")}
                 fullWidth
               />
@@ -810,9 +796,14 @@ export default function InvoiceNewEditStatusDate({
                 <Select
                   {...field}
                   
-                  value={field.value}
+                  value={field.value || 1}
                   onChange={(newValue) => {
                     field.onChange(newValue);
+                    setInstallmentsList((prevInstallments) => {
+                      const newInstallments = prevInstallments
+                      newInstallments[index] = newValue
+                      return newInstallments
+                    })
                   }}
                   input={<OutlinedInput label={Translate("installmentStatus")} />}
                   renderValue={(selected) =>  installmentStatusList[selected]}
@@ -827,7 +818,9 @@ export default function InvoiceNewEditStatusDate({
             />
           </FormControl>
           
-
+          <IconButton onClick={() => handleAddRemoveInstallment(index)} color='error' sx={{ height: 'fit-content', marginTop:'auto', marginBottom: 'auto' }}>
+            <Iconify icon="mingcute:close-fill"  />
+          </IconButton>        
         
       </Stack>
       ))}
@@ -840,52 +833,6 @@ export default function InvoiceNewEditStatusDate({
           {Translate("addInstallments")}
         </Button>
       </Stack>
-    </>  
-  ) : null;
-  
-  const renderInstallments = userRole.toLowerCase() === "collection" ? (
-    <>
-      <Typography variant="h6" gutterBottom>
-      {Translate("installments")}
-      </Typography>
-      <TableContainer sx={{ overflow: 'unset', mt: 5, mb: 7 }}>
-        <Scrollbar>
-          <Table >
-            <TableHead>
-              <TableRow>
-
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("number")}</TableCell>
-
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("dueDate")}</TableCell>
-
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("paymentDate")}</TableCell>
-
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("amount")}</TableCell>
-
-                <TableCell sx={{ typography: 'subtitle2' }}>{Translate("installmentStatus")}</TableCell>
-
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {currentInvoice?.installments.map((row, index) => (
-                <TableRow key={index}>
-                  {/* <TableCell>
-                      <Typography variant="subtitle2">{row.noteText}</Typography>
-                  </TableCell> */}
-                  <TableCell>{row.number}</TableCell>
-                  <TableCell>{row.dueDate.substring(0, row.dueDate.indexOf('T'))}</TableCell>
-                  <TableCell>{row.paymentDate.substring(0, row.paymentDate.indexOf('T'))}</TableCell>
-                  <TableCell>{row.amount}</TableCell>
-                  <TableCell>{installmentStatusList[row.installmentStatus]}</TableCell>
-                  
-                </TableRow>
-              ))} 
-
-            </TableBody> 
-          </Table>
-        </Scrollbar>
-      </TableContainer>
     </>  
   ) : null;
 
@@ -922,111 +869,32 @@ export default function InvoiceNewEditStatusDate({
           sm: 'repeat(2, 1fr)',
         }}
       >
-
-        <TextField
-          label={Translate("issueDate")}
-          value={currentInvoice ? currentInvoice?.issueInvoiceDate.substring(0, currentInvoice?.issueInvoiceDate.indexOf('T')) : '' }
-          style={width80}
-          disabled
-        />
-
+        <EditItemView invoice={currentInvoice} properity="issueInvoiceDate" isDate />
         {invoiceAmount}
-
-        <TextField
-          label={Translate("currency")}
-          value={currentInvoice?.currency}
-          style={width80}
-          disabled
-        />
-
-        <TextField
-          label={Translate("customerCode")}
-          value={currentInvoice?.customerCode}
-          style={width80}
-          disabled
-        />
-        
-        <TextField
-          label={Translate("nameEnglish")}
-          value={currentInvoice?.customerNameEn}
-          style={width80}
-          disabled
-        />
-
-        <TextField
-          label={Translate("nameArabic")}
-          value={currentInvoice?.customerNameAr}
-          style={width80}
-          disabled
-        />
-
-        <TextField
-          label={Translate("PoNumber")}
-          value={currentInvoice?.customerPO}
-          style={width80}
-          disabled
-        />
-
+        <EditItemView invoice={currentInvoice} properity="currency" />
+        <EditItemView invoice={currentInvoice} properity="customerCode" />
+        <EditItemView invoice={currentInvoice} properity="customerNameEn" />
+        <EditItemView invoice={currentInvoice} properity="customerNameAr" />
+        <EditItemView invoice={currentInvoice} properity="customerPO" />
         {poValue} 
-
-        <TextField
-          label={Translate("region")}
-          value={currentInvoice?.region}
-          style={width80}
-          disabled
-        />        
-
+        <EditItemView invoice={currentInvoice} properity="region" />        
         {contractNo}
-
         {deliveryDate}
-
         {installationDate}
-
         {departmentSelect}
-
         {installationStatus}
-
         {daysToCollect}
-
         {acknowledgeStatus}
-
         {collectionSourceSelect}
-
         {ClaimStatusSelect}
-
         {ClaimsDetailStatusSelect}
-
-        <TextField
-          label={Translate("salesConfirm")}
-          value={currentInvoice?.salesConfirm}
-          style={width80}
-          disabled
-        />
-
-        <TextField
-          label={Translate("createdBy")}
-          value={currentInvoice?.createdBy}
-          style={width80}
-          disabled
-        />
-
+        <EditItemView invoice={currentInvoice} properity="salesConfirm" />
+        <EditItemView invoice={currentInvoice} properity="createdBy" />
         {salesTakerSelect}
-
-        <TextField
-          label={Translate("collectorName")}
-          value={currentInvoice?.collectorName}
-          style={width80}
-          disabled
-        />
-
-        <TextField
-          label={Translate("responsibleEngineerName")}
-          value={currentInvoice?.responsibleEngineerName}
-          style={width80}
-          disabled
-        />
+        <EditItemView invoice={currentInvoice} properity="collectorName" />
+        <EditItemView invoice={currentInvoice} properity="responsibleEngineerName" />
       </Box>
-      
+
       {renderInstallmentsEdit}
       {/* {renderInstallments} */}
       {renderNotes}

@@ -13,7 +13,7 @@ export const getUserRole = () => {
         // role = "Operation"
     }
 
-    console.log("Role ",role)
+    // console.log("Role ",role)
     return role.toLowerCase()
 }
 
