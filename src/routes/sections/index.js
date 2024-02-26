@@ -1,4 +1,4 @@
-import { Navigate, useRoutes } from 'react-router-dom';
+import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
 import MainLayout from 'src/layouts/main';
 // config
@@ -13,6 +13,11 @@ import { componentsRoutes } from './components';
 // ----------------------------------------------------------------------
 
 export default function Router() {
+  const SetPasswordRedirect = () => {
+    const location = useLocation();
+    return "/auth/jwt/set-password".concat(location.search);
+  };
+
   return useRoutes([
     // SET INDEX PAGE WITH SKIP HOME PAGE
     // {
@@ -32,6 +37,8 @@ export default function Router() {
       ),
     },
 
+    { path: 'reset-password', element: <Navigate to={(SetPasswordRedirect())} /> },
+    { path: 'set-password', element: <Navigate to={(SetPasswordRedirect())} /> },
     // Auth routes
     ...authRoutes,
     ...authDemoRoutes,

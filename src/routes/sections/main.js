@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet, Navigate, useLocation } from 'react-router-dom';
 // layouts
 import MainLayout from 'src/layouts/main';
 import SimpleLayout from 'src/layouts/simple';
@@ -57,6 +57,9 @@ const PostDetailsPage = lazy(() => import('src/pages/post/details'));
 
 
 // ----------------------------------------------------------------------
+
+
+
 
 export const mainRoutes = [
   { path: 'cra-js', element: <Navigate to="/dashboard" /> },

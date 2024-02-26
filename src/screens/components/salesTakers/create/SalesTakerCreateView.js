@@ -56,7 +56,7 @@ export default function SalesTakerCreateView({ id }) {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading={Translate("createNewCollector")}
+        heading={Translate("createNewSalesTaker")}
         links={[
           // {
           //   name: Translate("app"),

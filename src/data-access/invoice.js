@@ -202,6 +202,9 @@ function getSendInvoiceAlertUrl(role) {
         case "head of collectors":
             url = `${createBaseUrlWithRole(role)}/Invoices/alert-Collector` 
             break
+        case "head of sales":
+            url = `${createBaseUrlWithRole(role)}/Invoices/alert-salesman` 
+            break
         default:
             break
     }
