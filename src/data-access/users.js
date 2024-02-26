@@ -1,4 +1,4 @@
-import { sendGet } from "src/helpers/requestHelper";
+import { sendGet, createBaseUrlWithRole } from "src/helpers/requestHelper";
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
 
@@ -9,6 +9,11 @@ export async function getUsersByRole(role) {
 
 export async function getAllUsers() {
     const url = `${baseUrl}/api/User`;
+    return  sendGet(url, []);
+}
+
+export async function getAllUsersForReports(role) {
+    const url = `${createBaseUrlWithRole(role)}/users`;
     return  sendGet(url, []);
 }
 

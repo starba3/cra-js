@@ -35,6 +35,9 @@ export const exportToExcel = (data, headers, language, currency, reportName, fil
   if(reportName.toLowerCase() === 'invoicesbycollector') 
   filteredData = prepareDataForInvoicesByCollector(data, headers, language, currency);
 
+  if(reportName.toLowerCase() === 'invoicesbysaletaker') 
+    filteredData = prepareDataForInvoicesBySalesTaker(data, headers, language, currency);
+
   if(reportName.toLowerCase() === 'gmreport') 
     filteredData = prepareDataForGMReport(data, headers, currency);
 
@@ -371,6 +374,22 @@ const prepareDataForInvoicesByEngineer = (data, headers, language, currency) => 
 });
 
 const prepareDataForInvoicesByCollector = (data, headers, language, currency) => data.map((invoice) => {
+  const customerName = language === 'ar' ? invoice.customerNameAr : invoice.customerNameEn;
+  const productName = language === 'ar' ? invoice.productNameAr : invoice.productNameEn;
+
+  const list = {
+    [headers[0]]: invoice.invoiceNo,
+    [headers[1]]: customerName,
+    [headers[2]]: new Date(invoice.issueInvoiceDate).toLocaleDateString(),
+    [headers[3]]: `${invoice.invoiceAmount.toLocaleString()} ${currency}`,
+    [headers[4]]: productName,
+    [headers[5]]: invoice.department,
+  }
+  return list;
+});
+
+
+const prepareDataForInvoicesBySalesTaker = (data, headers, language, currency) => data.map((invoice) => {
   const customerName = language === 'ar' ? invoice.customerNameAr : invoice.customerNameEn;
   const productName = language === 'ar' ? invoice.productNameAr : invoice.productNameEn;
 

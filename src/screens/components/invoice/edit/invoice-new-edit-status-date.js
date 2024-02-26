@@ -28,7 +28,7 @@ import { getSalesPersonList } from 'src/data-access/customers'
 import Iconify from 'src/components/iconify';
 import NotesTableView from 'src/screens/components/invoice/_common/notesTableView';
 import AttachmentsTableView from 'src/screens/components/invoice/_common/attachmentsTableView';
-import EditItemView from 'src/screens/components/invoice/_common/editViewField';
+import EditItemView from 'src/screens/components/invoice/_edit/editViewField';
 import { Stack } from '@mui/system';
 
 

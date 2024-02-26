@@ -22,8 +22,8 @@ export default function EditItemView({
     <TextField
         label={Translate(properity)}
         value={ isDate
-            ? invoice[properity].substring(0, invoice[properity].indexOf("T"))
-            : invoice[properity]   
+            ? invoice[properity] && invoice[properity].substring(0, invoice[properity].indexOf("T"))
+            : invoice[properity] && invoice[properity]   
         }
         style={customWidth}
         disabled

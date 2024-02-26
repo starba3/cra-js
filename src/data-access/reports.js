@@ -36,3 +36,8 @@ export async function getInvoicesForCollector(id, role = "head of collectors") {
     const url = `${createBaseUrlWithRole(role)}/Reports/invoices/colletor?CollectorId=${id}`;
     return sendGet(url, []);
 }
+
+export async function getInvoicesForSales(id, role = "head of sales") {
+    const url = `${createBaseUrlWithRole(role)}/Reports/invoices/salesman?SalesId=${id}`;
+    return sendGet(url, []);
+}

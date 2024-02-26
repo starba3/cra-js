@@ -52,6 +52,8 @@ const GmReasonReportView = lazy(() => import('src/screens/reports/GmReasonReport
 const InvoiceByUsersViewMain = lazy(() => import('src/screens/reports/invoiceByUsers'));
 const InvoiceByEngineerViewMain = lazy(() => import('src/screens/reports/InvoiceByEngineerView'));
 const InvoiceByCollectorViewMain = lazy(() => import('src/screens/reports/InvoiceByCollectorView'));
+const InvoiceBySaleTakerViewMain = lazy(() => import('src/screens/reports/InvoiceBySalesTakerView'));
+
 const ForDeliveryDataViewMain = lazy(() => import('src/screens/reports/forDeliveryData'))
 const AcknowledgmentViewMain = lazy(() => import('src/screens/acknowledgment/all/acknowledgmentView'));
 const PerformanceViewMain = lazy(() => import('src/screens/reports/performanceView'));
@@ -187,7 +189,7 @@ export const dashboardRoutes = [
           { path: 'invoiceByEngineer', element: <InvoiceByEngineerViewMain /> },
           { path: 'invoiceByCollector', element: <InvoiceByCollectorViewMain /> },
           { path: 'collectorPerformance', element: <CollectorPerformanceViewMain /> },
-          // { path: 'invoiceByCollector', element: <InvoiceByCollectorViewMain /> },
+          { path: 'invoiceBySalesTaker', element: <InvoiceBySaleTakerViewMain /> },
           { path: 'salesPerformance', element: <SalesPerformanceListView /> },
           { path: 'GmReport', element: <GmReportView />  },
           { path: 'deliveryDate', element: <ForDeliveryDataViewMain />  },
