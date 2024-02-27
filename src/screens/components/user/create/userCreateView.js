@@ -13,7 +13,7 @@ import { getCustomerById } from 'src/data-access/customers';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
-import CustomerEditForm from './userEditForm';
+import UserEditForm from './userEditForm';
 
 // ----------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ export default function UserCreateView({ id }) {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading={Translate("createNewCustomer")}
+        heading={Translate("createNewUser")}
         links={[
           // {
           //   name: Translate("app"),
@@ -75,7 +75,7 @@ export default function UserCreateView({ id }) {
         }}
       />
 
-      <CustomerEditForm currentCustomer={currentCustomer} />
+      <UserEditForm currentCustomer={currentCustomer} />
     </Container>
   );
 }

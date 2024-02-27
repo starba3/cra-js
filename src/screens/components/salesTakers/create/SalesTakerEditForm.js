@@ -32,7 +32,7 @@ import SalesTakerEditInputs from './SalesTakerEditInputs';
 
 
 
-export default function SalesTakerEditForm({ currentCustomer }) {
+export default function SalesTakerEditForm({ currentSalesTaker }) {
   const router = useRouter();
 
   const loadingSend = useBoolean();
@@ -54,12 +54,12 @@ export default function SalesTakerEditForm({ currentCustomer }) {
 
   const defaultValues = useMemo(
     () => ({
-      firstName: currentCustomer?.firstName,
-      lastName: currentCustomer?.lastName,
-      email: currentCustomer?.email, 
-      username: currentCustomer?.username,
+      firstName: currentSalesTaker?.firstName,
+      lastName: currentSalesTaker?.lastName,
+      email: currentSalesTaker?.email, 
+      username: currentSalesTaker?.username,
     }),
-    [currentCustomer]
+    [currentSalesTaker]
   );
 
   const methods = useForm({
@@ -156,7 +156,7 @@ export default function SalesTakerEditForm({ currentCustomer }) {
             loading={loadingSend.value && isSubmitting}
             type='submit'
           >
-            {currentCustomer ? Translate('update') : Translate('create')} 
+            {currentSalesTaker ? Translate('update') : Translate('create')} 
           </LoadingButton>
         </Stack>
       </FormProvider>
@@ -187,5 +187,5 @@ export default function SalesTakerEditForm({ currentCustomer }) {
 }
 
 SalesTakerEditForm.propTypes = {
-  currentCustomer: PropTypes.object,
+  currentSalesTaker: PropTypes.object,
 };

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useLocales } from 'src/locales';
 import * as Yup from 'yup';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -8,39 +8,54 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import Fade from '@mui/material/Fade';
+import Alert from '@mui/material/Alert';
+import IconButton from '@mui/material/IconButton';
 // routes
 import { useNavigate } from 'react-router-dom';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
+// Data access
+import { createUser } from 'src/data-access/users';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
+import Iconify from 'src/components/iconify/iconify';
+import { getUserRole } from 'src/helpers/roleHelper';
 import FormProvider from 'src/components/hook-form';
-
-import CustomerEditInputs from './userEditInputs';
+import UserEditInputs from './userEditInputs';
 
 // ----------------------------------------------------------------------
 
-export default function UserEditForm({ currentCustomer }) {
+export default function UserEditForm({ currentUser }) {
   const router = useRouter();
 
   const loadingSend = useBoolean();
 
   const navigate = useNavigate();
 
+  const ROLE = getUserRole()
+
+  const [openAlertBox, setOpenAlertBox] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('Success');
+
+
   const NewInvoiceSchema = Yup.object().shape({
-    customerCode: Yup.string().required('Customer Code is required'),
-    customerNameEn: Yup.string().required('English Name code is required'),
-    customerNameAr: Yup.string().required('Arabic Name is required'),
+    firstName: Yup.string().required('First Name is required'),
+    lastName: Yup.string().required('Last Name is required'),
+    email: Yup.string().email().required('Email is required'),
+    username: Yup.string().required('Username is required'),
   });
 
   const defaultValues = useMemo(
     () => ({
-      customerCode: currentCustomer?.customerCode,
-      customerNameEn: currentCustomer?.customerNameEn,
-      customerNameAr: currentCustomer?.customerNameAr, 
+      firstName: currentUser?.firstName,
+      lastName: currentUser?.lastName,
+      email: currentUser?.email, 
+      username: currentUser?.username,
     }),
-    [currentCustomer]
+    [currentUser]
   );
 
   const methods = useForm({
@@ -56,8 +71,32 @@ export default function UserEditForm({ currentCustomer }) {
   } = methods;
 
   const { t } = useLocales();
-
   const Translate = (text) => t(text);
+
+  const createPostBody = (firstName, lastName, email, username) => ({ firstName, lastName, email, username });
+
+  // const createPatchBody = (firstName, lastName, email, username) =>  [
+  //   { 
+  //     "op": "replace", 
+  //     "path": "/FirstName",
+  //     "value": firstName
+  //   },
+  //   { 
+  //     "op": "replace", 
+  //     "path": "/LastName",
+  //     "value": lastName 
+  //   },
+  //   { 
+  //     "op": "replace",
+  //     "path": "/Email", 
+  //     "value": email
+  //   },
+  //   { 
+  //     "op": "replace",
+  //     "path": "/Username", 
+  //     "value": username
+  //   }
+  // ];
 
   const handleCreateAndSend = handleSubmit(async (data) => {
     loadingSend.onTrue(); 
@@ -65,70 +104,33 @@ export default function UserEditForm({ currentCustomer }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      const {customerCode ,customerNameEn ,customerNameAr} = watch()
+      const {firstName, lastName, email, username} = watch()
 
-      const url = currentCustomer 
-        ? `https://invoicecollectionsystemapi.azurewebsites.net/Customer/${currentCustomer.id}`
-        : 'https://invoicecollectionsystemapi.azurewebsites.net/Customer/add';
-      
-      const method = currentCustomer 
-        ? 'PATCH'
-        : 'POST';
-
-      const patchBody = [
-        { 
-          "op": "replace", 
-          "path": "/CustomerNameEn",
-          "value": customerNameEn
-        },
-        { 
-          "op": "replace", 
-          "path": "/CustomerNameAr",
-          "value": customerNameAr 
-        },
-        { 
-          "op": "replace",
-          "path": "/CustomerCode", 
-          "value": customerCode
-        }
-      ];
-
-      const postBody = { customerCode, customerNameEn, customerNameAr };
-
-
-      const body = currentCustomer 
-        ? patchBody
-        : postBody;
-
-      reset();
+      // reset();
       loadingSend.onFalse();
 
-      let redirectUrl = paths.customers.list;
+      const redirectUrl = paths.customers.list;
       // Send create invoice request
-      
-      console.log(body)
-      fetch(url, {
-        method,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body),
-        Cache: 'default'
-      })
-      .then(res => res.json())
-      .then(res => {
-        console.log(res)
-        
-      })
-      .catch(error => {
-        console.log(error)
-        redirectUrl = ''
-      })
 
-      if(redirectUrl) {
-        navigate(redirectUrl);
+      const body = createPostBody(firstName, lastName, email, username)
+      // const body = currentCustomer
+      //   ? createPatchBody(firstName, lastName, email, username)
+      //   : createPostBody(firstName, lastName, email, username);
+      
+      // const method = currentCustomer ? "patch" : "post";
+      // const id = currentCustomer && currentCustomer.id;
+
+      const response = await createUser(body, ROLE)
+      // const response = await createEditCustomer(body, method, id);
+      
+      if (response.success) {
+        router.back();
       }
+      else {
+        setAlertMessage(response.errorMessage)
+        setOpenAlertBox(true)
+      }
+
 
     } catch (error) {
       console.error('Error:', error);
@@ -137,25 +139,49 @@ export default function UserEditForm({ currentCustomer }) {
   });
 
   return (
-    <FormProvider methods={methods} onSubmit={handleCreateAndSend} >
-      <Card>
-        <CustomerEditInputs />
-      </Card>
+    <>
+      <FormProvider methods={methods} onSubmit={handleCreateAndSend} >
+        <Card>
+          <UserEditInputs />
+        </Card>
 
-      <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
-        <LoadingButton
-          size="large"
-          variant="contained"
-          loading={loadingSend.value && isSubmitting}
-          type='submit'
-        >
-          {currentCustomer ? Translate('Update') : Translate('Create')} 
-        </LoadingButton>
-      </Stack>
-    </FormProvider>
+        <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
+          <LoadingButton
+            size="large"
+            variant="contained"
+            loading={loadingSend.value && isSubmitting}
+            type='submit'
+          >
+            {currentUser ? Translate('update') : Translate('create')} 
+          </LoadingButton>
+        </Stack>
+      </FormProvider>
+      <Box sx={{ position:"fixed", bottom:"1rem", right:"1rem", zIndex: "2"}}>
+        <Fade in={openAlertBox}>
+          <Alert
+            severity="error"
+            sx={{ m: 1 }}
+            action= {
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => setOpenAlertBox(false)}
+                
+              >
+                <Iconify icon="ic:round-close"  />
+                
+              </IconButton>
+            }
+          >
+            {alertMessage}
+          </Alert>
+        </Fade>
+      </Box>
+    </>
   );
 }
 
 UserEditForm.propTypes = {
-  currentCustomer: PropTypes.object,
+  currentUser: PropTypes.object,
 };

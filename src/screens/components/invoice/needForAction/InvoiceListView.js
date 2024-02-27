@@ -161,11 +161,11 @@ export default function InvoiceListView() {
 
   // Decide 3rd column based on User Role
   const headKey = (role) => {
-    if(["installation", "head of engineer"].includes(ROLE.toLowerCase())) {
+    if(["installation", "headofengineer"].includes(ROLE.toLowerCase())) {
       return "installationStatus"
     }
 
-    if(["collection", "head of collectors"].includes(ROLE.toLowerCase())) {
+    if(["collection", "headofcollector"].includes(ROLE.toLowerCase())) {
       return "daysToCollected"
     }
 

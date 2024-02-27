@@ -140,13 +140,13 @@ export function createBaseUrlWithRole(role) {
         case 'installation':
             url = `${baseUrl}/api/Engineer`
             break
-        case 'head of engineer':
+        case 'headofengineer':
             url = `${baseUrl}/api/HeadOfEngineer`
             break
-        case 'head of collectors':
+        case 'headofcollector':
             url = `${baseUrl}/api/HeadOfCollector`
             break
-        case 'head of sales':
+        case 'headofsales':
             url = `${baseUrl}/api/HeadOfSales`
             break
         case 'guest':
