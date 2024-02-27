@@ -1,13 +1,16 @@
 import axios from "axios";
+import { getUserRole } from "./roleHelper";
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
 
 const STORAGE_KEY = 'accessToken';
 
+const ROLE = getUserRole()
 
 export async function sendGet(url, defaultValue, headers = {}) {
     let data = defaultValue;
-    
+    const authHeader = createHeaders(ROLE)
+    headers = {...headers, ...authHeader}
     try {
         const response = await axios.get(url, { headers })
         data = response.data;
@@ -21,6 +24,9 @@ export async function sendGet(url, defaultValue, headers = {}) {
 export async function sendDelete(url, body = {}, headers = {}) {
     let success = true;
     
+    const authHeader = createHeaders(ROLE)
+    headers = {...headers, ...authHeader}
+    
     try {
         const response = await axios.patch(url, body, { headers })
     } catch(error) {
@@ -33,6 +39,9 @@ export async function sendDelete(url, body = {}, headers = {}) {
 
 export async function sendPost(url, body, headers = {}) {
     try {
+        const authHeader = createHeaders(ROLE)
+        headers = {...headers, ...authHeader}
+
         const response = await axios.post(url, body, { headers });
         // console.log(response);
         if (!response.ok) {
@@ -58,6 +67,9 @@ export async function sendPost(url, body, headers = {}) {
 
 export async function sendPut(url, body, headers = {}) {
     try {
+        const authHeader = createHeaders(ROLE)
+        headers = {...headers, ...authHeader}
+
         const response = await axios.put(url, body, { headers });
         // console.log(response);
         if (!response.ok) {
@@ -83,7 +95,9 @@ export async function sendPut(url, body, headers = {}) {
 
 export async function sendPatch(url, body = {}, headers = {}) {
     try {
-
+        const authHeader = createHeaders(ROLE)
+        headers = {...headers, ...authHeader}
+        
         const response = await axios.patch(url, body, { headers });
         // console.log(response);
         if (!response.ok) {
@@ -109,8 +123,11 @@ export async function sendPatch(url, body = {}, headers = {}) {
 
 export function createBaseUrlWithRole(role) {
     let url = ''
-    switch(role.toLowerCase()) {
-        case 'admin':
+    switch(role) {
+        case 'admin': {
+            url = `${baseUrl}/api/Admin`
+            break
+        }
         case 'operation':
             url = `${baseUrl}/api/Operation`
             break
@@ -145,7 +162,7 @@ export function createBaseUrlWithRole(role) {
 export function createHeaders(role) {
     let headers = {}
     
-    if (['sales', 'installation', 'collector', 'collection'].includes(role.toLowerCase())) {
+    if (role) {
         const token = localStorage.getItem(STORAGE_KEY) && JSON.parse(localStorage.getItem(STORAGE_KEY)).value;
         headers = {
             "Authorization": `Bearer ${token}`

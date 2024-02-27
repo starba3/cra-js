@@ -408,7 +408,7 @@ export default function InvoiceListView() {
             }}
         >
           {
-            ROLE.toLowerCase() === "operation" &&
+            ROLE === "operation"  &&
               <Button
                 component={RouterLink}
                 href={paths.dashboard.invoice.new}
@@ -423,7 +423,7 @@ export default function InvoiceListView() {
           }
          
          {
-            ROLE.toLowerCase() === "operation" &&
+            ROLE === "operation" &&
               <Button
                 component={RouterLink}
                 variant="contained"

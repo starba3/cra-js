@@ -1,15 +1,11 @@
-import { sendGet, sendDelete, createBaseUrlWithRole, sendPostPatchRequest, createHeaders } from "src/helpers/requestHelper";
+import { sendGet, sendDelete, createBaseUrlWithRole, sendPostPatchRequest } from "src/helpers/requestHelper";
 
 export async function sendForgetPasswordRequest(body, role = "guest") {
     const url = `${createBaseUrlWithRole(role)}/forget-password`
-    const headers = createHeaders(role)
-
-    return sendPostPatchRequest("post", url, body, headers)
+    return sendPostPatchRequest("post", url, body, {})
 }
 
 export async function sendResetPasswordRequest(body, role = "guest") {
     const url = `${createBaseUrlWithRole(role)}/reset-password`
-    const headers = createHeaders(role)
-
-    return sendPostPatchRequest("post", url, body, headers)
+    return sendPostPatchRequest("post", url, body, {})
 }

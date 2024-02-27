@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'; 
-import axios from 'axios';
 import { useEffect, useState, lazy } from 'react';
 import { useLocales } from 'src/locales';
 // @mui
@@ -7,12 +6,10 @@ import { useTheme } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
 // hooks
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 // Data access
-import { getDashboardData, getNeedToActionCount, getInstallationStatusCount } from 'src/data-access/dashboard';
+import { getNeedToActionCount, getInstallationStatusCount } from 'src/data-access/dashboard';
 // components
 import { useSettingsContext } from 'src/components/settings';
 // import AppWidgetSummary from 'src/sections/overview/app/app-widget-summary';

@@ -43,7 +43,9 @@ const OrderDetailsPage = lazy(() => import('src/pages/dashboard/order/details'))
 const NeedToActionViewMain = lazy(() => import('src/screens/invoice/needToAction/needToActionView'));
 const RejectedBySalesViewMain = lazy(() => import('src/screens/invoice/rejectedBySales/rejectedBySalesView'));
 const NeedToAssignViewMain = lazy(() => import('src/screens/invoice/needToAssign/needToAssignView'));
-
+// USERS
+// Users
+const UserListViewMain = lazy(() => import('src/screens/user/all/UserListView'));
 // Reports
 const AgingViewMain = lazy(() => import('src/screens/reports/aging'));
 const InvoiceForCustomersViewMain = lazy(() => import('src/screens/reports/invoiceForCustomers'));
@@ -141,6 +143,15 @@ export const dashboardRoutes = [
           { path: 'list', element: <EngineersListViewMain /> },
           { path: 'create', element: <EngineersCreateViewMain /> },
           { path: ':id/edit', element: <EngineersCreateViewMain /> },
+        ],
+      },
+      {
+        path: 'users',
+        children: [
+          { element: <UserListViewMain />, index: true },
+          { path: 'list', element: <UserListViewMain /> },
+          { path: 'create', element: <UserListViewMain /> },
+          // { path: ':id/edit', element: <EngineersCreateViewMain /> },
         ],
       },
       {

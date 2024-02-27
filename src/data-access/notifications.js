@@ -1,14 +1,16 @@
 import { sendGet } from "src/helpers/requestHelper";
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
-const STORAGE_KEY = 'accessToken';
 
-export async function getAllNotifications() {
-    const url = `${baseUrl}/api/Notifications`;
-    const token = localStorage.getItem(STORAGE_KEY) && JSON.parse(localStorage.getItem(STORAGE_KEY)).value;
-    const headers = {
-        "Authorization": `Bearer ${token}`
-    };
-    return sendGet(url, [], headers);    
+export async function getAllNotifications(role) {
+    let url = "";
+    if(role.includes("head") || role === "operation") {
+        url = `${baseUrl}/api/Notifications/by-role`;
+    }
+    else {
+        url = `${baseUrl}/api/Notifications/by-user`;
+    }
+        
+    return sendGet(url, []);    
 }
 

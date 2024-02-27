@@ -1,47 +1,36 @@
 
 // import { result } from "lodash";
-import axios from "axios";
+
 import { paths } from "src/routes/paths"
-import { sendGet, sendPut, sendPost, sendPatch, createBaseUrlWithRole, createHeaders, sendPostPatchRequest } from "src/helpers/requestHelper";
+import { sendGet, sendPut, sendPost, sendPatch, createBaseUrlWithRole, sendPostPatchRequest } from "src/helpers/requestHelper";
 
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
-const STORAGE_KEY = 'accessToken';
 
 
 export async function getAllInvoices(role = "Operation") {
     const url = `${createBaseUrlWithRole(role)}/Invoices`;
-    const headers = createHeaders(role)
-
-    return sendGet(url, [], headers);
+    return sendGet(url, []);
 }
 
 export async function getNeedToAction(role) {
     const url = `${createBaseUrlWithRole(role)}/Invoices/need-to-action`
-    const headers = createHeaders(role)
-
-    return sendGet(url, [], headers);
+    return sendGet(url, []);
 }
 
 export async function getNeedToAssign(role) {
     const url = `${createBaseUrlWithRole(role)}/Invoices/need-to-assign`
-    const headers = createHeaders(role)
-
-    return sendGet(url, [], headers);
+    return sendGet(url, []);
 }
 
 export async function getInvoiceAcceptence(role) {
     const url = `${createBaseUrlWithRole(role)}/Invoices/confirm-reject-invoices`
-    const headers = createHeaders(role)
-
-    return sendGet(url, [], headers);
+    return sendGet(url, []);
 }
 
 export async function confirmRejectInvoice(body, role) {
     const url = `${createBaseUrlWithRole(role)}/Confirmation/Invoices`
-    const headers = createHeaders(role)
-
-    const response = await sendPatch(url, body, headers);
+    const response = await sendPatch(url, body);
 
     const responseObj = {
         success: !response,
@@ -53,9 +42,7 @@ export async function confirmRejectInvoice(body, role) {
 
 export async function setInvoiceEngineer(body, role) {
     const url = `${createBaseUrlWithRole(role)}/Invoices/set-engineer`
-    const headers = createHeaders(role)
-
-    const response = await sendPatch(url, body, headers);
+    const response = await sendPatch(url, body);
 
     const responseObj = {
         success: !response,
@@ -67,9 +54,7 @@ export async function setInvoiceEngineer(body, role) {
 
 export async function setInvoiceCollector(body, role) {
     const url = `${createBaseUrlWithRole(role)}/Invoices/set-collector`
-    const headers = createHeaders(role)
-
-    return sendPostPatchRequest("patch", url, body, headers)
+    return sendPostPatchRequest("patch", url, body)
 }
 
 export async function getRejectBySales(role) {
@@ -92,8 +77,6 @@ export async function getInvoicesBySalesConfirmation(confirmStatus) {
 export async  function getInvoicesById(id, role) {
     // const url = `${createBaseUrlWithRole(role)}/Invoices/${id}`;
     const url = `${baseUrl}/api/Operation/Invoices/${id}`;
-    // const headers = createHeaders(role)
-
     return sendGet(url, {});    
 }
 
@@ -221,16 +204,14 @@ export async function sendInvoiceAlert(body, role = "head of engineer") {
 export async function editInvoice(id, departmentId, body, role) {
 
     const url = getInvoiceEditUrl(departmentId, id, role);
-    const headers = createHeaders(role)
-
     const responseObj = {
         success: true,
         errorMessage: ""
     };
 
     const response = role === "collection"
-        ? await sendPut(url, body, headers)
-        : await sendPatch(url, body, headers)
+        ? await sendPut(url, body)
+        : await sendPatch(url, body)
 
     responseObj.errorMessage = response;
     responseObj.success = !response;

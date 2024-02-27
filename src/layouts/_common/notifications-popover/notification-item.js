@@ -57,7 +57,7 @@ export default function NotificationItem({ notification }) {
   const renderText = (
     <ListItemText
       disableTypography
-      onClick={() => router.replace(paths.dashboard.invoice.details(notification.invoiceId))}
+      // onClick={() => router.push(paths.dashboard.invoice.details(notification.invoiceId))}
       primary={reader(notification.message)}
       secondary={
         <Stack

@@ -26,7 +26,9 @@ import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import { varHover } from 'src/components/animate';
 //
+import { getUserRole } from 'src/helpers/roleHelper';
 import NotificationItem from './notification-item';
+
 
 // ----------------------------------------------------------------------
 
@@ -57,6 +59,8 @@ export default function NotificationsPopover() {
 
   const [currentTab, setCurrentTab] = useState('all');
 
+  const ROLE = getUserRole()
+  // console.log("ROLE: ", ROLE)
   const handleChangeTab = useCallback((event, newValue) => {
     setCurrentTab(newValue);
   }, []);
@@ -68,7 +72,7 @@ export default function NotificationsPopover() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const allNotification = await getAllNotifications();  
+        const allNotification = await getAllNotifications(ROLE);  
         setNotifications(allNotification);
         console.log(allNotification);
         
@@ -79,7 +83,7 @@ export default function NotificationsPopover() {
 
     
     fetchData();
-  }, []);
+  }, [ROLE]);
 
   
   

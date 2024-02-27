@@ -1,4 +1,4 @@
-import { sendGet, createBaseUrlWithRole, sendPostPatchRequest, createHeaders } from "src/helpers/requestHelper";
+import { sendGet, createBaseUrlWithRole, sendPostPatchRequest } from "src/helpers/requestHelper";
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
 
@@ -38,7 +38,5 @@ export async function getUsersRoles() {
 
 export async function createUser(body, role) {
     const url = `${createBaseUrlWithRole(role)}/Users`;
-    const headers = createHeaders(role)
-
-    return sendPostPatchRequest("post", url, body, headers)
+    return sendPostPatchRequest("post", url, body)
 }

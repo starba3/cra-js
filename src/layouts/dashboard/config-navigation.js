@@ -123,97 +123,97 @@ export function useNavData() {
                 title: t('invoices'),
                 path: paths.dashboard.invoice.root,
                 icon: ICONS.invoice,
-                children: [
-                    { title: t('list'), path: paths.dashboard.invoice.root },
-                    { title: t('create'), path: paths.dashboard.invoice.new },
-                ],
+                // children: [
+                //     { title: t('list'), path: paths.dashboard.invoice.root },
+                //     { title: t('create'), path: paths.dashboard.invoice.new },
+                // ],
             },
             // Customer
             {
                 title: t('customers'),
-                path: paths.customers.list,
+                path: paths.dashboard.customers.root,
                 icon: ICONS.user,
-                children: [
-                    { title: t('list'), path: paths.customers.list },
-                    { title: t('create'), path: paths.customers.create }
-                ],
+                // children: [
+                //     { title: t('list'), path: paths.dashboard.customers.list },
+                //     { title: t('create'), path: paths.customers.create }
+                // ],
             },
             // USER
             {
                 title: t('user'),
-                path: paths.users.list,
+                path: paths.dashboard.users.list,
                 icon: ICONS.user,
-                children: [
-                    { title: t('list'), path: paths.users.list },
-                ],
+                // children: [
+                //     { title: t('list'), path: paths.users.list },
+                // ],
             },
             // Product
             {
                 title: t('products'),
-                path: paths.products.list,
-                icon: ICONS.user,
-                children: [
-                    { title: t('list'), path: paths.dashboard.products.list },
-                    { title: t('create'), path: paths.dashboard.products.create }
-                ],
+                path: paths.dashboard.products.list,
+                icon: ICONS.product,
+                // children: [
+                //     { title: t('list'), path: paths.dashboard.products.list },
+                //     { title: t('create'), path: paths.dashboard.products.create }
+                // ],
             },
             // USER
-            {
-                title: t('departments'),
-                path: paths.departments.operation.list,
-                icon: ICONS.user,
-                children: [
-                    { 
-                        title: t('operation'),
-                        path: paths.departments.operation.list,
-                        children: [
-                            { title: t('list'), path: paths.departments.operation.list },
-                        ]
-                    },
-                    { 
-                        title: t('sales'), 
-                        path: paths.departments.sales.list,
-                        children: [
-                        { title: t('confirm_invoices'), path: paths.departments.sales.confirm_invoices },
-                        { title: t('list'), path: paths.departments.sales.list }, 
-                        ]
-                    },
-                    { 
-                        title: t('installation'), 
-                        path: paths.departments.installation.list,
-                        children: [
-                            { title: t('assign_engineer'), path: paths.departments.installation.assign_engineer },
-                            { title: t('list'), path: paths.departments.installation.list }, 
-                        ]
-                    },
-                    { 
-                        title: t('collection'), 
-                        path: paths.departments.collection.list,
-                        children: [
-                            { title: t('assign_collector'), path: paths.departments.collection.assign_collector },
-                            { title: t('list'), path: paths.departments.collection.list }, 
-                        ]
-                    },
-                    { 
-                        title: t('tender_and_contract'), 
-                        path: paths.departments.tenderAndConract.list,
-                        children: [
-                            { title: t('list'), path: paths.departments.tenderAndConract.list }, 
-                        ]
-                    },
-                ],
-            },
+            // {
+            //     title: t('departments'),
+            //     path: paths.departments.operation.list,
+            //     icon: ICONS.user,
+            //     children: [
+            //         { 
+            //             title: t('operation'),
+            //             path: paths.departments.operation.list,
+            //             children: [
+            //                 { title: t('list'), path: paths.departments.operation.list },
+            //             ]
+            //         },
+            //         { 
+            //             title: t('sales'), 
+            //             path: paths.departments.sales.list,
+            //             children: [
+            //             { title: t('confirm_invoices'), path: paths.departments.sales.confirm_invoices },
+            //             { title: t('list'), path: paths.departments.sales.list }, 
+            //             ]
+            //         },
+            //         { 
+            //             title: t('installation'), 
+            //             path: paths.departments.installation.list,
+            //             children: [
+            //                 { title: t('assign_engineer'), path: paths.departments.installation.assign_engineer },
+            //                 { title: t('list'), path: paths.departments.installation.list }, 
+            //             ]
+            //         },
+            //         { 
+            //             title: t('collection'), 
+            //             path: paths.departments.collection.list,
+            //             children: [
+            //                 { title: t('assign_collector'), path: paths.departments.collection.assign_collector },
+            //                 { title: t('list'), path: paths.departments.collection.list }, 
+            //             ]
+            //         },
+            //         { 
+            //             title: t('tender_and_contract'), 
+            //             path: paths.departments.tenderAndConract.list,
+            //             children: [
+            //                 { title: t('list'), path: paths.departments.tenderAndConract.list }, 
+            //             ]
+            //         },
+            //     ],
+            // },
             // Reports
             {
                 title: t('reports'),
-                path: paths.reports.root,
+                path: paths.dashboard.reports.root,
                 icon: ICONS.user,
                 children: [
-                    { title: t('agingReport'), path: paths.reports.aging },
-                    { title: t('invoicesForCustomer'), path: paths.reports.invoiceForCustomers },
-                    { title: t('gmReport'), path: paths.reports.gmReport },
-                    { title: t('gmReasonReport'), path: paths.reports.gmReasoneReport },
-                    { title: t('invoiceByUser'), path: paths.reports.invoiceByUsers },
+                    { title: t('agingReport'), path: paths.dashboard.reports.aging },
+                    { title: t('invoicesForCustomer'), path: paths.dashboard.reports.invoiceForCustomers },
+                    { title: t('gmReport'), path: paths.dashboard.reports.GmReport },
+                    { title: t('gmReasonReport'), path: paths.dashboard.reports.gmReasonReport },
+                    { title: t('invoiceByUser'), path: paths.dashboard.reports.invoiceByUsers },
                 ], 
             }
           ) 

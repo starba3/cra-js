@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'; 
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLocales } from 'src/locales';
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -19,6 +18,7 @@ import AppWidgetSummary from 'src/sections/overview/app/app-widget-summary';
 import AppCurrentDownload from 'src/sections/overview/app/app-current-download';
 import ChartRadialBar from 'src/screens/components/dashboard/admin/chart-radial-bar';
 import AppNewInvoice from 'src/screens/components/dashboard/admin/AppNewInvoice';
+import { getUserRole } from 'src/helpers/roleHelper';
 // 
 
 
@@ -36,23 +36,19 @@ export default function OverviewAppView() {
 
   const { t } = useLocales()
   const Translate = (text) => t(text);
+  const ROLE = getUserRole()
 
   const theme = useTheme();
   const settings = useSettingsContext();
 
   // hit the route
-  const getInvoices = async () => {
+  const getInvoices = useCallback (async () => {
     // Fetching the token from the session storage
     const token = localStorage.getItem('accessToken') && JSON.parse(localStorage.getItem('accessToken')).value ;
     if (token) {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`, // Set the token in the "Authorization" header
-        },
-      };
 
       try {
-        const res = await getDashboardData();
+        const res = await getDashboardData(ROLE);
         console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>', res);
 
         setUnpaidInvoicesCount(res.unpaidInvoicesCount);
@@ -68,11 +64,11 @@ export default function OverviewAppView() {
     } else {
       console.error('Token not found in session storage');
     }
-  };
+  }, [ROLE]);
 
   useEffect(() => {
     getInvoices();
-  }, []);
+  }, [getInvoices]);
 
 
   const unpaidInvoicesCountPrecentage = (unpaidInvoicesCount / (unpaidInvoicesCount + paidInvoicesCount)) * 100;

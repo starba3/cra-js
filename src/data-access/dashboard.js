@@ -1,22 +1,16 @@
-import { sendGet, createBaseUrlWithRole, createHeaders } from "src/helpers/requestHelper";
+import { sendGet, createBaseUrlWithRole } from "src/helpers/requestHelper";
 
 export async function getDashboardData(role) {
     const url = `${createBaseUrlWithRole(role)}/Dashboard`;
-    const headers = createHeaders(role);
-
-    return  sendGet(url, {}, headers);
+    return  sendGet(url, {});
 }
 
 export async function getInstallationStatusCount(role) {
     const url = `${createBaseUrlWithRole(role)}/dashboard/installation-status-count`;
-    const headers = createHeaders(role);
-
-    return  sendGet(url, {}, headers);  
+    return  sendGet(url, {});  
 }
 
 export async function getNeedToActionCount(role) {
     const url = `${createBaseUrlWithRole(role)}/dashboard/count-needing-action`;
-    const headers = createHeaders(role);
-
-    return  sendGet(url, {}, headers);
+    return  sendGet(url, {});
 }

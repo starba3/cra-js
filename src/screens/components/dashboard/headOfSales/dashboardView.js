@@ -1,14 +1,11 @@
 import PropTypes from 'prop-types'; 
-import axios from 'axios';
-import { useEffect, useState, lazy } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocales } from 'src/locales';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
 // hooks
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 // Data access
@@ -17,11 +14,9 @@ import { getDashboardData } from 'src/data-access/dashboard';
 import { useSettingsContext } from 'src/components/settings';
 // import AppWidgetSummary from 'src/sections/overview/app/app-widget-summary';
 import AppCurrentDownload from 'src/sections/overview/app/app-current-download';
-import ChartRadialBar from 'src/screens/components/dashboard/admin/chart-radial-bar';
 // import AppNewInvoice from 'src/screens/components/dashboard/admin/AppNewInvoice';
 import InvoiceCountByStatus from 'src/screens/components/dashboard/installation/InvoiceCountByStatus'
 import { getUserRole } from 'src/helpers/roleHelper';
-import { Box } from '@mui/material';
 
 // 
 
