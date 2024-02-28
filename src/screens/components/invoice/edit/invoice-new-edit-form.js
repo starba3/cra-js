@@ -122,9 +122,9 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       CreateNote: currentInvoice?.CreateNote || '',
       department: currentInvoice?.department || '',
       acknowledgeStatus: currentInvoice?.acknowledgeStatus || '', 
-      DeliveryDate: currentInvoice ? new Date(currentInvoice?.deliveryDate) : new Date(),
+      DeliveryDate: currentInvoice ? new Date(currentInvoice?.deliveryDate) : undefined,
       installationStatus: currentInvoice?.installationStatus || '',
-      installationDate: currentInvoice ? new Date(currentInvoice?.installationDate ) : new Date(), 
+      installationDate: currentInvoice ? new Date(currentInvoice?.installationDate ) : undefined, 
       collectionSource: currentInvoice?.CollectionSource || '',
       claimStatus: currentInvoice?.ClaimStatus || '',
       daysToCollect: currentInvoice?.daysToCollected || 0,
@@ -491,11 +491,11 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         />
 
         {
-          arrays.headOfDepartments.includes(ROLE.toLowerCase())  
+          ROLE.includes("head")  
           ? <Stack
               direction="row"
               // justifyContent="flex-end"
-              // divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+              // divider={<Divider orientation="vertical" flexItem s  x={{ borderStyle: 'dashed' }} />}
               sx={{ py: 2 }}
             >
               <Button 
@@ -569,7 +569,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
       </Box>
       
       {
-        arrays.headOfDepartments.includes(ROLE.toLowerCase())
+        ROLE.includes("head")  
         ? <SendAlertDialog
             title={Translate("sendAlertTo")}
             open={showSendAlertDialog.value}

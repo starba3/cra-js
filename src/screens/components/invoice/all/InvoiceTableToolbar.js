@@ -95,7 +95,7 @@ export default function InvoiceTableToolbar({
           const lastIndex = selected.length - 1;
 
           console.log("selected", selected);
-          
+          console.log("prevSelectedInstallationStatus", prevSelectedInstallationStatus.current);
 
           if (selected[lastIndex] === "All") { // Selected All option
             handleFilterInstallationStatus(allItems.map(item => item.value));

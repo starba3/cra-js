@@ -37,6 +37,8 @@ import { exportToExcel } from 'src/utils/export';
 import { getAllInvoices } from 'src/data-access/invoice'
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
+import { getUserRole } from 'src/helpers/roleHelper';
+
 import { getAllCustomers, deleteCustomer } from 'src/data-access/customers';
 //
 import InvoiceTableFiltersResult from 'src/sections/invoice/invoice-table-filters-result';
@@ -69,6 +71,8 @@ export default function CustomerListView() {
 
   const { t, currentLang } = useLocales()
   const Translate = (text) => t(text);
+
+  const ROLE = getUserRole()
 
   const [tableData, setTableData] = useState([]);
   const [filters, setFilters] = useState(defaultFilters);
@@ -246,19 +250,8 @@ export default function CustomerListView() {
             py: 2
             }}
         >
-          {/* <Button
-            component={RouterLink}
-            variant="contained"
-            color='primary'
-            onClick={handleClickOpen}
-            startIcon={<Iconify icon="solar:import-bold" />}
-            sx={{
-              margin: 1
-            }}
-          >
-            {Translate("import")}
-          </Button> */}
-          <Button
+          
+          { ROLE === "operation" && <Button
             onClick={() => navigate(paths.dashboard.customers.create)}
             variant="contained"
             startIcon={<Iconify icon="mingcute:add-line" />}
@@ -267,8 +260,8 @@ export default function CustomerListView() {
             }}
           >
             {Translate("newCustomer")}
-          </Button>
-
+          </Button> }    
+          
           <Button
             variant="contained"
             color='primary'

@@ -42,6 +42,7 @@ import { getAllInvoices } from 'src/data-access/invoice'
 
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
+import { getUserRole } from 'src/helpers/roleHelper'
 import { getAllProducts, deleteProduct } from 'src/data-access/products';
 //
 import InvoiceTableFiltersResult from 'src/sections/invoice/invoice-table-filters-result';
@@ -78,6 +79,7 @@ export default function ProductListView() {
   const { t, currentLang } = useLocales();
   const Translate = (text) => t(text);
 
+  const ROLE = getUserRole()
   // Arabic language: currentLang.value === 'ar'
   // English language: currentLang.value === 'en'
 
@@ -291,7 +293,7 @@ export default function ProductListView() {
           >
             {Translate("import")}
           </Button> */}
-          <Button
+          { ROLE === "operation" && <Button
             onClick={() => navigate(paths.dashboard.products.create)}
             variant="contained"
             startIcon={<Iconify icon="mingcute:add-line" />}
@@ -300,7 +302,7 @@ export default function ProductListView() {
             }}
           >
             {Translate("newProduct")}
-          </Button>
+          </Button> }
 
           <Button
             variant="contained"

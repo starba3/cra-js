@@ -75,7 +75,7 @@ export default function InvoiceTableToolbar({
               const lastIndex = selected.length - 1;
 
               console.log("selected", selected);
-              
+              // console.log("prevSelectedAckStatus", prevSelectedAckStatus.current.slice());
 
               if (selected[lastIndex] === "All") { // Selected All option
                 handleFilterAckStatus(allItems.map(item => item.value));
@@ -83,7 +83,7 @@ export default function InvoiceTableToolbar({
               } else if(selected[0] === "All"){ // Selected All option then deslected another option
                 handleFilterAckStatus(selected.slice(1));
                 prevSelectedAckStatus.current = selected.slice(1);
-              } else if(prevSelectedAckStatus.current.length && prevSelectedAckStatus.current.slice()[0] === "All")  { // Selected All option then deslected All
+              } else if(prevSelectedAckStatus.current.length && prevSelectedAckStatus.current.slice()[0].value === "All")  { // Selected All option then deslected All
                 handleFilterAckStatus([]);
                 prevSelectedAckStatus.current = [];
               } else { // Selected any option other than all
