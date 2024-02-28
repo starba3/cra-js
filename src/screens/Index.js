@@ -17,31 +17,31 @@ const CollectorDashboardView = lazy(() => import('src/screens/components/dashboa
 
 const getDashaboard = (role) => {
   
-  if (role.toLowerCase() === "operation") {
+  if (role === "operation") {
     return <OperationDashboardView /> 
   }
 
-  if (role.toLowerCase() === "sales") {
+  if (role === "sales") {
     return <SalesDashboardView /> 
   }
 
-  if(role.toLowerCase() === "head of engineer") {
+  if(role === "headofengineer") {
     return <HOEDashboardView />
   }
 
-  if(role.toLowerCase() === "head of collectors") {
+  if(role === "headofcollector") {
     return <HOCDashboardView />
   }
 
-  if(role.toLowerCase() === "head of sales") {
+  if(role === "headofsales") {
     return <HOSDashboardView />
   }
 
-  if(role.toLowerCase() === "collection") {
+  if(role === "collection") {
     return <CollectorDashboardView />
   }  
 
-  if(role.toLowerCase() === "installation") {
+  if(role === "installation") {
     return <InstallationDashboardView />
   }
 
