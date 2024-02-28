@@ -13,6 +13,13 @@ export const _acknowledgeStatuses = () =>  [
     Translate("Reject")
 ]
 
+export const _acknowledgmentStatusesEdit = () =>  [
+    { value: "Acknowledged", text: Translate('acknowledged')},
+    { value: "NotAcknowledged", text: Translate('notAcknowledged')},
+    { value: "TempAcknowledged", text: Translate('TempAcknowledged')},
+    { value: "Reject", text: Translate('Reject')},
+]
+
 export const _acknowledgmentReport = () =>  [
     { value: "All", text: Translate('all')},
     { value: "None", text: Translate('none')},

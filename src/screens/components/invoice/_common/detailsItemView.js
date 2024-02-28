@@ -23,8 +23,8 @@ export default function DetailsItemView({
             {Translate(properity)}
         </Typography>
         <Typography>{ isDate
-            ? invoice[properity].substring(0, invoice[properity].indexOf("T"))
-            : invoice[properity]   
+            ? invoice[properity] && invoice[properity].substring(0, invoice[properity].indexOf("T"))
+            : invoice[properity] && invoice[properity]   
         }</Typography> 
     </Stack>   
   );

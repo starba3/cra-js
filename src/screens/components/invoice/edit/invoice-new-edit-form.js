@@ -57,7 +57,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
   const ROLE = getUserRole()
 
-  
+  console.log("Current Invoice ", currentInvoice)
   
 
   const NewInvoiceSchema = Yup.object().shape({
@@ -206,7 +206,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
   );
 
 
-  const handleCreateAndSend = handleSubmit(async (data, ) => {
+  const handleCreateAndSend = async () => {
 
     handleFileUpload();
 
@@ -363,7 +363,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         });
       }
 
-      
+      console.log("body ", body)
 
       // Send Edit invoice request      
       const editResponse = await editInvoice(currentInvoice.id, departmentId, body, ROLE);
@@ -376,7 +376,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         setDidUpdate(true);
         loadingSend.onFalse();
         // router.replace(redirectUrl);
-        router.back()
+        // router.back()
       }
 
     } catch (error) {
@@ -384,7 +384,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     } finally {
       loadingSend.onFalse();
     }
-  });
+  };
 
   const handleSendAlert = async (alertText) => {
     
@@ -482,7 +482,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         
 
           
-        <FormProvider methods={methods} onSubmit={handleCreateAndSend} >
+        <FormProvider methods={methods} onSubmit={handleSubmit(handleCreateAndSend)} >
           <Card>
             <InvoiceNewEditAddress currentInvoice={currentInvoice}/>
 
@@ -503,7 +503,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
               variant="contained"
               loading={loadingSend.value && isSubmitting}
               type='submit'
-              // onClick={ handleSubmit(handleCreateAndSend)} 
+              // onClick={() => handleCreateAndSend()} 
             >
               {currentInvoice ? 'Update' : 'Create'} & Send
             </LoadingButton>

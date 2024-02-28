@@ -95,6 +95,7 @@ function getInvoiceEditUrl(departmentId, invoiceId, role) {
         url = `${createBaseUrlWithRole(role)}/Invoices/${invoiceId}` 
     }
     
+    console.log("Url: ", url)
 
     return url; // Return an empty object by default or handle errors as needed.
     
@@ -210,7 +211,7 @@ export async function editInvoice(id, departmentId, body, role) {
         errorMessage: ""
     };
 
-    const response = role === "collection"
+    const response = role === UserRoles.collector
         ? await sendPut(url, body)
         : await sendPatch(url, body)
 

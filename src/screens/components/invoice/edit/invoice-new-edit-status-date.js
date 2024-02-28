@@ -11,7 +11,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { getCollectionData } from 'src/data-access/invoice';
-import { _acknowledgeStatuses as acknowledgeOptions} from 'src/lists/acknowledgeStatus';
+import { _acknowledgmentStatusesEdit as acknowledgeOptions} from 'src/lists/acknowledgeStatus';
 import { _installationStatus } from 'src/lists/installation';
 import { _daysToCollectList } from 'src/lists/collectionSource';
 import { _installmentStatus } from 'src/lists/installmentStatus';
@@ -462,12 +462,12 @@ export default function InvoiceNewEditStatusDate({
               field.onChange(newValue);
             }}
             input={<OutlinedInput label={Translate("acknowledgeStatus")} />}
-            renderValue={(selected) => selected}
+            renderValue={(selected) => Translate(selected)}
             sx={{ textTransform: 'capitalize', fullWidth: true }}
           >
             {acknowledgeOptions().map((option) => (
-              <MenuItem key={option} value={option} defaultChecked={ option === department}>
-                {option}
+              <MenuItem key={option.value} value={option.value} defaultChecked={ option.value === field.value}>
+                {option.text}
               </MenuItem>
             ))}
           </Select>
