@@ -2,6 +2,7 @@ import { lazy, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { json } from 'react-router';
 import { getUserRole } from 'src/helpers/roleHelper';
+import { UserRoles } from 'src/helpers/constantsHelper';
 // sections
 const OverviewAppView = lazy(() => import('src/screens/components/dashboard/admin/OverviewAppView'));
 const OperationDashboardView = lazy(() => import('src/screens/components/dashboard/operationManager/dashboardView')) ;
@@ -17,35 +18,38 @@ const CollectorDashboardView = lazy(() => import('src/screens/components/dashboa
 
 const getDashaboard = (role) => {
   
-  if (role === "operation") {
+  if (role === UserRoles.operation) {
     return <OperationDashboardView /> 
   }
 
-  if (role === "sales") {
+  if (role === UserRoles.sales) {
     return <SalesDashboardView /> 
   }
 
-  if(role === "headofengineer") {
-    return <HOEDashboardView />
-  }
-
-  if(role === "headofcollector") {
-    return <HOCDashboardView />
-  }
-
-  if(role === "headofsales") {
-    return <HOSDashboardView />
-  }
-
-  if(role === "collection") {
-    return <CollectorDashboardView />
-  }  
-
-  if(role === "installation") {
+  if(role === UserRoles.engineer) {
     return <InstallationDashboardView />
   }
 
-  return <OverviewAppView />
+  if(role === UserRoles.headOfEngineer) {
+    return <HOEDashboardView />
+  }
+
+  if(role === UserRoles.headOfCollector) {
+    return <HOCDashboardView />
+  }
+
+  if(role === UserRoles.headOfSales) {
+    return <HOSDashboardView />
+  }
+
+  if(role === UserRoles.collector) {
+    return <CollectorDashboardView />
+  }  
+
+  if(role === UserRoles.admin) {
+    return <OverviewAppView />
+  }
+
 } 
 
 export default function OverviewAppPage() {

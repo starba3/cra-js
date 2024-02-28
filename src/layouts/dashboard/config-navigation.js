@@ -4,6 +4,7 @@ import { paths } from 'src/routes/paths';
 // locales
 import { useLocales } from 'src/locales';
 import { getUserRole } from 'src/helpers/roleHelper'
+import { UserRoles } from 'src/helpers/constantsHelper';
 // components
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
@@ -58,168 +59,168 @@ export function useNavData() {
 
   const data = useMemo( 
     () =>  {
-      const items =[{
-            subheader: t('dashboard'),
-            items: [
-            // DASHBOARD
-            {
-                title: t('app'),
-                path: paths.dashboard.root,
-                icon: ICONS.dashboard,
-            }
-        ]
-      }]
+        const items =[{
+                subheader: t('dashboard'),
+                items: [
+                // DASHBOARD
+                {
+                    title: t('app'),
+                    path: paths.dashboard.root,
+                    icon: ICONS.dashboard,
+                }
+            ]
+        }]
       
 
-      if(role === 'operation') {
-        items[0].items.push(
-            {
-                title: t('invoices'),
-                path: paths.dashboard.invoice.root,
-                icon: ICONS.invoice,
-                children: [
-                    { title: t('list'), path: paths.dashboard.invoice.list },
-                    { title: t('create'), path: paths.dashboard.invoice.new },
-                    { title: t('needToAction'), path: paths.dashboard.invoice.needToAction },
-                    { title: t('rejectedBySales'), path: paths.dashboard.invoice.rejectedBySales },
-                ],
-            },
-            // Customer
-            {
-                title: t('customers'),
-                path: paths.dashboard.customers.root,
-                icon: ICONS.user,
-                children: [
-                    { title: t('list'), path: paths.dashboard.customers.list },
-                    { title: t('create'), path: paths.dashboard.customers.create },
-                ],
-            },
-            // Product
-            {
-                title: t('products'),
-                path: paths.dashboard.products.root,
-                icon: ICONS.user,
-                children: [
-                    { title: t('list'), path: paths.dashboard.products.list },
-                    { title: t('create'), path: paths.dashboard.products.create }
-                ],
-            },
-          // Reports
-          {
-            title: t('reports'),
-            path: paths.dashboard.reports.root,
-            icon: ICONS.user,
-            children: [
-                { title: t('deliveryDate'), path: paths.dashboard.reports.deliveryDate },
-                { title: t('acknowledgment'), path: paths.dashboard.reports.acknowledgment }
-            ],
-          },
-        ) 
-      }
-
-      if(role === 'admin') {
-        items[0].items.push(
-            {
-                title: t('invoices'),
-                path: paths.dashboard.invoice.root,
-                icon: ICONS.invoice,
-                // children: [
-                //     { title: t('list'), path: paths.dashboard.invoice.root },
-                //     { title: t('create'), path: paths.dashboard.invoice.new },
-                // ],
-            },
-            // Customer
-            {
-                title: t('customers'),
-                path: paths.dashboard.customers.root,
-                icon: ICONS.user,
-                // children: [
-                //     { title: t('list'), path: paths.dashboard.customers.list },
-                //     { title: t('create'), path: paths.customers.create }
-                // ],
-            },
-            // USER
-            {
-                title: t('user'),
-                path: paths.dashboard.users.list,
-                icon: ICONS.user,
-                // children: [
-                //     { title: t('list'), path: paths.users.list },
-                // ],
-            },
-            // Product
-            {
-                title: t('products'),
-                path: paths.dashboard.products.list,
-                icon: ICONS.product,
-                // children: [
-                //     { title: t('list'), path: paths.dashboard.products.list },
-                //     { title: t('create'), path: paths.dashboard.products.create }
-                // ],
-            },
-            // USER
-            // {
-            //     title: t('departments'),
-            //     path: paths.departments.operation.list,
-            //     icon: ICONS.user,
-            //     children: [
-            //         { 
-            //             title: t('operation'),
-            //             path: paths.departments.operation.list,
-            //             children: [
-            //                 { title: t('list'), path: paths.departments.operation.list },
-            //             ]
-            //         },
-            //         { 
-            //             title: t('sales'), 
-            //             path: paths.departments.sales.list,
-            //             children: [
-            //             { title: t('confirm_invoices'), path: paths.departments.sales.confirm_invoices },
-            //             { title: t('list'), path: paths.departments.sales.list }, 
-            //             ]
-            //         },
-            //         { 
-            //             title: t('installation'), 
-            //             path: paths.departments.installation.list,
-            //             children: [
-            //                 { title: t('assign_engineer'), path: paths.departments.installation.assign_engineer },
-            //                 { title: t('list'), path: paths.departments.installation.list }, 
-            //             ]
-            //         },
-            //         { 
-            //             title: t('collection'), 
-            //             path: paths.departments.collection.list,
-            //             children: [
-            //                 { title: t('assign_collector'), path: paths.departments.collection.assign_collector },
-            //                 { title: t('list'), path: paths.departments.collection.list }, 
-            //             ]
-            //         },
-            //         { 
-            //             title: t('tender_and_contract'), 
-            //             path: paths.departments.tenderAndConract.list,
-            //             children: [
-            //                 { title: t('list'), path: paths.departments.tenderAndConract.list }, 
-            //             ]
-            //         },
-            //     ],
-            // },
+        if(role === UserRoles.operation) {
+            items[0].items.push(
+                {
+                    title: t('invoices'),
+                    path: paths.dashboard.invoice.root,
+                    icon: ICONS.invoice,
+                    children: [
+                        { title: t('list'), path: paths.dashboard.invoice.list },
+                        { title: t('create'), path: paths.dashboard.invoice.new },
+                        { title: t('needToAction'), path: paths.dashboard.invoice.needToAction },
+                        { title: t('rejectedBySales'), path: paths.dashboard.invoice.rejectedBySales },
+                    ],
+                },
+                // Customer
+                {
+                    title: t('customers'),
+                    path: paths.dashboard.customers.root,
+                    icon: ICONS.user,
+                    children: [
+                        { title: t('list'), path: paths.dashboard.customers.list },
+                        { title: t('create'), path: paths.dashboard.customers.create },
+                    ],
+                },
+                // Product
+                {
+                    title: t('products'),
+                    path: paths.dashboard.products.root,
+                    icon: ICONS.user,
+                    children: [
+                        { title: t('list'), path: paths.dashboard.products.list },
+                        { title: t('create'), path: paths.dashboard.products.create }
+                    ],
+                },
             // Reports
             {
                 title: t('reports'),
                 path: paths.dashboard.reports.root,
                 icon: ICONS.user,
                 children: [
-                    { title: t('agingReport'), path: paths.dashboard.reports.aging },
-                    { title: t('invoicesForCustomer'), path: paths.dashboard.reports.invoiceForCustomers },
-                    { title: t('gmReport'), path: paths.dashboard.reports.GmReport },
-                    { title: t('gmReasonReport'), path: paths.dashboard.reports.gmReasonReport },
-                    { title: t('invoiceByUser'), path: paths.dashboard.reports.invoiceByUsers },
-                ], 
-            }
-          ) 
-      }
+                    { title: t('deliveryDate'), path: paths.dashboard.reports.deliveryDate },
+                    { title: t('acknowledgment'), path: paths.dashboard.reports.acknowledgment }
+                ],
+            },
+            ) 
+        }
 
-        if(role === 'sales') {
+        if(role === UserRoles.admin) {
+            items[0].items.push(
+                {
+                    title: t('invoices'),
+                    path: paths.dashboard.invoice.root,
+                    icon: ICONS.invoice,
+                    // children: [
+                    //     { title: t('list'), path: paths.dashboard.invoice.root },
+                    //     { title: t('create'), path: paths.dashboard.invoice.new },
+                    // ],
+                },
+                // Customer
+                {
+                    title: t('customers'),
+                    path: paths.dashboard.customers.root,
+                    icon: ICONS.user,
+                    // children: [
+                    //     { title: t('list'), path: paths.dashboard.customers.list },
+                    //     { title: t('create'), path: paths.customers.create }
+                    // ],
+                },
+                // USER
+                {
+                    title: t('user'),
+                    path: paths.dashboard.users.list,
+                    icon: ICONS.user,
+                    // children: [
+                    //     { title: t('list'), path: paths.users.list },
+                    // ],
+                },
+                // Product
+                {
+                    title: t('products'),
+                    path: paths.dashboard.products.list,
+                    icon: ICONS.product,
+                    // children: [
+                    //     { title: t('list'), path: paths.dashboard.products.list },
+                    //     { title: t('create'), path: paths.dashboard.products.create }
+                    // ],
+                },
+                // USER
+                // {
+                //     title: t('departments'),
+                //     path: paths.departments.operation.list,
+                //     icon: ICONS.user,
+                //     children: [
+                //         { 
+                //             title: t('operation'),
+                //             path: paths.departments.operation.list,
+                //             children: [
+                //                 { title: t('list'), path: paths.departments.operation.list },
+                //             ]
+                //         },
+                //         { 
+                //             title: t('sales'), 
+                //             path: paths.departments.sales.list,
+                //             children: [
+                //             { title: t('confirm_invoices'), path: paths.departments.sales.confirm_invoices },
+                //             { title: t('list'), path: paths.departments.sales.list }, 
+                //             ]
+                //         },
+                //         { 
+                //             title: t('installation'), 
+                //             path: paths.departments.installation.list,
+                //             children: [
+                //                 { title: t('assign_engineer'), path: paths.departments.installation.assign_engineer },
+                //                 { title: t('list'), path: paths.departments.installation.list }, 
+                //             ]
+                //         },
+                //         { 
+                //             title: t('collection'), 
+                //             path: paths.departments.collection.list,
+                //             children: [
+                //                 { title: t('assign_collector'), path: paths.departments.collection.assign_collector },
+                //                 { title: t('list'), path: paths.departments.collection.list }, 
+                //             ]
+                //         },
+                //         { 
+                //             title: t('tender_and_contract'), 
+                //             path: paths.departments.tenderAndConract.list,
+                //             children: [
+                //                 { title: t('list'), path: paths.departments.tenderAndConract.list }, 
+                //             ]
+                //         },
+                //     ],
+                // },
+                // Reports
+                {
+                    title: t('reports'),
+                    path: paths.dashboard.reports.root,
+                    icon: ICONS.user,
+                    children: [
+                        { title: t('agingReport'), path: paths.dashboard.reports.aging },
+                        { title: t('invoicesForCustomer'), path: paths.dashboard.reports.invoiceForCustomers },
+                        { title: t('gmReport'), path: paths.dashboard.reports.GmReport },
+                        { title: t('gmReasonReport'), path: paths.dashboard.reports.gmReasonReport },
+                        { title: t('invoiceByUser'), path: paths.dashboard.reports.invoiceByUsers },
+                    ], 
+                }
+            ) 
+        }
+
+        if(role === UserRoles.sales) {
             items[0].items.push(
                 { title: t('invoices'), path: paths.dashboard.invoice.root, icon: ICONS.file },
                 { title: t('needToAction'), path: paths.invoices.needToAction, icon: ICONS.file },
@@ -227,7 +228,7 @@ export function useNavData() {
             ) 
         }
 
-        if(role === 'head of engineer') {
+        if(role === UserRoles.headOfEngineer) {
             items[0].items.push(
                 // Invoice
                 {
@@ -255,7 +256,7 @@ export function useNavData() {
             ) 
         }
 
-        if(role === 'installation') {
+        if(role === UserRoles.engineer) {
             items[0].items.push(
                 // Invoice
                 {
@@ -272,7 +273,7 @@ export function useNavData() {
             ) 
         }
 
-        if(role === 'head of collectors') {
+        if(role === UserRoles.headOfCollector) {
             items[0].items.push(
                 // Invoice
                 {
@@ -300,7 +301,7 @@ export function useNavData() {
             ) 
         }
 
-        if(role === 'collection') {
+        if(role === UserRoles.collector) {
             items[0].items.push(
                 // Invoice
                 {
@@ -316,7 +317,7 @@ export function useNavData() {
             ) 
         }
 
-        if(role === 'head of sales') {
+        if(role === UserRoles.headOfSales) {
             items[0].items.push(
                 // Invoice
                 {
