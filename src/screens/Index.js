@@ -46,9 +46,9 @@ const getDashaboard = (role) => {
     return <CollectorDashboardView />
   }  
 
-  if(role === UserRoles.admin) {
-    return <OverviewAppView />
-  }
+  // Admin
+  return <OverviewAppView />
+  
 
 } 
 
