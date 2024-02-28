@@ -12,8 +12,9 @@ import { getCustomerById } from 'src/data-access/customers';
 // components
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import LoadingAnimation from 'src/screens/components/utility/loadingAnimation';
 //
-import UserEditForm from './userEditForm';
+import UserEditForm from './UserEditForm';
 
 // ----------------------------------------------------------------------
 
@@ -23,16 +24,16 @@ export default function UserCreateView({ id }) {
   const { t } = useLocales()
   const Translate = (text) => t(text);
 
-  const [currentCustomer, setCurrentCustomer] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchData = async (customerId) => {
+    const fetchData = async (UserId) => {
       setLoading(true)
       
         try {
-          const invoice = await getCustomerById(customerId);
-          setCurrentCustomer(invoice);
+          const invoice = await getCustomerById(UserId);
+          setCurrentUser(invoice);
         } catch (error) {
           console.error('Error fetching invoice:', error);
         } finally {
@@ -49,7 +50,7 @@ export default function UserCreateView({ id }) {
 
   if(loading) {
     return (
-      <CircularProgress />
+      <LoadingAnimation loading={loading}/>
     )
   }
 
@@ -62,25 +63,18 @@ export default function UserCreateView({ id }) {
           //   name: Translate("app"),
           //   href: paths.dashboard.root,
           // },
-          // {
-          //   name: Translate("customer"),
-            
-          // },
-          // {
-          //   name: Translate("newCustomer"),
-          // },
+
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
         }}
       />
 
-      <UserEditForm currentCustomer={currentCustomer} />
+      <UserEditForm currentUser={currentUser} />
     </Container>
   );
 }
 
 UserCreateView.propTypes = {
-  id: PropTypes.number
+  id: PropTypes.number,
 };
-

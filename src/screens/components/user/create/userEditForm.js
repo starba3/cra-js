@@ -17,16 +17,19 @@ import { useNavigate } from 'react-router-dom';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 // Data access
+import { getUserRole } from 'src/helpers/roleHelper';
 import { createUser } from 'src/data-access/users';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
-import Iconify from 'src/components/iconify/iconify';
-import { getUserRole } from 'src/helpers/roleHelper';
 import FormProvider from 'src/components/hook-form';
-import UserEditInputs from './userEditInputs';
+import Iconify from 'src/components/iconify/iconify';
+import UserEditInputs from './UserEditInputs';
+
 
 // ----------------------------------------------------------------------
+
+
 
 export default function UserEditForm({ currentUser }) {
   const router = useRouter();
@@ -40,20 +43,21 @@ export default function UserEditForm({ currentUser }) {
   const [openAlertBox, setOpenAlertBox] = useState(false);
   const [alertMessage, setAlertMessage] = useState('Success');
 
-
   const NewInvoiceSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
     email: Yup.string().email().required('Email is required'),
-    username: Yup.string().required('Username is required'),
+    userName: Yup.string().required('Username is required'),
+    role: Yup.string().required('User Role is required'),
   });
 
   const defaultValues = useMemo(
     () => ({
-      firstName: currentUser?.firstName,
-      lastName: currentUser?.lastName,
-      email: currentUser?.email, 
-      username: currentUser?.username,
+      firstName: currentUser?.firstName || undefined,
+      lastName: currentUser?.lastName || undefined,
+      email: currentUser?.email || undefined ,
+      userName: currentUser?.userName || undefined,
+      role: currentUser?.role || "Sales",
     }),
     [currentUser]
   );
@@ -71,9 +75,10 @@ export default function UserEditForm({ currentUser }) {
   } = methods;
 
   const { t } = useLocales();
+
   const Translate = (text) => t(text);
 
-  const createPostBody = (firstName, lastName, email, username) => ({ firstName, lastName, email, username });
+  const createPostBody = (firstName, lastName, email, userName, role) => ({ firstName, lastName, email, userName, role });
 
   // const createPatchBody = (firstName, lastName, email, username) =>  [
   //   { 
@@ -104,7 +109,7 @@ export default function UserEditForm({ currentUser }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      const {firstName, lastName, email, username} = watch()
+      const {firstName, lastName, email, userName, role} = watch()
 
       // reset();
       loadingSend.onFalse();
@@ -112,13 +117,13 @@ export default function UserEditForm({ currentUser }) {
       const redirectUrl = paths.customers.list;
       // Send create invoice request
 
-      const body = createPostBody(firstName, lastName, email, username)
-      // const body = currentCustomer
+      const body = createPostBody(firstName, lastName, email, userName, role)
+      // const body = currentUser
       //   ? createPatchBody(firstName, lastName, email, username)
       //   : createPostBody(firstName, lastName, email, username);
       
-      // const method = currentCustomer ? "patch" : "post";
-      // const id = currentCustomer && currentCustomer.id;
+      // const method = currentUser ? "patch" : "post";
+      // const id = currentUser && currentUser.id;
 
       const response = await createUser(body, ROLE)
       // const response = await createEditCustomer(body, method, id);
@@ -136,7 +141,7 @@ export default function UserEditForm({ currentUser }) {
       console.error('Error:', error);
       loadingSend.onFalse();
     }
-  });
+  }, (errors) => console.log(errors));
 
   return (
     <>
@@ -179,6 +184,7 @@ export default function UserEditForm({ currentUser }) {
         </Fade>
       </Box>
     </>
+      
   );
 }
 

@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'src/routes/hooks';
 // sections
-import  UserCreateView  from 'src/screens/components/customer/create/customerCreateView';
+import  UserCreateView  from 'src/screens/components/user/create/UserCreateView';
 
 // ----------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ export default function UserCreateViewMain() {
   return (
     <>
       <Helmet>
-        <title> Users List</title>
+        <title> Create User</title>
       </Helmet>
 
       <UserCreateView id={Number(id) }/>

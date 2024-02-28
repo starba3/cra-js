@@ -46,6 +46,7 @@ const NeedToAssignViewMain = lazy(() => import('src/screens/invoice/needToAssign
 // USERS
 // Users
 const UserListViewMain = lazy(() => import('src/screens/user/all/UserListView'));
+const UserCreateViewMain = lazy(() => import('src/screens/user/create/UserCreateView'));
 // Reports
 const AgingViewMain = lazy(() => import('src/screens/reports/aging'));
 const InvoiceForCustomersViewMain = lazy(() => import('src/screens/reports/invoiceForCustomers'));
@@ -150,7 +151,7 @@ export const dashboardRoutes = [
         children: [
           { element: <UserListViewMain />, index: true },
           { path: 'list', element: <UserListViewMain /> },
-          { path: 'create', element: <UserListViewMain /> },
+          { path: 'create', element: <UserCreateViewMain /> },
           // { path: ':id/edit', element: <EngineersCreateViewMain /> },
         ],
       },

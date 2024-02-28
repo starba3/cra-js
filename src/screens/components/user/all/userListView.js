@@ -263,6 +263,18 @@ export default function UserListView() {
             py: 2
             }}
         >
+
+          <Button
+            onClick={() => navigate(paths.dashboard.users.create)}
+            variant="contained"
+            startIcon={<Iconify icon="mingcute:add-line" />}
+            sx={{
+              margin: 0.5
+            }}
+          >
+            {Translate("createNewUser")}
+          </Button>
+
           <Button
             variant="contained"
             color='primary'

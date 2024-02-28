@@ -253,6 +253,7 @@
   "createNewEngineer": "Create New Engineer",
   "createNewCollector": "Create New Collector",
   "createNewSalesTaker": "Create New Sales Taker",
+  "createNewUser": "Create New User",
   "newEngineer": "New Engineer",
   "newCollector": "New Collector",
   "installedCount" : "Installed Count",

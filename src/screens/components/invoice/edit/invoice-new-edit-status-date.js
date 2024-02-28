@@ -257,7 +257,7 @@ export default function InvoiceNewEditStatusDate({
 
   // Components
   const invoiceAmount = arrays.invoiceAmount.includes(department.toLowerCase()) 
-    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ? 
+    && !userRole.includes("head") ? 
     <FormControl
       sx={{
         flex: 1,
@@ -283,7 +283,7 @@ export default function InvoiceNewEditStatusDate({
     <EditItemView invoice={currentInvoice} properity="invoiceAmount" />
 
   const poValue = arrays.poValue.includes(department.toLowerCase()) 
-    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ? 
+    && !userRole.includes("head") ? 
     <FormControl
       sx={{
         flex: 1,
@@ -310,7 +310,7 @@ export default function InvoiceNewEditStatusDate({
     <EditItemView invoice={currentInvoice} properity="poValue" />
 
   const contractNo = arrays.contractNo.includes(department.toLowerCase()) 
-    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
+    && !userRole.includes("head") ?  
     <FormControl
       sx={{
         flex: 1,
@@ -335,7 +335,7 @@ export default function InvoiceNewEditStatusDate({
     <EditItemView invoice={currentInvoice} properity="contractNo" />
 
   const deliveryDate = arrays.deliveryDate.includes(department.toLowerCase()) 
-    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
+    && !userRole.includes("head") ?  
   <Controller
     name="DeliveryDate"
     control={control}
@@ -355,7 +355,7 @@ export default function InvoiceNewEditStatusDate({
   
 
   const daysToCollect = arrays.daysToCollect.includes(department.toLowerCase()) 
-    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
+    && !userRole.includes("head") ?  
   <FormControl
       sx={{
         flex: 1,
@@ -398,7 +398,7 @@ export default function InvoiceNewEditStatusDate({
     <EditItemView invoice={currentInvoice} properity="daysToCollected" />
 
   const departmentSelect = arrays.department.includes(department.toLowerCase()) 
-    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
+    && !userRole.includes("head") ?  
     <FormControl
       sx={{
         flex: 1,
@@ -441,7 +441,7 @@ export default function InvoiceNewEditStatusDate({
     <EditItemView invoice={currentInvoice} properity="department" />
 
   const acknowledgeStatus = arrays.acknowledgeStatuses.includes(department.toLowerCase()) 
-    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
+    && !userRole.includes("head") ?  
     <FormControl
       sx={{
         flex: 1,
@@ -477,7 +477,7 @@ export default function InvoiceNewEditStatusDate({
     <EditItemView invoice={currentInvoice} properity="acknowledgeStatus" />
 
   const installationDate = arrays.installationDate.includes(department.toLowerCase()) 
-    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
+    && !userRole.includes("head") ?  
     <Controller
     name="installationDate"
     control={control}
@@ -497,7 +497,7 @@ export default function InvoiceNewEditStatusDate({
     <EditItemView invoice={currentInvoice} properity="installationDate" isDate />
   
     const installationStatus = arrays.installationStatus.includes(department.toLowerCase()) 
-      && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
+      && !userRole.includes("head") ?  
     <FormControl
       sx={{
         flex: 1,
@@ -533,7 +533,7 @@ export default function InvoiceNewEditStatusDate({
     <EditItemView invoice={currentInvoice} properity="installationStatus" />
 
   const collectionSourceSelect = arrays.collectionSource.includes(department.toLowerCase()) 
-    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
+    && !userRole.includes("head") ?  
     <FormControl
       sx={{
         flex: 1,
@@ -573,7 +573,7 @@ export default function InvoiceNewEditStatusDate({
     <EditItemView invoice={currentInvoice} properity="collectionSource" />
   
   const ClaimStatusSelect = arrays.claimStatus.includes(department.toLowerCase()) 
-    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
+    && !userRole.includes("head") ?  
     <FormControl
       sx={{
         flex: 1,
@@ -610,7 +610,7 @@ export default function InvoiceNewEditStatusDate({
     <EditItemView invoice={currentInvoice} properity="claimStatus" />
 
   const ClaimsDetailStatusSelect = arrays.claimsDetailStatus.includes(department.toLowerCase()) 
-    && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
+    && !userRole.includes("head") ?  
     <FormControl
       sx={{
         flex: 1,
@@ -648,7 +648,7 @@ export default function InvoiceNewEditStatusDate({
     <EditItemView invoice={currentInvoice} properity="claimsDetailStatus" />
     
     const salesTakerSelect = arrays.salesTakerName.includes(department.toLowerCase()) 
-      && !arrays.headOfDepartments.includes(userRole.toLowerCase()) ?  
+      && !userRole.includes("head") ?  
     <FormControl
       sx={{
         flex: 1,
