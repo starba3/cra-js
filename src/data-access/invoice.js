@@ -3,6 +3,7 @@
 
 import { paths } from "src/routes/paths"
 import { sendGet, sendPut, sendPost, sendPatch, createBaseUrlWithRole, sendPostPatchRequest } from "src/helpers/requestHelper";
+import { UserRoles } from "src/helpers/constantsHelper";
 
 
 const baseUrl = 'https://invoicecollectionsystemapi.azurewebsites.net';
@@ -76,14 +77,14 @@ export async function getInvoicesBySalesConfirmation(confirmStatus) {
 
 export async  function getInvoicesById(id, role) {
     // const url = `${createBaseUrlWithRole(role)}/Invoices/${id}`;
-    const url = `${baseUrl}/api/Operation/Invoices/${id}`;
+    const url = `${createBaseUrlWithRole(UserRoles.operation)}/Invoices/${id}`;
     return sendGet(url, {});    
 }
 
 function getInvoiceEditUrl(departmentId, invoiceId, role) {
 
     let url = ''
-    if (role === "collection") {
+    if (role === UserRoles.collector) {
         url = `${createBaseUrlWithRole(role)}/Invoices` 
     }
     else if (departmentId === 0) {
@@ -158,7 +159,7 @@ export async function deleteInvoice(id) {
     return sendPatch(url); 
 }
 
-export async function createInvoice(body, role = "Operation") {
+export async function createInvoice(body, role = UserRoles.operation) {
     const url = `${createBaseUrlWithRole(role)}/Invoices`;
 
     const responseObj = {
