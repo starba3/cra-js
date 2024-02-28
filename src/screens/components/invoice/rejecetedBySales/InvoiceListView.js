@@ -57,6 +57,7 @@ import {
 import { getRejectBySales, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
+import { getUserRole } from 'src/helpers/roleHelper';
 // Utility
 import { exportToExcel } from 'src/utils/export';
 //
@@ -64,6 +65,7 @@ import { sendPost } from 'src/helpers/requestHelper';
 import InvoiceTableFiltersResult from './InvoiceTableFiltersResult';
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
+
 
 // ----------------------------------------------------------------------
 
@@ -91,10 +93,7 @@ export default function InvoiceListView() {
   const { t, currentLang } = useLocales();
   const Translate = (text) => t(text);
 
-  const ROLE = useMemo(() => {
-    const roleItem = localStorage.getItem("role");
-    return roleItem ? JSON.parse(roleItem).value : "operation";
-  }, []);
+  const ROLE = getUserRole();
 
   const [tableData, setTableData] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -114,6 +113,7 @@ export default function InvoiceListView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("Role inside ", ROLE)
         const result = await getRejectBySales(ROLE);
         setTableData(result);
       } catch (error) {

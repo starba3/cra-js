@@ -122,7 +122,7 @@ export default function ProductEditForm({ currentProduct }) {
 
       const response = await createEditProduct(body, method, id);
       if(!response.errorMessage) {
-        navigate(redirectUrl);
+        router.back()
       }
       
       // console.info('DATA', JSON.stringify(data, null, 2));

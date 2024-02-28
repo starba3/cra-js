@@ -6,13 +6,13 @@ export const getUserRole = () => {
     // if (role === "Admin") {
         // role = "Head of Engineer"
         // role = "Head of Collectors"
-        // role = "Head of Sales"
+        // role = "Head of Sales"   
         // role = "Sales"
         // role = "Sales"
         // role = "Operation"
     // }
-
-    // console.log("Role ",role)
+    
+    // console.log("Role ", role.toLowerCase())
     return role.toLowerCase()
 }
 

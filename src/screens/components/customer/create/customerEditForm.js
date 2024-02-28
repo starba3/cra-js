@@ -93,7 +93,7 @@ export default function CustomerEditForm({ currentCustomer }) {
       reset();
       loadingSend.onFalse();
 
-      const redirectUrl = paths.customers.list;
+      const redirectUrl = paths.dashboard.customers.list;
       // Send create invoice request
 
       const body = currentCustomer
@@ -105,7 +105,7 @@ export default function CustomerEditForm({ currentCustomer }) {
 
       const response = await createEditCustomer(body, method, id);
       if(!response.errorMessage) {
-        navigate(redirectUrl);
+        router.back()
       }
 
     } catch (error) {

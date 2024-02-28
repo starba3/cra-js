@@ -21,6 +21,7 @@ import { useRouter } from 'src/routes/hooks';
 import { addAttachment, editInvoice, sendInvoiceAlert } from 'src/data-access/invoice';
 import { _departments_withoutAll } from 'src/lists/departments';
 import { getUserRole } from 'src/helpers/roleHelper'
+import { UserRoles } from 'src/helpers/constantsHelper';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
@@ -32,6 +33,7 @@ import Iconify from 'src/components/iconify';
 import InvoiceNewEditAddress from './invoice-new-edit-address';
 import InvoiceNewEditStatusDate from './invoice-new-edit-status-date';
 import SendAlertDialog from './sendAlertDialog';
+
 // ----------------------------------------------------------------------
 
 const formatDate = (date) => {
@@ -59,8 +61,33 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
   console.log("Current Invoice ", currentInvoice)
   
+  // Define your validation function
+  const validateInstallments = (installments, isCollectionUser) => {
+    if (isCollectionUser && (!installments || installments.length === 0)) {
+      return false; // Validation fails if installments are required but not provided
+    }
+    return true; // Validation passes otherwise
+  };
 
   const NewInvoiceSchema = Yup.object().shape({
+    CreateNote: Yup.string(),
+    department: Yup.string(),
+    acknowledgeStatus: Yup.string(),
+    DeliveryDate: Yup.date().nullable(),
+    installationStatus: Yup.string(),
+    installationDate: Yup.date().nullable(),
+    collectionSource: Yup.string(),
+    daysToCollect: Yup.string(),
+    claimStatus: Yup.string(),
+    claimsDetailStatus: Yup.string(),
+    invoiceAmount: Yup.number(),
+    poValue: Yup.number(),
+    contractNo: Yup.string(),
+    salesTakerName: Yup.string(),
+    installments: Yup.array()
+  });
+
+  const NewInvoiceSchemaCollector = Yup.object().shape({
     CreateNote: Yup.string(),
     department: Yup.string(),
     acknowledgeStatus: Yup.string(),
@@ -184,7 +211,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
   }
 
   const methods = useForm({
-    resolver: yupResolver(NewInvoiceSchema),
+    resolver: yupResolver(ROLE === UserRoles.collector ? NewInvoiceSchemaCollector : NewInvoiceSchema),
     defaultValues,
   });
 
@@ -206,8 +233,8 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
   );
 
 
-  const handleCreateAndSend = async () => {
-
+  const handleCreateAndSend = handleSubmit(async (data) => {
+    // console.log("data ", data)
     handleFileUpload();
 
     loadingSend.onTrue(); 
@@ -372,11 +399,11 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         setErrorMessage(editResponse.errorMessage);
         showAlertBox.onToggle();
       } else {
-        reset();
-        setDidUpdate(true);
+        // reset();
+        // setDidUpdate(true);
         loadingSend.onFalse();
         // router.replace(redirectUrl);
-        // router.back()
+        router.back()
       }
 
     } catch (error) {
@@ -384,7 +411,9 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     } finally {
       loadingSend.onFalse();
     }
-  };
+  });
+
+  const logFormError = (data) => console.log("Errors: ", data)
 
   const handleSendAlert = async (alertText) => {
     
@@ -482,7 +511,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         
 
           
-        <FormProvider methods={methods} onSubmit={handleSubmit(handleCreateAndSend)} >
+        <FormProvider methods={methods} onSubmit={handleCreateAndSend} >
           <Card>
             <InvoiceNewEditAddress currentInvoice={currentInvoice}/>
 

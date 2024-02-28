@@ -75,7 +75,7 @@ export default function InvoiceNewEditStatusDate({
   const [installmentsList, setInstallmentsList] = useState(installments)
   const [isFetched, setIsFetched] = useState(false)
 
-  console.log("values ", values.installments)
+  console.log("values ", values)
   console.log("Installments List: ", installmentsList);
 
 
@@ -139,7 +139,7 @@ export default function InvoiceNewEditStatusDate({
   }, [isFetched, setValue, collectionSource, collectionData, setClaimsStatus, setSelectedCollectionSource, setClaimsDetailStatus, defaultCollectionSource, defaultClaimsDetailStatus, defaultClaimsStatus, selectedCollectionSource, currentInvoice]);
   
   if(!collectionSource) {
-    console.log('collectionSource[0]: ', collectionSource);
+    // console.log('collectionSource[0]: ', collectionSource);
     handleCollectionSourceChange(collectionSource[0]);
   }
 

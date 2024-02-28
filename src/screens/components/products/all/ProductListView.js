@@ -212,17 +212,17 @@ export default function ProductListView() {
 
   const handleEditRow = useCallback(
     (id) => {
-      router.push(paths.products.edit(id));
+      router.push(paths.dashboard.products.edit(id));
     },
     [router]
   );
 
-  const handleViewRow = useCallback(
-    (id) => {
-      router.push(paths.dashboard.invoice.details(id));
-    },
-    [router]
-  );
+  // const handleViewRow = useCallback(
+  //   (id) => {
+  //     router.push(paths.dashboard.invoice.details(id));
+  //   },
+  //   [router]
+  // );
 
 
   const handleResetFilters = useCallback(() => {
@@ -366,7 +366,7 @@ export default function ProductListView() {
                         row={row}
                         selected={table.selected.includes(row.id)}
                         onSelectRow={() => table.onSelectRow(row.id)}
-                        onViewRow={() => handleViewRow(row.id)}
+                        // onViewRow={() => handleViewRow(row.id)}
                         onEditRow={() => handleEditRow(row.id)}
                         onDeleteRow={() => handleDeleteRow(row.id)}
                         handleOpenInquiry={() => console.log(row.id)}

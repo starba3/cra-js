@@ -185,8 +185,7 @@ export default function CustomerListView() {
 
   const handleEditRow = useCallback(
     (id) => {
-      console.log(paths.customers.edit(id));
-      router.push(paths.customers.edit(id));
+      router.push(paths.dashboard.customers.edit(id));
     },
     [router]
   );
