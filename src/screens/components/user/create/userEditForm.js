@@ -24,7 +24,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 // components
 import FormProvider from 'src/components/hook-form';
 import Iconify from 'src/components/iconify/iconify';
-import UserEditInputs from './UserEditInputs';
+import UserEditInputs from './userEditInputs';
 
 
 // ----------------------------------------------------------------------

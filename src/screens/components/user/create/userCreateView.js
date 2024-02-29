@@ -14,7 +14,7 @@ import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import LoadingAnimation from 'src/screens/components/utility/loadingAnimation';
 //
-import UserEditForm from './UserEditForm';
+import UserEditForm from './userEditForm';
 
 // ----------------------------------------------------------------------
 
