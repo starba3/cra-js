@@ -149,52 +149,52 @@ export function useNavData() {
                     //     { title: t('create'), path: paths.dashboard.products.create }
                     // ],
                 },
-                // USER
-                // {
-                //     title: t('departments'),
-                //     path: paths.departments.operation.list,
-                //     icon: ICONS.user,
-                //     children: [
-                //         { 
-                //             title: t('operation'),
-                //             path: paths.departments.operation.list,
-                //             children: [
-                //                 { title: t('list'), path: paths.departments.operation.list },
-                //             ]
-                //         },
-                //         { 
-                //             title: t('sales'), 
-                //             path: paths.departments.sales.list,
-                //             children: [
-                //             { title: t('confirm_invoices'), path: paths.departments.sales.confirm_invoices },
-                //             { title: t('list'), path: paths.departments.sales.list }, 
-                //             ]
-                //         },
-                //         { 
-                //             title: t('installation'), 
-                //             path: paths.departments.installation.list,
-                //             children: [
-                //                 { title: t('assign_engineer'), path: paths.departments.installation.assign_engineer },
-                //                 { title: t('list'), path: paths.departments.installation.list }, 
-                //             ]
-                //         },
-                //         { 
-                //             title: t('collection'), 
-                //             path: paths.departments.collection.list,
-                //             children: [
-                //                 { title: t('assign_collector'), path: paths.departments.collection.assign_collector },
-                //                 { title: t('list'), path: paths.departments.collection.list }, 
-                //             ]
-                //         },
-                //         { 
-                //             title: t('tender_and_contract'), 
-                //             path: paths.departments.tenderAndConract.list,
-                //             children: [
-                //                 { title: t('list'), path: paths.departments.tenderAndConract.list }, 
-                //             ]
-                //         },
-                //     ],
-                // },
+                // Departments
+                {
+                    title: t('departments'),
+                    path: paths.departments.operation.list,
+                    icon: ICONS.user,
+                    children: [
+                        { 
+                            title: t('operation'),
+                            path: paths.departments.operation.list,
+                            children: [
+                                { title: t('list'), path: paths.departments.operation.list },
+                            ]
+                        },
+                        { 
+                            title: t('sales'), 
+                            path: paths.departments.sales.list,
+                            children: [
+                            { title: t('confirm_invoices'), path: paths.departments.sales.confirm_invoices },
+                            { title: t('list'), path: paths.departments.sales.list }, 
+                            ]
+                        },
+                        { 
+                            title: t('installation'), 
+                            path: paths.departments.installation.list,
+                            children: [
+                                { title: t('assign_engineer'), path: paths.departments.installation.assign_engineer },
+                                { title: t('list'), path: paths.departments.installation.list }, 
+                            ]
+                        },
+                        { 
+                            title: t('collection'), 
+                            path: paths.departments.collection.list,
+                            children: [
+                                { title: t('assign_collector'), path: paths.departments.collection.assign_collector },
+                                { title: t('list'), path: paths.departments.collection.list }, 
+                            ]
+                        },
+                        { 
+                            title: t('tender_and_contract'), 
+                            path: paths.departments.tenderAndConract.list,
+                            children: [
+                                { title: t('list'), path: paths.departments.tenderAndConract.list }, 
+                            ]
+                        },
+                    ],
+                },
                 // Reports
                 {
                     title: t('reports'),

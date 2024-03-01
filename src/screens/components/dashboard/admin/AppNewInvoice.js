@@ -35,7 +35,7 @@ export default function AppNewInvoice({ title, subheader, tableData, tableLabels
       <TableContainer sx={{ overflow: 'unset' }}>
         <Scrollbar>
           <Table sx={{ minWidth: 680 }}>
-            <TableHeadCustom headLabel={tableLabels} />
+            <TableHeadCustom headLabel={tableLabels} checkboxEnabled={false}/>
 
             <TableBody>
               {tableData.map((row, index) => (

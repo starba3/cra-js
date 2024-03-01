@@ -38,9 +38,9 @@ import { getAllInvoices } from 'src/data-access/invoice'
 import { _departments } from 'src/lists/departments'
 import { _statusList } from 'src/lists/paidStatus'
 import { getUserRole } from 'src/helpers/roleHelper';
-
 import { getAllCustomers, deleteCustomer } from 'src/data-access/customers';
 //
+import { UserRoles } from 'src/helpers/constantsHelper';
 import InvoiceTableFiltersResult from 'src/sections/invoice/invoice-table-filters-result';
 import CustomerTableRow from './CustomerTableRow';
 import CustomerTableToolbar from './CustomerTableToolbar';
@@ -65,7 +65,7 @@ export default function CustomerListView() {
 
   const router = useRouter();
 
-  const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
+  const table = useTable({ defaultOrderBy: 'customerCode' });
 
   const navigate = useNavigate();
 
@@ -207,7 +207,7 @@ export default function CustomerListView() {
   }, []);
 
 
-
+  const createPermission = [UserRoles.admin, UserRoles.operation].includes(ROLE)
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -251,7 +251,7 @@ export default function CustomerListView() {
             }}
         >
           
-          { ROLE === "operation" && <Button
+          { createPermission && <Button
             onClick={() => navigate(paths.dashboard.customers.create)}
             variant="contained"
             startIcon={<Iconify icon="mingcute:add-line" />}
