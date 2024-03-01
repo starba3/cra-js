@@ -22,6 +22,7 @@ import { createUser } from 'src/data-access/users';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
+import LoadingAnimation from 'src/screens/components/utility/loadingAnimation';
 import FormProvider from 'src/components/hook-form';
 import Iconify from 'src/components/iconify/iconify';
 import UserEditInputs from './userEditInputs';
@@ -41,6 +42,7 @@ export default function UserEditForm({ currentUser }) {
   const ROLE = getUserRole()
 
   const [openAlertBox, setOpenAlertBox] = useState(false);
+  const [showLoadingAnimation, setShowLoadingAnimation] = useState(false);
   const [alertMessage, setAlertMessage] = useState('Success');
 
   const NewInvoiceSchema = Yup.object().shape({
@@ -105,9 +107,17 @@ export default function UserEditForm({ currentUser }) {
 
   const handleCreateAndSend = handleSubmit(async (data) => {
     loadingSend.onTrue(); 
+
+    // let timer;
+    
+    const startLoading = () => {
+      setShowLoadingAnimation(true);
+      // timer = setTimeout(() => setShowLoadingAnimation(false), 2000); // Set loading to false after 1.5 seconds
+    };
     
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      // await new Promise((resolve) => setTimeout(resolve, 500));
+      startLoading()
 
       const {firstName, lastName, email, userName, role} = watch()
 
@@ -129,9 +139,11 @@ export default function UserEditForm({ currentUser }) {
       // const response = await createEditCustomer(body, method, id);
       
       if (response.success) {
+        setShowLoadingAnimation(false);
         router.back();
       }
       else {
+        setShowLoadingAnimation(false);
         setAlertMessage(response.errorMessage)
         setOpenAlertBox(true)
       }
@@ -145,6 +157,8 @@ export default function UserEditForm({ currentUser }) {
 
   return (
     <>
+      <LoadingAnimation loading={showLoadingAnimation} />
+
       <FormProvider methods={methods} onSubmit={handleCreateAndSend} >
         <Card>
           <UserEditInputs />

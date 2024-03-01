@@ -6,7 +6,13 @@ import TextField from '@mui/material/TextField';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 // components
+import { _userRoles } from 'src/lists/userRoles';
 import { RHFTextField } from 'src/components/hook-form';
 
 // ----------------------------------------------------------------------
@@ -18,10 +24,12 @@ export default function UserEditInputs() {
   const { t } = useLocales();
   const Translate = (text) => t(text);
 
+  const userRoles = _userRoles()
+
   return (
     <>
       <Stack
-        spacing={2}
+        spacing={1}
         direction={{ xs: 'column', sm: 'row' }}
         sx={{ p: 3 }}
       >
@@ -77,11 +85,48 @@ export default function UserEditInputs() {
         />
       </Stack>
       <Stack
-        spacing={2}
+        spacing={1}
         direction={{ xs: 'column', sm: 'row' }}
         sx={{ p: 3 }}
       > 
-        <Controller
+        <FormControl
+          sx={{
+            flex: 1,
+            flexShrink: 0,
+            width: { xs: 3 },
+          }}
+        >
+          <InputLabel  > {Translate("roles")} </InputLabel>
+          <Controller
+          
+            name="role"
+            control={control}
+            render={({ field }) => (
+              <Select
+                value={field.value}
+                onChange={(newValue) => {
+                  field.onChange(newValue);
+                }}
+                input={<OutlinedInput label={Translate("roles")} />}
+                renderValue={(selected) => selected}
+                sx={{ 
+                    flex: 1,
+                    textField: {
+                      textTransform: 'capitalize',
+                      fullWidth: true,
+                    }
+                }}
+              >
+                {userRoles.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.text}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
+        </FormControl>
+        {/* <Controller
           name="role"
           control={control}
           defaultValue = {values.role}
@@ -103,7 +148,7 @@ export default function UserEditInputs() {
               <FormControlLabel value="HeadOfCollector" control={<Radio />} label={Translate("headOfCollectors")} />
             </RadioGroup>
           )}
-        />
+        /> */}
         
       </Stack>
     </>

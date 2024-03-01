@@ -139,15 +139,6 @@ export function useNavData() {
                     //     { title: t('create'), path: paths.customers.create }
                     // ],
                 },
-                // USER
-                {
-                    title: t('user'),
-                    path: paths.dashboard.users.list,
-                    icon: ICONS.user,
-                    // children: [
-                    //     { title: t('list'), path: paths.users.list },
-                    // ],
-                },
                 // Product
                 {
                     title: t('products'),
@@ -216,7 +207,16 @@ export function useNavData() {
                         { title: t('gmReasonReport'), path: paths.dashboard.reports.gmReasonReport },
                         { title: t('invoiceByUser'), path: paths.dashboard.reports.invoiceByUsers },
                     ], 
-                }
+                },
+                // USER
+                {
+                    title: t('user'),
+                    path: paths.dashboard.users.list,
+                    icon: ICONS.user,
+                    // children: [
+                    //     { title: t('list'), path: paths.users.list },
+                    // ],
+                },
             ) 
         }
 

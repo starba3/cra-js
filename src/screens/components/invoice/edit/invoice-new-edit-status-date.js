@@ -381,9 +381,9 @@ export default function InvoiceNewEditStatusDate({
             sx={{
                 flex: 1,
                 textField: {
-                textTransform: 'capitalize',
-                fullWidth: true,
-              }
+                  textTransform: 'capitalize',
+                  fullWidth: true,
+                }
             }}
           >
             {_daysToCollectList().map((option, index) => (
