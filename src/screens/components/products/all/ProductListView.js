@@ -71,7 +71,7 @@ export default function ProductListView() {
 
   const router = useRouter();
 
-  const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
+  const table = useTable({ defaultOrderBy: 'code' });
 
   const navigate = useNavigate();
 
@@ -127,10 +127,11 @@ export default function ProductListView() {
     { id: '' },
   ];
 
+  
   const exportHeaderRow = [
-    Translate("code"),
-    Translate("productName"),
-    Translate("description")
+    { key: 'code', value: Translate("code")},
+    { key: 'name', value: Translate("productName"), localization: true, language: currentLang.value},
+    { key: 'description', value: Translate("description"), localization: true, language: currentLang.value},
   ];
 
   const dateError =
@@ -307,7 +308,7 @@ export default function ProductListView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'Products', `${Translate("products")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("products")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5

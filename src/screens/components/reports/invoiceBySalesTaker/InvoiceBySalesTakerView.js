@@ -149,7 +149,7 @@ export default function InvoiceBySaleTakerView() {
   //   { key: 'invoiceNo', value: Translate("invoiceNumber")},
   //   { key: 'customerName', value: Translate("customerName"), localization: true, language: currentLang.value},
   //   { key: 'issueInvoiceDate', value: Translate("issueInvoiceDate"), isDate: true},
-  //   // { key: 'installationStatus', value: Translate("installationStatus")},
+  //   { key: 'installationStatus', value: Translate("installationStatus")},
   //   { key: 'invoiceAmount', value: Translate("invoiceAmount"), isCurreny: true,  currency: Translate("currencyShortcut")},
   //   { key: 'productName', value: Translate("productName"), localization: true, language: currentLang.value},
   //   { key: 'department', value: Translate("department")},

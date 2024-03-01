@@ -65,7 +65,7 @@ export default function CustomerListView() {
 
   const router = useRouter();
 
-  const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
+  const table = useTable({ defaultOrderBy: 'customerCode' });
 
   const navigate = useNavigate();
 
@@ -103,9 +103,9 @@ export default function CustomerListView() {
   ];
 
   const exportHeaderRow = [
-    Translate("customerCode"),
-    Translate("customerNameEn"),
-    Translate("customerNameAr")
+    { key: 'customerCode', value: Translate("customerCode")},
+    { key: 'customerNameEn', value: Translate("customerNameEn")},
+    { key: 'customerNameAr', value: Translate("customerNameAr")},
   ];
 
   const dateError =
@@ -265,7 +265,7 @@ export default function CustomerListView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'Customers', `${Translate("customers")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("customers")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5
@@ -379,38 +379,9 @@ function applyFilter({ inputData, comparator, filters }) {
       inputData = inputData.filter(
         (invoice) =>
           invoice.customerNameEn.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-          invoice.customerNameAr.indexOf(name.toLowerCase()) !== -1
-          
-          // invoice.invoiceTo.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
+          invoice.customerNameAr.indexOf(name.toLowerCase()) !== -1          
       );
     }
-  
-    // if (status !== 'all') {
-    //   inputData = inputData.filter((invoice) => invoice.status === status);
-    // }
-  
-    // if (service.length) {
-    //   inputData = inputData.filter((invoice) =>
-    //     // service.map((serviceName) => serviceName.toLowerCase()).includes(invoice.department)
-    //     service.includes('All') || service.includes(invoice.department)
-    //   );
-    // }
-    
-    // if (paidStatus.length) {
-    //   inputData = inputData.filter((invoice) =>
-    //     paidStatus.includes('All') || paidStatus.map((option) => option.toLowerCase()).includes(invoice.paidStatus)
-    //   );
-    // }
-
-    // if (!dateError) {
-    //   if (startDate && endDate) {
-    //     inputData = inputData.filter(
-    //       (invoice) =>
-    //         fTimestamp(invoice.issueInvoiceDate) >= fTimestamp(startDate) &&
-    //         fTimestamp(invoice.issueInvoiceDate) <= fTimestamp(endDate)
-    //     );
-    //   }
-    // }
   
     return inputData;
   }
