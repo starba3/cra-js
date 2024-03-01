@@ -119,7 +119,7 @@ export default function UserEditInputs() {
               >
                 {userRoles.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
-                    {option.text}
+                    {Translate(option.text)}
                   </MenuItem>
                 ))}
               </Select>

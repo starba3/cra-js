@@ -290,5 +290,8 @@
   "newSalesTaker": "New Sales Takers",
   "acknowledged": "Acknowledged",
   "tempAcknowledged": "Temporarly Acknowledged",
-  "salesTakerName" : "Sales Taker"
+  "salesTakerName" : "Sales Taker",
+  "headofsales": "Head Of Sales",
+  "headofengineer": "Head Of Engineer",
+  "headofcollector": "Head Of Collector"
 }
