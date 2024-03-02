@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 // @mui
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
@@ -50,7 +50,7 @@ export default function AgingView() {
   const settings = useSettingsContext();
 
   const { t, currentLang } = useLocales()
-  const Translate = (text) => t(text);
+  const Translate = useCallback((text) => t(text), [t]);
 
   const table = useTable({ defaultOrderBy: "customerName" });
 
@@ -60,10 +60,49 @@ export default function AgingView() {
     const fetchData = async () => {
       try {
         let result = await getAgingReport();
+        let total = 0
+        let total0to30Total = 0
+        let total31to60Total = 0
+        let total61to90Total = 0
+        let total91to120Total = 0
+        let totalAbove120Total = 0
+
         result = result.map((item, index) => {
           item.id = index;
+          item.balance = item.zeroToThirty + item.thirtyOneToSixty + item.sixtyOneToNinety + item.ninetyOneToOneTwenty + item.oneTwentyOnePlus;
+          total += item.balance
+          total0to30Total += item.zeroToThirty
+          total31to60Total += item.thirtyOneToSixty
+          total61to90Total += item.sixtyOneToNinety
+          total91to120Total += item.ninetyOneToOneTwenty
+          totalAbove120Total += item.oneTwentyOnePlus
+
           return item;
-      });
+        });
+
+        result.push(
+          {
+            balance: total, 
+            customerNameEn: Translate("total"),
+            customerNameAr: Translate("total"),
+            zeroToThirty: total0to30Total,
+            thirtyOneToSixty: total31to60Total,
+            sixtyOneToNinety: total61to90Total,
+            ninetyOneToOneTwenty: total91to120Total,
+            oneTwentyOnePlus: totalAbove120Total
+          },
+          {
+            balance: "100%", 
+            customerNameEn: Translate("percentage"),
+            customerNameAr: Translate("percentage"),
+            zeroToThirty: ((total0to30Total / total) * 100).toFixed(2),
+            thirtyOneToSixty: ((total31to60Total / total) * 100).toFixed(2),
+            sixtyOneToNinety: ((total61to90Total / total) * 100).toFixed(2),
+            ninetyOneToOneTwenty: ((total91to120Total / total) * 100).toFixed(2),
+            oneTwentyOnePlus: ((totalAbove120Total / total) * 100).toFixed(2)
+          },
+        )
+        console.log('New Data:', result);
         setTableData(result);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -71,7 +110,7 @@ export default function AgingView() {
     };
 
     fetchData();
-  }, []);
+  }, [Translate]);
 
   const [filters, setFilters] = useState(defaultFilters);
 
@@ -122,27 +161,20 @@ export default function AgingView() {
   ];
 
   const exportHeaderRow = [
-    Translate("customerName"),
-    Translate("balance"),
-    Translate("zeroToThirty"),
-    Translate("thirtyOneToSixty"),
-    Translate("sixtyOneToNinety"),
-    Translate("ninetyOneToOneTwenty"),
-    Translate("oneTwentyOnePlus")
+    { key: 'customerName', value: Translate("customerName"), localization: true, language: currentLang.value},
+    { key: 'balance', value: Translate("balance"), isCurreny: true,  currency: Translate("currencyShortcut"), isPercentage: true},
+    { key: 'zeroToThirty', value: Translate("zeroToThirty"), isCurreny: true,  currency: Translate("currencyShortcut")},
+    { key: 'thirtyOneToSixty', value: Translate("thirtyOneToSixty"), isCurreny: true,  currency: Translate("currencyShortcut")},
+    { key: 'sixtyOneToNinety', value: Translate("sixtyOneToNinety"), isCurreny: true,  currency: Translate("currencyShortcut")},
+    { key: 'ninetyOneToOneTwenty', value: Translate("ninetyOneToOneTwenty"), isCurreny: true,  currency: Translate("currencyShortcut")},
+    { key: 'oneTwentyOnePlus', value: Translate("oneTwentyOnePlus"), isCurreny: true,  currency: Translate("currencyShortcut")},
   ];
-  
-  const calculateOverallTotal = () => 
-        calculate0to30Total() +
-        calculate31to60Total() +
-        calculate61to90Total() +
-        calculate91to120Total() +
-        calculateAbove120Total(); 
 
-  const calculate0to30Total = () => tableData.reduce((acc, item) => acc + item.zeroToThirty, 0);
-  const calculate31to60Total = () => tableData.reduce((acc, item) => acc + item.thirtyOneToSixty, 0);
-  const calculate61to90Total = () => tableData.reduce((acc, item) => acc + item.sixtyOneToNinety, 0);
-  const calculate91to120Total = () => tableData.reduce((acc, item) => acc + item.ninetyOneToOneTwenty, 0);
-  const calculateAbove120Total = () => tableData.reduce((acc, item) => acc + item.oneTwentyOnePlus, 0);
+  const calculate0to30Total = () => tableData.slice(0, -2).reduce((acc, item) => acc + item.zeroToThirty, 0);
+  const calculate31to60Total = () => tableData.slice(0, -2).reduce((acc, item) => acc + item.thirtyOneToSixty, 0);
+  const calculate61to90Total = () => tableData.slice(0, -2).reduce((acc, item) => acc + item.sixtyOneToNinety, 0);
+  const calculate91to120Total = () => tableData.slice(0, -2).reduce((acc, item) => acc + item.ninetyOneToOneTwenty, 0);
+  const calculateAbove120Total = () => tableData.slice(0, -2).reduce((acc, item) => acc + item.oneTwentyOnePlus, 0);
 
 
   const totalsRow = {
@@ -197,7 +229,7 @@ export default function AgingView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'Aging', `${Translate("aging")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("aging")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5
@@ -228,6 +260,7 @@ export default function AgingView() {
 
                 <TableBody>
                   {dataFiltered
+                    .slice(0, -2) // execlude the last 2 summary rows
                     .slice(
                       table.page * table.rowsPerPage,
                       table.page * table.rowsPerPage + table.rowsPerPage

@@ -50,11 +50,27 @@ const prepareData = (data, headers) => data.map(item => {
     if(header.localization && header.language) {
       // header.language always in ar, en
       const localizedKey = header.key +  header.language[0].toUpperCase() + header.language.slice(1)
-      // console.log("localizedKey ", localizedKey)
-      dataObject[header.value] =  item[header.key] ? item[localizedKey] : ""
+      dataObject[header.value] =  item[localizedKey] ? item[localizedKey] : ""
     }
-    else if(header.isCurreny && header.iscurreny) {
-      dataObject[header.value] = item[header.key] ? `${item[header.key]} ${header.currency}` : ""
+    else if((header.isCurreny && header.currency) || header.isPercentage) {
+      // Check if value is percentage using regular expression
+      let value = ""
+
+      if(!item[header.key]) {
+        value = header.isPercentage ? `0.00%` :  `0 ${header.currency}`
+      }
+      
+      if(item[header.key].toString().includes("%")) {
+        value = item[header.key]
+      }
+      else if( /\d+\.\d+/.test(item[header.key].toString()) ) {
+        value = `${item[header.key]}%` 
+      }
+      else {
+        value = `${item[header.key]} ${header.currency}`
+      }
+
+      dataObject[header.value] = value
     }
     else if(header.isDate) {
       dataObject[header.value] = item[header.key] ? new Date(item[header.key]).toLocaleDateString() : ""

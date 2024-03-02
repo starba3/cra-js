@@ -195,12 +195,12 @@ export default function InvoiceListView({department, salesStatus}) {
   ];
 
   const exportHeaderRow = [
-    Translate("invoiceNumber"),
-    Translate("customerName"),
-    Translate("issueDate"),
-    Translate("amount"),
-    Translate("region"),
-    Translate("productName")
+    { key: 'invoiceNo', value: Translate("invoiceNumber")},
+    { key: 'customerName', value: Translate("customerName"), localization: true, language: currentLang.value},
+    { key: 'issueInvoiceDate', value: Translate("issueInvoiceDate"), isDate: true},
+    { key: 'invoiceAmount', value: Translate("invoiceAmount"), isCurreny: true,  currency: Translate("currencyShortcut")},
+    { key: 'region', value: Translate("region")},
+    { key: 'productName', value: Translate("productName"), localization: true, language: currentLang.value},
   ];
 
   const handleFilters = useCallback(
@@ -482,7 +482,7 @@ export default function InvoiceListView({department, salesStatus}) {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLanguage, Translate("currencyShortcut"), 'InvoiceByDepartments', `${heading}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${heading}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
           >
             {Translate("export")}
