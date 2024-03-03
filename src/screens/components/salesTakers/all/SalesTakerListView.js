@@ -107,10 +107,10 @@ export default function SalesTakerListView() {
   ];
 
   const exportHeaderRow = [
-    Translate("firstName"),
-    Translate("lastName"),
-    Translate("email"),
-    Translate("userName"),
+    { key: 'firstName', value: Translate("firstName")},
+    { key: 'lastName', value: Translate("lastName")},
+    { key: "email", value: Translate("email")},
+    { key: 'userName', value: Translate("userName")},
   ];
 
   const dateError =
@@ -282,7 +282,7 @@ export default function SalesTakerListView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'EngineersList', `${Translate("salesTakersList")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("salesTakersList")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5

@@ -20,7 +20,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { Icon } from '@iconify/react';
 import Collapse from '@mui/material/Collapse';
-import Tooltip from '@mui/material/Tooltip';
 // @mui Dialog
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -58,9 +57,10 @@ import { getUsersByRole } from 'src/data-access/users';
 // Utility
 import { exportToExcel } from 'src/utils/export';
 // COMPONENTS
+import LoadingAnimation from 'src/screens/components/utility/loadingAnimation';
 import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
 import InvoiceTableFiltersResult from 'src/screens/components/invoice/departments/InvoiceTableFiltersResult';
-import { getInvoicesByDepartment, getInvoicesBySalesConfirmation  } from 'src/data-access/invoice'
+import { confirmAndRejectInvoice, getInvoicesByDepartment, getInvoicesBySalesConfirmation  } from 'src/data-access/invoice'
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
 
@@ -94,6 +94,7 @@ export default function InvoiceListView({department, salesStatus}) {
   const [assignedUsers, setAssignedUsers] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [dataUpdated, setDataUpdated] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   
 
@@ -321,52 +322,27 @@ export default function InvoiceListView({department, salesStatus}) {
     
   }
 
-  const handleConfirmAndReject = async (id, state) => {    
-    try {
-      console.log(`https://invoicecollectionsystemapi.azurewebsites.net/api/Invoices/${id}/${state}BySales`)
-      const redirectUrl = paths.departments.sales.confirm_invoices;
-      // Send create invoice request
-      
-      fetch(`https://invoicecollectionsystemapi.azurewebsites.net/api/Invoices/${id}/${state}BySales`, {
-        method: 'PATCH',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        // body: JSON.stringify(body),
-        Cache: 'default'
-      })
-      .then(res => {
-        // Check if the status code is 200 or 204
-        if (res.ok) {
-          setDataUpdated(!dataUpdated);
-          // Check if the status code is 200 or 204
-          if (res.status === 204) {
-            return null; // Handle 204 No Content
-          }  if (res.status === 200) {
-            return res.json(); // Parse JSON for other successful responses
-          } 
-          throw new Error(`Unexpected status code: ${res.status}`);
-          
-        } 
-        throw new Error('Network response was not ok');
-      })
-      .then(res => {
-        setAlertMessage(Translate("success"));
-      })
-      .catch(error => {
-        console.log(error);
-        setAlertMessage(error)
-      })
+  const handleConfirmAndReject = async (id, state, index) => {    
 
+    setLoading(true);
+    const timer = setTimeout(() => {
+      setLoading(false)
+      setOpenAlert(true)
+    }, 750); // Set loading to false after 1.5 seconds
 
-      
-      // console.info('DATA', JSON.stringify(data, null, 2));
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setOpenAlert(true);
+    const response = await confirmAndRejectInvoice(id, state)
+
+    if(response.success) {
+      setDataUpdated(!dataUpdated);
+      setAlertMessage(Translate("success"))
+      setTableData((prev) => prev.toSpliced(index, 1))
+      // clearTimeout(timer)
     }
+    else {
+      setAlertMessage(response.errorMessage)
+      // clearTimeout(timer)
+    }
+
   };
 
   const handleAssignUser = async () => {    
@@ -428,6 +404,7 @@ export default function InvoiceListView({department, salesStatus}) {
 
   return (
     <>
+      <LoadingAnimation loading={loading} />
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
           heading={heading}
@@ -513,6 +490,7 @@ export default function InvoiceListView({department, salesStatus}) {
             <Scrollbar>
               <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 800 }}>
                 <TableHeadCustom
+                  key="t-head"
                   order={table.order}
                   orderBy={table.orderBy}
                   headLabel={TABLE_HEAD}
@@ -534,7 +512,7 @@ export default function InvoiceListView({department, salesStatus}) {
                       table.page * table.rowsPerPage,
                       table.page * table.rowsPerPage + table.rowsPerPage
                     )
-                    .map((row) => (
+                    .map((row, index) => (
                       <InvoiceTableRow
                         key={row.id}
                         row={row}
@@ -545,7 +523,7 @@ export default function InvoiceListView({department, salesStatus}) {
                         onEditRow={() => handleEditRow(row.id)}
                         onDeleteRow={() => handleDeleteRow(row.id)}
                         handleOpen={(id) => handleOpen(id)}
-                        handleConfirmAndReject={(id, state) => handleConfirmAndReject(id, state)}
+                        handleConfirmAndReject={(id, state) => handleConfirmAndReject(id, state, index)}
                       />
                     ))}
 

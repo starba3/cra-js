@@ -237,3 +237,9 @@ export async function importInvoices(formData) {
     return sendPost(url, formData, headers);
 }
 
+export async function confirmAndRejectInvoice(id, action) {
+
+    const url = `${createBaseUrlWithRole("")}/api/Invoices/${id}/${action}BySales`
+    return sendPostPatchRequest("patch", url)
+}
+

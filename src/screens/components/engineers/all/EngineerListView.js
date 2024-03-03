@@ -107,11 +107,12 @@ export default function EngineerListView() {
   ];
 
   const exportHeaderRow = [
-    Translate("firstName"),
-    Translate("lastName"),
-    Translate("email"),
-    Translate("username"),
+    { key: 'firstName', value: Translate("firstName")},
+    { key: 'lastName', value: Translate("lastName")},
+    { key: "email", value: Translate("email")},
+    { key: 'userName', value: Translate("userName")},
   ];
+
 
   const dateError =
     filters.startDate && filters.endDate
@@ -282,7 +283,7 @@ export default function EngineerListView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'EngineersList', `${Translate("engineersList")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow `${Translate("engineersList")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5

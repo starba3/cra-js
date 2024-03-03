@@ -54,7 +54,7 @@ const prepareData = (data, headers) => data.map(item => {
     }
     else if((header.isCurreny && header.currency) || header.isPercentage) {
       // Check if value is percentage using regular expression
-      let value = getCurrencyOrPercentage(item, header)
+      const value = getCurrencyOrPercentage(item, header)
       dataObject[header.value] = value
     }
     else if(header.isDate) {
@@ -67,7 +67,7 @@ const prepareData = (data, headers) => data.map(item => {
       dataObject[header.value] = item[header.key] ? item[header.key][0] : ""
     }
     else {
-      dataObject[header.value]=  item[header.key] ? item[header.key] : ""
+      dataObject[header.value] = item[header.key]
     }
     
   })
