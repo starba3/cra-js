@@ -54,26 +54,14 @@ const prepareData = (data, headers) => data.map(item => {
     }
     else if((header.isCurreny && header.currency) || header.isPercentage) {
       // Check if value is percentage using regular expression
-      let value = ""
-
-      if(!item[header.key]) {
-        value = header.isPercentage ? `0.00%` :  `0 ${header.currency}`
-      }
-      
-      if(item[header.key].toString().includes("%")) {
-        value = item[header.key]
-      }
-      else if( /\d+\.\d+/.test(item[header.key].toString()) ) {
-        value = `${item[header.key]}%` 
-      }
-      else {
-        value = `${item[header.key]} ${header.currency}`
-      }
-
+      let value = getCurrencyOrPercentage(item, header)
       dataObject[header.value] = value
     }
     else if(header.isDate) {
       dataObject[header.value] = item[header.key] ? new Date(item[header.key]).toLocaleDateString() : ""
+    }
+    else if(header.isWeek) {
+      dataObject[header.value] = item[header.key] ? `${subtractDaysFromDate(new Date(item[header.key]), 7)} -  ${formatDate(new Date(item[header.key]))}` : ""
     }
     else if(header.isArray) {
       dataObject[header.value] = item[header.key] ? item[header.key][0] : ""
@@ -86,3 +74,35 @@ const prepareData = (data, headers) => data.map(item => {
 
   return dataObject
 })
+
+const getCurrencyOrPercentage = (item, header) => {
+  let value = ""
+
+  if(!item[header.key]) {
+    value = header.isPercentage ? `0.00%` :  `0 ${header.currency}`
+  }
+  
+  if(item[header.key].toString().includes("%")) {
+    value = item[header.key]
+  }
+  else if( /\d+\.\d+/.test(item[header.key].toString()) ) {
+    value = `${item[header.key]}%` 
+  }
+  else {
+    value = `${item[header.key]} ${header.currency}`
+  }
+
+  return value
+}
+
+const subtractDaysFromDate = (date, days) => {
+  const dateCopy = new Date(date);
+  dateCopy.setDate(dateCopy.getDate() - days);
+  return formatDate(dateCopy);
+}
+
+const formatDate = (date) => {
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  return `${day}/${month}`;
+}

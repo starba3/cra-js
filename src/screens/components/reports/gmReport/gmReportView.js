@@ -153,10 +153,10 @@ export default function GmReportView() {
   ];
 
   const exportHeaderRow = [
-    Translate("week"),
-    Translate("ready"),
-    Translate("notReady"),
-    Translate("reject"),
+    {key: "date", value: Translate("week"), isWeek: true},
+    {key: "ready", value: Translate("ready"), isCurreny: true,  currency: Translate("currencyShortcut")},
+    {key: "notReady", value: Translate("notReady"), isCurreny: true,  currency: Translate("currencyShortcut")},
+    {key: "reject", value: Translate("reject"), isCurreny: true,  currency: Translate("currencyShortcut")},
   ];
   
 
@@ -194,7 +194,7 @@ export default function GmReportView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'GMReport', `${Translate("gmReport")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("gmReport")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5
