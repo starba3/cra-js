@@ -113,7 +113,7 @@ export default function PerformanceListView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getPerformanceReport();
+        const result = await getPerformanceReport(ROLE);
         setTableData(result);
       } catch (error) {
         console.error('Error fetching invoices:', error);
@@ -122,7 +122,7 @@ export default function PerformanceListView() {
 
     
     fetchData();
-  }, []);
+  }, [ROLE]);
 
   useEffect(() => {
     const fetchData = async () => {

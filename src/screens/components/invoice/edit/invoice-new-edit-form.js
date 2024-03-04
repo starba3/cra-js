@@ -196,14 +196,13 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     collectionSource: ['collection'],
     claimStatus: ['collection'],
     claimsDetailStatus: ['collection'],
-    headOfDepartments: ['head of engineer', 'head of sales', 'head of collectors',]
   }
 
   
 
   // Get the name of who the alert will sent to
   const getAlertTo = (role) => {
-    if(role.toLowerCase() === 'head of collectors') {
+    if(role.toLowerCase() === UserRoles.headOfCollector) {
       return currentInvoice?.collectorName
     }
 

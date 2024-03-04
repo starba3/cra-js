@@ -226,8 +226,8 @@ export default function InvoiceListView({department, salesStatus}) {
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
-    { id: '', label: '' },
-    { id: '', label: '' },
+    { id: 'e1', label: '' },
+    { id: 'e2', label: '' },
   ];
 
   const exportHeaderRow = [
@@ -389,7 +389,7 @@ export default function InvoiceListView({department, salesStatus}) {
                     )
                     .map((row) => (
                       <InvoiceTableRow
-                        key={`invoice-${row.id}`}
+                        key={row.id}
                         row={row}
                         selected={table.selected.includes(row.id)}
                         onViewRow={() => handleViewRow(row.id)}
@@ -521,7 +521,7 @@ export default function InvoiceListView({department, salesStatus}) {
               <TableBody>
               {Object.prototype.hasOwnProperty.call(inquiryData, 'logs') && inquiryData.logs.map((row) => (
                   <TableRow
-                    key={row.name}
+                    key={`log-${row.name}`}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">

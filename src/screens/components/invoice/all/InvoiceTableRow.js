@@ -90,7 +90,7 @@ export default function InvoiceTableRow({
           />
         </TableCell>
         
-        <TableCell  align="center" >{cellValue}</TableCell>
+        <TableCell >{cellValue}</TableCell>
 
         <TableCell >{`${invoiceAmount.toLocaleString()} ${Translate('currencyShortcut')}`}</TableCell>
         

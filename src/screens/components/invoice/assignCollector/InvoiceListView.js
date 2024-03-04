@@ -104,7 +104,6 @@ export default function InvoiceListView({department, salesStatus}) {
   const [inquiryId, setInquiryId] = useState(0);
   const [inquiryData, setInquiryData] = useState({});
   const [filters, setFilters] = useState(defaultFilters);
-  const [isConfirmReport, setIsConfirmReport] = useState(department === undefined);
   const [openAssignUser, setOpenAssignUser] = useState(false);
   const [assignCollector, setAssignCollector] = useState('');
   const [invoiceId, setInvoiceId] = useState(0);
@@ -226,8 +225,8 @@ export default function InvoiceListView({department, salesStatus}) {
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
-    { id: '', label: '' },
-    { id: '', label: '' },
+    { id: 'e1', label: '' },
+    { id: 'e2', label: '' },
   ];
 
   const exportHeaderRow = [

@@ -110,7 +110,7 @@ export default function EngineerListView() {
     { key: 'firstName', value: Translate("firstName")},
     { key: 'lastName', value: Translate("lastName")},
     { key: "email", value: Translate("email")},
-    { key: 'userName', value: Translate("userName")},
+    { key: 'username', value: Translate("userName")},
   ];
 
 
@@ -283,7 +283,7 @@ export default function EngineerListView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow `${Translate("engineersList")}-${new Date().toLocaleString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("engineersList")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5

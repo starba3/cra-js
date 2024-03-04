@@ -110,7 +110,7 @@ export default function SalesTakerListView() {
     { key: 'firstName', value: Translate("firstName")},
     { key: 'lastName', value: Translate("lastName")},
     { key: "email", value: Translate("email")},
-    { key: 'userName', value: Translate("userName")},
+    { key: 'username', value: Translate("userName")},
   ];
 
   const dateError =

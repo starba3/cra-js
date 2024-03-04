@@ -189,7 +189,7 @@ export default function InvoiceListView() {
   const TABLE_HEAD = [
     { id: 'invoiceNumber', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
-    { id: headKey(), label: Translate(headKey()) },
+    { id: headKey(), label: Translate(headKey())},
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },

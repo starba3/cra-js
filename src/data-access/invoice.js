@@ -181,13 +181,13 @@ function getSendInvoiceAlertUrl(role) {
     let url = ''
 
     switch(role.toLowerCase()) {
-        case "head of engineer":
+        case UserRoles.headOfEngineer:
             url = `${createBaseUrlWithRole(role)}/Invoices/alert-others` 
             break
-        case "head of collectors":
+        case UserRoles.headOfCollector:
             url = `${createBaseUrlWithRole(role)}/Invoices/alert-Collector` 
             break
-        case "head of sales":
+        case UserRoles.headOfSales:
             url = `${createBaseUrlWithRole(role)}/Invoices/alert-salesman` 
             break
         default:
@@ -198,7 +198,7 @@ function getSendInvoiceAlertUrl(role) {
     
 }
 
-export async function sendInvoiceAlert(body, role = "head of engineer") {
+export async function sendInvoiceAlert(body, role = UserRoles.headOfEngineer) {
     const url = getSendInvoiceAlertUrl(role)
     return sendPostPatchRequest("patch", url, body)
 }
