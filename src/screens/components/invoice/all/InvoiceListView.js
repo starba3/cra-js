@@ -64,12 +64,14 @@ import { _installationStatus_objects } from 'src/lists/installation'
 // Utility
 import { exportToExcel } from 'src/utils/export';
 import { getUserRole } from 'src/helpers/roleHelper'
+import { UserRoles } from 'src/helpers/constantsHelper';
 //
 import InvoiceAnalytic from 'src/sections/invoice/invoice-analytic';
 import { sendPost } from 'src/helpers/requestHelper';
 import InvoiceTableFiltersResult from './InvoiceTableFiltersResult';
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
+
 
 // ----------------------------------------------------------------------
 
@@ -175,11 +177,11 @@ export default function InvoiceListView() {
 
   // Decide 3rd column based on User Role
   const headKey = () => {
-    if(["installation", "headofengineer"].includes(ROLE.toLowerCase())) {
+    if([UserRoles.engineer, UserRoles.headOfEngineer].includes(ROLE.toLowerCase())) {
       return "installationStatus"
     }
 
-    if(["collection", "headofcollector"].includes(ROLE.toLowerCase())) {
+    if([UserRoles.collector, UserRoles.headOfCollector].includes(ROLE.toLowerCase())) {
       return "daysToCollected"
     }
 

@@ -126,30 +126,6 @@ export default function UserEditInputs() {
             )}
           />
         </FormControl>
-        {/* <Controller
-          name="role"
-          control={control}
-          defaultValue = {values.role}
-          render={({ field }) => (
-            <RadioGroup
-              aria-labelledby="demo-controlled-radio-buttons-group"
-              name="controlled-radio-buttons-group"
-              value={field.value}
-              onChange={(newValue) => {
-                field.onChange(newValue)
-              }}
-            >
-              <FormControlLabel value="Operation" control={<Radio />} label={Translate("operation")} />
-              <FormControlLabel value="Sales" control={<Radio />} label={Translate("sales")} />
-              <FormControlLabel value="Installation" control={<Radio />} label={Translate("engineer")} />
-              <FormControlLabel value="Collection" control={<Radio />} label={Translate("collector")} />
-              <FormControlLabel value="HeadOfSales" control={<Radio />} label={Translate("headOfSales")} />
-              <FormControlLabel value="HeadOfEngineer" control={<Radio />} label={Translate("headOfEngineers")} />
-              <FormControlLabel value="HeadOfCollector" control={<Radio />} label={Translate("headOfCollectors")} />
-            </RadioGroup>
-          )}
-        /> */}
-        
       </Stack>
     </>
   );
