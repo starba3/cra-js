@@ -54,10 +54,12 @@ import { _installationStatus_objects } from 'src/lists/installation'
 // Utility
 import { exportToExcel } from 'src/utils/export';
 import { getUserRole } from 'src/helpers/roleHelper'
+import { UserRoles } from 'src/helpers/constantsHelper';
 //
 import InvoiceTableFiltersResult from './InvoiceTableFiltersResult';
 import InvoiceTableRow from './InvoiceTableRow';
 import InvoiceTableToolbar from './InvoiceTableToolbar';
+
 
 // ----------------------------------------------------------------------
 
@@ -160,12 +162,12 @@ export default function InvoiceListView() {
     (!!filters.startDate && !!filters.endDate);
 
   // Decide 3rd column based on User Role
-  const headKey = (role) => {
-    if(["installation", "headofengineer"].includes(ROLE.toLowerCase())) {
+  const headKey = () => {
+    if([UserRoles.engineer, UserRoles.headOfEngineer].includes(ROLE)) {
       return "installationStatus"
     }
 
-    if(["collection", "headofcollector"].includes(ROLE.toLowerCase())) {
+    if([UserRoles.collector, UserRoles.headOfCollector].includes(ROLE)) {
       return "daysToCollected"
     }
 
@@ -175,7 +177,7 @@ export default function InvoiceListView() {
   const TABLE_HEAD = [
     { id: 'invoiceNumber', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
-    { id: headKey(ROLE), label: Translate(headKey(ROLE)) },
+    { id: headKey(), label: Translate(headKey()) },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName"), align: 'center' },
     
@@ -183,13 +185,12 @@ export default function InvoiceListView() {
   ];
 
   const exportHeaderRow = [
-    Translate("invoiceNumber"),
-    Translate("customerName"),
-    Translate("issueInvoiceDate"),
-    Translate(headKey(ROLE)),
-    Translate("invoiceAmount"),
-    Translate("productName"),
-    
+    { key: 'invoiceNo', value: Translate("invoiceNumber")},
+    { key: 'customerName', value: Translate("customerName"), localization: true, language: currentLang.value},
+    { key: 'issueInvoiceDate', value: Translate("issueInvoiceDate"), isDate: true},
+    { key: headKey(), value: Translate(headKey())},
+    { key: 'invoiceAmount', value: Translate("invoiceAmount"), isCurreny: true,  currency: Translate("currencyShortcut")},
+    { key: 'productName', value: Translate("productName"), localization: true, language: currentLang.value},
   ];
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
@@ -303,7 +304,7 @@ export default function InvoiceListView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'NeedToAction', `${Translate("needToAction")}-${new Date().toLocaleDateString()}`, ROLE)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("needToAction")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5

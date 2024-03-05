@@ -121,10 +121,10 @@ export default function PerformanceListView() {
   ];
 
   const exportHeaderRow = [
-    Translate("name"),
-    Translate("email"),
-    Translate("paidCount"),
-    Translate("unpaidCount"),
+    { key: "name", value: Translate("name")},
+    { key: "email", value: Translate("email")},
+    { key: "paidCount", value: Translate("paidCount")},
+    { key: "unpaidCount", value: Translate("unpaidCount")},
   ];
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
@@ -175,7 +175,7 @@ export default function PerformanceListView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'collectorperformance', `${Translate("performance")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("performance")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5

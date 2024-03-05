@@ -19,14 +19,9 @@ import TableCell from '@mui/material/TableCell';
 
 // @mui Dialog
 import Dialog from '@mui/material/Dialog';
-
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-
-import Alert from '@mui/material/Alert';
-import CircularProgress from '@mui/material/CircularProgress';
-
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -36,7 +31,6 @@ import { fTimestamp } from 'src/utils/format-time';
 // components
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
-import { ConfirmDialog } from 'src/components/custom-dialog';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import {
@@ -50,9 +44,7 @@ import {
 } from 'src/components/table';
 
 // DATA ACCESS
-import { getAllInvoices, getInvoiceImportUrl, getInvoiceInquiryData, deleteInvoice } from 'src/data-access/invoice'
-import { _departments } from 'src/lists/departments'
-import { _statusList } from 'src/lists/paidStatus'
+import { getAllInvoices, getInvoiceInquiryData } from 'src/data-access/invoice'
 import { _acknowledgmentReport } from  'src/lists/acknowledgeStatus'
 // Utility
 import { exportToExcel } from 'src/utils/export';
@@ -165,14 +157,14 @@ export default function InvoiceListView({ title }) {
   ];
 
   const exportHeaderRow = [
-    Translate("invoiceNumber"),
-    Translate("customerName"),
-    Translate("issueInvoiceDate"),
-    Translate("acknowledgeStatus"),
-    Translate("invoiceAmount"),
-    Translate("productName"),
-    Translate("paidStatus"),
-    Translate("department")
+    { key: 'invoiceNo', value: Translate("invoiceNumber")},
+    { key: 'customerName', value: Translate("customerName"), localization: true, language: currentLang.value},
+    { key: 'issueInvoiceDate', value: Translate("issueInvoiceDate"), isDate: true},
+    { key: "acknowledgeStatus", value: Translate("acknowledgeStatus")},
+    { key: 'invoiceAmount', value: Translate("invoiceAmount"), isCurreny: true,  currency: Translate("currencyShortcut")},
+    { key: 'productName', value: Translate("productName"), localization: true, language: currentLang.value},
+    { key: 'paidStatus', value: Translate("paidStatus")},
+    { key: 'department', value: Translate("department")},
   ];
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
@@ -246,7 +238,7 @@ export default function InvoiceListView({ title }) {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'Acknowledgment', `${Translate("acknowledgment")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("acknowledgment")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5

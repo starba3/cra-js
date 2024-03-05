@@ -144,14 +144,16 @@ export default function InvoiceByUserView() {
     { id: 'paidStatus', label: Translate("paidStatus"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
   ];
+
   const exportHeaderRow = [
-    Translate("invoiceNumber"),
-    Translate("customerName"),
-    Translate("issueInvoiceDate"),
-    Translate("daysToCollected"),
-    Translate("invoiceAmount"),
-    Translate("paidStatus"),
-    Translate("department")
+    { key: 'invoiceNo', value: Translate("invoiceNumber")},
+    { key: 'customerName', value: Translate("customerName"), localization: true, language: currentLang.value},
+    { key: 'issueInvoiceDate', value: Translate("issueInvoiceDate"), isDate: true},
+    { key: 'daysToCollected', value: Translate("daysToCollected")},
+    { key: 'invoiceAmount', value: Translate("invoiceAmount"), isCurreny: true,  currency: Translate("currencyShortcut")},
+    { key: 'productName', value: Translate("productName"), localization: true, language: currentLang.value},
+    { key: 'paidStatus', value: Translate("paidStatus")},
+    { key: 'department', value: Translate("department")},
   ];
 
   return (
@@ -189,7 +191,7 @@ export default function InvoiceByUserView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'InvoicesByUser', `${Translate("invoiceByUser")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("invoiceByUser")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5

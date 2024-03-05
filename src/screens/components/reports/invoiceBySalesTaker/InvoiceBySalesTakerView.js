@@ -139,28 +139,18 @@ export default function InvoiceBySaleTakerView() {
   const TABLE_HEAD = [
     { id: 'invoiceNumber', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
-    // { id: 'installationStatus', label: Translate("installationStatus") },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName") },
-    // { id: 'paidStatus', label: Translate("paidStatus"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
   ];
-  // const exportHeaderRow = [
-  //   { key: 'invoiceNo', value: Translate("invoiceNumber")},
-  //   { key: 'customerName', value: Translate("customerName"), localization: true, language: currentLang.value},
-  //   { key: 'issueInvoiceDate', value: Translate("issueInvoiceDate"), isDate: true},
-  //   // { key: 'installationStatus', value: Translate("installationStatus")},
-  //   { key: 'invoiceAmount', value: Translate("invoiceAmount"), isCurreny: true,  currency: Translate("currencyShortcut")},
-  //   { key: 'productName', value: Translate("productName"), localization: true, language: currentLang.value},
-  //   { key: 'department', value: Translate("department")},
-  // ];
+
   const exportHeaderRow = [
-    Translate("invoiceNumber"),
-    Translate("customerName"),
-    Translate("issueInvoiceDate"),
-    Translate("invoiceAmount"),
-    Translate("productName"),
-    Translate("department"),
+    { key: 'invoiceNo', value: Translate("invoiceNumber")},
+    { key: 'customerName', value: Translate("customerName"), localization: true, language: currentLang.value},
+    { key: 'issueInvoiceDate', value: Translate("issueInvoiceDate"), isDate: true},
+    { key: 'invoiceAmount', value: Translate("invoiceAmount"), isCurreny: true,  currency: Translate("currencyShortcut")},
+    { key: 'productName', value: Translate("productName"), localization: true, language: currentLang.value},
+    { key: 'department', value: Translate("department")},
   ];
 
   return (
@@ -192,7 +182,7 @@ export default function InvoiceBySaleTakerView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'invoicesbysaletaker', `${Translate("invoicesBySaleTaker")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("invoicesBySaleTaker")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5

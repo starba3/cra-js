@@ -181,12 +181,13 @@ export default function InvoiceListView() {
   ];
 
   const exportHeaderRow = [
-    Translate("invoiceNumber"),
-    Translate("customerName"),
-    Translate("issueInvoiceDate"),
-    Translate("invoiceAmount"),
-    Translate("productName"),
-    Translate("paidStatus")
+    { key: 'invoiceNo', value: Translate("invoiceNumber")},
+    { key: 'customerName', value: Translate("customerName"), localization: true, language: currentLang.value},
+    { key: 'issueInvoiceDate', value: Translate("issueInvoiceDate"), isDate: true},
+    { key: 'invoiceAmount', value: Translate("invoiceAmount"), isCurreny: true,  currency: Translate("currencyShortcut")},
+    { key: 'productName', value: Translate("productName"), localization: true, language: currentLang.value},
+    { key: 'paidStatus', value: Translate("paidStatus")},
+    { key: 'department', value: Translate("department")},
   ];
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
@@ -344,7 +345,7 @@ export default function InvoiceListView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'RejectedBySales', `${Translate("rejectedBySales")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("rejectedBySales")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5

@@ -1,4 +1,5 @@
-import useLocales from '../locales/use-locales'
+import { UserRoles } from 'src/helpers/constantsHelper'
+import useLocales from 'src/locales/use-locales'
 
 const Translate = (text) => {
     const { t } = useLocales()
@@ -7,11 +8,11 @@ const Translate = (text) => {
 
 export const _userRoles = () =>  [
     
-    { value: "operation", text: Translate('operation')},
-    { value: "sales", text: Translate('sales')},
-    { value: "collection", text: Translate('collection')},
-    { value: "installation", text: Translate('installation')},
-    { value: "headofsales", text: Translate('headofsales')},
-    { value: "headofengineer", text: Translate('headofengineer')},
-    { value: "headofcollector", text: Translate('headofcollector')},
+    { value: UserRoles.operation, text: Translate('operation')},
+    { value: UserRoles.sales, text: Translate('sales')},
+    { value: UserRoles.collector, text: Translate('collection')},
+    { value: UserRoles.engineer, text: Translate('installation')},
+    { value: UserRoles.headOfSales, text: Translate('headofsales')},
+    { value: UserRoles.headOfEngineer, text: Translate('headofengineer')},
+    { value: UserRoles.headOfCollector, text: Translate('headofcollector')},
 ]

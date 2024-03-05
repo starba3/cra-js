@@ -7,7 +7,7 @@ import Backdrop from '@mui/material/Backdrop';
 export default function LoadingAnimation({ loading }) {
     return (
         <Backdrop open={loading} style={{ zIndex: 9999 }}>
-            <CircularProgress color="inherit" />
+            <CircularProgress color="primary" />
         </Backdrop>
     );
 }

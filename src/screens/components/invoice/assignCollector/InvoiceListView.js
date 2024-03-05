@@ -104,7 +104,6 @@ export default function InvoiceListView({department, salesStatus}) {
   const [inquiryId, setInquiryId] = useState(0);
   const [inquiryData, setInquiryData] = useState({});
   const [filters, setFilters] = useState(defaultFilters);
-  const [isConfirmReport, setIsConfirmReport] = useState(department === undefined);
   const [openAssignUser, setOpenAssignUser] = useState(false);
   const [assignCollector, setAssignCollector] = useState('');
   const [invoiceId, setInvoiceId] = useState(0);
@@ -223,20 +222,20 @@ export default function InvoiceListView({department, salesStatus}) {
   const TABLE_HEAD = [
     { id: 'invoiceNumber', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
-    // { id: 'installationStatus', label: Translate("installationStatus"), align: 'center' },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
-    { id: '', label: '' },
-    { id: '', label: '' },
+    { id: 'e1', label: '' },
+    { id: 'e2', label: '' },
   ];
 
   const exportHeaderRow = [
-    Translate("invoiceNumber"),
-    Translate("customerName"),
-    Translate("issueDate"),
-    Translate("amount"),
-    Translate("productName")
+    { key: 'invoiceNo', value: Translate("invoiceNumber")},
+    { key: 'customerName', value: Translate("customerName"), localization: true, language: currentLang.value},
+    { key: 'issueInvoiceDate', value: Translate("issueInvoiceDate"), isDate: true},
+    { key: 'invoiceAmount', value: Translate("invoiceAmount"), isCurreny: true,  currency: Translate("currencyShortcut")},
+    { key: 'productName', value: Translate("productName"), localization: true, language: currentLang.value},
+    { key: 'department', value: Translate("department")},
   ];
 
   const handleFilters = useCallback(
@@ -335,7 +334,7 @@ export default function InvoiceListView({department, salesStatus}) {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLanguage, Translate("currencyShortcut"), 'AssignEngineer', `${Translate("assignEngineer")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("assignEngineer")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
           >
             {Translate("export")}

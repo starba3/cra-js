@@ -62,7 +62,7 @@ export default function GmReasonReportView() {
   const { t, currentLang } = useLocales()
   const Translate = (text) => t(text);
 
-  const table = useTable({ defaultOrderBy: 'issueInvoiceDate' });
+  const table = useTable({ defaultOrderBy: 'date' });
 
   const [tableData, setTableData] = useState([]);
   const [collectionSource, setCollectionSource] = useState('');
@@ -135,9 +135,9 @@ export default function GmReasonReportView() {
   ];
 
   const exportHeaderRow = [
-    Translate("week"),
-    Translate("reason"),
-    Translate("totalAmount"),
+    {key: "date", value: Translate("week"), isWeek: true},
+    {key: "reason", value: Translate("reason")},
+    {key: "totalAmount", value: Translate("totalAmount"), isCurreny: true,  currency: Translate("currencyShortcut")},
   ];
   
 
@@ -175,7 +175,7 @@ export default function GmReasonReportView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'GMReasonReport', `${Translate("gmReasonReport")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("gmReasonReport")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5

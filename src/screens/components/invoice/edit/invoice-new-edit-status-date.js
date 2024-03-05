@@ -157,7 +157,6 @@ export default function InvoiceNewEditStatusDate({
     collectionSource: ['collection'],
     claimStatus: ['collection'],
     claimsDetailStatus: ['collection'],
-    headOfDepartments: ['head of engineer', 'head of sales', 'head of collectors',]
   }
 
 

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useState, useCallback, useEffect } from 'react';
 import { useLocales } from 'src/locales';
 // @mui
-import { useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import Stack from '@mui/material/Stack';
@@ -11,12 +10,6 @@ import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 // @mui Dialog
-// routes
-import { useRouter } from 'src/routes/hooks';
-// hooks
-import { useBoolean } from 'src/hooks/use-boolean';
-// utils
-// _mock
 // components
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -72,10 +65,6 @@ export default function SalesPerformanceListView() {
   const [tableData, setTableData] = useState([]);
   const [filters, setFilters] = useState(defaultFilters);
 
-  const [open, setOpen] = React.useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [loading, setLoading] = useState(false);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -121,11 +110,11 @@ export default function SalesPerformanceListView() {
   ];
 
   const exportHeaderRow = [
-    Translate("name"),
-    Translate("email"),
-    Translate("acknowledged"),
-    Translate("tempAcknowledged"),
-    Translate("notAcknowledged"),
+    { key: 'name', value: Translate("name")},
+    { key: 'email', value: Translate("email")},
+    { key: 'acknowledged', value: Translate("acknowledged")},
+    { key: 'tempAcknowledged', value: Translate("tempAcknowledged")},
+    { key: 'notAcknowledged', value: Translate("notAcknowledged")},
   ];
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
@@ -176,7 +165,7 @@ export default function SalesPerformanceListView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'salesperformance', `${Translate("performance")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("performance")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5
@@ -219,12 +208,12 @@ export default function SalesPerformanceListView() {
                   rowCount={tableData.length}
                   numSelected={table.selected.length}
                   onSort={table.onSort}
-                  onSelectAllRows={(checked) =>
-                    table.onSelectAllRows(
-                      checked,
-                      tableData.map((row) => row.id)
-                    )
-                  }
+                  // onSelectAllRows={(checked) =>
+                  //   table.onSelectAllRows(
+                  //     checked,
+                  //     tableData.map((row) => row.id)
+                  //   )
+                  // }
                   checkboxEnabled={false}
                 />
 
