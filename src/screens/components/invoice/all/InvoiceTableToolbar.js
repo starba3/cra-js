@@ -16,6 +16,7 @@ import Select from '@mui/material/Select';
 // components
 import Iconify from 'src/components/iconify';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import { UserRoles } from 'src/helpers/constantsHelper';
 
 // ----------------------------------------------------------------------
 
@@ -77,7 +78,7 @@ export default function InvoiceTableToolbar({
     [onFilters]
   );
 
-  const installationStatusSelect = (role.toLowerCase() === "headofengineer" || role.toLowerCase() === "installation")
+  const installationStatusSelect = [UserRoles.engineer, UserRoles.headOfEngineer].includes(role.toLowerCase())
   ? <FormControl
       sx={{
         flexShrink: 0,

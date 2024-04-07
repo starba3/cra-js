@@ -115,10 +115,10 @@ export default function UserListView() {
   ];
 
   const exportHeaderRow = [
-    Translate("firstName"),
-    Translate("lastName"),
-    Translate("userName"),
-    Translate("roles")
+    { key: 'firstName', value: Translate("firstName")},
+    { key: 'lastName', value: Translate("lastName")},
+    { key: 'userName', value: Translate("userName")},
+    { key: 'roles', value: Translate("roles"), isArray: true},
   ];
 
   const dateError =
@@ -278,7 +278,7 @@ export default function UserListView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, '', Translate("currencyShortcut"), 'Users', `${Translate('users')}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate('users')}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5

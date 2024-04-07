@@ -154,13 +154,13 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     [currentInvoice]
   );
 
-  const[selectedDepartment, setSelectedDepartment] = useState('');
-  const[departments, setDepartments] = useState(_departments_withoutAll());
-  const[didUpdate, setDidUpdate] = useState(false);
-  const[isError, setIsError] = useState(false);
-  const[errorMessage, setErrorMessage] = useState('');
-  const[filters, setFilters] = useState(defaultValues);
-  const[loading, setLoading] = useState(false);
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [departments, setDepartments] = useState(_departments_withoutAll());
+  const [didUpdate, setDidUpdate] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [filters, setFilters] = useState(defaultValues);
+  const [loading, setLoading] = useState(false);
   
   const getDepartmentId =  useCallback((department) => 
     _departments_withoutAll()
@@ -196,14 +196,13 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
     collectionSource: ['collection'],
     claimStatus: ['collection'],
     claimsDetailStatus: ['collection'],
-    headOfDepartments: ['head of engineer', 'head of sales', 'head of collectors',]
   }
 
   
 
   // Get the name of who the alert will sent to
   const getAlertTo = (role) => {
-    if(role.toLowerCase() === 'head of collectors') {
+    if(role.toLowerCase() === UserRoles.headOfCollector) {
       return currentInvoice?.collectorName
     }
 
@@ -433,7 +432,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
         note: alertText
       }
 
-      console.log(body)
+      // console.log(body)
       const response = await sendInvoiceAlert(body, ROLE);
 
       if(response.success) {
@@ -450,7 +449,7 @@ export default function InvoiceNewEditForm({ currentInvoice }) {
 
 
     } catch (error) {
-      console.error('Error:', error);
+      // console.error('Error:', error);
       loadingSend.onFalse();
     }
   };

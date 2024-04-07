@@ -113,7 +113,7 @@ export default function PerformanceListView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getPerformanceReport();
+        const result = await getPerformanceReport(ROLE);
         setTableData(result);
       } catch (error) {
         console.error('Error fetching invoices:', error);
@@ -122,7 +122,7 @@ export default function PerformanceListView() {
 
     
     fetchData();
-  }, []);
+  }, [ROLE]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -180,12 +180,12 @@ export default function PerformanceListView() {
   ];
 
   const exportHeaderRow = [
-    Translate("name"),
-    Translate("email"),
-    Translate("installedCount"),
-    Translate("inProgressCount"),
-    Translate("notStartedCount"),
-    Translate("delayedCount"),
+    { key: 'name', value: Translate("name")},
+    { key: 'email', value: Translate("email")},
+    { key: 'installedCount', value: Translate("installedCount")},
+    { key: 'inProgressCount', value: Translate("inProgressCount")},
+    { key: 'notStartedCount', value: Translate("notStartedCount")},
+    { key: 'delayedCount', value: Translate("delayedCount")},
   ];
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
@@ -304,7 +304,7 @@ export default function PerformanceListView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'Performance', `${Translate("performance")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("performance")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5
@@ -347,12 +347,12 @@ export default function PerformanceListView() {
                   rowCount={tableData.length}
                   numSelected={table.selected.length}
                   onSort={table.onSort}
-                  onSelectAllRows={(checked) =>
-                    table.onSelectAllRows(
-                      checked,
-                      tableData.map((row) => row.id)
-                    )
-                  }
+                  // onSelectAllRows={(checked) =>
+                  //   table.onSelectAllRows(
+                  //     checked,
+                  //     tableData.map((row) => row.id)
+                  //   )
+                  // }
                   checkboxEnabled={false}
                 />
 

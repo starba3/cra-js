@@ -223,20 +223,20 @@ export default function InvoiceListView({department, salesStatus}) {
   const TABLE_HEAD = [
     { id: 'invoiceNumber', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
-    // { id: 'installationStatus', label: Translate("installationStatus"), align: 'center' },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
     { id: 'productName', label: Translate("productName"), align: 'center' },
     { id: 'department', label: Translate("department"), align: 'center' },
-    { id: '', label: '' },
-    { id: '', label: '' },
+    { id: 'e1', label: '' },
+    { id: 'e2', label: '' },
   ];
 
   const exportHeaderRow = [
-    Translate("invoiceNumber"),
-    Translate("customerName"),
-    Translate("issueDate"),
-    Translate("amount"),
-    Translate("productName")
+    { key: 'invoiceNo', value: Translate("invoiceNumber")},
+    { key: 'customerName', value: Translate("customerName"), localization: true, language: currentLang.value},
+    { key: 'issueInvoiceDate', value: Translate("issueInvoiceDate"), isDate: true},
+    { key: 'invoiceAmount', value: Translate("invoiceAmount"), isCurreny: true,  currency: Translate("currencyShortcut")},
+    { key: 'productName', value: Translate("productName"), localization: true, language: currentLang.value},
+    { key: 'department', value: Translate("department")},
   ];
 
   const handleFilters = useCallback(
@@ -335,7 +335,7 @@ export default function InvoiceListView({department, salesStatus}) {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLanguage, Translate("currencyShortcut"), 'AssignEngineer', `${Translate("assignEngineer")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("assignEngineer")}-${new Date().toLocaleDateString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
           >
             {Translate("export")}
@@ -389,7 +389,7 @@ export default function InvoiceListView({department, salesStatus}) {
                     )
                     .map((row) => (
                       <InvoiceTableRow
-                        key={`invoice-${row.id}`}
+                        key={row.id}
                         row={row}
                         selected={table.selected.includes(row.id)}
                         onViewRow={() => handleViewRow(row.id)}
@@ -521,7 +521,7 @@ export default function InvoiceListView({department, salesStatus}) {
               <TableBody>
               {Object.prototype.hasOwnProperty.call(inquiryData, 'logs') && inquiryData.logs.map((row) => (
                   <TableRow
-                    key={row.name}
+                    key={`log-${row.name}`}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">

@@ -163,7 +163,7 @@ export default function InvoiceListView() {
     (!!filters.startDate && !!filters.endDate);
 
   const TABLE_HEAD = [
-    { id: 'invoiceNumber', label: Translate("invoiceNumber") },
+    { id: 'invoiceNo', label: Translate("invoiceNumber") },
     { id: 'issueInvoiceDate', label: Translate("issueInvoiceDate") },
     { id: 'deliveryDate', label: Translate("deliveryDate") },
     { id: 'invoiceAmount', label: Translate("invoiceAmount") },
@@ -174,14 +174,14 @@ export default function InvoiceListView() {
   ];
 
   const exportHeaderRow = [
-    Translate("invoiceNumber"),
-    Translate("customerName"),
-    Translate("issueInvoiceDate"),
-    Translate("deliveryDate"),
-    Translate("invoiceAmount"),
-    Translate("productName"),
-    Translate("paidStatus"),
-    Translate("department")
+    {key: "invoiceNo", value: Translate("invoiceNumber")},
+    {key: "customerName", value: Translate("customerName"), localization: true, language: currentLang.value},
+    {key: "issueInvoiceDate", value: Translate("issueInvoiceDate"), isDate: true},
+    {key: "deliveryDate", value: Translate("deliveryDate"), isDate: true},
+    {key: "invoiceAmount", value: Translate("invoiceAmount"), isCurreny: true,  currency: Translate("currencyShortcut")},
+    {key: "productName", value: Translate("productName"), localization: true, language: currentLang.value},
+    {key: "paidStatus", value: Translate("paidStatus")},
+    {key: "department", value: Translate("department")}
   ];
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
@@ -282,7 +282,7 @@ export default function InvoiceListView() {
           <Button
             variant="contained"
             color='primary'
-            onClick={() => exportToExcel(tableData, exportHeaderRow, currentLang.value, Translate("currencyShortcut"), 'DeliveryDate', `${Translate("deliveryDate")}-${new Date().toLocaleDateString()}`)}
+            onClick={() => exportToExcel(tableData, exportHeaderRow, `${Translate("deliveryDate")}-${new Date().toLocaleString()}`)}
             startIcon={<Iconify icon="eva:download-outline" />}
             sx={{
               margin: 0.5
