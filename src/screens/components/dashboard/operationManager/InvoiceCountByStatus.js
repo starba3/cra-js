@@ -25,7 +25,7 @@ export default function InvoiceCountByStatus({ title, subheader, list, ...other 
           gridTemplateColumns: 'repeat(2, 1fr)',
         }}
       >
-        {list.slice(1).map((site) => (
+        {list && list.slice(1).map((site) => (
           <Paper
             key={site.name}
             variant="outlined"
