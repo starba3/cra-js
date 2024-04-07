@@ -25,6 +25,7 @@ export default function InvoiceCountByStatus({ title, subheader, list, ...other 
           gridTemplateColumns: 'repeat(2, 1fr)',
         }}
       >
+        {/* Fixed buh */}
         {list && list.slice(1).map((site) => (
           <Paper
             key={site.name}
