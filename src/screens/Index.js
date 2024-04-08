@@ -2,7 +2,9 @@ import { lazy, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { json } from 'react-router';
 import { getUserRole } from 'src/helpers/roleHelper';
+import { useRouter } from 'src/routes/hooks';
 import { UserRoles } from 'src/helpers/constantsHelper';
+import { paths } from 'src/routes/paths';
 // sections
 const OverviewAppView = lazy(() => import('src/screens/components/dashboard/admin/OverviewAppView'));
 const OperationDashboardView = lazy(() => import('src/screens/components/dashboard/operationManager/dashboardView')) ;
@@ -54,6 +56,11 @@ const getDashaboard = (role) => {
 
 export default function OverviewAppPage() {
   const ROLE = getUserRole()
+  const router = useRouter()
+
+  if (!ROLE) {
+    router.replace(paths.auth.jwt.login)
+  }
 
   return (
     <>

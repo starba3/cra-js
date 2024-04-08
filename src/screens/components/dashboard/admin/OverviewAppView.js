@@ -25,7 +25,6 @@ import { getUserRole } from 'src/helpers/roleHelper';
 // ----------------------------------------------------------------------
 
 export default function OverviewAppView() {
-  const { user } = useMockedUser();
 
   const [unpaidInvoicesCount, setUnpaidInvoicesCount] = useState(0);
   const [paidInvoicesCount, setPaidInvoicesCount] = useState(0);
@@ -46,18 +45,18 @@ export default function OverviewAppView() {
     // Fetching the token from the session storage
     const token = localStorage.getItem('accessToken') && JSON.parse(localStorage.getItem('accessToken')).value ;
     if (token) {
-
       try {
         const res = await getDashboardData(ROLE);
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>', res);
 
-        setUnpaidInvoicesCount(res.unpaidInvoicesCount);
-        setPaidInvoicesCount(res.paidInvoicesCount);
-        setUnpaidInvoicesTotalAmmount(res.unpaidInvoicesTotalAmmount);
-        setPaidInvoicesTotalAmmount(res.paidInvoicesTotalAmmount);
-        setDepartmentInvoicesCount(res.departmentInvoicesCount);
-        setLastestCreatedInvoices(res.lastestCreatedInvoices);
-
+        if(res) {
+          setUnpaidInvoicesCount(res.unpaidInvoicesCount);
+          setPaidInvoicesCount(res.paidInvoicesCount);
+          setUnpaidInvoicesTotalAmmount(res.unpaidInvoicesTotalAmmount);
+          setPaidInvoicesTotalAmmount(res.paidInvoicesTotalAmmount);
+          setDepartmentInvoicesCount(res.departmentInvoicesCount);
+          setLastestCreatedInvoices(res.lastestCreatedInvoices);
+        }
+        
       } catch (error) {
         console.error('Error fetching chart Data:', error); 
       }
@@ -138,7 +137,7 @@ export default function OverviewAppView() {
               <AppCurrentDownload
                 title={Translate("departmentInvoicesCount")}
                 chart={{
-                  series: Object.keys(departmentInvoicesCount).map((key) => {
+                  series: Object.keys(departmentInvoicesCount || {}).map((key) => {
                     let label = '';
                     if (key === '0') {
                       label = Translate("operation");
@@ -179,7 +178,7 @@ export default function OverviewAppView() {
 
             <AppNewInvoice
               title={Translate("invoices")}
-              tableData={lastestCreatedInvoices}
+              tableData={lastestCreatedInvoices || []}
               tableLabels={[
                 { id: 'invoiceNo', label:Translate("invoiceNumber") },
                 { id: 'invoiceAmount', label: Translate("invoiceAmount") },
